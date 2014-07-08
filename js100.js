@@ -86,10 +86,8 @@ JS100.InstrumentEvent = function(instrument) {
   vca.connect(audioContext.destination);
 
   instrumentEvent.play = function(note, gateOnTime, gateOffTime) {
-    var frequency = JS100.MusicTheory.noteToFrequency(note.pitch, note.octave);
-
-    if (frequency > 0.0) {
-      vco.frequency.value = frequency;
+    if (note.frequency() > 0.0) {
+      vco.frequency.value = note.frequency();
 
       vco.start(gateOnTime);
       pitchLfoVco.start(gateOnTime);
@@ -188,12 +186,24 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 };
 
 
-JS100.Note = function(pitch, octave, duration) {
+JS100.Note = function(noteName, octave, duration) {
   var note = {};
 
-  note.pitch = pitch;
+  note.noteName = noteName;
   note.octave = octave;
   note.duration = duration;
+
+  note.frequency = function() {
+    if (noteName === "_" || noteName === ".") {
+      return 0.0;
+    }
+
+    noteName = JS100.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
+    var octaveMultiplier = Math.pow(2.0, (octave - JS100.MusicTheory.MIDDLE_OCTAVE));
+    var frequency = JS100.MusicTheory.NOTE_RATIOS[noteName] * JS100.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
+
+    return frequency;
+  };
 
   return note;
 };
@@ -265,16 +275,4 @@ JS100.MusicTheory = {
 
   MIDDLE_OCTAVE: 4,
   MIDDLE_A_FREQUENCY: 440.0,
-
-  noteToFrequency: function(noteName, octave) {
-    if (noteName === "_" || noteName === ".") {
-      return 0.0;
-    }
-
-    noteName = this.ENHARMONIC_EQUIVALENTS[noteName];
-    var octaveMultiplier = Math.pow(2.0, (octave - this.MIDDLE_OCTAVE));
-    var frequency = this.NOTE_RATIOS[noteName] * this.MIDDLE_A_FREQUENCY * octaveMultiplier;
-
-    return frequency;
-  }
 };
