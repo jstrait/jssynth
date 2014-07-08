@@ -1,0 +1,158 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-size: 20px;
+  background: #ebebeb;
+  color: #130f30;
+  line-height: 1.5em;
+  font-weight: 300;
+}
+
+#container {
+  margin-top: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1.5em solid #130f30;
+  padding: 3.0em;
+  width: 800px;
+  max-width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 50px;
+}
+
+h1 {
+  font-size: 6.0rem;
+  line-height: 6.0rem;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #c00;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  margin-top: 4.5rem;
+}
+
+label {
+  width: 30%;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.indented {
+  padding-left: 1.0rem;
+}
+
+input[type='text'] {
+  font-family:"Helvetica Neue", arial, sans-serif;
+  font-size: 2.0rem;
+  font-weight: bold;
+}
+
+input[type='range'] {
+  background-color: #ccc;
+  -webkit-appearance: none;
+  height: 1.5em;
+  padding: 0;
+  outline: 0;
+  border-radius: 10px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.5em;
+  background: #130f30;
+  width: 3.0em;
+  border-radius: 10px;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  background: #c00;
+}
+
+input[type='range']::-webkit-slider-thumb:active {
+  background: #f24;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: 1.5em;
+  background: #130f30;
+  width: 3.0em;
+  border: 0;
+  border-radius: 10px;
+}
+
+input[type='range']::-moz-range-thumb:hover {
+  background: #c00;
+}
+
+input[type='range']::-moz-range-thumb:active {
+  background: #f24;
+}
+
+input[type='range']::-moz-range-track {
+  display: none;
+  background: #ccc;
+  border: 0;
+}
+
+input {
+  width: 45%;
+}
+
+select {
+  width: 45%;
+}
+
+input.notes {
+  width: 100%;
+}
+
+button {
+  background: #ccc;
+  border: 0;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 0.75rem;
+  font-family:"Helvetica Neue", arial, sans-serif;
+  font-weight: bold;
+  border-radius: 10px;
+  color: #130f30;
+}
+
+#loopContainer {
+  display: inline-block;
+  background: #ccc;
+  font-size: 1.5rem;
+  padding: 0.75rem;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+#loopContainer input[type='checkbox'] {
+  border: 2px solid #130f30;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 5px;
+}
+
+#loopContainer input[type='checkbox']:checked {
+  background: #a00;
+  border-color: #a00;
+}
+
+#loopContainer label {
+  display: inline;
+}
+
+#footer {
+  text-align: center;
+}
