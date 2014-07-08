@@ -81,6 +81,7 @@ app.controller('controller', ['$scope', function($scope) {
 app.directive('appTransportToggle', function() {
   var link = function(scope, element, attrs) {
     element.on('click', function(e) {
+      element.toggleClass('enabled');
       element.scope().toggle();
     });
   };

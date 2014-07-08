@@ -125,6 +125,11 @@ button {
   color: #130f30;
 }
 
+.enabled {
+  background: orange;
+  color: #fff;
+}
+
 #loopContainer {
   display: inline-block;
   background: #ccc;
