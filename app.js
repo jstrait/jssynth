@@ -7,7 +7,7 @@ app.controller('controller', ['$scope', function($scope) {
   var transport;
 
   $scope.waveform = 'sawtooth';
-  $scope.amplitude = 0.2;
+  $scope.amplitude = 0.75;
   $scope.lfoWaveform = 'sine'
   $scope.lfoFrequency = 5;
   $scope.lfoAmplitude = 0;

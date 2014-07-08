@@ -132,14 +132,14 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   function tick() {
     var sequence = transport.sequence;
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
+    var note;
+    var e;
 
     while (nextNoteTime < finalTime) {
-      for (var i = 0; i < sequence.length; i++) {
-        var note = sequence[sequenceIndex];
+      note = sequence[sequenceIndex];
 
-        var e = new JS100.InstrumentEvent(transport.instrument);
-        e.play(note, nextNoteTime, nextNoteTime + transport.stepTime);
-      }
+      e = new JS100.InstrumentEvent(transport.instrument);
+      e.play(note, nextNoteTime, nextNoteTime + transport.stepTime);
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
