@@ -98,14 +98,3 @@ app.directive('appTransportStop', function() {
 
   return { link: link };
 });
-
-app.directive('appTransportDownload', function() {
-  var link = function(scope, element, attrs) {
-    element.on('click', function(e) {
-      element.scope().stop();
-    });
-  };
-
-  return { link: link };
-});
-
