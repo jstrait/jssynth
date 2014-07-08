@@ -161,3 +161,22 @@ button {
 #footer {
   text-align: center;
 }
+
+
+
+@media (max-width: 768px) {
+  body {
+    background: #fff;
+    margin: 1.5em;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  #container {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+  }
+}
