@@ -115,8 +115,9 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 
   transport.sequence = parseRawNotes(rawNotes);
 
+  transport.playing = false;
   var sequenceIndex = 0;
-  var loop = loop;
+  transport.loop = loop;
   var nextNoteTime = undefined;
   var timeoutId = undefined;
 
@@ -143,7 +144,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
-        if (loop) {
+        if (transport.loop) {
           sequenceIndex = 0;
         }
         else {
@@ -161,10 +162,12 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 
     transport.tick();
     timeoutId = window.setInterval(transport.tick, TICK_INTERVAL);
+    transport.playing = true;
   };
 
   transport.stop = function() {
     window.clearInterval(timeoutId);
+    transport.playing = false;
   };
 
   return transport;

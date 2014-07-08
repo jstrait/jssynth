@@ -24,39 +24,6 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.tempo = 100;
   $scope.loop = true;
 
-  $scope.init = function() {
-    if ('AudioContext' in window) {
-      audioContext = new AudioContext();
-    }
-    else {
-      alert("Your browser doesn't appear to be cool enough to run the JS-100");
-      return;
-    }
-  };
-  $scope.init();
-
-  $scope.updateInstrument = function() {
-    var config = toGenericConfig();
-    var instrument = new JS100.Instrument(audioContext, config);
-    transport.instrument = instrument;
-  };
-
-  $scope.updateTempo = function() {
-    transport.updateTempo(parseInt($scope.tempo, 10));
-  };
-
-  $scope.start = function() { 
-    var config = toGenericConfig();
-    console.log(config);
-    var instrument = new JS100.Instrument(audioContext, config);
-    transport = new JS100.Transport(audioContext, instrument, $scope.notes, parseInt($scope.tempo, 10), $scope.loop);
-    transport.start();
-  };
-
-  $scope.stop = function() {
-    transport.stop();
-  };
-
   var toGenericConfig = function() {
     return {
       waveform:           $scope.waveform,
@@ -75,22 +42,52 @@ app.controller('controller', ['$scope', function($scope) {
       envelopeRelease:    parseFloat($scope.envelopeRelease),
     };
   };
-}]);
 
-app.directive('appTransportBegin', function() {
-  var link = function(scope, element, attrs) {
-    element.on('click', function(e) {
-      element.scope().start();
-    });
+  $scope.init = function() {
+    if ('AudioContext' in window) {
+      audioContext = new AudioContext();
+
+      var config = toGenericConfig();
+      var instrument = new JS100.Instrument(audioContext, config);
+      transport = new JS100.Transport(audioContext, instrument, $scope.notes, parseInt($scope.tempo, 10), $scope.loop);
+    }
+    else {
+      alert("Your browser doesn't appear to be cool enough to run the JS-100");
+      return;
+    }
+  };
+  $scope.init();
+
+  $scope.updateInstrument = function() {
+    var config = toGenericConfig();
+    console.log(config);
+    var instrument = new JS100.Instrument(audioContext, config);
+    transport.instrument = instrument;
   };
 
-  return { link: link };
-});
+  $scope.updateTempo = function() {
+    transport.updateTempo(parseInt($scope.tempo, 10));
+  };
 
-app.directive('appTransportStop', function() {
+  $scope.updateLoop = function() {
+    transport.loop = $scope.loop;
+  };
+
+  $scope.toggle = function() {
+    if (transport.playing) {
+      transport.stop();
+    }
+    else {
+      var config = toGenericConfig();
+      transport.start();
+    }
+  };
+}]);
+
+app.directive('appTransportToggle', function() {
   var link = function(scope, element, attrs) {
     element.on('click', function(e) {
-      element.scope().stop();
+      element.scope().toggle();
     });
   };
 

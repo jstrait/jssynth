@@ -86,10 +86,9 @@
     <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
     <span>{{tempo}} bps</span>
     <div>
-      <button app-transport-begin>Start</button>
-      <button app-transport-stop>Stop</button>
+      <button app-transport-toggle>Play</button>
       <span id="loopContainer">
-        <input id="loop" ng-model="loop" type="checkbox" />
+        <input id="loop" ng-model="loop" ng-change="updateLoop();" type="checkbox" />
         <label for="loop">Loop</label>
       </span>
     </div>
