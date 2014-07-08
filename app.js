@@ -74,13 +74,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.toggle = function() {
-    if (transport.playing) {
-      transport.stop();
-    }
-    else {
-      var config = toGenericConfig();
-      transport.start();
-    }
+    transport.toggle();
   };
 }]);
 
