@@ -52,8 +52,6 @@ JS100.InstrumentEvent = function(instrument) {
   var audioContext = instrument.audioContext;
   instrumentEvent.instrument = instrument;
 
-  var sound = {};
-
   // Build VCA
   var vca = audioContext.createGain();
 
