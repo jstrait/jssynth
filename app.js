@@ -3,7 +3,7 @@
 var app = angular.module('js100', []);
 
 app.controller('controller', ['$scope', function($scope) {
-  var context = JS100.init();
+  var audioContext;
   var transport;
 
   $scope.waveform = 'sawtooth';
@@ -24,9 +24,20 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.tempo = 100;
   $scope.loop = true;
 
+  $scope.init = function() {
+    if ('AudioContext' in window) {
+      audioContext = new AudioContext();
+    }
+    else {
+      alert("Your browser doesn't appear to be cool enough to run the JS-100");
+      return;
+    }
+  };
+  $scope.init();
+
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
-    var instrument = new JS100.Instrument(context.audioContext, config);
+    var instrument = new JS100.Instrument(audioContext, config);
     transport.instrument = instrument;
   };
 
@@ -37,8 +48,8 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.start = function() {
     console.log(toGenericConfig());
     var config = toGenericConfig();
-    var instrument = new JS100.Instrument(context.audioContext, config);
-    transport = new JS100.Transport(context.audioContext, instrument, $scope.notes, config.tempo, config.loop);
+    var instrument = new JS100.Instrument(audioContext, config);
+    transport = new JS100.Transport(audioContext, instrument, $scope.notes, config.tempo, config.loop);
     transport.start();
   };
 

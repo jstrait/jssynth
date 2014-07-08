@@ -2,20 +2,6 @@
 
 var JS100 = JS100 || {};
 
-JS100.init = function() {
-  var js100 = {};
-
-  if ('AudioContext' in window) {
-    js100.audioContext = new AudioContext();
-  }
-  else {
-    alert("Your browser doesn't appear to be cool enough to run the JS-100");
-    return;
-  }
-
-  return js100;
-}
-
 JS100.Instrument = function(audioContext, config) {
   var instrument = {};
 
