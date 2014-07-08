@@ -120,14 +120,13 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   var TICK_INTERVAL = 50;  // in milliseconds
 
   var parseRawNotes = function(rawNotes) {
-    var sequence = new Sequence();
+    var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
     for (var i = 0; i < splitNotes.length; i++) {
       var noteParts = splitNotes[i].split("-");
       var note = Note(noteParts[0], noteParts[1], 1);
-      var sequenceNote = SequenceNote(i, note);
-      sequence.notes[i] = sequenceNote;
+      sequence[i] = note;
     }
 
     return sequence;
@@ -154,15 +153,15 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
     while (nextNoteTime < finalTime) {
-      for (var i = 0; i < sequence.notes.length; i++) {
-        var sequenceNote = sequence.notes[sequenceIndex];
+      for (var i = 0; i < sequence.length; i++) {
+        var note = sequence[sequenceIndex];
 
         var e = new JS100.InstrumentEvent(transport.instrument);
-        e.play(sequenceNote.note, nextNoteTime, nextNoteTime + transport.stepTime);
+        e.play(note, nextNoteTime, nextNoteTime + transport.stepTime);
       }
 
       sequenceIndex += 1;
-      if (sequenceIndex >= sequence.notes.length) {
+      if (sequenceIndex >= sequence.length) {
         if (loop) {
           sequenceIndex = 0;
         }
@@ -199,23 +198,6 @@ var Note = function(pitch, octave, duration) {
   note.duration = duration;
 
   return note;
-};
-
-var Sequence = function() {
-  var phrase = {};
-
-  phrase.notes = [];
-
-  return phrase;
-};
-
-var SequenceNote = function(startTime, note) {
-  var sequenceNote = {};
-
-  sequenceNote.startTime = startTime;
-  sequenceNote.note = note;
-
-  return sequenceNote;
 };
 
 var MusicTheory = {
