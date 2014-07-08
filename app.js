@@ -45,11 +45,11 @@ app.controller('controller', ['$scope', function($scope) {
     transport.updateTempo(parseInt($scope.tempo, 10));
   };
 
-  $scope.start = function() {
-    console.log(toGenericConfig());
+  $scope.start = function() { 
     var config = toGenericConfig();
+    console.log(config);
     var instrument = new JS100.Instrument(audioContext, config);
-    transport = new JS100.Transport(audioContext, instrument, $scope.notes, config.tempo, config.loop);
+    transport = new JS100.Transport(audioContext, instrument, $scope.notes, parseInt($scope.tempo, 10), $scope.loop);
     transport.start();
   };
 
@@ -73,8 +73,6 @@ app.controller('controller', ['$scope', function($scope) {
       envelopeDecay:      parseFloat($scope.envelopeDecay),
       envelopeSustain:    parseFloat($scope.envelopeSustain),
       envelopeRelease:    parseFloat($scope.envelopeRelease),
-      tempo:              parseInt($scope.tempo, 10),
-      loop:               $scope.loop,
     };
   };
 }]);

@@ -9,7 +9,6 @@ JS100.Instrument = function(audioContext, config) {
 
   // VCO
   instrument.type = config.waveform;
-  instrument.frequency = 440.0;
   instrument.amplitude = config.amplitude;
 
   // LFO
