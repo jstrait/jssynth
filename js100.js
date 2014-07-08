@@ -88,7 +88,7 @@ JS100.InstrumentEvent = function(instrument) {
   vca.connect(audioContext.destination);
 
   instrumentEvent.play = function(note, gateOnTime, gateOffTime) {
-    var frequency = MusicTheory.noteToFrequency(note.pitch, note.octave);
+    var frequency = JS100.MusicTheory.noteToFrequency(note.pitch, note.octave);
 
     if (frequency > 0.0) {
       vco.frequency.value = frequency;
@@ -125,7 +125,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 
     for (var i = 0; i < splitNotes.length; i++) {
       var noteParts = splitNotes[i].split("-");
-      var note = Note(noteParts[0], noteParts[1], 1);
+      var note = JS100.Note(noteParts[0], noteParts[1], 1);
       sequence[i] = note;
     }
 
@@ -190,7 +190,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 };
 
 
-var Note = function(pitch, octave, duration) {
+JS100.Note = function(pitch, octave, duration) {
   var note = {};
 
   note.pitch = pitch;
@@ -200,7 +200,7 @@ var Note = function(pitch, octave, duration) {
   return note;
 };
 
-var MusicTheory = {
+JS100.MusicTheory = {
   NOTE_RATIOS: {
     "A"  : 1.0,
     "A#" : 16.0 / 15.0,
