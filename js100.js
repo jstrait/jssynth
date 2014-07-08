@@ -120,7 +120,16 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     transport.stepTime = 60.0 / sixteenthsPerMinute;
   };
 
-  transport.tick = function() {
+  transport.toggle = function() {
+    if (playing) {
+      stop();
+    }
+    else {
+      start();
+    }
+  };
+
+  function tick() {
     var sequence = transport.sequence;
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
@@ -146,21 +155,12 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     }
   };
 
-  transport.toggle = function() {
-    if (playing) {
-      stop();
-    }
-    else {
-      start();
-    }
-  };
-
   function start() {
     sequenceIndex = 0;
     nextNoteTime = audioContext.currentTime;
 
-    transport.tick();
-    timeoutId = window.setInterval(transport.tick, TICK_INTERVAL);
+    tick();
+    timeoutId = window.setInterval(tick, TICK_INTERVAL);
     playing = true;
   };
 
