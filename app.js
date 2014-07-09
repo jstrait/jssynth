@@ -23,10 +23,10 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.notes = [{name: 'A3'},
-                  {name: 'C3'},
-                  {name: 'E3'},
-                  {name: 'C3'},
-                  {name: 'D3'},
+                  {name: 'C#3'},
+                  {name: 'Eb3'},
+                  {name: 'C##3'},
+                  {name: 'Dbb3'},
                   {name: 'B3'},
                   {name: 'C3'}, 
                   {name: 'G3'}];
@@ -109,4 +109,34 @@ app.directive('appTransportToggle', function() {
   };
 
   return { link: link };
+});
+
+// Adapted from:
+// http://stackoverflow.com/questions/19094150/using-angularjs-directive-to-format-input-field-while-leaving-scope-variable-unc
+// http://jsfiddle.net/KPeBD/2/
+app.directive('noteInput', function () {
+  return {
+    require: 'ngModel',
+    link: function (scope, element, attrs, ctrl) {
+       if (!ctrl) return;
+
+       function formatNoteValue(rawValue) {
+         var formattedValue = rawValue;
+         formattedValue = formattedValue.replace("##", "𝄪");
+         formattedValue = formattedValue.replace("#", "♯");
+         formattedValue = formattedValue.replace("bb", "𝄫");
+         formattedValue = formattedValue.replace("b", "♭");
+
+         return formattedValue;
+       };
+
+       ctrl.$formatters.push(function (a) {
+         return formatNoteValue(ctrl.$modelValue);
+       });
+
+       element.bind('blur', function(e) {
+         element.val(formatNoteValue(element.val()));
+       });
+    }
+  };
 });

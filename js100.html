@@ -82,7 +82,7 @@
     <h2>Sequencer</h2>
     <ul class="sequencer">
       <li ng-repeat="note in notes">
-        <input class="note" ng-model="note.name" ng-blur="updateNotes();" maxlength="4" type="text" />
+        <input note-input class="note" ng-model="note.name" ng-blur="updateNotes();" maxlength="4" type="text" />
       </li>
     </ul> 
     <button app-transport-toggle>Play</button>
