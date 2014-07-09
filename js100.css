@@ -109,8 +109,21 @@ select {
   width: 45%;
 }
 
-input.notes {
-  width: 100%;
+ul.sequencer {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+ul.sequencer li {
+  list-style-type: none;
+  width: 12.5%;
+  float: left;
+}
+
+input.note {
+  width: 90%;
+  text-align: center;
 }
 
 button {

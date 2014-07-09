@@ -144,6 +144,10 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     transport.stepTime = 60.0 / sixteenthsPerMinute;
   };
 
+  transport.updateNotes = function(newNotes) {
+    transport.sequence = parseRawNotes(newNotes);
+  };
+
   transport.toggle = function() {
     if (playing) {
       stop();
@@ -198,7 +202,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   var timeoutId;
   var playing = false;
 
-  transport.sequence = parseRawNotes(rawNotes);
+  transport.updateNotes(rawNotes);
   transport.loop = loop;
   transport.instrument = instrument;
 

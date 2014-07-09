@@ -20,9 +20,16 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeDecay = 0.0;
   $scope.envelopeSustain = 1.0;
   $scope.envelopeRelease = 0.0;
-  $scope.notes = "A3 C3 E3 C3 D3 B3 C3 G3"
   $scope.tempo = 100;
   $scope.loop = true;
+  $scope.notes = [{name: 'A3'},
+                  {name: 'C3'},
+                  {name: 'E3'},
+                  {name: 'C3'},
+                  {name: 'D3'},
+                  {name: 'B3'},
+                  {name: 'C3'}, 
+                  {name: 'G3'}];
 
   var toGenericConfig = function() {
     return {
@@ -43,13 +50,24 @@ app.controller('controller', ['$scope', function($scope) {
     };
   };
 
+  var parseNotes = function() {
+    var rawNotes = [];
+
+    for (var i = 0; i < $scope.notes.length; i++) {
+      rawNotes[i] = $scope.notes[i].name;
+    }
+
+    return rawNotes.join(' ');
+  };
+
   $scope.init = function() {
     if ('AudioContext' in window) {
       audioContext = new AudioContext();
 
       var config = toGenericConfig();
       var instrument = new JS100.Instrument(audioContext, config);
-      transport = new JS100.Transport(audioContext, instrument, $scope.notes, parseInt($scope.tempo, 10), $scope.loop);
+
+      transport = new JS100.Transport(audioContext, instrument, parseNotes(), parseInt($scope.tempo, 10), $scope.loop);
     }
     else {
       alert("Your browser doesn't appear to be cool enough to run the JS-100");
@@ -63,6 +81,10 @@ app.controller('controller', ['$scope', function($scope) {
     console.log(config);
     var instrument = new JS100.Instrument(audioContext, config);
     transport.instrument = instrument;
+  };
+
+  $scope.updateNotes = function() {
+    transport.updateNotes(parseNotes());
   };
 
   $scope.updateTempo = function() {
