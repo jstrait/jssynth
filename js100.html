@@ -43,10 +43,10 @@
   <div>
     <h2>Filter</h2>
     <label>Cutoff:</label>
-    <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="0" max="9999" />
+    <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" />
     <span>{{filterCutoff}}Hz</span>
     <label>Resonance:</label>
-    <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="50" step="1" />
+    <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
     <span>{{filterResonance}}</span>
     <span style="display: block; font-style: italic; color: #aaa; margin-top: 1.5rem;">Wobble:</span>
     <label class="indented">Amount:</label>
