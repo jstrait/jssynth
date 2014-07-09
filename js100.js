@@ -21,7 +21,9 @@ JS100.Instrument = function(audioContext, config) {
   instrument.filterResonance   = config.filterResonance;
   instrument.filterLFOWaveform = config.filterLFOWaveform;
   instrument.filterLFOFrequency = config.filterLFOFrequency;
-  instrument.filterLFOAmplitude = config.filterLFOAmplitude;
+  // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
+  // pops/clicks.
+  instrument.filterLFOAmplitude = Math.min(config.filterCutoff, config.filterLFOAmplitude);
 
   // Envelope
   instrument.envelopeAttack  = config.envelopeAttack;
