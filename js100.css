@@ -124,6 +124,13 @@ ul.sequencer li {
 input.note {
   width: 90%;
   text-align: center;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+input.note:focus {
+  background: #ebebeb;
 }
 
 button {
