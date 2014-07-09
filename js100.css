@@ -110,7 +110,7 @@ select {
 }
 
 ul.sequencer {
-  margin: 0;
+  margin: 0 0 1.5rem 0;
   padding: 0;
   overflow: auto;
 }
@@ -141,6 +141,16 @@ button {
 .enabled {
   background: orange;
   color: #fff;
+}
+
+#tempoContainer {
+  width: 65%;
+  display: inline-block;
+}
+
+#tempoContainer label {
+  text-align: right;
+  width: 25%;
 }
 
 #loopContainer {
