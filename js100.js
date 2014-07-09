@@ -123,13 +123,15 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   var TICK_INTERVAL = 50;  // in milliseconds
 
   var parseRawNotes = function(rawNotes) {
+    var i;
+    var noteName, octave;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
-    for (var i = 0; i < splitNotes.length; i++) {
-      var noteParts = splitNotes[i].split("-");
-      var note = JS100.Note(noteParts[0], noteParts[1], 1);
-      sequence[i] = note;
+    for (i = 0; i < splitNotes.length; i++) {
+      noteName = splitNotes[i].slice(0, -1);
+      octave = splitNotes[i].slice(-1);
+      sequence[i] = JS100.Note(noteName, octave, 1);
     }
 
     return sequence;

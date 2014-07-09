@@ -20,7 +20,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeDecay = 0.0;
   $scope.envelopeSustain = 1.0;
   $scope.envelopeRelease = 0.0;
-  $scope.notes = "A-3 C-3 E-3 C-3 D-3 B-3 C-3 G-3"
+  $scope.notes = "A3 C3 E3 C3 D3 B3 C3 G3"
   $scope.tempo = 100;
   $scope.loop = true;
 
