@@ -37,57 +37,77 @@ JS100.InstrumentEvent = function(instrument) {
   var audioContext = instrument.audioContext;
   instrumentEvent.instrument = instrument;
 
-  // Build VCA
-  var vca = audioContext.createGain();
+  var buildOscillator = function(waveform, frequency) {
+    var oscillator = audioContext.createOscillator();
+    oscillator.type = waveform;
+    oscillator.frequency.value = frequency;
+ 
+    return oscillator;
+  };
 
-  // Build VCF
-  var vcf = audioContext.createBiquadFilter();
+  var buildGain = function(amplitude) {
+    var gain = audioContext.createGain();
+    gain.gain.value = amplitude;
 
-  // Build VCO
-  var vco = audioContext.createOscillator();
-  vco.type = instrument.type;
+    return gain;
+  };
 
-  // Build LFO
-  var pitchLfoVco = audioContext.createOscillator();
-  pitchLfoVco.type = instrument.lfoWaveform;
-  pitchLfoVco.frequency.value = instrument.lfoFrequency;
-  var pitchLfoGain = audioContext.createGain();
-  pitchLfoGain.gain.value = instrument.lfoAmplitude;
+  var buildFilter = function(frequency, resonance) {
+    var filter = audioContext.createBiquadFilter();
+    filter.frequency.value = frequency;
+    filter.Q.value = resonance;
 
-  vcf.frequency.value = instrument.filterFrequency;
-  vcf.Q.value = instrument.filterResonance;
-  var filterLfoVco = audioContext.createOscillator();
-  filterLfoVco.type = instrument.filterLFOWaveform;
-  filterLfoVco.frequency.value = instrument.filterLFOFrequency;
-  var filterLfoGain = audioContext.createGain();
-  filterLfoGain.gain.value = instrument.filterLFOAmplitude;
+    return filter;
+  };
 
-  pitchLfoVco.connect(pitchLfoGain);
-  pitchLfoGain.connect(vco.frequency);
-  filterLfoVco.connect(filterLfoGain);
-  filterLfoGain.connect(vcf.frequency);
-  vco.connect(vcf);
-  vcf.connect(vca);
-  vca.connect(audioContext.destination);
+  // Base sound generator
+  var oscillator = buildOscillator(instrument.type, 0.0);
+
+  // LFO for base sound
+  var pitchLfoOscillator = buildOscillator(instrument.lfoWaveform, instrument.lfoFrequency);
+  var pitchLfoGain = buildGain(instrument.lfoAmplitude);
+  pitchLfoOscillator.connect(pitchLfoGain);
+  pitchLfoGain.connect(oscillator.frequency);
+  
+  // Filter
+  var filter = buildFilter(instrument.filterFrequency, instrument.filterResonance);
+  var filterLfoOscillator = buildOscillator(instrument.filterLFOWaveform, instrument.filterLFOFrequency);
+  var filterLfoGain = buildGain(instrument.filterLFOAmplitude);
+  filterLfoOscillator.connect(filterLfoGain);
+  filterLfoGain.connect(filter.frequency);
+
+  // Master Gain
+  var masterGain = audioContext.createGain();
+
+  oscillator.connect(filter);
+  filter.connect(masterGain);
+  masterGain.connect(audioContext.destination);
 
   instrumentEvent.play = function(note, gateOnTime, gateOffTime) {
+    var attackEndTime, releaseEndTime;
+
     if (note.frequency() > 0.0) {
-      vco.frequency.value = note.frequency();
+      oscillator.frequency.value = note.frequency();
 
-      vco.start(gateOnTime);
-      pitchLfoVco.start(gateOnTime);
-      filterLfoVco.start(gateOnTime);
+      oscillator.start(gateOnTime);
+      pitchLfoOscillator.start(gateOnTime);
+      filterLfoOscillator.start(gateOnTime);
 
-      // Envelope
-      vca.gain.setValueAtTime(0.0, gateOnTime);
-      vca.gain.linearRampToValueAtTime(instrument.amplitude, gateOnTime + instrument.envelopeAttack);
-      vca.gain.linearRampToValueAtTime(instrument.envelopeSustain * instrument.amplitude,
-                                       gateOnTime + instrument.envelopeAttack + instrument.envelopeDecay);
+      // Envelope Attack
+      attackEndTime = gateOnTime + instrument.envelopeAttack;
+      masterGain.gain.setValueAtTime(0.0, gateOnTime);
+      masterGain.gain.linearRampToValueAtTime(instrument.amplitude, attackEndTime);
 
-      vco.stop(gateOffTime + instrument.envelopeRelease);
-      vca.gain.linearRampToValueAtTime(0.0, gateOffTime + instrument.envelopeRelease);
-      pitchLfoVco.stop(gateOffTime + instrument.envelopeRelease);
-      filterLfoVco.stop(gateOffTime + instrument.envelopeRelease);
+      // Envelope Decay+Sustain
+      masterGain.gain.linearRampToValueAtTime(instrument.envelopeSustain * instrument.amplitude,
+                                              attackEndTime + instrument.envelopeDecay);
+
+      // Envelope Release
+      releaseEndTime = gateOffTime + instrument.envelopeRelease;
+      oscillator.stop(gateOffTime + instrument.envelopeRelease);
+      masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
+      pitchLfoOscillator.stop(releaseEndTime);
+      filterLfoOscillator.stop(releaseEndTime);
     }
   };
 
