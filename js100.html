@@ -67,16 +67,16 @@
     <h2>Envelope</h2>
     <label>Attack Speed:</label>
     <input ng-model="envelopeAttack" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeAttack}} sec</span>
+    <span>{{envelopeAttack * 1000}} ms</span>
     <label>Decay Speed:</label>
     <input ng-model="envelopeDecay" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeDecay}} sec</span>
+    <span>{{envelopeDecay * 1000}} ms</span>
     <label>Sustain Volume:</label>
     <input ng-model="envelopeSustain" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
     <span>{{(envelopeSustain * 100) | number:0}}%</span>
     <label>Release Speed:</label>
     <input ng-model="envelopeRelease" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeRelease}} sec</span>
+    <span>{{envelopeRelease * 1000}} ms</span>
   </div>
   <div>
     <h2>Sequencer</h2>
