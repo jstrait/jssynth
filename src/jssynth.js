@@ -110,7 +110,6 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     var sequence = transport.sequence;
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
     var note;
-    var e;
 
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
