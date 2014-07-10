@@ -86,21 +86,6 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   var SCHEDULE_AHEAD_TIME = 0.2;
   var TICK_INTERVAL = 50;  // in milliseconds
 
-  var parseRawNotes = function(rawNotes) {
-    var i;
-    var noteName, octave;
-    var sequence = [];
-    var splitNotes = rawNotes.split(" ");
-
-    for (i = 0; i < splitNotes.length; i++) {
-      noteName = splitNotes[i].slice(0, -1);
-      octave = splitNotes[i].slice(-1);
-      sequence[i] = JSSynth.Note(noteName, octave, 1);
-    }
-
-    return sequence;
-  };
-
   transport.updateTempo = function(newTempo) {
     transport.tempo = newTempo;
 
@@ -109,7 +94,7 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   };
 
   transport.updateNotes = function(newNotes) {
-    transport.sequence = parseRawNotes(newNotes);
+    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
   };
 
   transport.toggle = function() {
@@ -174,6 +159,22 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   return transport;
 };
 
+JSSynth.SequenceParser = {
+  parse: function(rawNotes) {
+    var i;
+    var noteName, octave;
+    var sequence = [];
+    var splitNotes = rawNotes.split(" ");
+
+    for (i = 0; i < splitNotes.length; i++) {
+      noteName = splitNotes[i].slice(0, -1);
+      octave = splitNotes[i].slice(-1);
+      sequence[i] = JSSynth.Note(noteName, octave, 1);
+    }
+
+    return sequence;
+  },
+};
 
 JSSynth.Note = function(noteName, octave, duration) {
   var note = {};
