@@ -1,8 +1,8 @@
 "use strict";
 
-var JS100 = JS100 || {};
+var JSSynth = JSSynth || {};
 
-JS100.Instrument = function(audioContext, config) {
+JSSynth.Instrument = function(audioContext, config) {
   var instrument = {};
 
   instrument.audioContext = audioContext;
@@ -34,7 +34,7 @@ JS100.Instrument = function(audioContext, config) {
   return instrument;
 };
 
-JS100.InstrumentEvent = function(instrument) {
+JSSynth.InstrumentEvent = function(instrument) {
   var instrumentEvent = {};
   var audioContext = instrument.audioContext;
   instrumentEvent.instrument = instrument;
@@ -116,7 +116,7 @@ JS100.InstrumentEvent = function(instrument) {
   return instrumentEvent;
 }
 
-JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
+JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
   var transport = {};
 
   var SCHEDULE_AHEAD_TIME = 0.2;
@@ -131,7 +131,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     for (i = 0; i < splitNotes.length; i++) {
       noteName = splitNotes[i].slice(0, -1);
       octave = splitNotes[i].slice(-1);
-      sequence[i] = JS100.Note(noteName, octave, 1);
+      sequence[i] = JSSynth.Note(noteName, octave, 1);
     }
 
     return sequence;
@@ -166,7 +166,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
 
-      e = new JS100.InstrumentEvent(transport.instrument);
+      e = new JSSynth.InstrumentEvent(transport.instrument);
       e.play(note, nextNoteTime, nextNoteTime + transport.stepTime);
 
       sequenceIndex += 1;
@@ -212,7 +212,7 @@ JS100.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
 };
 
 
-JS100.Note = function(noteName, octave, duration) {
+JSSynth.Note = function(noteName, octave, duration) {
   var note = {};
 
   note.noteName = noteName;
@@ -224,9 +224,9 @@ JS100.Note = function(noteName, octave, duration) {
       return 0.0;
     }
 
-    noteName = JS100.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
-    var octaveMultiplier = Math.pow(2.0, (octave - JS100.MusicTheory.MIDDLE_OCTAVE));
-    var frequency = JS100.MusicTheory.NOTE_RATIOS[noteName] * JS100.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
+    noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
+    var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
+    var frequency = JSSynth.MusicTheory.NOTE_RATIOS[noteName] * JSSynth.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
 
     return frequency;
   };
@@ -234,7 +234,7 @@ JS100.Note = function(noteName, octave, duration) {
   return note;
 };
 
-JS100.MusicTheory = {
+JSSynth.MusicTheory = {
   NOTE_RATIOS: {
     "A"  : 1.0,
     "A#" : 16.0 / 15.0,

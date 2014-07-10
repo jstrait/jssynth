@@ -65,9 +65,9 @@ app.controller('controller', ['$scope', function($scope) {
       audioContext = new AudioContext();
 
       var config = toGenericConfig();
-      var instrument = new JS100.Instrument(audioContext, config);
+      var instrument = new JSSynth.Instrument(audioContext, config);
 
-      transport = new JS100.Transport(audioContext, instrument, parseNotes(), parseInt($scope.tempo, 10), $scope.loop);
+      transport = new JSSynth.Transport(audioContext, instrument, parseNotes(), parseInt($scope.tempo, 10), $scope.loop);
     }
     else {
       alert("Your browser doesn't appear to be cool enough to run the JS-100");
@@ -79,7 +79,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
     console.log(config);
-    var instrument = new JS100.Instrument(audioContext, config);
+    var instrument = new JSSynth.Instrument(audioContext, config);
     transport.instrument = instrument;
   };
 
