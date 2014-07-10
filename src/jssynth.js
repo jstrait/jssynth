@@ -38,7 +38,7 @@ JSSynth.Instrument = function(audioContext, config) {
       var pitchLfoGain = buildGain(config.lfoAmplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
       pitchLfoGain.connect(oscillator.frequency);
-      
+
       // Filter
       var filter = buildFilter(config.filterCutoff, config.filterResonance);
       var filterLfoOscillator = buildOscillator(config.filterLFOWaveform, config.filterLFOFrequency);
