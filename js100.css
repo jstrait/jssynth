@@ -44,6 +44,13 @@ label {
   box-sizing: border-box;
 }
 
+.section-header {
+  display: block;
+  font-style: italic;
+  color: #aaa;
+  margin-top: 1.5rem;
+}
+
 .indented {
   padding-left: 1.0rem;
 }
