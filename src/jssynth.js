@@ -3,42 +3,6 @@
 var JSSynth = JSSynth || {};
 
 JSSynth.Instrument = function(audioContext, config) {
-  var instrument = {};
-
-  instrument.audioContext = audioContext;
-
-  // VCO
-  instrument.type = config.waveform;
-  instrument.amplitude = config.amplitude;
-
-  // LFO
-  instrument.lfoWaveform  = config.lfoWaveform;
-  instrument.lfoFrequency = config.lfoFrequency;
-  instrument.lfoAmplitude = config.lfoAmplitude;
-
-  // VCF
-  instrument.filterFrequency   = config.filterCutoff;
-  instrument.filterResonance   = config.filterResonance;
-  instrument.filterLFOWaveform = config.filterLFOWaveform;
-  instrument.filterLFOFrequency = config.filterLFOFrequency;
-  // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
-  // pops/clicks.
-  instrument.filterLFOAmplitude = Math.min(config.filterCutoff, config.filterLFOAmplitude);
-
-  // Envelope
-  instrument.envelopeAttack  = config.envelopeAttack;
-  instrument.envelopeDecay   = config.envelopeDecay;
-  instrument.envelopeSustain = config.envelopeSustain;
-  instrument.envelopeRelease = config.envelopeRelease;
-
-  return instrument;
-};
-
-JSSynth.InstrumentEvent = function(instrument) {
-  var instrumentEvent = {};
-  var audioContext = instrument.audioContext;
-  instrumentEvent.instrument = instrument;
-
   var buildOscillator = function(waveform, frequency) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
@@ -62,58 +26,58 @@ JSSynth.InstrumentEvent = function(instrument) {
     return filter;
   };
 
-  // Base sound generator
-  var oscillator = buildOscillator(instrument.type, 0.0);
+  var instrument = {};
 
-  // LFO for base sound
-  var pitchLfoOscillator = buildOscillator(instrument.lfoWaveform, instrument.lfoFrequency);
-  var pitchLfoGain = buildGain(instrument.lfoAmplitude);
-  pitchLfoOscillator.connect(pitchLfoGain);
-  pitchLfoGain.connect(oscillator.frequency);
-  
-  // Filter
-  var filter = buildFilter(instrument.filterFrequency, instrument.filterResonance);
-  var filterLfoOscillator = buildOscillator(instrument.filterLFOWaveform, instrument.filterLFOFrequency);
-  var filterLfoGain = buildGain(instrument.filterLFOAmplitude);
-  filterLfoOscillator.connect(filterLfoGain);
-  filterLfoGain.connect(filter.frequency);
-
-  // Master Gain
-  var masterGain = audioContext.createGain();
-
-  oscillator.connect(filter);
-  filter.connect(masterGain);
-  masterGain.connect(audioContext.destination);
-
-  instrumentEvent.play = function(note, gateOnTime, gateOffTime) {
-    var attackEndTime, releaseEndTime;
-
+  instrument.playNote = function(note, gateOnTime, gateOffTime) {
     if (note.frequency() > 0.0) {
-      oscillator.frequency.value = note.frequency();
+      // Base sound generator
+      var oscillator = buildOscillator(config.waveform, note.frequency());
+
+      // LFO for base sound
+      var pitchLfoOscillator = buildOscillator(config.lfoWaveform, config.lfoFrequency);
+      var pitchLfoGain = buildGain(config.lfoAmplitude);
+      pitchLfoOscillator.connect(pitchLfoGain);
+      pitchLfoGain.connect(oscillator.frequency);
+      
+      // Filter
+      var filter = buildFilter(config.filterCutoff, config.filterResonance);
+      var filterLfoOscillator = buildOscillator(config.filterLFOWaveform, config.filterLFOFrequency);
+      // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
+      // pops/clicks.
+      var filterLfoGain = buildGain(Math.min(config.filterCutoff, config.filterLFOAmplitude));
+      filterLfoOscillator.connect(filterLfoGain);
+      filterLfoGain.connect(filter.frequency);
+
+      // Master Gain
+      var masterGain = audioContext.createGain();
+
+      oscillator.connect(filter);
+      filter.connect(masterGain);
+      masterGain.connect(audioContext.destination);
 
       oscillator.start(gateOnTime);
       pitchLfoOscillator.start(gateOnTime);
       filterLfoOscillator.start(gateOnTime);
 
       // Envelope Attack
-      attackEndTime = gateOnTime + instrument.envelopeAttack;
+      var attackEndTime = gateOnTime + config.envelopeAttack;
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
-      masterGain.gain.linearRampToValueAtTime(instrument.amplitude, attackEndTime);
+      masterGain.gain.linearRampToValueAtTime(config.amplitude, attackEndTime);
 
       // Envelope Decay+Sustain
-      masterGain.gain.linearRampToValueAtTime(instrument.envelopeSustain * instrument.amplitude,
-                                              attackEndTime + instrument.envelopeDecay);
+      masterGain.gain.linearRampToValueAtTime(config.envelopeSustain * config.amplitude,
+                                              attackEndTime + config.envelopeDecay);
 
       // Envelope Release
-      releaseEndTime = gateOffTime + instrument.envelopeRelease;
-      oscillator.stop(gateOffTime + instrument.envelopeRelease);
+      var releaseEndTime = gateOffTime + config.envelopeRelease;
+      oscillator.stop(gateOffTime + config.envelopeRelease);
       masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
       pitchLfoOscillator.stop(releaseEndTime);
       filterLfoOscillator.stop(releaseEndTime);
     }
   };
 
-  return instrumentEvent;
+  return instrument;
 }
 
 JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
@@ -166,8 +130,7 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
 
-      e = new JSSynth.InstrumentEvent(transport.instrument);
-      e.play(note, nextNoteTime, nextNoteTime + transport.stepTime);
+      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepTime);
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
