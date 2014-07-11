@@ -65,6 +65,7 @@ input[type='range'] {
   background-color: #ccc;
   -webkit-appearance: none;
   height: 1.5em;
+  margin: 0;
   padding: 0;
   outline: 0;
   border-radius: 10px;
@@ -193,7 +194,7 @@ button {
 @media (max-width: 768px) {
   body {
     background: #fff;
-    margin: 1.5em;
+    margin: 1.5rem;
   }
 
   h1 {
@@ -204,6 +205,14 @@ button {
     border: 0;
     border-radius: 0;
     padding: 0;
+  }
+
+  label {
+    width: 35%;
+  }
+
+  input {
+    width: 45%;
   }
 
   #tempoContainer {
@@ -218,9 +227,25 @@ button {
 }
 
 @media (max-width: 480px) {
+  body {
+    margin: 1.0rem;
+  }
+
   h1 {
     font-size: 4.5rem;
     line-height: 4.5rem;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  .indented {
+    padding-left: 0;
+  }
+
+  input {
+    width: 75%;
   }
 
   button {
