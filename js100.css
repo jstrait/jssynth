@@ -189,16 +189,20 @@ button {
   text-align: center;
 }
 
+@media (max-width: 1024px) {
+  body {
+    background: #fff;
+  }
 
+  #container {
+    border: 0;
+    border-radius: 0;
+  }
+}
 
 @media (max-width: 768px) {
   body {
-    background: #fff;
     margin: 1.5rem;
-  }
-
-  h1 {
-    text-align: center;
   }
 
   #container {
@@ -232,6 +236,7 @@ button {
   }
 
   h1 {
+    text-align: center;
     font-size: 4.5rem;
     line-height: 4.5rem;
   }
