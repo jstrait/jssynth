@@ -152,6 +152,7 @@ button {
   font-weight: bold;
   border-radius: 10px;
   color: #130f30;
+  float: right;
 }
 
 .enabled {
@@ -166,6 +167,7 @@ button {
 
 #tempoContainer label {
   width: 25%;
+  line-height: 3.75rem;
 }
 
 #loopContainer {
