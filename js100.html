@@ -85,16 +85,16 @@
         <input note-input class="note" ng-model="note.name" ng-blur="updateNotes();" maxlength="4" type="text" />
       </li>
     </ul> 
-    <button app-transport-toggle>Play</button>
     <span id="tempoContainer">
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
       <span>{{tempo}} bpm</span>
     </span>
     <span id="loopContainer">
+      <label for="loop">Loop:</label>
       <input id="loop" ng-model="loop" ng-change="updateLoop();" type="checkbox" />
-      <label for="loop">Loop</label>
     </span>
+    <button app-transport-toggle>Play</button>
   </div>
 </div>
 <p id="footer">Made By <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014</p>

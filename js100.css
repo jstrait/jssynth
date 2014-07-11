@@ -165,32 +165,17 @@ button {
 }
 
 #tempoContainer label {
-  text-align: right;
   width: 25%;
 }
 
 #loopContainer {
   display: inline-block;
-  background: #ccc;
-  font-size: 1.5rem;
-  padding: 0.75rem;
-  font-weight: bold;
-  border-radius: 10px;
 }
 
 #loopContainer input[type='checkbox'] {
-  border: 2px solid #130f30;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   outline: none;
   height: 1.5em;
   width: 1.5em;
-  border-radius: 5px;
-}
-
-#loopContainer input[type='checkbox']:checked {
-  background: #a00;
-  border-color: #a00;
 }
 
 #loopContainer label {
