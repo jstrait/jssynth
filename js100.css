@@ -15,7 +15,7 @@ body {
   margin-right: auto;
   border: 1.5em solid #130f30;
   padding: 3.0em;
-  width: 800px;
+  width: 850px;
   max-width: 100%;
   overflow: auto;
   box-sizing: border-box;
@@ -119,13 +119,15 @@ select {
 ul.sequencer {
   margin: 0 0 1.5rem 0;
   padding: 0;
-  overflow: auto;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 ul.sequencer li {
   list-style-type: none;
   width: 12.5%;
-  float: left;
+  min-width: 4.0em;
+  display: inline-block;
 }
 
 input.note {
