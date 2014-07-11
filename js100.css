@@ -205,4 +205,19 @@ button {
     border-radius: 0;
     padding: 0;
   }
+
+  #tempoContainer {
+    width: 100%;
+    display: inline-block;
+  }
+
+  #tempoContainer label {
+    width: 30%;
+    line-height: 1.5rem;
+  }
+
+  button {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
 }
