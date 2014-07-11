@@ -70,7 +70,7 @@ JSSynth.Instrument = function(audioContext, config) {
 
       // Envelope Release
       var releaseEndTime = gateOffTime + config.envelopeRelease;
-      oscillator.stop(gateOffTime + config.envelopeRelease);
+      oscillator.stop(releaseEndTime);
       masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
       pitchLfoOscillator.stop(releaseEndTime);
       filterLfoOscillator.stop(releaseEndTime);
