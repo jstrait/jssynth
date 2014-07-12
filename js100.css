@@ -32,6 +32,11 @@ h1 {
   color: #c00;
 }
 
+.tagline {
+  color: #aaa;
+  display: block;
+}
+
 h2 {
   font-size: 1.5rem;
   line-height: 1.5rem;
@@ -273,6 +278,10 @@ button {
     text-align: center;
     font-size: 4.5rem;
     line-height: 4.5rem;
+  }
+
+  .tagline {
+    text-align: center;
   }
 
   label {
