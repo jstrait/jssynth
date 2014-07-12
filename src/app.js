@@ -6,6 +6,7 @@ app.controller('controller', ['$scope', function($scope) {
   var audioContext;
   var transport;
 
+  $scope.playing = false;
   $scope.waveform = 'sawtooth';
   $scope.amplitude = 0.75;
   $scope.lfoWaveform = 'sine'
@@ -60,6 +61,11 @@ app.controller('controller', ['$scope', function($scope) {
     return rawNotes.join(' ');
   };
 
+  var stopCallback = function() {
+    $scope.playing = false;
+    $scope.$digest();
+  };
+
   $scope.init = function() {
     if ('AudioContext' in window) {
       audioContext = new AudioContext();
@@ -67,7 +73,7 @@ app.controller('controller', ['$scope', function($scope) {
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
 
-      transport = new JSSynth.Transport(audioContext, instrument, parseNotes(), parseInt($scope.tempo, 10), $scope.loop);
+      transport = new JSSynth.Transport(audioContext, instrument, parseNotes(), parseInt($scope.tempo, 10), $scope.loop, stopCallback);
     }
     else {
       alert("Your browser doesn't appear to be cool enough to run the JS-100");
@@ -97,19 +103,9 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.toggle = function() {
     transport.toggle();
+    $scope.playing = !$scope.playing;
   };
 }]);
-
-app.directive('appTransportToggle', function() {
-  var link = function(scope, element, attrs) {
-    element.on('click', function(e) {
-      element.toggleClass('enabled');
-      element.scope().toggle();
-    });
-  };
-
-  return { link: link };
-});
 
 // Adapted from:
 // http://stackoverflow.com/questions/19094150/using-angularjs-directive-to-format-input-field-while-leaving-scope-variable-unc

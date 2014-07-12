@@ -80,7 +80,7 @@ JSSynth.Instrument = function(audioContext, config) {
   return instrument;
 }
 
-JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
+JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop, stopCallback) {
   var transport = {};
 
   var SCHEDULE_AHEAD_TIME = 0.2;
@@ -123,6 +123,7 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop) {
         }
         else {
           stop();
+          window.setTimeout(stopCallback, transport.stepTime * 1000);
         }
       }
 

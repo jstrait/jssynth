@@ -95,7 +95,7 @@
         <label for="loop">Loop:</label>
         <input id="loop" ng-model="loop" ng-change="updateLoop();" type="checkbox" />
       </span>
-      <button app-transport-toggle>Play</button>
+      <button class="{{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
     </div>
   </div>
 </div>
