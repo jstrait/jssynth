@@ -245,6 +245,14 @@ button {
     width: 45%;
   }
 
+  .radioContainer {
+    width: 50%;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+
+
   #tempoContainer {
     width: 100%;
     display: inline-block;
