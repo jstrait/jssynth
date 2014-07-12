@@ -33,17 +33,19 @@ app.controller('controller', ['$scope', function($scope) {
                   {name: 'G3'}];
 
   var toGenericConfig = function() {
+    var filterCutoff = parseInt($scope.filterCutoff, 10);
+
     return {
       waveform:           $scope.waveform,
       amplitude:          parseFloat($scope.amplitude),
       lfoWaveform:        $scope.lfoWaveform,
       lfoFrequency:       parseFloat($scope.lfoFrequency),
       lfoAmplitude:       parseInt($scope.lfoAmplitude, 10),
-      filterCutoff:       parseInt($scope.filterCutoff, 10),
+      filterCutoff:       filterCutoff,
       filterResonance:    parseInt($scope.filterResonance, 10),
       filterLFOWaveform:  $scope.filterLFOWaveform,
       filterLFOFrequency: parseFloat($scope.filterLFOFrequency),
-      filterLFOAmplitude: parseInt($scope.filterLFOAmplitude, 10),
+      filterLFOAmplitude: parseFloat($scope.filterLFOAmplitude) * filterCutoff,
       envelopeAttack:     parseFloat($scope.envelopeAttack),
       envelopeDecay:      parseFloat($scope.envelopeDecay),
       envelopeSustain:    parseFloat($scope.envelopeSustain),
