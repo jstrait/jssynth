@@ -44,6 +44,11 @@ label {
   box-sizing: border-box;
 }
 
+label.radioLabel {
+  width: auto;
+  margin-right: 0.75em;
+}
+
 .section-header {
   display: block;
   font-style: italic;
@@ -61,13 +66,33 @@ input[type='text'] {
   font-weight: bold;
 }
 
+input[type='radio'] {
+  width: auto;
+  -webkit-appearance: none;
+  border-radius: 10px;
+  width: 1.0rem;
+  height: 1.0rem;
+  outline: none;
+  border: 2px solid #130f30;
+  box-sizing: border-box;
+  vertical-align: text-top;
+}
+
+input[type='radio']:unchecked {
+
+}
+
+input[type='radio']:checked {
+  background-color: #130f30;
+}
+
 input[type='range'] {
   background-color: #ccc;
   -webkit-appearance: none;
   height: 1.5em;
   margin: 0;
   padding: 0;
-  outline: 0;
+  outline: none;
   border-radius: 10px;
 }
 
@@ -107,6 +132,7 @@ input[type='range']::-moz-range-track {
   display: none;
   background: #ccc;
   border: 0;
+  outline: none;
 }
 
 input {
