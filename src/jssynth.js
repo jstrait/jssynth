@@ -60,18 +60,26 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       // Envelope Attack
-      var attackEndTime = gateOnTime + config.envelopeAttack;
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
-      masterGain.gain.linearRampToValueAtTime(config.amplitude, attackEndTime);
+      var attackEndTime = gateOnTime + config.envelopeAttack;
+      if (gateOffTime > attackEndTime) {
+        masterGain.gain.linearRampToValueAtTime(config.amplitude, attackEndTime);
+      }
+      else {
+        var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+        attackEndTime = gateOffTime;
+        masterGain.gain.linearRampToValueAtTime(config.amplitude * attackEndAmplitudePercentage, attackEndTime);
+      }
 
-      // Envelope Decay+Sustain
+      // Envelope Decay/Sustain
       masterGain.gain.linearRampToValueAtTime(config.envelopeSustain * config.amplitude,
                                               attackEndTime + config.envelopeDecay);
 
       // Envelope Release
-      var releaseEndTime = gateOffTime + config.envelopeRelease;
-      oscillator.stop(releaseEndTime);
+      var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelopeRelease);
       masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
+
+      oscillator.stop(releaseEndTime);
       pitchLfoOscillator.stop(releaseEndTime);
       filterLfoOscillator.stop(releaseEndTime);
     }
