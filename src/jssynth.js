@@ -72,8 +72,18 @@ JSSynth.Instrument = function(audioContext, config) {
       }
 
       // Envelope Decay/Sustain
-      masterGain.gain.linearRampToValueAtTime(config.envelopeSustain * config.amplitude,
-                                              attackEndTime + config.envelopeDecay);
+      if (attackEndTime < gateOffTime) {
+        var delayEndTime = attackEndTime + config.envelopeDecay;
+
+        if (gateOffTime > delayEndTime) {
+          masterGain.gain.linearRampToValueAtTime(config.envelopeSustain * config.amplitude, delayEndTime);
+        }
+        else {
+          var delayEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (delayEndTime - gateOnTime));
+          delayEndTime = gateOffTime;
+          masterGain.gain.linearRampToValueAtTime(config.amplitude * delayEndAmplitudePercentage, delayEndTime);
+        }
+      }
 
       // Envelope Release
       var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelopeRelease);
