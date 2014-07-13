@@ -137,7 +137,10 @@ app.directive('noteInput', function () {
        });
 
        element.bind('keydown', function(e) {
-         if (e.keyCode === 37) {  // Left arrow key
+         if (e.keyCode === 32) {
+           element.val('');
+         }
+         else if (e.keyCode === 37) {  // Left arrow key
            if (element[0].selectionStart === 0 && !(element.hasClass('first'))) {
              var noteIndex = parseInt(element[0].id.split("-")[1], 10);
              var nextNoteId = 'note-' + (noteIndex - 1);
@@ -151,8 +154,13 @@ app.directive('noteInput', function () {
              var nextNoteId = 'note-' + (noteIndex + 1);
            
              document.getElementById(nextNoteId).focus();
-             
            }
+         }
+       });
+
+       element.bind('keyup', function(e) {
+         if (e.keyCode === 32) {;
+           element.val('');
          }
        });
     }
