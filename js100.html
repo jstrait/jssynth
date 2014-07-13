@@ -21,7 +21,7 @@
     <label>Volume:</label>
     <input ng-model="amplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
     <span>{{(amplitude * 100) | number:0}}%</span>
-    <span class="section-header">Wobble:</span>
+    <span class="section-header">Pitch Wobble:</span>
     <label class="indented">Amount:</label>
     <input ng-model="lfoAmplitude" ng-change="updateInstrument();" type="range" />
     <span>{{lfoAmplitude}}Hz</span>
@@ -39,10 +39,10 @@
     <label>Resonance:</label>
     <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
     <span>{{filterResonance}}</span>
-    <span class="section-header">Wobble:</span>
+    <span class="section-header">Cutoff Wobble:</span>
     <label class="indented">Amount:</label>
     <input ng-model="filterLFOAmplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{filterLFOAmplitude}}% ({{filterCutoff * filterLFOAmplitude}}Hz)</span>
+    <span>{{(filterLFOAmplitude * 100) | number:0}}%</span>
     <label class="indented">Rate:</label>
     <input ng-model="filterLFOFrequency" ng-change="updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
     <span>{{filterLFOFrequency}}Hz</span>
