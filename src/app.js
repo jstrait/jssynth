@@ -23,14 +23,14 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeRelease = 0.0;
   $scope.tempo = 100;
   $scope.loop = true;
-  $scope.notes = [{name: 'A3'},
-                  {name: 'C#3'},
+  $scope.notes = [{name: 'C3'},
+                  {name: ''},
                   {name: 'Eb3'},
-                  {name: 'C##3'},
-                  {name: 'Dbb3'},
-                  {name: 'B3'},
-                  {name: 'C3'}, 
-                  {name: 'G3'}];
+                  {name: 'F3'},
+                  {name: 'G3'},
+                  {name: 'Bb4'},
+                  {name: 'F3'}, 
+                  {name: 'Bb4'}];
 
   var toGenericConfig = function() {
     var filterCutoff = parseInt($scope.filterCutoff, 10);
