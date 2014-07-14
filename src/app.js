@@ -124,6 +124,7 @@ app.directive('noteInput', function () {
          formattedValue = formattedValue.replace("#", "♯");
          formattedValue = formattedValue.replace("bb", "𝄫");
          formattedValue = formattedValue.replace("b", "♭");
+         formattedValue = formattedValue.toUpperCase();
 
          return formattedValue;
        };
@@ -134,7 +135,11 @@ app.directive('noteInput', function () {
 
        ctrl.$parsers.push(function (viewValue) {
          var parsedValue = viewValue;
-         parsedValue = parsedValue.toUpperCase();
+
+         // Make first character uppercase (but not subsequent characters, to avoid
+         // making a 'b' uppercase, which will mess with ♭ replacement.
+         var firstCharacter = viewValue.substr(0, 1);
+         parsedValue = firstCharacter.toUpperCase() + viewValue.substr(1);
          parsedValue = parsedValue.replace("♯", "#");
          parsedValue = parsedValue.replace("𝄪", "##");
          parsedValue = parsedValue.replace("♭", "b");
