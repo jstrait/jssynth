@@ -249,6 +249,15 @@ button {
     width: 45%;
   }
 
+  .waveform {
+    float: left;
+  }
+
+  .waveformOptionsContainer {
+    width: 65%;
+    display: inline-block;
+  }
+
   .radioContainer {
     width: 50%;
     display: inline-block;
@@ -293,6 +302,15 @@ button {
 
   input {
     width: 70%;
+  }
+
+  .waveform {
+    float: none;
+  }
+
+  .waveformOptionsContainer {
+    width: 100%;
+    display: block;
   }
 
   button {
