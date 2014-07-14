@@ -132,6 +132,17 @@ app.directive('noteInput', function () {
          return formatNoteValue(ctrl.$modelValue);
        });
 
+       ctrl.$parsers.push(function (viewValue) {
+         var parsedValue = viewValue;
+         parsedValue = parsedValue.toUpperCase();
+         parsedValue = parsedValue.replace("♯", "#");
+         parsedValue = parsedValue.replace("𝄪", "##");
+         parsedValue = parsedValue.replace("♭", "b");
+         parsedValue = parsedValue.replace("𝄫", "bb");
+         
+         return parsedValue;
+       });
+
        element.bind('blur', function(e) {
          element.val(formatNoteValue(element.val()));
        });
