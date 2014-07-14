@@ -38,7 +38,7 @@
   <div>
     <h2>Filter</h2>
     <label>Cutoff:</label>
-    <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" />
+    <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" step="50" />
     <span>{{filterCutoff}}Hz</span>
     <label>Resonance:</label>
     <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
