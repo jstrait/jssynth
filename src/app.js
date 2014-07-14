@@ -133,7 +133,7 @@ app.directive('noteInput', function () {
          return formatNoteValue(ctrl.$modelValue);
        });
 
-       ctrl.$parsers.push(function (viewValue) {
+       ctrl.$parsers.unshift(function (viewValue) {
          var parsedValue = viewValue;
 
          // Make first character uppercase (but not subsequent characters, to avoid
@@ -144,8 +144,15 @@ app.directive('noteInput', function () {
          parsedValue = parsedValue.replace("𝄪", "##");
          parsedValue = parsedValue.replace("♭", "b");
          parsedValue = parsedValue.replace("𝄫", "bb");
-         
-         return parsedValue;
+
+         if (/^$|(^[A-G](b|bb|#|##){0,1}[0-9]$)/.test(parsedValue)) {
+           ctrl.$setValidity('noteInput', true);
+           return parsedValue;
+         }
+         else {
+           ctrl.$setValidity('noteInput', false);
+           return '';
+         }
        });
 
        element.bind('blur', function(e) {
