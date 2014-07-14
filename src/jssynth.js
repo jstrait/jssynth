@@ -202,10 +202,6 @@ JSSynth.Note = function(noteName, octave, duration) {
   note.duration = duration;
 
   note.frequency = function() {
-    if (noteName === "_" || noteName === ".") {
-      return 0.0;
-    }
-
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
     var frequency = JSSynth.MusicTheory.NOTE_RATIOS[noteName] * JSSynth.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
