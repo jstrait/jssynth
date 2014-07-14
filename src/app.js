@@ -145,7 +145,7 @@ app.directive('noteInput', function () {
          parsedValue = parsedValue.replace("♭", "b");
          parsedValue = parsedValue.replace("𝄫", "bb");
 
-         if (/^$|(^[A-G](b|bb|#|##){0,1}[0-9]$)/.test(parsedValue)) {
+         if (/^$|(^[A-G](b|bb|#|##){0,1}[0-7]$)/.test(parsedValue)) {
            ctrl.$setValidity('noteInput', true);
            return parsedValue;
          }
