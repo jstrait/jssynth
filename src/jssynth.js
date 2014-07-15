@@ -26,6 +26,37 @@ JSSynth.Instrument = function(audioContext, config) {
     return filter;
   };
 
+  var calculateEnvelope = function(config, gateOnTime, gateOffTime) {
+    var attackEndTime = gateOnTime + config.envelopeAttack;
+    var attackEndAmplitudePercentage;
+    var delayEndTime;
+    var delayEndAmplitudePercentage;
+
+    if (attackEndTime < gateOffTime) {
+      attackEndAmplitudePercentage = 1.0;
+    }
+    else {
+      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+      attackEndTime = gateOffTime;
+    }
+
+    delayEndTime = attackEndTime + config.envelopeDecay;
+    if (gateOffTime > delayEndTime) {
+      delayEndAmplitudePercentage = 1.0;
+    }
+    else {
+      delayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (delayEndTime - attackEndTime));
+      delayEndTime = gateOffTime;
+    }
+
+    return {
+      attackEndTime: attackEndTime,
+      attackEndAmplitudePercentage: attackEndAmplitudePercentage,
+      delayEndTime: delayEndTime,
+      delayEndAmplitudePercentage: delayEndAmplitudePercentage,
+    };
+  };
+
   var instrument = {};
 
   instrument.playNote = function(note, gateOnTime, gateOffTime) {
@@ -60,29 +91,15 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       // Envelope Attack
+      var calculatedEnvelope = calculateEnvelope(config, gateOnTime, gateOffTime);
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
-      var attackEndTime = gateOnTime + config.envelopeAttack;
-      if (gateOffTime > attackEndTime) {
-        masterGain.gain.linearRampToValueAtTime(config.amplitude, attackEndTime);
-      }
-      else {
-        var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
-        attackEndTime = gateOffTime;
-        masterGain.gain.linearRampToValueAtTime(config.amplitude * attackEndAmplitudePercentage, attackEndTime);
-      }
+      masterGain.gain.linearRampToValueAtTime(config.amplitude * calculatedEnvelope.attackEndAmplitudePercentage,
+                                              calculatedEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
-      if (attackEndTime < gateOffTime) {
-        var delayEndTime = attackEndTime + config.envelopeDecay;
-
-        if (gateOffTime > delayEndTime) {
-          masterGain.gain.linearRampToValueAtTime(config.envelopeSustain * config.amplitude, delayEndTime);
-        }
-        else {
-          var delayEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (delayEndTime - gateOnTime));
-          delayEndTime = gateOffTime;
-          masterGain.gain.linearRampToValueAtTime(config.amplitude * delayEndAmplitudePercentage, delayEndTime);
-        }
+      if (calculatedEnvelope.attackEndTime < gateOffTime) {
+        masterGain.gain.linearRampToValueAtTime(config.amplitude * config.envelopeSustain * calculatedEnvelope.delayEndAmplitudePercentage,
+                                                calculatedEnvelope.delayEndTime);
       }
 
       // Envelope Release
