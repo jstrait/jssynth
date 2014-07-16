@@ -45,6 +45,7 @@ h1 {
 .helperToggle {
   text-decoration: underline;
   color: #0af;
+  cursor: pointer;
 }
 
 h2 {
