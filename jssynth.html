@@ -84,15 +84,9 @@
       </li>
     </ul> 
     <div>
-      <span id="tempoContainer">
-        <label>Tempo:</label>
-        <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
-        <span>{{tempo}} bpm</span>
-      </span>
-      <span id="loopContainer">
-        <label for="loop">Loop:</label>
-        <input id="loop" ng-model="loop" ng-change="updateLoop();" type="checkbox" />
-      </span>
+      <label>Tempo:</label>
+      <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
+      <span>{{tempo}} bpm</span>
       <button class="{{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
     </div>
   </div>

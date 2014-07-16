@@ -193,42 +193,18 @@ button {
   outline: none;
   font-size: 1.5rem;
   padding: 0.75rem;
-  font-family:"Helvetica Neue", arial, sans-serif;
+  font-family: "Helvetica Neue", arial, sans-serif;
   font-weight: bold;
   border-radius: 10px;
   color: #130f30;
   float: right;
+  width: 10.0rem;
+  margin-top: 1.5rem;
 }
 
 .enabled {
   background: orange;
   color: #fff;
-}
-
-#tempoContainer {
-  width: 65%;
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-#tempoContainer label {
-  width: 25%;
-  line-height: 3.75rem;
-}
-
-#loopContainer {
-  display: inline-block;
-  float: none;
-}
-
-#loopContainer input[type='checkbox'] {
-  outline: none;
-  height: 1.5em;
-  width: 1.5em;
-}
-
-#loopContainer label {
-  display: inline;
 }
 
 #footer {
@@ -269,10 +245,6 @@ button {
     float: left;
   }
 
-  #loopContainer {
-    float: right;
-  }
-
   .waveformOptionsContainer {
     width: 65%;
     display: inline-block;
@@ -283,25 +255,6 @@ button {
     display: inline-block;
     margin: 0;
     padding: 0;
-  }
-
-  #tempoContainer {
-    width: 80%;
-    margin-bottom: 1.5rem;
-  }
-
-  #tempoContainer label {
-    width: 25%;
-    line-height: 1.5rem;
-  }
-
-  button {
-    width: 12.0rem;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1.5rem;
-    float: none;
-    display: block;
   }
 }
 
@@ -339,14 +292,6 @@ button {
   .waveformOptionsContainer {
     width: 100%;
     display: block;
-  }
-
-  #loopContainer {
-    float: none;
-  }
-
-  #tempoContainer {
-    width: 100%;
   }
 
   button {
