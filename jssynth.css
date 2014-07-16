@@ -37,6 +37,16 @@ h1 {
   display: block;
 }
 
+.helperToggleContainer {
+  font-size: 1.0rem;
+  font-weight: normal;
+}
+
+.helperToggle {
+  text-decoration: underline;
+  color: #0af;
+}
+
 h2 {
   font-size: 1.5rem;
   line-height: 1.5rem;

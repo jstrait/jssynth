@@ -71,7 +71,13 @@
     <span>{{envelopeRelease * 1000}} ms</span>
   </div>
   <div>
-    <h2>Sequencer</h2>
+    <h2>Sequencer<span class="helperToggleContainer"> - <a class="helperToggle" ng-click="show=!show">Tips and Tricks</a></span></h2>
+    <ul class="toggleable" ng-show="show">
+      <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
+      <li>Use # to enter a sharp, and a lowercase b to enter a flat</li>
+      <li>Press <code>SPACE</code> to clear the current note</li>
+      <li>Use the left/right arrow keys to move between notes</li>
+    </ul>
     <ul class="sequencer">
       <li ng-repeat="note in notes">
         <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
