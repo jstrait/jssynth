@@ -155,11 +155,7 @@ input[type='range']::-moz-range-track {
 }
 
 input {
-  width: 45%;
-}
-
-select {
-  width: 45%;
+  width: 56%;
 }
 
 ul.sequencer {
@@ -283,7 +279,7 @@ button {
   }
 
   input {
-    width: 75%;
+    width: 73%;
   }
 
   .waveform {
