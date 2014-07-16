@@ -121,14 +121,14 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop, st
   var SCHEDULE_AHEAD_TIME = 0.2;
   var TICK_INTERVAL = 50;  // in milliseconds
 
-  transport.updateTempo = function(newTempo) {
+  transport.setTempo = function(newTempo) {
     transport.tempo = newTempo;
 
     var sixteenthsPerMinute = transport.tempo * 4;
     transport.stepTime = 60.0 / sixteenthsPerMinute;
   };
 
-  transport.updateNotes = function(newNotes) {
+  transport.setNotes = function(newNotes) {
     transport.sequence = JSSynth.SequenceParser.parse(newNotes);
   };
 
@@ -185,11 +185,11 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop, st
   var timeoutId;
   var playing = false;
 
-  transport.updateNotes(rawNotes);
+  transport.setNotes(rawNotes);
   transport.loop = loop;
   transport.instrument = instrument;
 
-  transport.updateTempo(tempo);
+  transport.setTempo(tempo);
 
   return transport;
 };

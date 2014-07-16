@@ -92,11 +92,11 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.updateNotes = function() {
-    transport.updateNotes(parseNotes());
+    transport.setNotes(parseNotes());
   };
 
   $scope.updateTempo = function() {
-    transport.updateTempo(parseInt($scope.tempo, 10));
+    transport.setTempo(parseInt($scope.tempo, 10));
   };
 
   $scope.updateLoop = function() {
