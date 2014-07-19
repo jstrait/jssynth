@@ -109,9 +109,6 @@ app.controller('controller', ['$scope', function($scope) {
   };
 }]);
 
-// Adapted from:
-// http://stackoverflow.com/questions/19094150/using-angularjs-directive-to-format-input-field-while-leaving-scope-variable-unc
-// http://jsfiddle.net/KPeBD/2/
 app.directive('noteInput', function () {
   return {
     require: 'ngModel',
@@ -122,7 +119,7 @@ app.directive('noteInput', function () {
          var formattedValue = rawValue;
 
          // Make first character uppercase (but not subsequent characters, to avoid
-         // making a 'b' uppercase, which will mess with ♭ replacement.
+         // making a 'b' uppercase, which will mess with ♭ replacement).
          var firstCharacter = formattedValue.substr(0, 1);
          formattedValue = firstCharacter.toUpperCase() + formattedValue.substr(1);
 
@@ -142,7 +139,7 @@ app.directive('noteInput', function () {
          var parsedValue = viewValue;
 
          // Make first character uppercase (but not subsequent characters, to avoid
-         // making a 'b' uppercase, which will mess with ♭ replacement.
+         // making a 'b' uppercase, which will mess with ♭ replacement).
          var firstCharacter = viewValue.substr(0, 1);
          parsedValue = firstCharacter.toUpperCase() + viewValue.substr(1);
          parsedValue = parsedValue.replace("♯", "#");
@@ -165,7 +162,7 @@ app.directive('noteInput', function () {
        });
 
        element.bind('keydown', function(e) {
-         if (e.keyCode === 32) {
+         if (e.keyCode === 32) {  // Space bar
            element.val('');
          }
          else if (e.keyCode === 37) {  // Left arrow key
@@ -187,7 +184,7 @@ app.directive('noteInput', function () {
        });
 
        element.bind('keyup', function(e) {
-         if (e.keyCode === 32) {;
+         if (e.keyCode === 32) {  // Space bar
            element.val('');
          }
        });
