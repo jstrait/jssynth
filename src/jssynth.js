@@ -60,7 +60,6 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.amplitude, config.envelope, gateOnTime, gateOffTime);
-console.log(calculatedEnvelope);
 
       // Envelope Attack
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
@@ -87,20 +86,20 @@ console.log(calculatedEnvelope);
 JSSynth.EnvelopeCalculator = {
   calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
     var attackEndTime = gateOnTime + envelope.attack;
-    var attackEndAmplitudePercentage;
-    var delayEndTime;
+    var attackEndAmplitude;
     var delayEndAmplitudePercentage;
 
     if (attackEndTime < gateOffTime) {
-      attackEndAmplitudePercentage = 1.0;
+      attackEndAmplitude = baseAmplitude;
     }
     else {
-      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
       attackEndTime = gateOffTime;
-    }
-    var attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
 
-    delayEndTime = attackEndTime + envelope.decay;
+      var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+      attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage; 
+    }
+
+    var delayEndTime = attackEndTime + envelope.decay;
     var targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
     var decayEndAmplitude;
     if (gateOffTime > delayEndTime) {
