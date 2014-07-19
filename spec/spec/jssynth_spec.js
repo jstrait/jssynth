@@ -27,6 +27,7 @@ describe("JSSynth.Note", function() {
   });
 });
 
+
 describe("JSSynth.SequenceParser", function() {
   it("should properly parse a valid sequence", function() {
     var rawSequence = "A4 Bb2  C#5 ";
@@ -53,5 +54,88 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[4].noteName).toEqual("");
     expect(parsedSequence[4].octave).toEqual(NaN);
     expect(parsedSequence[4].duration).toEqual(1);
+  });
+});
+
+
+describe("JSSynth.EnvelopeCalculator", function() {
+  it("should calculate correctly when envelope is effectively a no-op", function() {
+    var envelope = {
+      attack:  0.0,
+      decay:   0.0,
+      sustain: 1.0,
+      release: 0.0,
+    }
+
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(envelope, 1.0, 1.1);
+
+    expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
+    expect(calculatedEnvelope.attackEndAmplitudePercentage).toEqual(1.0);
+    expect(calculatedEnvelope.delayEndTime).toEqual(1.0);
+    expect(calculatedEnvelope.delayEndAmplitudePercentage).toEqual(1.0);
+  });
+
+  it("should calculate correctly when attack time is longer than note duration", function() {
+    var envelope = {
+      attack:  0.2,
+      decay:   0.0,
+      sustain: 1.0,
+      release: 0.0,
+    }
+
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(envelope, 1.0, 1.1);
+
+    expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
+    expect(calculatedEnvelope.attackEndAmplitudePercentage).toBeCloseTo(0.5);
+    expect(calculatedEnvelope.delayEndTime).toEqual(1.1);
+    expect(calculatedEnvelope.delayEndAmplitudePercentage).toEqual(NaN);
+  });
+
+  it("should calculate correctly attack time is shorter than note duration ", function() {
+    var envelope = {
+      attack:  0.5,
+      decay:   0.0,
+      sustain: 1.0,
+      release: 0.0,
+    }
+
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(envelope, 1.0, 2.0);
+
+    expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.attackEndAmplitudePercentage).toEqual(1.0);
+    expect(calculatedEnvelope.delayEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.delayEndAmplitudePercentage).toEqual(1.0);
+  });
+
+  it("should calculate correctly when decay ends before note ends", function() {
+    var envelope = {
+      attack:  0.5,
+      decay:   0.25,
+      sustain: 1.0,
+      release: 0.0,
+    }
+
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(envelope, 1.0, 2.0);
+
+    expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.attackEndAmplitudePercentage).toEqual(1.0);
+    expect(calculatedEnvelope.delayEndTime).toEqual(1.75);
+    expect(calculatedEnvelope.delayEndAmplitudePercentage).toEqual(1.0);
+  });
+
+  it("should calculate correctly when decay would end after note ends ", function() {
+    var envelope = {
+      attack:  0.5,
+      decay:   1.0,
+      sustain: 1.0,
+      release: 0.0,
+    }
+
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(envelope, 1.0, 2.0);
+
+    expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.attackEndAmplitudePercentage).toEqual(1.0);
+    expect(calculatedEnvelope.delayEndTime).toEqual(2.0);
+    expect(calculatedEnvelope.delayEndAmplitudePercentage).toEqual(0.5);
   });
 });
