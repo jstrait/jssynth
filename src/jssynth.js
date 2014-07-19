@@ -59,16 +59,15 @@ JSSynth.Instrument = function(audioContext, config) {
       pitchLfoOscillator.start(gateOnTime);
       filterLfoOscillator.start(gateOnTime);
 
+      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.amplitude, config.envelope, gateOnTime, gateOffTime);
+
       // Envelope Attack
-      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.envelope, gateOnTime, gateOffTime);
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
-      masterGain.gain.linearRampToValueAtTime(config.amplitude * calculatedEnvelope.attackEndAmplitudePercentage,
-                                              calculatedEnvelope.attackEndTime);
+      masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
       if (calculatedEnvelope.attackEndTime < gateOffTime) {
-        masterGain.gain.linearRampToValueAtTime(config.amplitude * config.envelope.sustain * calculatedEnvelope.delayEndAmplitudePercentage,
-                                                calculatedEnvelope.delayEndTime);
+        masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
       }
 
       // Envelope Release
@@ -85,7 +84,7 @@ JSSynth.Instrument = function(audioContext, config) {
 };
 
 JSSynth.EnvelopeCalculator = {
-  calculate: function(envelope, gateOnTime, gateOffTime) {
+  calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
     var attackEndTime = gateOnTime + envelope.attack;
     var attackEndAmplitudePercentage;
     var delayEndTime;
@@ -110,9 +109,9 @@ JSSynth.EnvelopeCalculator = {
 
     return {
       attackEndTime: attackEndTime,
-      attackEndAmplitudePercentage: attackEndAmplitudePercentage,
+      attackEndAmplitude: baseAmplitude * attackEndAmplitudePercentage,
       delayEndTime: delayEndTime,
-      delayEndAmplitudePercentage: delayEndAmplitudePercentage,
+      delayEndAmplitude: baseAmplitude * envelope.sustain * delayEndAmplitudePercentage,
     };
   },
 };
