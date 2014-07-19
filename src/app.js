@@ -36,20 +36,28 @@ app.controller('controller', ['$scope', function($scope) {
     var filterCutoff = parseInt($scope.filterCutoff, 10);
 
     return {
-      waveform:           $scope.waveform,
-      amplitude:          parseFloat($scope.amplitude),
-      lfoWaveform:        $scope.lfoWaveform,
-      lfoFrequency:       parseFloat($scope.lfoFrequency),
-      lfoAmplitude:       parseInt($scope.lfoAmplitude, 10),
-      filterCutoff:       filterCutoff,
-      filterResonance:    parseInt($scope.filterResonance, 10),
-      filterLFOWaveform:  $scope.filterLFOWaveform,
-      filterLFOFrequency: parseFloat($scope.filterLFOFrequency),
-      filterLFOAmplitude: parseFloat($scope.filterLFOAmplitude) * filterCutoff,
-      envelopeAttack:     parseFloat($scope.envelopeAttack),
-      envelopeDecay:      parseFloat($scope.envelopeDecay),
-      envelopeSustain:    parseFloat($scope.envelopeSustain),
-      envelopeRelease:    parseFloat($scope.envelopeRelease),
+      waveform:  $scope.waveform,
+      amplitude: parseFloat($scope.amplitude),
+      lfo: {
+        waveform:  $scope.lfoWaveform,
+        frequency: parseFloat($scope.lfoFrequency),
+        amplitude: parseInt($scope.lfoAmplitude, 10),
+      },
+      filter: {
+        cutoff:    filterCutoff,
+        resonance: parseInt($scope.filterResonance, 10),
+        lfo: {
+          waveform:  $scope.filterLFOWaveform,
+          frequency: parseFloat($scope.filterLFOFrequency),
+          amplitude: parseFloat($scope.filterLFOAmplitude) * filterCutoff,
+        },
+      },
+      envelope: {
+        attack:  parseFloat($scope.envelopeAttack),
+        decay:   parseFloat($scope.envelopeDecay),
+        sustain: parseFloat($scope.envelopeSustain),
+        release: parseFloat($scope.envelopeRelease),
+      },
     };
   };
 

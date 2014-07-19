@@ -27,7 +27,7 @@ JSSynth.Instrument = function(audioContext, config) {
   };
 
   var calculateEnvelope = function(config, gateOnTime, gateOffTime) {
-    var attackEndTime = gateOnTime + config.envelopeAttack;
+    var attackEndTime = gateOnTime + config.attack;
     var attackEndAmplitudePercentage;
     var delayEndTime;
     var delayEndAmplitudePercentage;
@@ -40,7 +40,7 @@ JSSynth.Instrument = function(audioContext, config) {
       attackEndTime = gateOffTime;
     }
 
-    delayEndTime = attackEndTime + config.envelopeDecay;
+    delayEndTime = attackEndTime + config.decay;
     if (gateOffTime > delayEndTime) {
       delayEndAmplitudePercentage = 1.0;
     }
@@ -65,17 +65,17 @@ JSSynth.Instrument = function(audioContext, config) {
       var oscillator = buildOscillator(config.waveform, note.frequency);
 
       // LFO for base sound
-      var pitchLfoOscillator = buildOscillator(config.lfoWaveform, config.lfoFrequency);
-      var pitchLfoGain = buildGain(config.lfoAmplitude);
+      var pitchLfoOscillator = buildOscillator(config.lfo.waveform, config.lfo.frequency);
+      var pitchLfoGain = buildGain(config.lfo.amplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
       pitchLfoGain.connect(oscillator.frequency);
 
       // Filter
-      var filter = buildFilter(config.filterCutoff, config.filterResonance);
-      var filterLfoOscillator = buildOscillator(config.filterLFOWaveform, config.filterLFOFrequency);
+      var filter = buildFilter(config.filter.cutoff, config.filter.resonance);
+      var filterLfoOscillator = buildOscillator(config.filter.lfo.waveform, config.filter.lfo.frequency);
       // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
       // pops/clicks.
-      var filterLfoGain = buildGain(Math.min(config.filterCutoff, config.filterLFOAmplitude));
+      var filterLfoGain = buildGain(Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
       filterLfoOscillator.connect(filterLfoGain);
       filterLfoGain.connect(filter.frequency);
 
@@ -91,19 +91,20 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       // Envelope Attack
-      var calculatedEnvelope = calculateEnvelope(config, gateOnTime, gateOffTime);
+      var calculatedEnvelope = calculateEnvelope(config.envelope, gateOnTime, gateOffTime);
+      console.log(calculatedEnvelope);
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
       masterGain.gain.linearRampToValueAtTime(config.amplitude * calculatedEnvelope.attackEndAmplitudePercentage,
                                               calculatedEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
       if (calculatedEnvelope.attackEndTime < gateOffTime) {
-        masterGain.gain.linearRampToValueAtTime(config.amplitude * config.envelopeSustain * calculatedEnvelope.delayEndAmplitudePercentage,
+        masterGain.gain.linearRampToValueAtTime(config.amplitude * config.envelope.sustain * calculatedEnvelope.delayEndAmplitudePercentage,
                                                 calculatedEnvelope.delayEndTime);
       }
 
       // Envelope Release
-      var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelopeRelease);
+      var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelope.release);
       masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
 
       oscillator.stop(releaseEndTime);
