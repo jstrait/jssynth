@@ -116,30 +116,8 @@ JSSynth.Instrument = function(audioContext, config) {
 }
 
 JSSynth.Transport = function(audioContext, instrument, stopCallback) {
-  var transport = {};
-
-  var SCHEDULE_AHEAD_TIME = 0.2;
-  var TICK_INTERVAL = 50;  // in milliseconds
-
-  transport.setTempo = function(newTempo) {
-    transport.tempo = newTempo;
-
-    var sixteenthsPerMinute = transport.tempo * 4;
-    transport.stepTime = 60.0 / sixteenthsPerMinute;
-  };
-
-  transport.setNotes = function(newNotes) {
-    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
-  };
-
-  transport.toggle = function() {
-    if (playing) {
-      stop();
-    }
-    else {
-      start();
-    }
-  };
+  var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
+  var TICK_INTERVAL = 50;         // in milliseconds
 
   function tick() {
     var sequence = transport.sequence;
@@ -184,6 +162,29 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
   var nextNoteTime;
   var timeoutId;
   var playing = false;
+
+
+  var transport = {};
+
+  transport.setTempo = function(newTempo) {
+    transport.tempo = newTempo;
+
+    var sixteenthsPerMinute = transport.tempo * 4;
+    transport.stepTime = 60.0 / sixteenthsPerMinute;
+  };
+
+  transport.setNotes = function(newNotes) {
+    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
+  };
+
+  transport.toggle = function() {
+    if (playing) {
+      stop();
+    }
+    else {
+      start();
+    }
+  };
 
   transport.loop = true;
   transport.instrument = instrument;
