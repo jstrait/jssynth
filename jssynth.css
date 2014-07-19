@@ -10,20 +10,18 @@ body {
 }
 
 #container {
-  margin-top: 1.5em;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1.5em solid #130f30;
-  padding: 3.0em;
+  margin: 1.5rem auto;
+  border: 2.0rem solid #130f30;
+  padding: 3.0rem;
   width: 850px;
   max-width: 100%;
   overflow: auto;
   box-sizing: border-box;
   background: #fff;
-  border-radius: 50px;
+  border-radius: 3.0rem;
 }
 
-h1 {
+.logo {
   font-size: 6.0rem;
   line-height: 6.0rem;
   font-weight: bold;
@@ -37,21 +35,16 @@ h1 {
   display: block;
 }
 
-.helperToggleContainer {
-  font-size: 1.0rem;
-  font-weight: normal;
-}
-
-.helperToggle {
-  text-decoration: underline;
-  color: #0af;
-  cursor: pointer;
-}
-
-h2 {
+.section-header {
   font-size: 1.5rem;
   line-height: 1.5rem;
   margin-top: 4.5rem;
+}
+
+.sub-section-header {
+  display: block;
+  color: #aaa;
+  margin-top: 1.5rem;
 }
 
 label {
@@ -63,12 +56,6 @@ label {
 label.radioLabel {
   width: auto;
   margin-right: 0.75em;
-}
-
-.section-header {
-  display: block;
-  color: #aaa;
-  margin-top: 1.5rem;
 }
 
 .indented {
@@ -97,9 +84,7 @@ input[type='radio'] {
   vertical-align: text-top;
 }
 
-input[type='radio']:unchecked {
-
-}
+input[type='radio']:unchecked { }
 
 input[type='radio']:checked {
   background-color: #130f30;
@@ -156,6 +141,17 @@ input[type='range']::-moz-range-track {
 
 input {
   width: 56%;
+}
+
+.helperToggleContainer {
+  font-size: 1.0rem;
+  font-weight: normal;
+}
+
+.helperToggle {
+  text-decoration: underline;
+  color: #0af;
+  cursor: pointer;
 }
 
 ul.sequencer {

@@ -12,10 +12,10 @@
 </head>
 <body ng-controller="controller">
 <div id="container">
-  <h1>JS-100</h1>
+  <h1 class="logo">JS-100</h1>
   <span class="tagline">High Resolution Web Synthesizer</span>
   <div>
-    <h2>Sound Generator</h2>
+    <h2 class="section-header">Sound Generator</h2>
     <label class="waveform">Waveform:</label>
     <span class="waveformOptionsContainer">
       <span class="radioContainer"><input id="waveformSine" ng-model="waveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="waveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="waveformSquare" ng-model="waveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="waveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="waveformSaw" ng-model="waveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="waveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="waveformTriangle" ng-model="waveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="waveformTriangle" class="radioLabel">Triangle</label></span>
@@ -23,7 +23,7 @@
     <label>Volume:</label>
     <input ng-model="amplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
     <span>{{(amplitude * 100) | number:0}}%</span>
-    <span class="section-header">Pitch Wobble:</span>
+    <span class="sub-section-header">Pitch Wobble:</span>
     <label class="indented">Amount:</label>
     <input ng-model="lfoAmplitude" ng-change="updateInstrument();" type="range" />
     <span>{{lfoAmplitude}}Hz</span>
@@ -36,14 +36,14 @@
     </span>
   </div>
   <div>
-    <h2>Filter</h2>
+    <h2 class="section-header">Filter</h2>
     <label>Cutoff:</label>
     <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" step="50" />
     <span>{{filterCutoff}}Hz</span>
     <label>Resonance:</label>
     <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
     <span>{{filterResonance}}</span>
-    <span class="section-header">Cutoff Wobble:</span>
+    <span class="sub-section-header">Cutoff Wobble:</span>
     <label class="indented">Amount:</label>
     <input ng-model="filterLFOAmplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
     <span>{{(filterLFOAmplitude * 100) | number:0}}%</span>
@@ -56,7 +56,7 @@
     </span>
   </div>
   <div>
-    <h2>Envelope</h2>
+    <h2 class="section-header">Envelope</h2>
     <label>Attack Speed:</label>
     <input ng-model="envelopeAttack" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
     <span>{{envelopeAttack * 1000}} ms</span>
@@ -71,7 +71,7 @@
     <span>{{envelopeRelease * 1000}} ms</span>
   </div>
   <div>
-    <h2>Sequencer<span class="helperToggleContainer"> - <a class="helperToggle" ng-click="show=!show">Tips and Tricks</a></span></h2>
+    <h2 class="section-header">Sequencer<span class="helperToggleContainer"> - <a class="helperToggle" ng-click="show=!show">Tips and Tricks</a></span></h2>
     <ul class="toggleable" ng-show="show">
       <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
       <li>Use # to enter a sharp, and a lowercase b to enter a flat</li>
