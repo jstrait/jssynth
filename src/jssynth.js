@@ -127,7 +127,7 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
 
-      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepTime);
+      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
@@ -136,11 +136,11 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
         }
         else {
           stop();
-          window.setTimeout(stopCallback, transport.stepTime * 1000);
+          window.setTimeout(stopCallback, transport.stepInterval * 1000);
         }
       }
 
-      nextNoteTime += transport.stepTime;
+      nextNoteTime += transport.stepInterval;
     }
   };
 
@@ -170,7 +170,7 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
     transport.tempo = newTempo;
 
     var sixteenthsPerMinute = transport.tempo * 4;
-    transport.stepTime = 60.0 / sixteenthsPerMinute;
+    transport.stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
   transport.setNotes = function(newNotes) {
