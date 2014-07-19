@@ -115,7 +115,7 @@ JSSynth.Instrument = function(audioContext, config) {
   return instrument;
 }
 
-JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop, stopCallback) {
+JSSynth.Transport = function(audioContext, instrument, stopCallback) {
   var transport = {};
 
   var SCHEDULE_AHEAD_TIME = 0.2;
@@ -185,11 +185,11 @@ JSSynth.Transport = function(audioContext, instrument, rawNotes, tempo, loop, st
   var timeoutId;
   var playing = false;
 
-  transport.setNotes(rawNotes);
-  transport.loop = loop;
+  transport.loop = true;
   transport.instrument = instrument;
 
-  transport.setTempo(tempo);
+  transport.setNotes(" ");
+  transport.setTempo(100);
 
   return transport;
 };
