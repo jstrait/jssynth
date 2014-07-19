@@ -26,37 +26,6 @@ JSSynth.Instrument = function(audioContext, config) {
     return filter;
   };
 
-  var calculateEnvelope = function(config, gateOnTime, gateOffTime) {
-    var attackEndTime = gateOnTime + config.attack;
-    var attackEndAmplitudePercentage;
-    var delayEndTime;
-    var delayEndAmplitudePercentage;
-
-    if (attackEndTime < gateOffTime) {
-      attackEndAmplitudePercentage = 1.0;
-    }
-    else {
-      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
-      attackEndTime = gateOffTime;
-    }
-
-    delayEndTime = attackEndTime + config.decay;
-    if (gateOffTime > delayEndTime) {
-      delayEndAmplitudePercentage = 1.0;
-    }
-    else {
-      delayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (delayEndTime - attackEndTime));
-      delayEndTime = gateOffTime;
-    }
-
-    return {
-      attackEndTime: attackEndTime,
-      attackEndAmplitudePercentage: attackEndAmplitudePercentage,
-      delayEndTime: delayEndTime,
-      delayEndAmplitudePercentage: delayEndAmplitudePercentage,
-    };
-  };
-
   var instrument = {};
 
   instrument.playNote = function(note, gateOnTime, gateOffTime) {
@@ -91,8 +60,7 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       // Envelope Attack
-      var calculatedEnvelope = calculateEnvelope(config.envelope, gateOnTime, gateOffTime);
-      console.log(calculatedEnvelope);
+      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.envelope, gateOnTime, gateOffTime);
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
       masterGain.gain.linearRampToValueAtTime(config.amplitude * calculatedEnvelope.attackEndAmplitudePercentage,
                                               calculatedEnvelope.attackEndTime);
@@ -114,7 +82,40 @@ JSSynth.Instrument = function(audioContext, config) {
   };
 
   return instrument;
-}
+};
+
+JSSynth.EnvelopeCalculator = {
+  calculate: function(envelope, gateOnTime, gateOffTime) {
+    var attackEndTime = gateOnTime + envelope.attack;
+    var attackEndAmplitudePercentage;
+    var delayEndTime;
+    var delayEndAmplitudePercentage;
+
+    if (attackEndTime < gateOffTime) {
+      attackEndAmplitudePercentage = 1.0;
+    }
+    else {
+      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+      attackEndTime = gateOffTime;
+    }
+
+    delayEndTime = attackEndTime + envelope.decay;
+    if (gateOffTime > delayEndTime) {
+      delayEndAmplitudePercentage = 1.0;
+    }
+    else {
+      delayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (delayEndTime - attackEndTime));
+      delayEndTime = gateOffTime;
+    }
+
+    return {
+      attackEndTime: attackEndTime,
+      attackEndAmplitudePercentage: attackEndAmplitudePercentage,
+      delayEndTime: delayEndTime,
+      delayEndAmplitudePercentage: delayEndAmplitudePercentage,
+    };
+  },
+};
 
 JSSynth.Transport = function(audioContext, instrument, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
