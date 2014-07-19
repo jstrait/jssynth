@@ -215,8 +215,8 @@ JSSynth.Note = function(noteName, octave, duration) {
   var note = {};
 
   note.noteName = noteName;
-  note.octave = octave;
-  note.duration = duration;
+  note.octave = parseInt(octave, 10);
+  note.duration = parseInt(duration, 10);
 
   note.frequency = function() {
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
