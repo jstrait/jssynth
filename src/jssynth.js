@@ -60,6 +60,7 @@ JSSynth.Instrument = function(audioContext, config) {
       filterLfoOscillator.start(gateOnTime);
 
       var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.amplitude, config.envelope, gateOnTime, gateOffTime);
+console.log(calculatedEnvelope);
 
       // Envelope Attack
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
@@ -97,21 +98,27 @@ JSSynth.EnvelopeCalculator = {
       attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
       attackEndTime = gateOffTime;
     }
+    var attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
 
     delayEndTime = attackEndTime + envelope.decay;
+    var targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
+    var decayEndAmplitude;
     if (gateOffTime > delayEndTime) {
-      delayEndAmplitudePercentage = 1.0;
+      decayEndAmplitude = targetAmplitudeAfterDecayEnds;
     }
     else {
       delayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (delayEndTime - attackEndTime));
       delayEndTime = gateOffTime;
+
+      var delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
+      decayEndAmplitude = attackEndAmplitude - (delta * delayEndAmplitudePercentage);
     }
 
     return {
       attackEndTime: attackEndTime,
-      attackEndAmplitude: baseAmplitude * attackEndAmplitudePercentage,
+      attackEndAmplitude: attackEndAmplitude,
       delayEndTime: delayEndTime,
-      delayEndAmplitude: baseAmplitude * envelope.sustain * delayEndAmplitudePercentage,
+      delayEndAmplitude: decayEndAmplitude,
     };
   },
 };
