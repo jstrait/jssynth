@@ -5,7 +5,7 @@ describe("JSSynth.Note", function() {
     expect(note.noteName).toEqual('A');
     expect(note.octave).toEqual(3);
     expect(note.duration).toEqual(1);
-    expect(note.frequency()).toEqual(220.0);
+    expect(note.frequency).toEqual(220.0);
   });
 
   it("should convert string values to numbers where appropriate", function() {
@@ -14,6 +14,6 @@ describe("JSSynth.Note", function() {
     expect(note.noteName).toEqual('A');
     expect(note.octave).toEqual(3);
     expect(note.duration).toEqual(2);
-    expect(note.frequency()).toEqual(220.0);
+    expect(note.frequency).toEqual(220.0);
   });
 });

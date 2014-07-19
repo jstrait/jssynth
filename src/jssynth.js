@@ -60,9 +60,9 @@ JSSynth.Instrument = function(audioContext, config) {
   var instrument = {};
 
   instrument.playNote = function(note, gateOnTime, gateOffTime) {
-    if (note.frequency() > 0.0) {
+    if (note.frequency > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(config.waveform, note.frequency());
+      var oscillator = buildOscillator(config.waveform, note.frequency);
 
       // LFO for base sound
       var pitchLfoOscillator = buildOscillator(config.lfoWaveform, config.lfoFrequency);
@@ -212,19 +212,20 @@ JSSynth.SequenceParser = {
 };
 
 JSSynth.Note = function(noteName, octave, duration) {
-  var note = {};
-
-  note.noteName = noteName;
-  note.octave = parseInt(octave, 10);
-  note.duration = parseInt(duration, 10);
-
-  note.frequency = function() {
+  var calculateFrequency = function(noteName, octave, duration) {
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
     var frequency = JSSynth.MusicTheory.NOTE_RATIOS[noteName] * JSSynth.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
 
     return frequency;
   };
+
+  var note = {};
+
+  note.noteName = noteName;
+  note.octave = parseInt(octave, 10);
+  note.duration = parseInt(duration, 10);
+  note.frequency = calculateFrequency(note.noteName, note.octave, note.duration);
 
   return note;
 };
