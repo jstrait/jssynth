@@ -77,7 +77,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.init = function() {
-    if ('AudioContext' in window) {
+    if (window.AudioContext) {
       audioContext = new AudioContext();
 
       var config = toGenericConfig();
