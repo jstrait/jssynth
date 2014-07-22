@@ -256,8 +256,7 @@ button {
     margin: 1.0rem;
   }
 
-  h1 {
-    text-align: center;
+  .logo {
     font-size: 4.5rem;
     line-height: 4.5rem;
   }
