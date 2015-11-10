@@ -88,9 +88,11 @@
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
       <span>{{tempo}}</span>
       <button class="{{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
+      <button ng-click="export();">Download</button>
     </div>
   </div>
 </div>
 <p id="footer">Made By <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014</p>
+<audio id="downloaded-file" controls></audio>
 </body>
 </html>

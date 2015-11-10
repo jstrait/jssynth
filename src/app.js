@@ -117,6 +117,14 @@ app.controller('controller', ['$scope', function($scope) {
     transport.toggle();
     $scope.playing = !$scope.playing;
   };
+
+  $scope.export = function() {
+    var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, new JSSynth.Instrument(offlineAudioContext, toGenericConfig()), function() { });
+    offlineTransport.setNotes(parseNotes());
+    offlineTransport.setTempo(parseInt($scope.tempo, 10));
+    offlineTransport.tick();
+  };
 }]);
 
 app.directive('noteInput', function () {

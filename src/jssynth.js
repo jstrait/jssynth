@@ -202,6 +202,95 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
   return transport;
 };
 
+
+JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCallback) {
+  var transport = {};
+
+  offlineAudioContext.oncomplete = function(e) {
+    var rawFloat32SampleData = e.renderedBuffer.getChannelData(0);
+    var i;
+
+    var sampleDataByteCount = rawFloat32SampleData.length * 2;
+    var fileLength = 44 + sampleDataByteCount;
+    var outputBuffer = new ArrayBuffer(fileLength);
+    var outputView = new DataView(outputBuffer);
+    
+    // Double check these should be little endian (i.e., true)
+    outputView.setUint8(0, "R".charCodeAt(0), true);
+    outputView.setUint8(1, "I".charCodeAt(0), true);
+    outputView.setUint8(2, "F".charCodeAt(0), true);
+    outputView.setUint8(3, "F".charCodeAt(0), true);
+    outputView.setUint32(4, 36 + sampleDataByteCount, true);
+    outputView.setUint8(8,  "W".charCodeAt(0), true);
+    outputView.setUint8(9,  "A".charCodeAt(0), true);
+    outputView.setUint8(10,  "V".charCodeAt(0), true);
+    outputView.setUint8(11, "E".charCodeAt(0), true);
+    outputView.setUint8(12,  "f".charCodeAt(0), true);
+    outputView.setUint8(13,  "m".charCodeAt(0), true);
+    outputView.setUint8(14,  "t".charCodeAt(0), true);
+    outputView.setUint8(15, " ".charCodeAt(0), true);
+    outputView.setUint32(16, 16, true);
+    outputView.setUint16(20, 1, true);   // Audio code, i.e. 1 for PCM
+    outputView.setUint16(22, 1, true);   // Num Channels
+    outputView.setUint32(24, 44100, true);  // Sample rate
+    outputView.setUint32(28, 88200, true);  // Byte rate (block_align * sample_rate)
+    outputView.setUint16(32, 2, true);  // Block align (bits_per_sample / 8) * channels
+    outputView.setUint16(34, 16, true);  // Bits per sample
+    outputView.setUint8(36, "d".charCodeAt(0), true);
+    outputView.setUint8(37, "a".charCodeAt(0), true);
+    outputView.setUint8(38, "t".charCodeAt(0), true);
+    outputView.setUint8(39, "a".charCodeAt(0), true);
+    outputView.setUint32(40, sampleDataByteCount, true);
+
+    for (i = 0; i < rawFloat32SampleData.length; i++) {
+      // Should this round?
+      outputView.setInt16(44 + (i * 2), rawFloat32SampleData[i] * 32767.0, true);
+    }
+
+    var blob = new Blob([outputView], { type: 'audio/wav' });
+    var url  = window.URL.createObjectURL(blob);
+    document.getElementById("downloaded-file").src = url;
+    window.URL.revokeObjectURL(blob);
+  };
+
+  transport.tick = function() {
+    var sequence = transport.sequence;
+    var note;
+    var i;
+
+    for (i = 0; i < sequence.length; i++) {
+      note = sequence[i];
+      console.log(note);
+      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
+      nextNoteTime += transport.stepInterval;
+    }
+
+    console.log(offlineAudioContext);
+    offlineAudioContext.startRendering();
+  };
+
+  var nextNoteTime = offlineAudioContext.currentTime;
+
+  transport.setTempo = function(newTempo) {
+    transport.tempo = newTempo;
+
+    var sixteenthsPerMinute = transport.tempo * 4;
+    transport.stepInterval = 60.0 / sixteenthsPerMinute;
+  };
+
+  transport.setNotes = function(newNotes) {
+    console.log("SETTING NOTES! " + newNotes + "!");
+    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
+  };
+
+  transport.instrument = instrument;
+  transport.setNotes(" ");
+  transport.setTempo(100);
+
+  return transport;
+};
+
+
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
     var i;
