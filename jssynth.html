@@ -82,7 +82,7 @@
       <li ng-repeat="note in notes">
         <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
       </li>
-    </ul> 
+    </ul>
     <div>
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
