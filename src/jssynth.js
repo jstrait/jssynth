@@ -260,12 +260,10 @@ JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCal
 
     for (i = 0; i < sequence.length; i++) {
       note = sequence[i];
-      console.log(note);
       transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
       nextNoteTime += transport.stepInterval;
     }
 
-    console.log(offlineAudioContext);
     offlineAudioContext.startRendering();
   };
 
@@ -279,7 +277,6 @@ JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCal
   };
 
   transport.setNotes = function(newNotes) {
-    console.log("SETTING NOTES! " + newNotes + "!");
     transport.sequence = JSSynth.SequenceParser.parse(newNotes);
   };
 
