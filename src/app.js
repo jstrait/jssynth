@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('js100', []);
+var app = angular.module('js110', []);
 
 app.controller('controller', ['$scope', function($scope) {
   var audioContext;
