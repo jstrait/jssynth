@@ -2,6 +2,19 @@
 
 var JSSynth = JSSynth || {};
 
+JSSynth.Track = function(instrument, sequence) {
+  var track = {};
+
+  track.instrument = instrument; 
+  track.sequence   = sequence;
+
+  track.setNotes = function(newNotes) {
+    track.sequence = JSSynth.SequenceParser.parse(newNotes);
+  };
+
+  return track;
+};
+
 JSSynth.Instrument = function(audioContext, config) {
   var buildOscillator = function(waveform, frequency) {
     var oscillator = audioContext.createOscillator();
@@ -122,19 +135,19 @@ JSSynth.EnvelopeCalculator = {
   },
 };
 
-JSSynth.Transport = function(audioContext, instrument, stopCallback) {
+JSSynth.Transport = function(audioContext, track, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
 
   function tick() {
-    var sequence = transport.sequence;
+    var sequence = track.sequence;
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
     var note;
 
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
 
-      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
+      track.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
@@ -180,10 +193,6 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
     transport.stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
-  transport.setNotes = function(newNotes) {
-    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
-  };
-
   transport.toggle = function() {
     if (playing) {
       stop();
@@ -194,16 +203,13 @@ JSSynth.Transport = function(audioContext, instrument, stopCallback) {
   };
 
   transport.loop = true;
-  transport.instrument = instrument;
-
-  transport.setNotes(" ");
   transport.setTempo(100);
 
   return transport;
 };
 
 
-JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCallback) {
+JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback) {
   var transport = {};
 
   offlineAudioContext.oncomplete = function(e) {
@@ -214,7 +220,7 @@ JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCal
     var fileLength = 44 + sampleDataByteCount;
     var outputBuffer = new ArrayBuffer(fileLength);
     var outputView = new DataView(outputBuffer);
-    
+
     // Double check these should be little endian (i.e., true)
     outputView.setUint8(0, "R".charCodeAt(0), true);
     outputView.setUint8(1, "I".charCodeAt(0), true);
@@ -254,13 +260,13 @@ JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCal
   };
 
   transport.tick = function() {
-    var sequence = transport.sequence;
+    var sequence = track.sequence;
     var note;
     var i;
 
     for (i = 0; i < sequence.length; i++) {
       note = sequence[i];
-      transport.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
+      track.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
       nextNoteTime += transport.stepInterval;
     }
 
@@ -276,12 +282,6 @@ JSSynth.OfflineTransport = function(offlineAudioContext, instrument, completeCal
     transport.stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
-  transport.setNotes = function(newNotes) {
-    transport.sequence = JSSynth.SequenceParser.parse(newNotes);
-  };
-
-  transport.instrument = instrument;
-  transport.setNotes(" ");
   transport.setTempo(100);
 
   return transport;

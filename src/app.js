@@ -5,6 +5,7 @@ var app = angular.module('js110', []);
 app.controller('controller', ['$scope', function($scope) {
   var audioContext;
   var transport;
+  var track;
 
   $scope.playing = false;
   $scope.waveform = 'sawtooth';
@@ -82,9 +83,10 @@ app.controller('controller', ['$scope', function($scope) {
 
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
+      var sequence = JSSynth.SequenceParser.parse(parseNotes());
+      track = new JSSynth.Track(instrument, sequence);
 
-      transport = new JSSynth.Transport(audioContext, instrument, stopCallback);
-      transport.setNotes(parseNotes());
+      transport = new JSSynth.Transport(audioContext, track, stopCallback);
       transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
@@ -98,11 +100,11 @@ app.controller('controller', ['$scope', function($scope) {
     var config = toGenericConfig();
     console.log(config);
     var instrument = new JSSynth.Instrument(audioContext, config);
-    transport.instrument = instrument;
+    track.instrument = instrument;
   };
 
   $scope.updateNotes = function() {
-    transport.setNotes(parseNotes());
+    track.setNotes(parseNotes());
   };
 
   $scope.updateTempo = function() {
@@ -120,8 +122,12 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.export = function() {
     var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, new JSSynth.Instrument(offlineAudioContext, toGenericConfig()), function() { });
-    offlineTransport.setNotes(parseNotes());
+
+    var instrument = new JSSynth.Instrument(offlineAudioContext, toGenericConfig());
+    var sequence = JSSynth.SequenceParser.parse(parseNotes());
+    var track = new JSSynth.Track(instrument, sequence);
+
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, track, function() { });
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };
