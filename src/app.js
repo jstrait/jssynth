@@ -90,7 +90,7 @@ app.controller('controller', ['$scope', function($scope) {
       transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
-      alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-100. Try a recent version of Chrome, Safari, or Firefox.");
+      alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-110. Try a recent version of Chrome, Safari, or Firefox.");
       return;
     }
   };
