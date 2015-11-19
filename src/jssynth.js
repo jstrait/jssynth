@@ -135,20 +135,26 @@ JSSynth.EnvelopeCalculator = {
   },
 };
 
-JSSynth.Transport = function(audioContext, track, stopCallback) {
+JSSynth.Transport = function(audioContext, tracks, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
 
   function tick() {
-    var sequence = track.sequence;
+    var i;
+
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
     var note, noteTimeDuration;
 
     while (nextNoteTime < finalTime) {
-      note = sequence[sequenceIndex];
-      noteTimeDuration = transport.stepInterval * note.stepDuration;
+      for (i = 0; i < tracks.length; i++) {
+        var track = tracks[i];
+        var sequence = track.sequence;
 
-      track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+        note = sequence[sequenceIndex];
+        noteTimeDuration = transport.stepInterval * note.stepDuration;
+
+        track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+      }
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
@@ -210,7 +216,7 @@ JSSynth.Transport = function(audioContext, track, stopCallback) {
 };
 
 
-JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback) {
+JSSynth.OfflineTransport = function(offlineAudioContext, tracks, completeCallback) {
   var transport = {};
 
   offlineAudioContext.oncomplete = function(e) {
@@ -261,14 +267,19 @@ JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback
   };
 
   transport.tick = function() {
-    var sequence = track.sequence;
+    var i, j;
     var note, noteTimeDuration;
-    var i;
 
-    for (i = 0; i < sequence.length; i++) {
-      note = sequence[i];
-      noteTimeDuration = transport.stepInterval * note.stepDuration;
-      track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+    for (i = 0; i < tracks[0].sequence.length; i++) {
+      for (j = 0; j < tracks.length; j++) {
+        var track = tracks[j];
+        var sequence = track.sequence;
+
+        note = sequence[i];
+        noteTimeDuration = transport.stepInterval * note.stepDuration;
+        track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+      }
+
       nextNoteTime += noteTimeDuration;
     }
 

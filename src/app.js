@@ -24,14 +24,46 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeRelease = 0.0;
   $scope.tempo = 100;
   $scope.loop = true;
-  $scope.notes = [{name: 'C3'},
-                  {name: ''},
-                  {name: 'Eb3'},
-                  {name: 'F3'},
-                  {name: 'G3'},
-                  {name: 'Bb4'},
-                  {name: 'F3'}, 
-                  {name: 'Bb4'}];
+  $scope.tracks = [{
+                     notes: [{name: 'C3'},
+                             {name: ''},
+                             {name: 'Eb3'},
+                             {name: 'F3'},
+                             {name: 'G3'},
+                             {name: 'Bb4'},
+                             {name: 'F3'}, 
+                             {name: 'Bb4'}],
+                   },
+                   {
+                     notes: [{name: 'C3'},
+                             {name: ''},
+                             {name: 'C3'},
+                             {name: 'C3'},
+                             {name: 'C3'},
+                             {name: 'C4'},
+                             {name: 'C3'}, 
+                             {name: 'C4'}],
+                   },
+                   {
+                     notes: [{name: 'Eb1'},
+                             {name: ''},
+                             {name: 'Eb1'},
+                             {name: 'Eb1'},
+                             {name: 'Eb1'},
+                             {name: 'Eb1'},
+                             {name: 'Eb1'}, 
+                             {name: 'Eb1'}],
+                   },
+                   {
+                     notes: [{name: 'G5'},
+                             {name: 'D3'},
+                             {name: 'Eb5'},
+                             {name: 'G5'},
+                             {name: 'Eb5'},
+                             {name: 'G5'},
+                             {name: 'Eb5'}, 
+                             {name: 'G5'}],
+                   },];
 
   var toGenericConfig = function() {
     var filterCutoff = parseInt($scope.filterCutoff, 10);
@@ -63,13 +95,18 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   var parseNotes = function() {
-    var rawNotes = [];
+    var result = [];
 
-    for (var i = 0; i < $scope.notes.length; i++) {
-      rawNotes[i] = $scope.notes[i].name;
+    for (var t = 0; t < $scope.tracks.length; t++) {
+      var rawNotes = [];
+      for (var n = 0; n < $scope.tracks[t].notes.length; n++) {
+        rawNotes[n] = $scope.tracks[t].notes[n].name;
+      }
+
+      result.push(rawNotes.join(' '));
     }
 
-    return rawNotes.join(' ');
+    return result;
   };
 
   var stopCallback = function() {
@@ -83,10 +120,16 @@ app.controller('controller', ['$scope', function($scope) {
 
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
-      var sequence = JSSynth.SequenceParser.parse(parseNotes());
-      track = new JSSynth.Track(instrument, sequence);
+      
+      var tracks = [];
+      var parsedTracks = parseNotes();
+      for (var i = 0; i < parsedTracks.length; i++) {
+        var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
+        track = new JSSynth.Track(instrument, sequence);
+        tracks.push(track);
+      }
 
-      transport = new JSSynth.Transport(audioContext, track, stopCallback);
+      transport = new JSSynth.Transport(audioContext, tracks, stopCallback);
       transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
@@ -104,6 +147,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.updateNotes = function() {
+    // Should see how to update just the relevant track/note, rather than all tracks/notes
     track.setNotes(parseNotes());
   };
 
@@ -124,10 +168,16 @@ app.controller('controller', ['$scope', function($scope) {
     var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
 
     var instrument = new JSSynth.Instrument(offlineAudioContext, toGenericConfig());
-    var sequence = JSSynth.SequenceParser.parse(parseNotes());
-    var track = new JSSynth.Track(instrument, sequence);
 
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, track, function() { });
+    var tracks = [];
+    var parsedTracks = parseNotes();
+    for (var i = 0; i < parsedTracks.length; i++) {
+      var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
+      track = new JSSynth.Track(instrument, sequence);
+      tracks.push(track);
+    }
+
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, function() { });
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };

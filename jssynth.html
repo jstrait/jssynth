@@ -79,9 +79,13 @@
       <li>Press <code>SPACE</code> to clear the current note</li>
       <li>Use the left/right arrow keys to move between notes</li>
     </ul>
-    <ul class="sequencer">
-      <li ng-repeat="note in notes">
-        <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
+    <ul>
+      <li ng-repeat="track in tracks">
+        <ul class="sequencer">
+          <li ng-repeat="note in track.notes">
+            <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
+          </li>
+        </ul>
       </li>
     </ul>
     <div>
