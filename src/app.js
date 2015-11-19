@@ -5,7 +5,7 @@ var app = angular.module('js110', []);
 app.controller('controller', ['$scope', function($scope) {
   var audioContext;
   var transport;
-  var track;
+  var synthTracks;
 
   $scope.playing = false;
   $scope.waveform = 'sawtooth';
@@ -120,16 +120,15 @@ app.controller('controller', ['$scope', function($scope) {
 
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
-      
-      var tracks = [];
+
+      synthTracks = [];
       var parsedTracks = parseNotes();
       for (var i = 0; i < parsedTracks.length; i++) {
         var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-        track = new JSSynth.Track(instrument, sequence);
-        tracks.push(track);
+        synthTracks.push(new JSSynth.Track(instrument, sequence));
       }
 
-      transport = new JSSynth.Transport(audioContext, tracks, stopCallback);
+      transport = new JSSynth.Transport(audioContext, synthTracks, stopCallback);
       transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
@@ -141,14 +140,21 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
-    console.log(config);
     var instrument = new JSSynth.Instrument(audioContext, config);
-    track.instrument = instrument;
+    var i;
+
+    for (i = 0; i < synthTracks.length; i++) {
+      synthTracks[i].instrument = instrument;
+    }
   };
 
   $scope.updateNotes = function() {
     // Should see how to update just the relevant track/note, rather than all tracks/notes
-    track.setNotes(parseNotes());
+    var i;
+    var parsedNotes = parseNotes();
+    for (i = 0; i < parsedNotes.length; i++) {
+      synthTracks[i].setNotes(parsedNotes[i]);
+    }
   };
 
   $scope.updateTempo = function() {
@@ -173,8 +179,7 @@ app.controller('controller', ['$scope', function($scope) {
     var parsedTracks = parseNotes();
     for (var i = 0; i < parsedTracks.length; i++) {
       var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-      track = new JSSynth.Track(instrument, sequence);
-      tracks.push(track);
+      tracks.push(new JSSynth.Track(instrument, sequence));
     }
 
     var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, function() { });
