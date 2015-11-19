@@ -308,7 +308,7 @@ JSSynth.SequenceParser = {
 };
 
 JSSynth.Note = function(noteName, octave, stepDuration) {
-  var calculateFrequency = function(noteName, octave, stepDuration) {
+  var calculateFrequency = function(noteName, octave) {
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
     var frequency = JSSynth.MusicTheory.NOTE_RATIOS[noteName] * JSSynth.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
@@ -321,7 +321,7 @@ JSSynth.Note = function(noteName, octave, stepDuration) {
   note.noteName = noteName;
   note.octave = parseInt(octave, 10);
   note.stepDuration = parseInt(stepDuration, 10);
-  note.frequency = calculateFrequency(note.noteName, note.octave, note.stepDuration);
+  note.frequency = calculateFrequency(note.noteName, note.octave);
 
   return note;
 };
