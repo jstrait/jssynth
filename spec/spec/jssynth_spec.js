@@ -55,6 +55,30 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[4].octave).toEqual(NaN);
     expect(parsedSequence[4].stepDuration).toEqual(1);
   });
+
+  it("should properly parse a sequence containing ties", function() {
+    var rawSequence = "A4 - - - C2 - D4 G3 - -";
+
+    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+
+    expect(parsedSequence.length).toEqual(4);
+
+    expect(parsedSequence[0].noteName).toEqual("A");
+    expect(parsedSequence[0].octave).toEqual(4);
+    expect(parsedSequence[0].stepDuration).toEqual(4);
+
+    expect(parsedSequence[1].noteName).toEqual("C");
+    expect(parsedSequence[1].octave).toEqual(2);
+    expect(parsedSequence[1].stepDuration).toEqual(2);
+
+    expect(parsedSequence[2].noteName).toEqual("D");
+    expect(parsedSequence[2].octave).toEqual(4);
+    expect(parsedSequence[2].stepDuration).toEqual(1);
+
+    expect(parsedSequence[3].noteName).toEqual("G");
+    expect(parsedSequence[3].octave).toEqual(3);
+    expect(parsedSequence[3].stepDuration).toEqual(3);
+  });
 });
 
 

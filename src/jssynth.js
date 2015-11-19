@@ -293,15 +293,27 @@ JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
     var i;
-    var noteName, octave;
+    var noteName = null, octave = null;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
+    var inProgressNoteDuration = 1;
     for (i = 0; i < splitNotes.length; i++) {
-      noteName = splitNotes[i].slice(0, -1);
-      octave = splitNotes[i].slice(-1);
-      sequence[i] = JSSynth.Note(noteName, octave, 1);
+      if (splitNotes[i] === "-") {
+        inProgressNoteDuration += 1;
+      }
+      else {
+        if (noteName !== null) {
+          sequence.push(JSSynth.Note(noteName, octave, inProgressNoteDuration));
+        }
+
+        noteName = splitNotes[i].slice(0, -1);
+        octave = splitNotes[i].slice(-1);
+        inProgressNoteDuration = 1;
+      }
     }
+
+    sequence.push(JSSynth.Note(noteName, octave, inProgressNoteDuration));
 
     return sequence;
   },
