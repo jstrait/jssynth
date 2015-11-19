@@ -142,12 +142,13 @@ JSSynth.Transport = function(audioContext, track, stopCallback) {
   function tick() {
     var sequence = track.sequence;
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
-    var note;
+    var note, noteTimeDuration;
 
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
+      noteTimeDuration = transport.stepInterval * note.duration;
 
-      track.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
+      track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
 
       sequenceIndex += 1;
       if (sequenceIndex >= sequence.length) {
@@ -160,7 +161,7 @@ JSSynth.Transport = function(audioContext, track, stopCallback) {
         }
       }
 
-      nextNoteTime += transport.stepInterval;
+      nextNoteTime += noteTimeDuration;
     }
   };
 
@@ -261,13 +262,14 @@ JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback
 
   transport.tick = function() {
     var sequence = track.sequence;
-    var note;
+    var note, noteTimeDuration;
     var i;
 
     for (i = 0; i < sequence.length; i++) {
       note = sequence[i];
-      track.instrument.playNote(note, nextNoteTime, nextNoteTime + transport.stepInterval);
-      nextNoteTime += transport.stepInterval;
+      noteTimeDuration = transport.stepInterval * note.duration;
+      track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+      nextNoteTime += noteTimeDuration;
     }
 
     offlineAudioContext.startRendering();
