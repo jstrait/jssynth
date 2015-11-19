@@ -146,7 +146,7 @@ JSSynth.Transport = function(audioContext, track, stopCallback) {
 
     while (nextNoteTime < finalTime) {
       note = sequence[sequenceIndex];
-      noteTimeDuration = transport.stepInterval * note.duration;
+      noteTimeDuration = transport.stepInterval * note.stepDuration;
 
       track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
 
@@ -267,7 +267,7 @@ JSSynth.OfflineTransport = function(offlineAudioContext, track, completeCallback
 
     for (i = 0; i < sequence.length; i++) {
       note = sequence[i];
-      noteTimeDuration = transport.stepInterval * note.duration;
+      noteTimeDuration = transport.stepInterval * note.stepDuration;
       track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
       nextNoteTime += noteTimeDuration;
     }
@@ -307,8 +307,8 @@ JSSynth.SequenceParser = {
   },
 };
 
-JSSynth.Note = function(noteName, octave, duration) {
-  var calculateFrequency = function(noteName, octave, duration) {
+JSSynth.Note = function(noteName, octave, stepDuration) {
+  var calculateFrequency = function(noteName, octave, stepDuration) {
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
     var frequency = JSSynth.MusicTheory.NOTE_RATIOS[noteName] * JSSynth.MusicTheory.MIDDLE_A_FREQUENCY * octaveMultiplier;
@@ -320,8 +320,8 @@ JSSynth.Note = function(noteName, octave, duration) {
 
   note.noteName = noteName;
   note.octave = parseInt(octave, 10);
-  note.duration = parseInt(duration, 10);
-  note.frequency = calculateFrequency(note.noteName, note.octave, note.duration);
+  note.stepDuration = parseInt(stepDuration, 10);
+  note.frequency = calculateFrequency(note.noteName, note.octave, note.stepDuration);
 
   return note;
 };
