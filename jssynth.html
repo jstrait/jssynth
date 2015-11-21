@@ -79,9 +79,9 @@
       <li>Press <code>SPACE</code> to clear the current note</li>
       <li>Use the left/right arrow keys to move between notes</li>
     </ul>
-    <ul>
-      <li ng-repeat="track in tracks">
-        <ul class="sequencer">
+    <ul class="ml0 pl0">
+      <li class="list-style-none" ng-repeat="track in tracks">
+        <ul class="sequencer inline">
           <li ng-repeat="note in track.notes">
             <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
           </li>
@@ -89,13 +89,15 @@
         <button ng-click="removeTrack($index);">X</button>
       </li>
     </ul>
-    <button ng-click="addTrack();">Add Track</button>
+    <div class="mb1" style="overflow: auto;">
+      <button class="block button-full right" ng-click="addTrack();">Add Track</button>
+    </div>
     <div>
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
       <span>{{tempo}}</span>
-      <button class="{{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
-      <button ng-click="export();">Download</button>
+      <button class="button-full ml1 mt1 right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
+      <button class="button-full mt1 right" ng-click="export();">Download</button>
     </div>
   </div>
 </div>

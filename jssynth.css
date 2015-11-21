@@ -155,7 +155,7 @@ input {
 }
 
 ul.sequencer {
-  margin: 0 0 1.5rem 0;
+  margin: 0;
   padding: 0;
   overflow-x: scroll;
   white-space: nowrap;
@@ -163,8 +163,7 @@ ul.sequencer {
 
 ul.sequencer li {
   list-style-type: none;
-  width: 12.5%;
-  min-width: 4.0em;
+  width: 11.1%;
   display: inline-block;
 }
 
@@ -190,10 +189,27 @@ button {
   font-weight: bold;
   border-radius: 10px;
   color: #130f30;
-  float: right;
-  width: 10.0rem;
-  margin-top: 1.5rem;
 }
+
+.button-full {
+  width: 10.0rem;
+}
+
+.list-style-none {
+  list-style-type: none;
+}
+
+.ml0 { margin-left: 0.0rem; }
+.ml1 { margin-left: 1.5rem; }
+.mt1 { margin-top: 1.5rem; }
+.mb1 { margin-bottom: 1.5rem; }
+
+.pl0 { padding-left: 0.0rem; }
+
+.right { float: right; }
+
+.block  { display: block; }
+.inline { display: inline; }
 
 .enabled {
   background: orange;
