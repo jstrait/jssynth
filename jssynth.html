@@ -86,8 +86,10 @@
             <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
           </li>
         </ul>
+        <button ng-click="removeTrack($index);">X</button>
       </li>
     </ul>
+    <button ng-click="addTrack();">Add Track</button>
     <div>
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />

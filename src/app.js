@@ -37,36 +37,6 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: 'Bb4'},
                              {name: 'F3'}, 
                              {name: 'Bb4'}],
-                   },
-                   {
-                     notes: [{name: 'C3'},
-                             {name: ''},
-                             {name: 'C3'},
-                             {name: 'C3'},
-                             {name: 'C3'},
-                             {name: 'C4'},
-                             {name: 'C3'}, 
-                             {name: 'C4'}],
-                   },
-                   {
-                     notes: [{name: 'Eb1'},
-                             {name: ''},
-                             {name: 'Eb1'},
-                             {name: 'Eb1'},
-                             {name: 'Eb1'},
-                             {name: 'Eb1'},
-                             {name: 'Eb1'}, 
-                             {name: 'Eb1'}],
-                   },
-                   {
-                     notes: [{name: 'G5'},
-                             {name: 'D3'},
-                             {name: 'Eb5'},
-                             {name: 'G5'},
-                             {name: 'Eb5'},
-                             {name: 'G5'},
-                             {name: 'Eb5'}, 
-                             {name: 'G5'}],
                    },];
 
   var toGenericConfig = function() {
@@ -160,6 +130,28 @@ app.controller('controller', ['$scope', function($scope) {
     for (i = 0; i < parsedNotes.length; i++) {
       synth.tracks[i].setNotes(parsedNotes[i]);
     }
+  };
+
+  $scope.addTrack = function() {
+    $scope.tracks.push({
+                         notes: [{name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''}, 
+                                 {name: ''}],
+                       });
+
+    var parsedTracks = parseNotes();
+    var sequence = JSSynth.SequenceParser.parse(parsedTracks[parsedTracks.length - 1]);
+    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence));
+  };
+
+  $scope.removeTrack = function(index) {
+    $scope.tracks.splice(index, 1);
+    synth.tracks.splice(index, 1);
   };
 
   $scope.updateTempo = function() {
