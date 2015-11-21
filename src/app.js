@@ -4,8 +4,12 @@ var app = angular.module('js110', []);
 
 app.controller('controller', ['$scope', function($scope) {
   var audioContext;
-  var transport;
-  var synthTracks;
+
+  var synth = {
+    instrument: null,
+    tracks: [],
+    transport: null,
+  };
 
   $scope.playing = false;
   $scope.waveform = 'sawtooth';
@@ -121,15 +125,16 @@ app.controller('controller', ['$scope', function($scope) {
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
 
-      synthTracks = [];
+      synth.instrument = instrument;
+
       var parsedTracks = parseNotes();
       for (var i = 0; i < parsedTracks.length; i++) {
         var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-        synthTracks.push(new JSSynth.Track(instrument, sequence));
+        synth.tracks.push(new JSSynth.Track(instrument, sequence));
       }
 
-      transport = new JSSynth.Transport(audioContext, synthTracks, stopCallback);
-      transport.setTempo(parseInt($scope.tempo, 10));
+      synth.transport = new JSSynth.Transport(audioContext, synth.tracks, stopCallback);
+      synth.transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
       alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-110. Try a recent version of Chrome, Safari, or Firefox.");
@@ -140,11 +145,11 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
-    var instrument = new JSSynth.Instrument(audioContext, config);
+    synth.instrument = new JSSynth.Instrument(audioContext, config);
     var i;
 
-    for (i = 0; i < synthTracks.length; i++) {
-      synthTracks[i].instrument = instrument;
+    for (i = 0; i < synth.tracks.length; i++) {
+      synth.tracks[i].instrument = synth.instrument;
     }
   };
 
@@ -153,20 +158,20 @@ app.controller('controller', ['$scope', function($scope) {
     var i;
     var parsedNotes = parseNotes();
     for (i = 0; i < parsedNotes.length; i++) {
-      synthTracks[i].setNotes(parsedNotes[i]);
+      synth.tracks[i].setNotes(parsedNotes[i]);
     }
   };
 
   $scope.updateTempo = function() {
-    transport.setTempo(parseInt($scope.tempo, 10));
+    synth.transport.setTempo(parseInt($scope.tempo, 10));
   };
 
   $scope.updateLoop = function() {
-    transport.loop = $scope.loop;
+    synth.transport.loop = $scope.loop;
   };
 
   $scope.toggle = function() {
-    transport.toggle();
+    synth.transport.toggle();
     $scope.playing = !$scope.playing;
   };
 
