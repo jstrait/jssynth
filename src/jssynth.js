@@ -12,6 +12,42 @@ JSSynth.Track = function(instrument, sequence) {
     track.sequence = JSSynth.SequenceParser.parse(newNotes);
   };
 
+  track.reset = function(newCurrentTime) {
+    sequenceIndex = 0;
+    finishedPlaying = false;
+    currentTime = newCurrentTime;
+  };
+
+  track.finishedPlaying = function() { return finishPlaying; }
+
+  track.tick = function(endTime, stepDuration, loop) {
+    var note, noteTimeDuration;
+
+    while (currentTime < endTime) {
+      note = track.sequence[sequenceIndex];
+      noteTimeDuration = stepDuration * note.stepDuration;
+      track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
+
+      sequenceIndex += 1;
+      if (sequenceIndex >= sequence.length) {
+        if (loop) {
+          sequenceIndex = 0;
+        }
+        else {
+          finishedPlaying = true;
+          return;
+        }
+      }
+
+      currentTime += noteTimeDuration;
+    }
+  };
+
+  var sequenceIndex;
+  var currentTime;
+  var finishedPlaying;
+
+  track.reset();
   return track;
 };
 
@@ -145,36 +181,25 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
     var note, noteTimeDuration;
 
-    while (nextNoteTime < finalTime) {
-      for (i = 0; i < tracks.length; i++) {
-        var track = tracks[i];
-        var sequence = track.sequence;
+    var anyTracksStillPlaying = true;
+    for (i = 0; i < tracks.length; i++) {
+      tracks[i].tick(finalTime, transport.stepInterval, transport.loop);
+      anyTracksStillPlaying = anyTracksStillPlaying || tracks[i].finishedPlaying;
+    }
 
-        note = sequence[sequenceIndex];
-        noteTimeDuration = transport.stepInterval * note.stepDuration;
-
-        track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
-      }
-
-      sequenceIndex += 1;
-      if (sequenceIndex >= sequence.length) {
-        if (transport.loop) {
-          sequenceIndex = 0;
-        }
-        else {
-          stop();
-          window.setTimeout(stopCallback, transport.stepInterval * 1000);
-        }
-      }
-
-      nextNoteTime += noteTimeDuration;
+    if (!anyTracksStillPlaying) {
+      stop();
+      window.setTimeout(stopCallback, transport.stepInterval * 1000);
     }
   };
 
   function start() {
+    var i;
     sequenceIndex = 0;
-    nextNoteTime = audioContext.currentTime;
 
+    for (i = 0; i < tracks.length; i++) {
+      tracks[i].reset(audioContext.currentTime);
+    }
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
     playing = true;
@@ -186,7 +211,6 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
   };
 
   var sequenceIndex;
-  var nextNoteTime;
   var timeoutId;
   var playing = false;
 
@@ -267,26 +291,28 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, completeCallbac
   };
 
   transport.tick = function() {
-    var i, j;
+    var t, n;
     var note, noteTimeDuration;
+    var track, sequence;
 
-    for (i = 0; i < tracks[0].sequence.length; i++) {
-      for (j = 0; j < tracks.length; j++) {
-        var track = tracks[j];
-        var sequence = track.sequence;
+    var startTime = offlineAudioContext.currentTime;
 
-        note = sequence[i];
+    for (t = 0; t < tracks.length; t++) {
+      track = tracks[t];
+      sequence = track.sequence;
+      var nextNoteTime = startTime;
+
+      for (n = 0; n < sequence.length; n++) {
+        note = sequence[n];
         noteTimeDuration = transport.stepInterval * note.stepDuration;
         track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
-      }
 
-      nextNoteTime += noteTimeDuration;
+        nextNoteTime += noteTimeDuration;
+      }
     }
 
     offlineAudioContext.startRendering();
   };
-
-  var nextNoteTime = offlineAudioContext.currentTime;
 
   transport.setTempo = function(newTempo) {
     transport.tempo = newTempo;
