@@ -6,7 +6,7 @@ app.controller('controller', ['$scope', function($scope) {
   var audioContext;
 
   var synth = {
-    instrument: null,
+    instruments: [],
     tracks: [],
     transport: null,
   };
@@ -125,7 +125,7 @@ app.controller('controller', ['$scope', function($scope) {
       var config = toGenericConfig();
       var instrument = new JSSynth.Instrument(audioContext, config);
 
-      synth.instrument = instrument;
+      synth.instruments = [instrument];
 
       var parsedTracks = parseNotes();
       for (var i = 0; i < parsedTracks.length; i++) {
@@ -145,11 +145,11 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
-    synth.instrument = new JSSynth.Instrument(audioContext, config);
+    synth.instruments[0] = new JSSynth.Instrument(audioContext, config);
     var i;
 
     for (i = 0; i < synth.tracks.length; i++) {
-      synth.tracks[i].instrument = synth.instrument;
+      synth.tracks[i].instrument = synth.instruments[0];
     }
   };
 
