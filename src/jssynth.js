@@ -29,7 +29,7 @@ JSSynth.Track = function(instrument, sequence) {
       track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
 
       sequenceIndex += 1;
-      if (sequenceIndex >= sequence.length) {
+      if (sequenceIndex >= track.sequence.length) {
         if (loop) {
           sequenceIndex = 0;
         }
