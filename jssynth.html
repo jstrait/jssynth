@@ -83,7 +83,7 @@
       <li class="list-style-none" ng-repeat="track in tracks">
         <ul class="sequencer inline">
           <li ng-repeat="note in track.notes">
-            <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
+            <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
           </li>
         </ul>
         <button class="button-small" ng-click="removeTrack($index);">X</button>

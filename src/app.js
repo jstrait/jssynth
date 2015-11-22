@@ -259,17 +259,19 @@ app.directive('noteInput', function () {
          }
          else if (e.keyCode === 37) {  // Left arrow key
            if (element[0].selectionStart === 0 && !(element.hasClass('first'))) {
-             var noteIndex = parseInt(element[0].id.split("-")[1], 10);
-             var nextNoteId = 'note-' + (noteIndex - 1);
-           
+             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
+             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
+             var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex - 1);
+
              document.getElementById(nextNoteId).focus();
            }
          }
          else if (e.keyCode === 39) {  // Right arrow key
            if (element[0].selectionEnd === element.val().length && !(element.hasClass('last'))) {
-             var noteIndex = parseInt(element[0].id.split("-")[1], 10);
-             var nextNoteId = 'note-' + (noteIndex + 1);
-           
+             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
+             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
+             var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex + 1);
+
              document.getElementById(nextNoteId).focus();
            }
          }
