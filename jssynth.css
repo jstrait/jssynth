@@ -65,9 +65,9 @@ input[type='text'].ng-invalid.ng-dirty {
 }
 
 input[type='text'] {
-  font-family:"Helvetica Neue", arial, sans-serif;
-  font-size: 2.0rem;
-  font-weight: bold;
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-size: 1.20rem;
+  font-weight: normal;
 }
 
 input[type='radio'] {
@@ -160,7 +160,7 @@ ul.sequencer {
 
 ul.sequencer li {
   list-style-type: none;
-  width: 11.1%;
+  width: 5.88%;
   display: inline-block;
 }
 
@@ -186,6 +186,11 @@ button {
   font-weight: bold;
   border-radius: 10px;
   color: #130f30;
+}
+
+.button-small {
+  font-size: 1.0rem;
+  padding: 0.5rem;
 }
 
 .button-full {

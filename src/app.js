@@ -35,8 +35,16 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: 'F3'},
                              {name: 'G3'},
                              {name: 'Bb4'},
-                             {name: 'F3'}, 
-                             {name: 'Bb4'}],
+                             {name: 'F3'},
+                             {name: 'Bb4'},
+                             {name: 'C3'},
+                             {name: ''},
+                             {name: 'Eb3'},
+                             {name: 'F3'},
+                             {name: 'D3'},
+                             {name: 'Eb3'},
+                             {name: 'D3'},
+                             {name: 'Bb3'},],
                    },];
 
   var toGenericConfig = function() {
@@ -140,7 +148,15 @@ app.controller('controller', ['$scope', function($scope) {
                                  {name: ''},
                                  {name: ''},
                                  {name: ''},
-                                 {name: ''}, 
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
                                  {name: ''}],
                        });
 

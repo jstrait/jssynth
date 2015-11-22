@@ -86,7 +86,7 @@
             <input note-input id="note-{{$index}}" ng-class="{note: true, first: $first, last: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
           </li>
         </ul>
-        <button ng-click="removeTrack($index);">X</button>
+        <button class="button-small" ng-click="removeTrack($index);">X</button>
       </li>
     </ul>
     <div class="mb1" style="overflow: auto;">
