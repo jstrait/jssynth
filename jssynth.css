@@ -25,8 +25,6 @@ body {
   font-size: 6.0rem;
   line-height: 6.0rem;
   font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0;
   color: #c00;
 }
 
@@ -149,7 +147,6 @@ input {
 }
 
 .helperToggle {
-  text-decoration: underline;
   color: #0af;
   cursor: pointer;
 }
@@ -199,14 +196,18 @@ button {
   list-style-type: none;
 }
 
-.ml0 { margin-left: 0.0rem; }
-.ml1 { margin-left: 1.5rem; }
+.mt0 { margin-top: 0; }
+.mb0 { margin-bottom: 0; }
+.ml0 { margin-left: 0; }
 .mt1 { margin-top: 1.5rem; }
 .mb1 { margin-bottom: 1.5rem; }
+.ml1 { margin-left: 1.5rem; }
 
 .pl0 { padding-left: 0.0rem; }
 
 .right { float: right; }
+
+.underline { text-decoration: underline; }
 
 .block  { display: block; }
 .inline { display: inline; }
