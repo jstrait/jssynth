@@ -240,7 +240,7 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
 };
 
 
-JSSynth.OfflineTransport = function(offlineAudioContext, tracks, completeCallback) {
+JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, completeCallback) {
   var transport = {};
 
   offlineAudioContext.oncomplete = function(e) {
@@ -287,6 +287,12 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, completeCallbac
     var blob = new Blob([outputView], { type: 'audio/wav' });
     var url  = window.URL.createObjectURL(blob);
     document.getElementById("downloaded-file").src = url;
+
+    var hiddenDownloadLink = document.getElementById("hidden-download-link");
+    hiddenDownloadLink.download = filename + ".wav";
+    hiddenDownloadLink.href = url;
+    hiddenDownloadLink.click();
+
     window.URL.revokeObjectURL(blob);
   };
 

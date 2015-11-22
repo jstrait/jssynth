@@ -98,8 +98,10 @@
       <span>{{tempo}}</span>
       <button class="button-full ml1 mt1 right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
       <button class="button-full mt1 right" ng-click="export();">Download</button>
+      <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
     </div>
   </div>
+  <input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav
 </div>
 <p id="footer">Made By <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-15</p>
 <audio id="downloaded-file" controls></audio>

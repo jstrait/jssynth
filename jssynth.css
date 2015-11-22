@@ -60,6 +60,13 @@ label.radioLabel {
   padding-left: 1.0rem;
 }
 
+.underlinedInput {
+  outline: none;
+  border: solid black;
+  border-width: 0 0 1px 0;
+  width: 20%;
+}
+
 input[type='text'].ng-invalid.ng-dirty {
   background: #f66;
 }
@@ -216,6 +223,7 @@ button {
 
 .block  { display: block; }
 .inline { display: inline; }
+.display-none { display: none; }
 
 .enabled {
   background: orange;

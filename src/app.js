@@ -28,6 +28,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeRelease = 0.0;
   $scope.tempo = 100;
   $scope.loop = true;
+  $scope.downloadFileName = "js110-sequence";
   $scope.tracks = [{
                      notes: [{name: 'C3'},
                              {name: ''},
@@ -195,7 +196,7 @@ app.controller('controller', ['$scope', function($scope) {
       tracks.push(new JSSynth.Track(instrument, sequence));
     }
 
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, function() { });
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, $scope.downloadFileName, function() { });
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };
