@@ -2,11 +2,12 @@
 
 var JSSynth = JSSynth || {};
 
-JSSynth.Track = function(instrument, sequence) {
+JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
   track.instrument = instrument; 
   track.sequence   = sequence;
+  track.isMuted    = isMuted;
 
   track.setNotes = function(newNotes) {
     track.sequence = JSSynth.SequenceParser.parse(newNotes);
@@ -18,6 +19,14 @@ JSSynth.Track = function(instrument, sequence) {
     currentTime = newCurrentTime;
   };
 
+  track.getIsMuted = function() {
+    return track.isMuted;
+  };
+
+  track.setIsMuted = function(newIsMuted) {
+    track.isMuted = newIsMuted;
+  };
+
   track.finishedPlaying = function() { return finishPlaying; }
 
   track.tick = function(endTime, stepDuration, loop) {
@@ -26,7 +35,10 @@ JSSynth.Track = function(instrument, sequence) {
     while (currentTime < endTime) {
       note = track.sequence[sequenceIndex];
       noteTimeDuration = stepDuration * note.stepDuration;
-      track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
+      
+      if (!track.isMuted) {
+        track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
+      }
 
       sequenceIndex += 1;
       if (sequenceIndex >= track.sequence.length) {
@@ -311,7 +323,9 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
       for (n = 0; n < sequence.length; n++) {
         note = sequence[n];
         noteTimeDuration = transport.stepInterval * note.stepDuration;
-        track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+        if (!track.getIsMuted()) {
+          track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
+        }
 
         nextNoteTime += noteTimeDuration;
       }

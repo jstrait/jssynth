@@ -30,6 +30,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.loop = true;
   $scope.downloadFileName = "js110-sequence";
   $scope.tracks = [{
+                     muted: false,
                      notes: [{name: 'C3'},
                              {name: ''},
                              {name: 'Eb3'},
@@ -109,7 +110,7 @@ app.controller('controller', ['$scope', function($scope) {
       var parsedTracks = parseNotes();
       for (var i = 0; i < parsedTracks.length; i++) {
         var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-        synth.tracks.push(new JSSynth.Track(instrument, sequence));
+        synth.tracks.push(new JSSynth.Track(instrument, sequence, $scope.tracks[i].muted));
       }
 
       synth.transport = new JSSynth.Transport(audioContext, synth.tracks, stopCallback);
@@ -143,6 +144,7 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.addTrack = function() {
     $scope.tracks.push({
+                         muted: false,
                          notes: [{name: ''},
                                  {name: ''},
                                  {name: ''},
@@ -163,7 +165,7 @@ app.controller('controller', ['$scope', function($scope) {
 
     var parsedTracks = parseNotes();
     var sequence = JSSynth.SequenceParser.parse(parsedTracks[parsedTracks.length - 1]);
-    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence));
+    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence, $scope.tracks[$scope.tracks.length - 1].muted));
   };
 
   $scope.removeTrack = function(index) {
@@ -177,6 +179,11 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.updateLoop = function() {
     synth.transport.loop = $scope.loop;
+  };
+
+  $scope.toggleTrackMute = function(index) {
+    $scope.tracks[index].muted = !$scope.tracks[index].muted;
+    synth.tracks[index].setIsMuted($scope.tracks[index].muted);
   };
 
   $scope.toggle = function() {
@@ -193,7 +200,7 @@ app.controller('controller', ['$scope', function($scope) {
     var parsedTracks = parseNotes();
     for (var i = 0; i < parsedTracks.length; i++) {
       var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-      tracks.push(new JSSynth.Track(instrument, sequence));
+      tracks.push(new JSSynth.Track(instrument, sequence, $scope.tracks[i].muted));
     }
 
     var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, $scope.downloadFileName, function() { });
