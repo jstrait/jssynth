@@ -91,16 +91,18 @@
     <div class="mb1" style="overflow: auto;">
       <button class="block button-full right" ng-click="addTrack();">Add Track</button>
     </div>
-    <div>
+    <div class="mt2 mb0">
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
       <span>{{tempo}}</span>
-      <button class="button-full ml1 mt1 right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
-      <button class="button-full mt1 right" ng-click="export();">Download</button>
+    </div>
+    <div class="mt1">
+      <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
+      <span><input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav</span>
+      <button class="button-full" ng-click="export();">Download</button>
       <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
     </div>
   </div>
-  <input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav
 </div>
 <p id="footer">Made By <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-15</p>
 <audio id="downloaded-file" controls></audio>
