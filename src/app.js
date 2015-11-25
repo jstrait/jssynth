@@ -28,7 +28,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.envelopeRelease = 0.0;
   $scope.tempo = 100;
   $scope.loop = true;
-  $scope.downloadFileName = "js110-sequence";
+  $scope.downloadFileName = "js-110";
   $scope.tracks = [{
                      muted: false,
                      notes: [{name: 'C3'},
