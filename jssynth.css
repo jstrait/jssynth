@@ -198,6 +198,7 @@ button {
   font-weight: bold;
   border-radius: 10px;
   color: #130f30;
+  cursor: pointer;
 }
 
 .button-small {
