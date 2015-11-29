@@ -265,6 +265,7 @@ app.directive('noteInput', function () {
          formattedValue = formattedValue.replace("#", "♯");
          formattedValue = formattedValue.replace("bb", "𝄫");
          formattedValue = formattedValue.replace("b", "♭");
+         formattedValue = formattedValue.replace("-", "—");
 
          return formattedValue;
        };
