@@ -301,43 +301,35 @@ app.directive('noteInput', function () {
        });
 
        element.bind('keydown', function(e) {
+         var changeCurrentlySelectedNote = function(element, config) {
+           var trackIndex = parseInt(element[0].id.split("-")[1], 10);
+           var noteIndex = parseInt(element[0].id.split("-")[3], 10);
+           var nextNoteId = 'track-' + (trackIndex + config.trackIndexDelta) + '-note-' + (noteIndex + config.noteIndexDelta);
+
+           document.getElementById(nextNoteId).focus();
+         };
+
          if (e.keyCode === 32) {  // Space bar
            element.val('');
          }
          else if (e.keyCode === 37) {  // Left arrow key
            if (element[0].selectionStart === 0 && !(element.hasClass('firstNote'))) {
-             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
-             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
-             var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex - 1);
-
-             document.getElementById(nextNoteId).focus();
+             changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: -1 });
            }
          }
          else if (e.keyCode === 39) {  // Right arrow key
            if (element[0].selectionEnd === element.val().length && !(element.hasClass('lastNote'))) {
-             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
-             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
-             var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex + 1);
-
-             document.getElementById(nextNoteId).focus();
+             changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: 1 });
            }
          }
          else if (e.keyCode === 38) {  // Up arrow key
            if (!(element.hasClass('firstTrack'))) {
-             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
-             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
-             var nextNoteId = 'track-' + (trackIndex - 1) + '-note-' + noteIndex;
-
-             document.getElementById(nextNoteId).focus();
+             changeCurrentlySelectedNote(element, { trackIndexDelta: -1, noteIndexDelta: 0 });
            }
          }
          else if (e.keyCode === 40) {  // Down arrow key
            if (!(element.hasClass('lastTrack'))) {
-             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
-             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
-             var nextNoteId = 'track-' + (trackIndex + 1) + '-note-' + noteIndex;
-
-             document.getElementById(nextNoteId).focus();
+             changeCurrentlySelectedNote(element, { trackIndexDelta: 1, noteIndexDelta: 0 });
            }
          }
        });
