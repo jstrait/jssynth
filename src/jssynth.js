@@ -51,7 +51,7 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
         }
       }
 
-      currentTime += noteTimeDuration;
+      currentTime += stepDuration;
     }
   };
 
@@ -349,7 +349,7 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
 
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
-    var i;
+    var i, j;
     var noteName = null, octave = null;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
@@ -361,7 +361,10 @@ JSSynth.SequenceParser = {
       }
       else {
         if (noteName !== null) {
-          sequence.push(JSSynth.Note(noteName, octave, inProgressNoteDuration));
+          sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
+          for (j = 0; j < (inProgressNoteDuration - 1); j++) {
+            sequence.push(new JSSynth.Note("", null, 1));
+          }
         }
 
         noteName = splitNotes[i].slice(0, -1);
@@ -370,7 +373,10 @@ JSSynth.SequenceParser = {
       }
     }
 
-    sequence.push(JSSynth.Note(noteName, octave, inProgressNoteDuration));
+    sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
+    for (j = 0; j < (inProgressNoteDuration - 1); j++) {
+      sequence.push(new JSSynth.Note("", null, 1));
+    }
 
     return sequence;
   },
