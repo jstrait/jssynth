@@ -14,61 +14,63 @@
 <div id="container">
   <h1 class="logo mt0 mb0">JS-110</h1>
   <span class="tagline">High Resolution Web Synthesizer</span>
+  <div ng-repeat="instrument in instruments">
   <div>
     <h2 class="section-header">Sound Generator</h2>
     <label class="waveform">Waveform:</label>
     <span class="waveformOptionsContainer">
-      <span class="radioContainer"><input id="waveformSine" ng-model="waveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="waveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="waveformSquare" ng-model="waveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="waveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="waveformSaw" ng-model="waveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="waveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="waveformTriangle" ng-model="waveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="waveformTriangle" class="radioLabel">Triangle</label></span>
+      <span class="radioContainer"><input id="waveformSine" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="waveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="waveformSquare" ng-model="instrument.waveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="waveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="waveformSaw" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="waveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="waveformTriangle" ng-model="instrument.waveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="waveformTriangle" class="radioLabel">Triangle</label></span>
     </span>
     <label>Volume:</label>
-    <input ng-model="amplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{(amplitude * 100) | number:0}}%</span>
+    <input ng-model="instrument.amplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
+    <span>{{(instrument.amplitude * 100) | number:0}}%</span>
     <span class="sub-section-header">Pitch Wobble:</span>
     <label class="indented">Amount:</label>
-    <input ng-model="lfoAmplitude" ng-change="updateInstrument();" type="range" min="0" max="100" step="1" />
-    <span>{{lfoAmplitude}}Hz</span>
+    <input ng-model="instrument.lfoAmplitude" ng-change="updateInstrument();" type="range" min="0" max="100" step="1" />
+    <span>{{instrument.lfoAmplitude}}Hz</span>
     <label class="indented">Rate:</label>
-    <input ng-model="lfoFrequency" ng-change="updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
-    <span>{{lfoFrequency}}Hz</span>
+    <input ng-model="instrument.lfoFrequency" ng-change="updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
+    <span>{{instrument.lfoFrequency}}Hz</span>
     <label class="indented waveform">Waveform:</label>
     <span class="waveformOptionsContainer">
-      <span class="radioContainer"><input id="lfoWaveformSine" ng-model="lfoWaveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="lfoWaveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="lfoWaveformSquare" ng-model="lfoWaveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="lfoWaveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="lfoWaveformSaw" ng-model="lfoWaveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="lfoWaveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="lfoWaveformTriangle" ng-model="lfoWaveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="lfoWaveformTriangle" class="radioLabel">Triangle</label></span>
+      <span class="radioContainer"><input id="lfoWaveformSine" ng-model="instrument.lfoWaveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="lfoWaveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="lfoWaveformSquare" ng-model="instrument.lfoWaveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="lfoWaveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="lfoWaveformSaw" ng-model="instrument.lfoWaveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="lfoWaveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="lfoWaveformTriangle" ng-model="instrument.lfoWaveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="lfoWaveformTriangle" class="radioLabel">Triangle</label></span>
     </span>
   </div>
   <div>
     <h2 class="section-header">Filter</h2>
     <label>Cutoff:</label>
-    <input ng-model="filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" step="50" />
-    <span>{{filterCutoff}}Hz</span>
+    <input ng-model="instrument.filterCutoff" ng-change="updateInstrument();" type="range" min="100" max="9999" step="50" />
+    <span>{{instrument.filterCutoff}}Hz</span>
     <label>Resonance:</label>
-    <input ng-model="filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
-    <span>{{filterResonance}}</span>
+    <input ng-model="instrument.filterResonance" ng-change="updateInstrument();" type="range" min="0" max="20" step="1.0" />
+    <span>{{instrument.filterResonance}}</span>
     <span class="sub-section-header">Cutoff Wobble:</span>
     <label class="indented">Amount:</label>
-    <input ng-model="filterLFOAmplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{(filterLFOAmplitude * 100) | number:0}}%</span>
+    <input ng-model="instrument.filterLFOAmplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
+    <span>{{(instrument.filterLFOAmplitude * 100) | number:0}}%</span>
     <label class="indented">Rate:</label>
-    <input ng-model="filterLFOFrequency" ng-change="updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
-    <span>{{filterLFOFrequency}}Hz</span>
+    <input ng-model="instrument.filterLFOFrequency" ng-change="updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
+    <span>{{instrument.filterLFOFrequency}}Hz</span>
     <label class="indented waveform">Waveform:</label>
     <span class="waveformOptionsContainer">
-      <span class="radioContainer"><input id="filterLFOWaveformSine" ng-model="filterLFOWaveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="filterLFOWaveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="filterLFOWaveformSquare" ng-model="filterLFOWaveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="filterLFOWaveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="filterLFOWaveformSaw" ng-model="filterLFOWaveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="filterLFOWaveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="filterLFOWaveformTriangle" ng-model="filterLFOWaveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="filterLFOWaveformTriangle" class="radioLabel">Triangle</label></span>
+      <span class="radioContainer"><input id="filterLFOWaveformSine" ng-model="instrument.filterLFOWaveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="filterLFOWaveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="filterLFOWaveformSquare" ng-model="instrument.filterLFOWaveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="filterLFOWaveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="filterLFOWaveformSaw" ng-model="instrument.filterLFOWaveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="filterLFOWaveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="filterLFOWaveformTriangle" ng-model="instrument.filterLFOWaveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="filterLFOWaveformTriangle" class="radioLabel">Triangle</label></span>
     </span>
   </div>
   <div>
     <h2 class="section-header">Envelope</h2>
     <label>Attack Speed:</label>
-    <input ng-model="envelopeAttack" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeAttack * 1000}} ms</span>
+    <input ng-model="instrument.envelopeAttack" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+    <span>{{instrument.envelopeAttack * 1000}} ms</span>
     <label>Decay Speed:</label>
-    <input ng-model="envelopeDecay" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeDecay * 1000}} ms</span>
+    <input ng-model="instrument.envelopeDecay" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+    <span>{{instrument.envelopeDecay * 1000}} ms</span>
     <label>Sustain Volume:</label>
-    <input ng-model="envelopeSustain" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{(envelopeSustain * 100) | number:0}}%</span>
+    <input ng-model="instrument.envelopeSustain" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
+    <span>{{(instrument.envelopeSustain * 100) | number:0}}%</span>
     <label>Release Speed:</label>
-    <input ng-model="envelopeRelease" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
-    <span>{{envelopeRelease * 1000}} ms</span>
+    <input ng-model="instrument.envelopeRelease" ng-change="updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+    <span>{{instrument.envelopeRelease * 1000}} ms</span>
+  </div>
   </div>
   <div>
     <h2 class="section-header">Sequencer<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>

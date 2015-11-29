@@ -12,23 +12,27 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.playing = false;
-  $scope.waveform = 'sawtooth';
-  $scope.amplitude = 0.75;
-  $scope.lfoWaveform = 'sine'
-  $scope.lfoFrequency = 5;
-  $scope.lfoAmplitude = 0;
-  $scope.filterCutoff = 1000;
-  $scope.filterResonance = 0;
-  $scope.filterLFOWaveform = 'sine'
-  $scope.filterLFOFrequency = 5;
-  $scope.filterLFOAmplitude = 0;
-  $scope.envelopeAttack = 0.0;
-  $scope.envelopeDecay = 0.0;
-  $scope.envelopeSustain = 1.0;
-  $scope.envelopeRelease = 0.0;
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-110";
+
+  $scope.instruments = [{
+                          waveform:           'sawtooth',
+                          amplitude:          0.75,
+                          lfoWaveform:        'sine',
+                          lfoFrequency:       5,
+                          lfoAmplitude:       0,
+                          filterCutoff:       1000,
+                          filterResonance:    0,
+                          filterLFOWaveform:  'sine',
+                          fileLFOFrequency:   5,
+                          filterLFOAmplitude: 0,
+                          envelopeAttack:     0.0,
+                          envelopeDecay:      0.0,
+                          envelopeSustain:    1.0,
+                          envelopeRelease:    0.0,
+                       },];
+
   $scope.tracks = [{
                      muted: false,
                      notes: [{name: 'C3'},
@@ -88,30 +92,30 @@ app.controller('controller', ['$scope', function($scope) {
                    },];
 
   var toGenericConfig = function() {
-    var filterCutoff = parseInt($scope.filterCutoff, 10);
+    var filterCutoff = parseInt($scope.instruments[0].filterCutoff, 10);
 
     return {
-      waveform:  $scope.waveform,
-      amplitude: parseFloat($scope.amplitude),
+      waveform:  $scope.instruments[0].waveform,
+      amplitude: parseFloat($scope.instruments[0].amplitude),
       lfo: {
-        waveform:  $scope.lfoWaveform,
-        frequency: parseFloat($scope.lfoFrequency),
-        amplitude: parseInt($scope.lfoAmplitude, 10),
+        waveform:  $scope.instruments[0].lfoWaveform,
+        frequency: parseFloat($scope.instruments[0].lfoFrequency),
+        amplitude: parseInt($scope.instruments[0].lfoAmplitude, 10),
       },
       filter: {
         cutoff:    filterCutoff,
-        resonance: parseInt($scope.filterResonance, 10),
+        resonance: parseInt($scope.instruments[0].filterResonance, 10),
         lfo: {
-          waveform:  $scope.filterLFOWaveform,
-          frequency: parseFloat($scope.filterLFOFrequency),
-          amplitude: parseFloat($scope.filterLFOAmplitude) * filterCutoff,
+          waveform:  $scope.instruments[0].filterLFOWaveform,
+          frequency: parseFloat($scope.instruments[0].filterLFOFrequency),
+          amplitude: parseFloat($scope.instruments[0].filterLFOAmplitude) * filterCutoff,
         },
       },
       envelope: {
-        attack:  parseFloat($scope.envelopeAttack),
-        decay:   parseFloat($scope.envelopeDecay),
-        sustain: parseFloat($scope.envelopeSustain),
-        release: parseFloat($scope.envelopeRelease),
+        attack:  parseFloat($scope.instruments[0].envelopeAttack),
+        decay:   parseFloat($scope.instruments[0].envelopeDecay),
+        sustain: parseFloat($scope.instruments[0].envelopeSustain),
+        release: parseFloat($scope.instruments[0].envelopeRelease),
       },
     };
   };
