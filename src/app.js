@@ -304,7 +304,7 @@ app.directive('noteInput', function () {
            element.val('');
          }
          else if (e.keyCode === 37) {  // Left arrow key
-           if (element[0].selectionStart === 0 && !(element.hasClass('first'))) {
+           if (element[0].selectionStart === 0 && !(element.hasClass('firstNote'))) {
              var trackIndex = parseInt(element[0].id.split("-")[1], 10);
              var noteIndex = parseInt(element[0].id.split("-")[3], 10);
              var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex - 1);
@@ -313,10 +313,28 @@ app.directive('noteInput', function () {
            }
          }
          else if (e.keyCode === 39) {  // Right arrow key
-           if (element[0].selectionEnd === element.val().length && !(element.hasClass('last'))) {
+           if (element[0].selectionEnd === element.val().length && !(element.hasClass('lastNote'))) {
              var trackIndex = parseInt(element[0].id.split("-")[1], 10);
              var noteIndex = parseInt(element[0].id.split("-")[3], 10);
              var nextNoteId = 'track-' + trackIndex + '-note-' + (noteIndex + 1);
+
+             document.getElementById(nextNoteId).focus();
+           }
+         }
+         else if (e.keyCode === 38) {  // Up arrow key
+           if (!(element.hasClass('firstTrack'))) {
+             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
+             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
+             var nextNoteId = 'track-' + (trackIndex - 1) + '-note-' + noteIndex;
+
+             document.getElementById(nextNoteId).focus();
+           }
+         }
+         else if (e.keyCode === 40) {  // Down arrow key
+           if (!(element.hasClass('lastTrack'))) {
+             var trackIndex = parseInt(element[0].id.split("-")[1], 10);
+             var noteIndex = parseInt(element[0].id.split("-")[3], 10);
+             var nextNoteId = 'track-' + (trackIndex + 1) + '-note-' + noteIndex;
 
              document.getElementById(nextNoteId).focus();
            }
