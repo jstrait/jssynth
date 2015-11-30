@@ -187,29 +187,23 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
   var TICK_INTERVAL = 50;         // in milliseconds
 
   function tick() {
-    var i;
-
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
-    var note, noteTimeDuration;
 
-    var anyTracksStillPlaying = true;
-    for (i = 0; i < tracks.length; i++) {
-      tracks[i].tick(finalTime, transport.stepInterval, transport.loop);
-      anyTracksStillPlaying = anyTracksStillPlaying || tracks[i].finishedPlaying;
-    }
+    tracks.forEach(function(track) {
+      track.tick(finalTime, transport.stepInterval, transport.loop);
+    });
 
-    if (!anyTracksStillPlaying) {
+    if (!tracks.some(function(track) { return track.finishedPlaying; })) {
       stop();
       window.setTimeout(stopCallback, transport.stepInterval * 1000);
     }
   };
 
   function start() {
-    var i;
+    tracks.forEach(function(track) {
+      track.reset(audioContext.currentTime);
+    });
 
-    for (i = 0; i < tracks.length; i++) {
-      tracks[i].reset(audioContext.currentTime);
-    }
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
     playing = true;
