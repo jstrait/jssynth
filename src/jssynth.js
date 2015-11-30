@@ -154,10 +154,9 @@ JSSynth.EnvelopeCalculator = {
       attackEndAmplitude = baseAmplitude;
     }
     else {
-      attackEndTime = gateOffTime;
-
       var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
       attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage; 
+      attackEndTime = gateOffTime;
     }
 
     var delayEndTime = attackEndTime + envelope.decay;
