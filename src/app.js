@@ -25,7 +25,7 @@ app.controller('controller', ['$scope', function($scope) {
                           filterCutoff:       1000,
                           filterResonance:    0,
                           filterLFOWaveform:  'sine',
-                          fileLFOFrequency:   5,
+                          filterLFOFrequency: 5,
                           filterLFOAmplitude: 0,
                           envelopeAttack:     0.0,
                           envelopeDecay:      0.0,
