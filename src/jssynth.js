@@ -206,7 +206,6 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
 
   function start() {
     var i;
-    sequenceIndex = 0;
 
     for (i = 0; i < tracks.length; i++) {
       tracks[i].reset(audioContext.currentTime);
@@ -221,7 +220,6 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
     playing = false;
   };
 
-  var sequenceIndex;
   var timeoutId;
   var playing = false;
 
