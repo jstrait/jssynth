@@ -257,7 +257,7 @@ app.directive('noteInput', function () {
     link: function (scope, element, attrs, ctrl) {
        if (!ctrl) return;
 
-       function formatNoteValue(rawValue) {
+       var formatNoteValue = function(rawValue) {
          var formattedValue = rawValue;
 
          // Make first character uppercase (but not subsequent characters, to avoid

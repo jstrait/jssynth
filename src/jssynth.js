@@ -186,7 +186,7 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
 
-  function tick() {
+  var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
     tracks.forEach(function(track) {
@@ -199,7 +199,7 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
     }
   };
 
-  function start() {
+  var start = function() {
     tracks.forEach(function(track) {
       track.reset(audioContext.currentTime);
     });
@@ -209,7 +209,7 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
     playing = true;
   };
 
-  function stop() {
+  var stop = function() {
     window.clearInterval(timeoutId);
     playing = false;
   };
