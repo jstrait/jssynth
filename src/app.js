@@ -122,15 +122,17 @@ app.controller('controller', ['$scope', function($scope) {
 
   var parseNotes = function() {
     var result = [];
+    var rawNotes;
 
-    for (var t = 0; t < $scope.tracks.length; t++) {
-      var rawNotes = [];
-      for (var n = 0; n < $scope.tracks[t].notes.length; n++) {
-        rawNotes[n] = $scope.tracks[t].notes[n].name;
-      }
+    $scope.tracks.forEach(function(track) {
+      rawNotes = [];
+
+      track.notes.forEach(function(note, index) {
+        rawNotes[index] = note.name;
+      });
 
       result.push(rawNotes.join(' '));
-    }
+    });
 
     return result;
   };
@@ -168,11 +170,10 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
     synth.instruments[0] = new JSSynth.Instrument(audioContext, config);
-    var i;
 
-    for (i = 0; i < synth.tracks.length; i++) {
-      synth.tracks[i].instrument = synth.instruments[0];
-    }
+    synth.tracks.forEach(function(track) {
+      track.instrument = synth.instruments[0];
+    });
   };
 
   $scope.updateNotes = function() {
