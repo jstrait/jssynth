@@ -454,7 +454,7 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
           noteTimeDuration = transport.stepInterval * note.stepDuration;
           track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
 
-          nextNoteTime += noteTimeDuration;
+          nextNoteTime += transport.stepInterval;
         });
       }
     });
