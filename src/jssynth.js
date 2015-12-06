@@ -261,8 +261,7 @@ JSSynth.WaveWriter = function() {
   waveWriter.write = function(rawFloat32SampleData) {
     var sampleDataByteCount = rawFloat32SampleData.length * bytesPerSample;
     var fileLength = waveFileHeaderByteCount + sampleDataByteCount;
-    var outputBuffer = new ArrayBuffer(fileLength);
-    var outputView = new DataView(outputBuffer);
+    var outputView = new DataView(new ArrayBuffer(fileLength));
 
     outputView.setUint8(  0, "R".charCodeAt(0), littleEndian);
     outputView.setUint8(  1, "I".charCodeAt(0), littleEndian);
@@ -308,7 +307,7 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
     var waveWriter = new JSSynth.WaveWriter();
     var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
 
-    var blob = new Blob([outputView], { type: 'audio/wav' });
+    var blob = new Blob([outputView], { type: "audio/wav" });
     var url  = window.URL.createObjectURL(blob);
     document.getElementById("downloaded-file").src = url;
 
