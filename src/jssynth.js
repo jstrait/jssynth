@@ -243,49 +243,71 @@ JSSynth.Transport = function(audioContext, tracks, stopCallback) {
 };
 
 
-JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, completeCallback) {
-  var transport = {};
+JSSynth.WaveWriter = function() {
+  var waveWriter = {};
+  
+  var audioFormatCode = 1;  // I.e., PCM
+  var numChannels = 1;
+  var bitsPerSample = 16;
+  var bytesPerSample = 2;
+  var sampleRate = 44100;
 
-  offlineAudioContext.oncomplete = function(e) {
-    var rawFloat32SampleData = e.renderedBuffer.getChannelData(0);
+  var blockAlign = (bitsPerSample / 8) * numChannels;
+  var byteRate = blockAlign * sampleRate;
+
+  var waveFileHeaderByteCount = 44;
+
+  waveWriter.write = function(rawFloat32SampleData) {
     var i;
-
-    var sampleDataByteCount = rawFloat32SampleData.length * 2;
-    var fileLength = 44 + sampleDataByteCount;
+    var sampleDataByteCount = rawFloat32SampleData.length * bytesPerSample;
+    var fileLength = waveFileHeaderByteCount + sampleDataByteCount;
     var outputBuffer = new ArrayBuffer(fileLength);
     var outputView = new DataView(outputBuffer);
 
     // Double check these should be little endian (i.e., true)
-    outputView.setUint8(0, "R".charCodeAt(0), true);
-    outputView.setUint8(1, "I".charCodeAt(0), true);
-    outputView.setUint8(2, "F".charCodeAt(0), true);
-    outputView.setUint8(3, "F".charCodeAt(0), true);
-    outputView.setUint32(4, 36 + sampleDataByteCount, true);
-    outputView.setUint8(8,  "W".charCodeAt(0), true);
-    outputView.setUint8(9,  "A".charCodeAt(0), true);
-    outputView.setUint8(10,  "V".charCodeAt(0), true);
-    outputView.setUint8(11, "E".charCodeAt(0), true);
-    outputView.setUint8(12,  "f".charCodeAt(0), true);
-    outputView.setUint8(13,  "m".charCodeAt(0), true);
-    outputView.setUint8(14,  "t".charCodeAt(0), true);
-    outputView.setUint8(15, " ".charCodeAt(0), true);
+    outputView.setUint8(  0, "R".charCodeAt(0), true);
+    outputView.setUint8(  1, "I".charCodeAt(0), true);
+    outputView.setUint8(  2, "F".charCodeAt(0), true);
+    outputView.setUint8(  3, "F".charCodeAt(0), true);
+    outputView.setUint32( 4, 36 + sampleDataByteCount, true);
+    outputView.setUint8(  8, "W".charCodeAt(0), true);
+    outputView.setUint8(  9, "A".charCodeAt(0), true);
+    outputView.setUint8( 10, "V".charCodeAt(0), true);
+    outputView.setUint8( 11, "E".charCodeAt(0), true);
+    outputView.setUint8( 12, "f".charCodeAt(0), true);
+    outputView.setUint8( 13, "m".charCodeAt(0), true);
+    outputView.setUint8( 14, "t".charCodeAt(0), true);
+    outputView.setUint8( 15, " ".charCodeAt(0), true);
     outputView.setUint32(16, 16, true);
-    outputView.setUint16(20, 1, true);   // Audio code, i.e. 1 for PCM
-    outputView.setUint16(22, 1, true);   // Num Channels
-    outputView.setUint32(24, 44100, true);  // Sample rate
-    outputView.setUint32(28, 88200, true);  // Byte rate (block_align * sample_rate)
-    outputView.setUint16(32, 2, true);  // Block align (bits_per_sample / 8) * channels
-    outputView.setUint16(34, 16, true);  // Bits per sample
-    outputView.setUint8(36, "d".charCodeAt(0), true);
-    outputView.setUint8(37, "a".charCodeAt(0), true);
-    outputView.setUint8(38, "t".charCodeAt(0), true);
-    outputView.setUint8(39, "a".charCodeAt(0), true);
+    outputView.setUint16(20, audioFormatCode, true);
+    outputView.setUint16(22, numChannels, true);
+    outputView.setUint32(24, sampleRate, true);
+    outputView.setUint32(28, byteRate, true);
+    outputView.setUint16(32, blockAlign, true);
+    outputView.setUint16(34, bitsPerSample, true);
+    outputView.setUint8( 36, "d".charCodeAt(0), true);
+    outputView.setUint8( 37, "a".charCodeAt(0), true);
+    outputView.setUint8( 38, "t".charCodeAt(0), true);
+    outputView.setUint8( 39, "a".charCodeAt(0), true);
     outputView.setUint32(40, sampleDataByteCount, true);
 
     for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
       outputView.setInt16(44 + (i * 2), rawFloat32SampleData[i] * 32767.0, true);
     }
+
+    return outputView;
+  };
+
+  return waveWriter;
+};
+
+JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, completeCallback) {
+  var transport = {};
+
+  offlineAudioContext.oncomplete = function(e) {
+    var waveWriter = new JSSynth.WaveWriter();
+    var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
 
     var blob = new Blob([outputView], { type: 'audio/wav' });
     var url  = window.URL.createObjectURL(blob);
