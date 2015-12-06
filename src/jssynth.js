@@ -320,28 +320,21 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
   };
 
   transport.tick = function() {
-    var t, n;
-    var note, noteTimeDuration;
-    var track, sequence;
-
+    var nextNoteTime, noteTimeDuration;
     var startTime = offlineAudioContext.currentTime;
 
-    for (t = 0; t < tracks.length; t++) {
-      track = tracks[t];
-
+    tracks.forEach(function(track) {
       if (!track.getIsMuted()) {
-        sequence = track.sequence;
-        var nextNoteTime = startTime;
+        nextNoteTime = startTime;
 
-        for (n = 0; n < sequence.length; n++) {
-          note = sequence[n];
+        track.sequence.forEach(function(note) {
           noteTimeDuration = transport.stepInterval * note.stepDuration;
           track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
 
           nextNoteTime += noteTimeDuration;
-        }
+        });
       }
-    }
+    });
 
     offlineAudioContext.startRendering();
   };
