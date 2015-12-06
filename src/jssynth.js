@@ -259,7 +259,6 @@ JSSynth.WaveWriter = function() {
   var waveFileHeaderByteCount = 44;
 
   waveWriter.write = function(rawFloat32SampleData) {
-    var i;
     var sampleDataByteCount = rawFloat32SampleData.length * bytesPerSample;
     var fileLength = waveFileHeaderByteCount + sampleDataByteCount;
     var outputBuffer = new ArrayBuffer(fileLength);
@@ -291,10 +290,10 @@ JSSynth.WaveWriter = function() {
     outputView.setUint8( 39, "a".charCodeAt(0), littleEndian);
     outputView.setUint32(40, sampleDataByteCount, littleEndian);
 
-    for (i = 0; i < rawFloat32SampleData.length; i++) {
+    rawFloat32SampleData.forEach(function(sample, index) {
       // Should this round?
-      outputView.setInt16(44 + (i * 2), rawFloat32SampleData[i] * 32767.0, littleEndian);
-    }
+      outputView.setInt16(waveFileHeaderByteCount + (index * bytesPerSample), sample * 32767.0, littleEndian);
+    });
 
     return outputView;
   };
