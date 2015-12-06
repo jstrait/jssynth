@@ -176,13 +176,10 @@ app.controller('controller', ['$scope', function($scope) {
     });
   };
 
-  $scope.updateNotes = function() {
-    // Should see how to update just the relevant track/note, rather than all tracks/notes
-    var i;
+  $scope.updateNotes = function(trackIndex) {
+    // Should see how to update just the relevant /note, rather than all notes in the Track
     var parsedNotes = parseNotes();
-    for (i = 0; i < parsedNotes.length; i++) {
-      synth.tracks[i].setNotes(parsedNotes[i]);
-    }
+    synth.tracks[trackIndex].setNotes(parsedNotes[trackIndex]);
   };
 
   $scope.addTrack = function() {
