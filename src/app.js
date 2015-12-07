@@ -143,8 +143,8 @@ app.controller('controller', ['$scope', function($scope) {
     window.URL.revokeObjectURL(blob);
   };
 
-  var syncPatternTracks = function(pattern, audioContext) {
-    var instrument = new JSSynth.Instrument(audioContext, serializeInstrument());
+  var syncPatternTracks = function(pattern) {
+    var instrument = new JSSynth.Instrument(serializeInstrument());
 
     var tracks = [];
     $scope.tracks.forEach(function(track) {
@@ -157,11 +157,11 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.init = function() {
     synth.pattern = new JSSynth.Pattern();
+    syncPatternTracks(synth.pattern);
     synth.transport = new JSSynth.Transport(synth.pattern, stopCallback);
 
     if (synth.transport) {
       audioContext = synth.transport.getAudioContext();
-      syncPatternTracks(synth.pattern, audioContext);
       synth.transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
@@ -173,20 +173,19 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.export = function() {
     var pattern = new JSSynth.Pattern();
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, exportCompleteCallback);
-    
-    syncPatternTracks(pattern, offlineTransport.getAudioContext());
+    syncPatternTracks(pattern);
 
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, exportCompleteCallback);
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };
 
   $scope.updateInstrument = function() {
-    syncPatternTracks(synth.pattern, audioContext);
+    syncPatternTracks(synth.pattern);
   };
 
   $scope.updateNotes = function(trackIndex) {
-    syncPatternTracks(synth.pattern, audioContext);
+    syncPatternTracks(synth.pattern);
   };
 
   $scope.addTrack = function() {
@@ -211,12 +210,12 @@ app.controller('controller', ['$scope', function($scope) {
                    };
     $scope.tracks.push(newTrack);
 
-    syncPatternTracks(synth.pattern, audioContext);
+    syncPatternTracks(synth.pattern);
   };
 
   $scope.removeTrack = function(index) {
     $scope.tracks.splice(index, 1);
-    syncPatternTracks(synth.pattern, audioContext);
+    syncPatternTracks(synth.pattern);
   };
 
   $scope.updateTempo = function() {
@@ -229,7 +228,7 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.toggleTrackMute = function(index) {
     $scope.tracks[index].muted = !$scope.tracks[index].muted;
-    syncPatternTracks(synth.pattern, audioContext);
+    syncPatternTracks(synth.pattern);
   };
 
   $scope.toggle = function() {

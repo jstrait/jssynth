@@ -2,8 +2,8 @@
 
 var JSSynth = JSSynth || {};
 
-JSSynth.Instrument = function(audioContext, config) {
-  var buildOscillator = function(waveform, frequency) {
+JSSynth.Instrument = function(config) {
+  var buildOscillator = function(audioContext, waveform, frequency) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
     oscillator.frequency.value = frequency;
@@ -11,14 +11,14 @@ JSSynth.Instrument = function(audioContext, config) {
     return oscillator;
   };
 
-  var buildGain = function(amplitude) {
+  var buildGain = function(audioContext, amplitude) {
     var gain = audioContext.createGain();
     gain.gain.value = amplitude;
 
     return gain;
   };
 
-  var buildFilter = function(frequency, resonance) {
+  var buildFilter = function(audioContext, frequency, resonance) {
     var filter = audioContext.createBiquadFilter();
     filter.frequency.value = frequency;
     filter.Q.value = resonance;
@@ -28,23 +28,23 @@ JSSynth.Instrument = function(audioContext, config) {
 
   var instrument = {};
 
-  instrument.playNote = function(note, gateOnTime, gateOffTime) {
+  instrument.playNote = function(audioContext, note, gateOnTime, gateOffTime) {
     if (note.frequency > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(config.waveform, note.frequency);
+      var oscillator = buildOscillator(audioContext, config.waveform, note.frequency);
 
       // LFO for base sound
-      var pitchLfoOscillator = buildOscillator(config.lfo.waveform, config.lfo.frequency);
-      var pitchLfoGain = buildGain(config.lfo.amplitude);
+      var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
+      var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
       pitchLfoGain.connect(oscillator.frequency);
 
       // Filter
-      var filter = buildFilter(config.filter.cutoff, config.filter.resonance);
-      var filterLfoOscillator = buildOscillator(config.filter.lfo.waveform, config.filter.lfo.frequency);
+      var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency);
       // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
       // pops/clicks.
-      var filterLfoGain = buildGain(Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
       filterLfoOscillator.connect(filterLfoGain);
       filterLfoGain.connect(filter.frequency);
 
@@ -153,7 +153,7 @@ JSSynth.Pattern = function() {
 
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
 
-  pattern.tick = function(endTime, stepDuration, loop) {
+  pattern.tick = function(audioContext, endTime, stepDuration, loop) {
     var note, noteTimeDuration;
 
     while (currentTime < endTime) {
@@ -162,7 +162,7 @@ JSSynth.Pattern = function() {
         noteTimeDuration = stepDuration * note.stepDuration;
 
         if (!track.isMuted()) {
-          track.getInstrument().playNote(note, currentTime, currentTime + noteTimeDuration);
+          track.getInstrument().playNote(audioContext, note, currentTime, currentTime + noteTimeDuration);
         }
       });
 
@@ -391,7 +391,7 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    pattern.tick(finalTime, transport.stepInterval, transport.loop);
+    pattern.tick(audioContext, finalTime, transport.stepInterval, transport.loop);
 
     if (pattern.isFinishedPlaying()) {
       stop();
@@ -463,7 +463,7 @@ JSSynth.OfflineTransport = function(pattern, completeCallback) {
     var finalTime = startTime + scheduleAheadTime;
 
     pattern.reset(startTime);
-    pattern.tick(finalTime, transport.stepInterval, false);
+    pattern.tick(offlineAudioContext, finalTime, transport.stepInterval, false);
 
     offlineAudioContext.startRendering();
   };
