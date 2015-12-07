@@ -122,19 +122,17 @@ JSSynth.EnvelopeCalculator = {
 };
 
 
-JSSynth.Pattern = function(tracks) {
+JSSynth.Pattern = function() {
   var pattern = {};
+
+  var tracks = [];
 
   var sequenceIndex;
   var isFinishedPlaying;
   var currentTime;
 
-  pattern.addTrack = function(newTrack) {
-    tracks.push(newTrack);
-  };
-
-  pattern.replaceTrack = function(trackIndex, newTrack) {
-    tracks[trackIndex] = newTrack;
+  pattern.replaceTracks = function(newTracks) {
+    tracks = newTracks;
   };
 
   pattern.reset = function(newCurrentTime) {
@@ -146,7 +144,7 @@ JSSynth.Pattern = function(tracks) {
   // TODO: Automatically force all Tracks to be the same length
   pattern.stepCount = function() {
     if (tracks.length > 0) {
-      return tracks[0].sequence.length;
+      return tracks[0].getSequence().length;
     }
     else {
       return 0;
@@ -160,11 +158,11 @@ JSSynth.Pattern = function(tracks) {
 
     while (currentTime < endTime) {
       tracks.forEach(function(track) {
-        note = track.sequence[sequenceIndex];
+        note = track.getSequence()[sequenceIndex];
         noteTimeDuration = stepDuration * note.stepDuration;
 
-        if (!track.isMuted) {
-          track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
+        if (!track.isMuted()) {
+          track.getInstrument().playNote(note, currentTime, currentTime + noteTimeDuration);
         }
       });
 
@@ -190,9 +188,9 @@ JSSynth.Pattern = function(tracks) {
 JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
-  track.instrument = instrument; 
-  track.sequence   = sequence;
-  track.isMuted    = isMuted;
+  track.getInstrument = function() { return instrument; };
+  track.getSequence   = function() { return sequence; };
+  track.isMuted       = function() { return isMuted; };
 
   return track;
 };
