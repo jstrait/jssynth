@@ -136,6 +136,18 @@ app.controller('controller', ['$scope', function($scope) {
     $scope.$digest();
   };
 
+  var exportCompleteCallback = function(blob) {
+    var url  = window.URL.createObjectURL(blob);
+    document.getElementById("downloaded-file").src = url;
+
+    var hiddenDownloadLink = document.getElementById("hidden-download-link");
+    hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
+    hiddenDownloadLink.href = url;
+    hiddenDownloadLink.click();
+
+    window.URL.revokeObjectURL(blob);
+  };
+
   $scope.init = function() {
     if (window.AudioContext) {
       audioContext = new AudioContext();
@@ -218,7 +230,7 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.toggleTrackMute = function(index) {
     $scope.tracks[index].muted = !$scope.tracks[index].muted;
-    synth.tracks[index].setIsMuted($scope.tracks[index].muted);
+    synth.tracks[index].isMuted = $scope.tracks[index].muted;
   };
 
   $scope.toggle = function() {
@@ -239,7 +251,7 @@ app.controller('controller', ['$scope', function($scope) {
     });
     var pattern = new JSSynth.Pattern(tracks);
 
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, pattern, $scope.downloadFileName, function() { });
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, pattern, exportCompleteCallback);
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };

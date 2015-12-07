@@ -188,14 +188,6 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
   track.sequence   = sequence;
   track.isMuted    = isMuted;
 
-  track.getIsMuted = function() {
-    return track.isMuted;
-  };
-
-  track.setIsMuted = function(newIsMuted) {
-    track.isMuted = newIsMuted;
-  };
-
   return track;
 };
 
@@ -436,23 +428,15 @@ JSSynth.Transport = function(audioContext, pattern, stopCallback) {
   return transport;
 };
 
-JSSynth.OfflineTransport = function(offlineAudioContext, pattern, filename, completeCallback) {
+JSSynth.OfflineTransport = function(offlineAudioContext, pattern, completeCallback) {
   var transport = {};
 
   offlineAudioContext.oncomplete = function(e) {
     var waveWriter = new JSSynth.WaveWriter();
     var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
-
     var blob = new Blob([outputView], { type: "audio/wav" });
-    var url  = window.URL.createObjectURL(blob);
-    document.getElementById("downloaded-file").src = url;
 
-    var hiddenDownloadLink = document.getElementById("hidden-download-link");
-    hiddenDownloadLink.download = filename + ".wav";
-    hiddenDownloadLink.href = url;
-    hiddenDownloadLink.click();
-
-    window.URL.revokeObjectURL(blob);
+    completeCallback(blob);
   };
 
   transport.tick = function() {
