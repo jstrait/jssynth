@@ -171,9 +171,10 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.updateNotes = function(trackIndex) {
-    // Should see how to update just the relevant note, rather than all notes in the Track
     var rawSequence = parseTrack($scope.tracks[trackIndex]);
-    synth.tracks[trackIndex].setNotes(rawSequence);
+    var sequence = JSSynth.SequenceParser.parse(rawSequence);
+    synth.tracks[trackIndex] = new JSSynth.Track(synth.instruments[0], sequence, $scope.tracks[trackIndex].muted);
+    synth.pattern.replaceTrack(trackIndex, synth.tracks[trackIndex]);
   };
 
   $scope.addTrack = function() {

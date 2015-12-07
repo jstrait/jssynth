@@ -133,6 +133,10 @@ JSSynth.Pattern = function(tracks) {
     tracks.push(newTrack);
   };
 
+  pattern.replaceTrack = function(trackIndex, newTrack) {
+    tracks[trackIndex] = newTrack;
+  };
+
   pattern.reset = function(newCurrentTime) {
     sequenceIndex = 0;
     isFinishedPlaying = false;
@@ -181,10 +185,6 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
   track.instrument = instrument; 
   track.sequence   = sequence;
   track.isMuted    = isMuted;
-
-  track.setNotes = function(newNotes) {
-    track.sequence = JSSynth.SequenceParser.parse(newNotes);
-  };
 
   track.getIsMuted = function() {
     return track.isMuted;
