@@ -156,12 +156,12 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.init = function() {
-    if (window.AudioContext) {
-      audioContext = new AudioContext();
+    synth.pattern = new JSSynth.Pattern();
+    synth.transport = new JSSynth.Transport(synth.pattern, stopCallback);
 
-      synth.pattern = new JSSynth.Pattern();
+    if (synth.transport) {
+      audioContext = synth.transport.getAudioContext();
       syncPatternTracks(synth.pattern, audioContext);
-      synth.transport = new JSSynth.Transport(audioContext, synth.pattern, stopCallback);
       synth.transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
@@ -172,12 +172,11 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.init();
 
   $scope.export = function() {
-    var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
-
     var pattern = new JSSynth.Pattern();
-    syncPatternTracks(pattern, offlineAudioContext);
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, exportCompleteCallback);
+    
+    syncPatternTracks(pattern, offlineTransport.getAudioContext());
 
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, pattern, exportCompleteCallback);
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };

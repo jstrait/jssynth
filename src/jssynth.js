@@ -376,9 +376,17 @@ JSSynth.WaveWriter = function() {
   return waveWriter;
 };
 
-JSSynth.Transport = function(audioContext, pattern, stopCallback) {
+JSSynth.Transport = function(pattern, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
+  var audioContext;
+
+  if (window.AudioContext) {
+    audioContext = new AudioContext();
+  }
+  else {
+    return false;
+  }
 
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
@@ -410,6 +418,8 @@ JSSynth.Transport = function(audioContext, pattern, stopCallback) {
 
   var transport = {};
 
+  transport.getAudioContext = function() { return audioContext; };
+
   transport.setTempo = function(newTempo) {
     transport.tempo = newTempo;
 
@@ -432,8 +442,10 @@ JSSynth.Transport = function(audioContext, pattern, stopCallback) {
   return transport;
 };
 
-JSSynth.OfflineTransport = function(offlineAudioContext, pattern, completeCallback) {
+JSSynth.OfflineTransport = function(pattern, completeCallback) {
   var transport = {};
+
+  var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
 
   offlineAudioContext.oncomplete = function(e) {
     var waveWriter = new JSSynth.WaveWriter();
@@ -442,6 +454,8 @@ JSSynth.OfflineTransport = function(offlineAudioContext, pattern, completeCallba
 
     completeCallback(blob);
   };
+
+  transport.getAudioContext = function() { return offlineAudioContext; };
 
   transport.tick = function() {
     var scheduleAheadTime = pattern.stepCount() * transport.stepInterval;
