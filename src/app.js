@@ -8,6 +8,7 @@ app.controller('controller', ['$scope', function($scope) {
   var synth = {
     instruments: [],
     tracks: [],
+    pattern: null,
     transport: null,
   };
 
@@ -148,8 +149,9 @@ app.controller('controller', ['$scope', function($scope) {
         var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
         synth.tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
       });
+      synth.pattern = new JSSynth.Pattern(synth.tracks);
 
-      synth.transport = new JSSynth.Transport(audioContext, synth.tracks, stopCallback);
+      synth.transport = new JSSynth.Transport(audioContext, synth.pattern, stopCallback);
       synth.transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {

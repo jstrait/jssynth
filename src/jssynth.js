@@ -121,6 +121,56 @@ JSSynth.EnvelopeCalculator = {
   },
 };
 
+
+JSSynth.Pattern = function(tracks) {
+  var pattern = {};
+
+  var sequenceIndex;
+  var isFinishedPlaying;
+  var currentTime;
+
+  pattern.reset = function(newCurrentTime) {
+    sequenceIndex = 0;
+    isFinishedPlaying = false;
+    currentTime = newCurrentTime;
+  };
+
+  pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
+
+  pattern.tick = function(endTime, stepDuration, loop) {
+    var note, noteTimeDuration;
+
+    while (currentTime < endTime) {
+      tracks.forEach(function(track) {
+        note = track.sequence[sequenceIndex];
+        noteTimeDuration = stepDuration * note.stepDuration;
+
+        if (!track.isMuted) {
+          track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
+        }
+      });
+
+      sequenceIndex += 1;
+      // TODO: Don't rely on there being at least 1 track,
+      //       and automatically force all Tracks to be the same length
+      if (sequenceIndex >= tracks[0].sequence.length) {
+        if (loop) {
+          sequenceIndex = 0;
+        }
+        else {
+          isFinishedPlaying = true;
+          return;
+        }
+      }
+
+      currentTime += stepDuration;
+    };
+  };
+
+  pattern.reset();
+  return pattern;
+};
+
 JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
@@ -132,12 +182,6 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
     track.sequence = JSSynth.SequenceParser.parse(newNotes);
   };
 
-  track.reset = function(newCurrentTime) {
-    sequenceIndex = 0;
-    finishedPlaying = false;
-    currentTime = newCurrentTime;
-  };
-
   track.getIsMuted = function() {
     return track.isMuted;
   };
@@ -146,39 +190,6 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
     track.isMuted = newIsMuted;
   };
 
-  track.finishedPlaying = function() { return finishPlaying; }
-
-  track.tick = function(endTime, stepDuration, loop) {
-    var note, noteTimeDuration;
-
-    while (currentTime < endTime) {
-      note = track.sequence[sequenceIndex];
-      noteTimeDuration = stepDuration * note.stepDuration;
-      
-      if (!track.isMuted) {
-        track.instrument.playNote(note, currentTime, currentTime + noteTimeDuration);
-      }
-
-      sequenceIndex += 1;
-      if (sequenceIndex >= track.sequence.length) {
-        if (loop) {
-          sequenceIndex = 0;
-        }
-        else {
-          finishedPlaying = true;
-          return;
-        }
-      }
-
-      currentTime += stepDuration;
-    }
-  };
-
-  var sequenceIndex;
-  var currentTime;
-  var finishedPlaying;
-
-  track.reset();
   return track;
 };
 
@@ -363,27 +374,23 @@ JSSynth.WaveWriter = function() {
   return waveWriter;
 };
 
-JSSynth.Transport = function(audioContext, tracks, stopCallback) {
+JSSynth.Transport = function(audioContext, pattern, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
 
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    tracks.forEach(function(track) {
-      track.tick(finalTime, transport.stepInterval, transport.loop);
-    });
+    pattern.tick(finalTime, transport.stepInterval, transport.loop);
 
-    if (!tracks.some(function(track) { return track.finishedPlaying; })) {
+    if (pattern.isFinishedPlaying()) {
       stop();
       window.setTimeout(stopCallback, transport.stepInterval * 1000);
     }
   };
 
   var start = function() {
-    tracks.forEach(function(track) {
-      track.reset(audioContext.currentTime);
-    });
+    pattern.reset(audioContext.currentTime);
 
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
