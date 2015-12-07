@@ -143,6 +143,8 @@ JSSynth.Pattern = function(tracks) {
     currentTime = newCurrentTime;
   };
 
+  pattern.stepCount = function() { return tracks[0].sequence.length; };
+
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
 
   pattern.tick = function(endTime, stepDuration, loop) {
@@ -434,7 +436,7 @@ JSSynth.Transport = function(audioContext, pattern, stopCallback) {
   return transport;
 };
 
-JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, completeCallback) {
+JSSynth.OfflineTransport = function(offlineAudioContext, pattern, filename, completeCallback) {
   var transport = {};
 
   offlineAudioContext.oncomplete = function(e) {
@@ -454,21 +456,12 @@ JSSynth.OfflineTransport = function(offlineAudioContext, tracks, filename, compl
   };
 
   transport.tick = function() {
-    var nextNoteTime, noteTimeDuration;
+    var scheduleAheadTime = pattern.stepCount() * transport.stepInterval;
     var startTime = offlineAudioContext.currentTime;
+    var finalTime = startTime + scheduleAheadTime;
 
-    tracks.forEach(function(track) {
-      if (!track.getIsMuted()) {
-        nextNoteTime = startTime;
-
-        track.sequence.forEach(function(note) {
-          noteTimeDuration = transport.stepInterval * note.stepDuration;
-          track.instrument.playNote(note, nextNoteTime, nextNoteTime + noteTimeDuration);
-
-          nextNoteTime += transport.stepInterval;
-        });
-      }
-    });
+    pattern.reset(startTime);
+    pattern.tick(finalTime, transport.stepInterval, false);
 
     offlineAudioContext.startRendering();
   };

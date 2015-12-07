@@ -237,8 +237,9 @@ app.controller('controller', ['$scope', function($scope) {
       var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
       tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
     });
+    var pattern = new JSSynth.Pattern(tracks);
 
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, $scope.downloadFileName, function() { });
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, pattern, $scope.downloadFileName, function() { });
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
     offlineTransport.tick();
   };
