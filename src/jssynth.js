@@ -129,6 +129,10 @@ JSSynth.Pattern = function(tracks) {
   var isFinishedPlaying;
   var currentTime;
 
+  pattern.addTrack = function(newTrack) {
+    tracks.push(newTrack);
+  };
+
   pattern.reset = function(newCurrentTime) {
     sequenceIndex = 0;
     isFinishedPlaying = false;

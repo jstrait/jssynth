@@ -199,7 +199,7 @@ app.controller('controller', ['$scope', function($scope) {
     $scope.tracks.push(newTrack);
 
     var sequence = JSSynth.SequenceParser.parse(parseTrack(newTrack));
-    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence, newTrack.muted));
+    synth.pattern.addTrack(new JSSynth.Track(synth.instruments[0], sequence, newTrack.muted));
   };
 
   $scope.removeTrack = function(index) {
