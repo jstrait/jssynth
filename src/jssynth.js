@@ -324,52 +324,52 @@ JSSynth.MusicTheory = {
 JSSynth.WaveWriter = function() {
   var waveWriter = {};
 
-  var littleEndian = true;
-  var audioFormatCode = 1;  // I.e., PCM
-  var numChannels = 1;
-  var bitsPerSample = 16;
-  var bytesPerSample = 2;
-  var sampleRate = 44100;
+  var LITTLE_ENDIAN = true;
+  var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
+  var NUM_CHANNELS = 1;
+  var BITS_PER_SAMPLE = 16;
+  var BYTES_PER_SAMPLE = 2;
+  var SAMPLE_RATE = 44100;
 
-  var blockAlign = (bitsPerSample / 8) * numChannels;
-  var byteRate = blockAlign * sampleRate;
+  var BLOCK_ALIGN = (BITS_PER_SAMPLE / 8) * NUM_CHANNELS;
+  var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
 
-  var waveFileHeaderByteCount = 44;
+  var WAVEFILE_HEADER_BYTE_COUNT = 44;
 
   waveWriter.write = function(rawFloat32SampleData) {
-    var sampleDataByteCount = rawFloat32SampleData.length * bytesPerSample;
-    var fileLength = waveFileHeaderByteCount + sampleDataByteCount;
+    var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
+    var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
 
-    outputView.setUint8(  0, "R".charCodeAt(0), littleEndian);
-    outputView.setUint8(  1, "I".charCodeAt(0), littleEndian);
-    outputView.setUint8(  2, "F".charCodeAt(0), littleEndian);
-    outputView.setUint8(  3, "F".charCodeAt(0), littleEndian);
-    outputView.setUint32( 4, 36 + sampleDataByteCount, littleEndian);
-    outputView.setUint8(  8, "W".charCodeAt(0), littleEndian);
-    outputView.setUint8(  9, "A".charCodeAt(0), littleEndian);
-    outputView.setUint8( 10, "V".charCodeAt(0), littleEndian);
-    outputView.setUint8( 11, "E".charCodeAt(0), littleEndian);
-    outputView.setUint8( 12, "f".charCodeAt(0), littleEndian);
-    outputView.setUint8( 13, "m".charCodeAt(0), littleEndian);
-    outputView.setUint8( 14, "t".charCodeAt(0), littleEndian);
-    outputView.setUint8( 15, " ".charCodeAt(0), littleEndian);
-    outputView.setUint32(16, 16, littleEndian);
-    outputView.setUint16(20, audioFormatCode, littleEndian);
-    outputView.setUint16(22, numChannels, littleEndian);
-    outputView.setUint32(24, sampleRate, littleEndian);
-    outputView.setUint32(28, byteRate, littleEndian);
-    outputView.setUint16(32, blockAlign, littleEndian);
-    outputView.setUint16(34, bitsPerSample, littleEndian);
-    outputView.setUint8( 36, "d".charCodeAt(0), littleEndian);
-    outputView.setUint8( 37, "a".charCodeAt(0), littleEndian);
-    outputView.setUint8( 38, "t".charCodeAt(0), littleEndian);
-    outputView.setUint8( 39, "a".charCodeAt(0), littleEndian);
-    outputView.setUint32(40, sampleDataByteCount, littleEndian);
+    outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  1, "I".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  2, "F".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  3, "F".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32( 4, 36 + sampleDataByteCount, LITTLE_ENDIAN);
+    outputView.setUint8(  8, "W".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  9, "A".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 10, "V".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 11, "E".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 12, "f".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 13, "m".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 14, "t".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 15, " ".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32(16, 16, LITTLE_ENDIAN);
+    outputView.setUint16(20, AUDIO_FORMAT_CODE, LITTLE_ENDIAN);
+    outputView.setUint16(22, NUM_CHANNELS, LITTLE_ENDIAN);
+    outputView.setUint32(24, SAMPLE_RATE, LITTLE_ENDIAN);
+    outputView.setUint32(28, BYTE_RATE, LITTLE_ENDIAN);
+    outputView.setUint16(32, BLOCK_ALIGN, LITTLE_ENDIAN);
+    outputView.setUint16(34, BITS_PER_SAMPLE, LITTLE_ENDIAN);
+    outputView.setUint8( 36, "d".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 37, "a".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 38, "t".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
     rawFloat32SampleData.forEach(function(sample, index) {
       // Should this round?
-      outputView.setInt16(waveFileHeaderByteCount + (index * bytesPerSample), sample * 32767.0, littleEndian);
+      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (index * BYTES_PER_SAMPLE), sample * 32767.0, LITTLE_ENDIAN);
     });
 
     return outputView;
