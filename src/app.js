@@ -5,12 +5,7 @@ var app = angular.module('js110', []);
 app.controller('controller', ['$scope', function($scope) {
   var audioContext;
 
-  var synth = {
-    instruments: [],
-    tracks: [],
-    pattern: null,
-    transport: null,
-  };
+  var synth = { };
 
   $scope.playing = false;
   $scope.tempo = 100;
@@ -148,20 +143,26 @@ app.controller('controller', ['$scope', function($scope) {
     window.URL.revokeObjectURL(blob);
   };
 
+  var buildSynthContext = function(audioContext) {
+    var synthContext = {};
+
+    var instrument = new JSSynth.Instrument(audioContext, toGenericConfig());
+    synthContext.instruments = [instrument];
+
+    synthContext.tracks = [];
+    $scope.tracks.forEach(function(track) {
+      var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
+      synthContext.tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+    });
+    synthContext.pattern = new JSSynth.Pattern(synthContext.tracks);
+
+    return synthContext;
+  };
+
   $scope.init = function() {
     if (window.AudioContext) {
       audioContext = new AudioContext();
-
-      var config = toGenericConfig();
-      var instrument = new JSSynth.Instrument(audioContext, config);
-
-      synth.instruments = [instrument];
-
-      $scope.tracks.forEach(function(track) {
-        var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
-        synth.tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-      });
-      synth.pattern = new JSSynth.Pattern(synth.tracks);
+      synth = buildSynthContext(audioContext);
 
       synth.transport = new JSSynth.Transport(audioContext, synth.pattern, stopCallback);
       synth.transport.setTempo(parseInt($scope.tempo, 10));
@@ -172,6 +173,15 @@ app.controller('controller', ['$scope', function($scope) {
     }
   };
   $scope.init();
+
+  $scope.export = function() {
+    var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
+    var offlineSynthContext = buildSynthContext(offlineAudioContext);
+
+    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, offlineSynthContext.pattern, exportCompleteCallback);
+    offlineTransport.setTempo(parseInt($scope.tempo, 10));
+    offlineTransport.tick();
+  };
 
   $scope.updateInstrument = function() {
     var config = toGenericConfig();
@@ -236,24 +246,6 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.toggle = function() {
     synth.transport.toggle();
     $scope.playing = !$scope.playing;
-  };
-
-  $scope.export = function() {
-    var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
-
-    var instrument = new JSSynth.Instrument(offlineAudioContext, toGenericConfig());
-
-    var tracks = [];
-
-    $scope.tracks.forEach(function(track) {
-      var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
-      tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-    });
-    var pattern = new JSSynth.Pattern(tracks);
-
-    var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, pattern, exportCompleteCallback);
-    offlineTransport.setTempo(parseInt($scope.tempo, 10));
-    offlineTransport.tick();
   };
 }]);
 
