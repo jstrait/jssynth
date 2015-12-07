@@ -143,6 +143,8 @@ JSSynth.Pattern = function(tracks) {
     currentTime = newCurrentTime;
   };
 
+  // TODO: Don't rely on there being at least 1 track,
+  //       and automatically force all Tracks to be the same length
   pattern.stepCount = function() { return tracks[0].sequence.length; };
 
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
@@ -161,9 +163,7 @@ JSSynth.Pattern = function(tracks) {
       });
 
       sequenceIndex += 1;
-      // TODO: Don't rely on there being at least 1 track,
-      //       and automatically force all Tracks to be the same length
-      if (sequenceIndex >= tracks[0].sequence.length) {
+      if (sequenceIndex >= this.stepCount()) {
         if (loop) {
           sequenceIndex = 0;
         }
