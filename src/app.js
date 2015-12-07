@@ -87,7 +87,7 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: '-'},],
                    },];
 
-  var toGenericConfig = function() {
+  var serializeInstrument = function() {
     var filterCutoff = parseInt($scope.instruments[0].filterCutoff, 10);
 
     return {
@@ -144,7 +144,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   var syncPatternTracks = function(pattern, audioContext) {
-    var instrument = new JSSynth.Instrument(audioContext, toGenericConfig());
+    var instrument = new JSSynth.Instrument(audioContext, serializeInstrument());
 
     var tracks = [];
     $scope.tracks.forEach(function(track) {
