@@ -120,21 +120,14 @@ app.controller('controller', ['$scope', function($scope) {
     };
   };
 
-  var parseNotes = function() {
-    var result = [];
-    var rawNotes;
+  var parseTrack = function(track) {
+    var rawNotes = [];
 
-    $scope.tracks.forEach(function(track) {
-      rawNotes = [];
-
-      track.notes.forEach(function(note, index) {
-        rawNotes[index] = note.name;
-      });
-
-      result.push(rawNotes.join(' '));
+    track.notes.forEach(function(note, index) {
+      rawNotes[index] = note.name;
     });
 
-    return result;
+    return rawNotes.join(' ');
   };
 
   var stopCallback = function() {
@@ -151,11 +144,10 @@ app.controller('controller', ['$scope', function($scope) {
 
       synth.instruments = [instrument];
 
-      var parsedTracks = parseNotes();
-      for (var i = 0; i < parsedTracks.length; i++) {
-        var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-        synth.tracks.push(new JSSynth.Track(instrument, sequence, $scope.tracks[i].muted));
-      }
+      $scope.tracks.forEach(function(track) {
+        var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
+        synth.tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+      });
 
       synth.transport = new JSSynth.Transport(audioContext, synth.tracks, stopCallback);
       synth.transport.setTempo(parseInt($scope.tempo, 10));
@@ -177,35 +169,35 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.updateNotes = function(trackIndex) {
-    // Should see how to update just the relevant /note, rather than all notes in the Track
-    var parsedNotes = parseNotes();
-    synth.tracks[trackIndex].setNotes(parsedNotes[trackIndex]);
+    // Should see how to update just the relevant note, rather than all notes in the Track
+    var rawSequence = parseTrack($scope.tracks[trackIndex]);
+    synth.tracks[trackIndex].setNotes(rawSequence);
   };
 
   $scope.addTrack = function() {
-    $scope.tracks.push({
-                         muted: false,
-                         notes: [{name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''},
-                                 {name: ''}],
-                       });
+    var newTrack = {
+                     muted: false,
+                     notes: [{name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''}],
+                   };
+    $scope.tracks.push(newTrack);
 
-    var parsedTracks = parseNotes();
-    var sequence = JSSynth.SequenceParser.parse(parsedTracks[parsedTracks.length - 1]);
-    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence, $scope.tracks[$scope.tracks.length - 1].muted));
+    var sequence = JSSynth.SequenceParser.parse(parseTrack(newTrack));
+    synth.tracks.push(new JSSynth.Track(synth.instruments[0], sequence, newTrack.muted));
   };
 
   $scope.removeTrack = function(index) {
@@ -237,11 +229,11 @@ app.controller('controller', ['$scope', function($scope) {
     var instrument = new JSSynth.Instrument(offlineAudioContext, toGenericConfig());
 
     var tracks = [];
-    var parsedTracks = parseNotes();
-    for (var i = 0; i < parsedTracks.length; i++) {
-      var sequence = JSSynth.SequenceParser.parse(parsedTracks[i]);
-      tracks.push(new JSSynth.Track(instrument, sequence, $scope.tracks[i].muted));
-    }
+
+    $scope.tracks.forEach(function(track) {
+      var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
+      tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+    });
 
     var offlineTransport = new JSSynth.OfflineTransport(offlineAudioContext, tracks, $scope.downloadFileName, function() { });
     offlineTransport.setTempo(parseInt($scope.tempo, 10));
