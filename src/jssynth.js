@@ -143,9 +143,15 @@ JSSynth.Pattern = function(tracks) {
     currentTime = newCurrentTime;
   };
 
-  // TODO: Don't rely on there being at least 1 track,
-  //       and automatically force all Tracks to be the same length
-  pattern.stepCount = function() { return tracks[0].sequence.length; };
+  // TODO: Automatically force all Tracks to be the same length
+  pattern.stepCount = function() {
+    if (tracks.length > 0) {
+      return tracks[0].sequence.length;
+    }
+    else {
+      return 0;
+    }
+  };
 
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
 
