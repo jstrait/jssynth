@@ -442,10 +442,17 @@ JSSynth.Transport = function(pattern, stopCallback) {
   return transport;
 };
 
-JSSynth.OfflineTransport = function(pattern, completeCallback) {
+JSSynth.OfflineTransport = function(pattern, tempo, completeCallback) {
   var transport = {};
 
-  var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * 4, 44100);
+  var sixteenthsPerMinute = tempo * 4;
+  transport.stepInterval = 60.0 / sixteenthsPerMinute;
+
+  // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
+  //       calculate a real value for this.
+  var maximumReleaseTime = 0.3;
+  var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
+  var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * playbackTime, 44100);
 
   offlineAudioContext.oncomplete = function(e) {
     var waveWriter = new JSSynth.WaveWriter();
@@ -467,15 +474,6 @@ JSSynth.OfflineTransport = function(pattern, completeCallback) {
 
     offlineAudioContext.startRendering();
   };
-
-  transport.setTempo = function(newTempo) {
-    transport.tempo = newTempo;
-
-    var sixteenthsPerMinute = transport.tempo * 4;
-    transport.stepInterval = 60.0 / sixteenthsPerMinute;
-  };
-
-  transport.setTempo(100);
 
   return transport;
 };

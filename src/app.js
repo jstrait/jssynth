@@ -175,8 +175,7 @@ app.controller('controller', ['$scope', function($scope) {
     var pattern = new JSSynth.Pattern();
     syncPatternTracks(pattern);
 
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, exportCompleteCallback);
-    offlineTransport.setTempo(parseInt($scope.tempo, 10));
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), exportCompleteCallback);
     offlineTransport.tick();
   };
 
