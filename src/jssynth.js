@@ -29,9 +29,9 @@ JSSynth.Instrument = function(config) {
   var instrument = {};
 
   instrument.playNote = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
-    if (note.frequency > 0.0) {
+    if (note.getFrequency() > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(audioContext, config.waveform, note.frequency);
+      var oscillator = buildOscillator(audioContext, config.waveform, note.getFrequency());
 
       // LFO for base sound
       var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
@@ -159,7 +159,7 @@ JSSynth.Pattern = function() {
     while (currentTime < endTime) {
       tracks.forEach(function(track) {
         note = track.getSequence()[sequenceIndex];
-        noteTimeDuration = stepDuration * note.stepDuration;
+        noteTimeDuration = stepDuration * note.getStepDuration();
 
         if (!track.isMuted()) {
           track.getInstrument().playNote(audioContext, audioDestination, note, currentTime, currentTime + noteTimeDuration);
@@ -231,7 +231,7 @@ JSSynth.SequenceParser = {
   },
 };
 
-JSSynth.Note = function(noteName, octave, stepDuration) {
+JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
   var calculateFrequency = function(noteName, octave) {
     noteName = JSSynth.MusicTheory.ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - JSSynth.MusicTheory.MIDDLE_OCTAVE));
@@ -240,12 +240,17 @@ JSSynth.Note = function(noteName, octave, stepDuration) {
     return frequency;
   };
 
+  var noteName = newNoteName;
+  var octave = parseInt(newOctave, 10);
+  var stepDuration = parseInt(newStepDuration, 10);
+  var frequency = calculateFrequency(noteName, octave);
+
   var note = {};
 
-  note.noteName = noteName;
-  note.octave = parseInt(octave, 10);
-  note.stepDuration = parseInt(stepDuration, 10);
-  note.frequency = calculateFrequency(note.noteName, note.octave);
+  note.getNoteName     = function() { return noteName; };
+  note.getOctave       = function() { return octave; };
+  note.getStepDuration = function() { return stepDuration; };
+  note.getFrequency    = function() { return frequency; };
 
   return note;
 };
