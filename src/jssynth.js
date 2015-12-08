@@ -28,7 +28,7 @@ JSSynth.Instrument = function(config) {
 
   var instrument = {};
 
-  instrument.playNote = function(audioContext, note, gateOnTime, gateOffTime) {
+  instrument.playNote = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
     if (note.frequency > 0.0) {
       // Base sound generator
       var oscillator = buildOscillator(audioContext, config.waveform, note.frequency);
@@ -53,7 +53,7 @@ JSSynth.Instrument = function(config) {
 
       oscillator.connect(filter);
       filter.connect(masterGain);
-      masterGain.connect(audioContext.destination);
+      masterGain.connect(audioDestination);
 
       oscillator.start(gateOnTime);
       pitchLfoOscillator.start(gateOnTime);
@@ -153,7 +153,7 @@ JSSynth.Pattern = function() {
 
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
 
-  pattern.tick = function(audioContext, endTime, stepDuration, loop) {
+  pattern.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
     var note, noteTimeDuration;
 
     while (currentTime < endTime) {
@@ -162,7 +162,7 @@ JSSynth.Pattern = function() {
         noteTimeDuration = stepDuration * note.stepDuration;
 
         if (!track.isMuted()) {
-          track.getInstrument().playNote(audioContext, note, currentTime, currentTime + noteTimeDuration);
+          track.getInstrument().playNote(audioContext, audioDestination, note, currentTime, currentTime + noteTimeDuration);
         }
       });
 
@@ -391,7 +391,7 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    pattern.tick(audioContext, finalTime, transport.stepInterval, transport.loop);
+    pattern.tick(audioContext, audioContext.destination, finalTime, transport.stepInterval, transport.loop);
 
     if (pattern.isFinishedPlaying()) {
       stop();
@@ -470,7 +470,7 @@ JSSynth.OfflineTransport = function(pattern, tempo, completeCallback) {
     var finalTime = startTime + scheduleAheadTime;
 
     pattern.reset(startTime);
-    pattern.tick(offlineAudioContext, finalTime, transport.stepInterval, false);
+    pattern.tick(offlineAudioContext, offlineAudioContext.destination, finalTime, transport.stepInterval, false);
 
     offlineAudioContext.startRendering();
   };
