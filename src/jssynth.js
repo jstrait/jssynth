@@ -344,6 +344,7 @@ JSSynth.WaveWriter = function() {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
+    var i;
 
     outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8(  1, "I".charCodeAt(0), LITTLE_ENDIAN);
@@ -371,10 +372,11 @@ JSSynth.WaveWriter = function() {
     outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
-    rawFloat32SampleData.forEach(function(sample, index) {
+    // Float32Array doesn't appear to support forEach() in Safari 9
+    for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
-      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (index * BYTES_PER_SAMPLE), sample * 32767.0, LITTLE_ENDIAN);
-    });
+      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * 32767.0, LITTLE_ENDIAN);
+    }
 
     return outputView;
   };
@@ -461,6 +463,19 @@ JSSynth.Transport = function(pattern, stopCallback) {
 JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback) {
   var transport = {};
 
+  var buildOfflineAudioContext = function() {
+    var numChannels = 1;
+    var sampleRate = 44100;
+    var sampleCount = sampleRate * playbackTime;
+
+    if (window.OfflineAudioContext) {
+      return new OfflineAudioContext(numChannels, sampleCount, sampleRate);
+    }
+    else if (window.webkitOfflineAudioContext) {
+      return new webkitOfflineAudioContext(numChannels, sampleCount, sampleRate);
+    };
+  };
+
   var sixteenthsPerMinute = tempo * 4;
   transport.stepInterval = 60.0 / sixteenthsPerMinute;
 
@@ -468,7 +483,7 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
   //       calculate a real value for this.
   var maximumReleaseTime = 0.3;
   var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
-  var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * playbackTime, 44100);
+  var offlineAudioContext = buildOfflineAudioContext();
   var masterGain = offlineAudioContext.createGain();
   masterGain.gain.value = amplitude;
   masterGain.connect(offlineAudioContext.destination);
