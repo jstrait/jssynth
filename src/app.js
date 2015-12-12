@@ -8,13 +8,13 @@ app.controller('controller', ['$scope', function($scope) {
   var synth = { };
 
   $scope.playing = false;
+  $scope.amplitude = 0.5;
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-110";
 
   $scope.instruments = [{
                           waveform:           'sawtooth',
-                          amplitude:          0.75,
                           lfoWaveform:        'sine',
                           lfoFrequency:       5,
                           lfoAmplitude:       0,
@@ -92,7 +92,7 @@ app.controller('controller', ['$scope', function($scope) {
 
     return {
       waveform:  $scope.instruments[0].waveform,
-      amplitude: parseFloat($scope.instruments[0].amplitude),
+      amplitude: 1.0,
       lfo: {
         waveform:  $scope.instruments[0].lfoWaveform,
         frequency: parseFloat($scope.instruments[0].lfoFrequency),
@@ -175,7 +175,7 @@ app.controller('controller', ['$scope', function($scope) {
     var pattern = new JSSynth.Pattern();
     syncPatternTracks(pattern);
 
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), exportCompleteCallback);
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), parseFloat($scope.amplitude), exportCompleteCallback);
     offlineTransport.tick();
   };
 
@@ -219,6 +219,10 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.updateTempo = function() {
     synth.transport.setTempo(parseInt($scope.tempo, 10));
+  };
+
+  $scope.updateAmplitude = function() {
+    synth.transport.setAmplitude(parseFloat($scope.amplitude));
   };
 
   $scope.updateLoop = function() {

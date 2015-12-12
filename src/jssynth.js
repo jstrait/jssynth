@@ -385,9 +385,13 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
   var audioContext;
+  var masterGain;
 
   if (window.AudioContext) {
     audioContext = new AudioContext();
+
+    masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
   }
   else {
     return false;
@@ -396,7 +400,7 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    pattern.tick(audioContext, audioContext.destination, finalTime, transport.stepInterval, transport.loop);
+    pattern.tick(audioContext, masterGain, finalTime, transport.stepInterval, transport.loop);
 
     if (pattern.isFinishedPlaying()) {
       stop();
@@ -432,6 +436,11 @@ JSSynth.Transport = function(pattern, stopCallback) {
     transport.stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
+  transport.setAmplitude = function(newAmplitude) {
+    transport.amplitude = newAmplitude;
+    masterGain.gain.value = transport.amplitude;
+  };
+
   transport.toggle = function() {
     if (playing) {
       stop();
@@ -443,11 +452,12 @@ JSSynth.Transport = function(pattern, stopCallback) {
 
   transport.loop = true;
   transport.setTempo(100);
+  transport.setAmplitude(0.5);
 
   return transport;
 };
 
-JSSynth.OfflineTransport = function(pattern, tempo, completeCallback) {
+JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback) {
   var transport = {};
 
   var sixteenthsPerMinute = tempo * 4;
@@ -458,6 +468,9 @@ JSSynth.OfflineTransport = function(pattern, tempo, completeCallback) {
   var maximumReleaseTime = 0.3;
   var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
   var offlineAudioContext = new webkitOfflineAudioContext(1, 44100 * playbackTime, 44100);
+  var masterGain = offlineAudioContext.createGain();
+  masterGain.gain.value = amplitude;
+  masterGain.connect(offlineAudioContext.destination);
 
   offlineAudioContext.oncomplete = function(e) {
     var waveWriter = new JSSynth.WaveWriter();
@@ -475,7 +488,7 @@ JSSynth.OfflineTransport = function(pattern, tempo, completeCallback) {
     var finalTime = startTime + scheduleAheadTime;
 
     pattern.reset(startTime);
-    pattern.tick(offlineAudioContext, offlineAudioContext.destination, finalTime, transport.stepInterval, false);
+    pattern.tick(offlineAudioContext, masterGain, finalTime, transport.stepInterval, false);
 
     offlineAudioContext.startRendering();
   };

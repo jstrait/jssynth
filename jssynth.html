@@ -21,9 +21,6 @@
     <span class="waveformOptionsContainer">
       <span class="radioContainer"><input id="waveformSine" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sine" type="radio"> <label for="waveformSine" class="radioLabel">Sine</label></span><span class="radioContainer"><input id="waveformSquare" ng-model="instrument.waveform" ng-change="updateInstrument();" value="square" type="radio"> <label for="waveformSquare" class="radioLabel">Square</label></span><span class="radioContainer"><input id="waveformSaw" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sawtooth" type="radio"> <label for="waveformSaw" class="radioLabel">Saw</label></span><span class="radioContainer"><input id="waveformTriangle" ng-model="instrument.waveform" ng-change="updateInstrument();" value="triangle" type="radio"> <label for="waveformTriangle" class="radioLabel">Triangle</label></span>
     </span>
-    <label>Volume:</label>
-    <input ng-model="instrument.amplitude" ng-change="updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{(instrument.amplitude * 100) | number:0}}%</span>
     <span class="sub-section-header">Pitch Wobble:</span>
     <label class="indented">Amount:</label>
     <input ng-model="instrument.lfoAmplitude" ng-change="updateInstrument();" type="range" min="0" max="100" step="1" />
@@ -97,6 +94,9 @@
       <label>Tempo:</label>
       <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
       <span>{{tempo}}</span>
+      <label>Master Volume:</label>
+      <input ng-model="amplitude" ng-change="updateAmplitude();" type="range" min="0.0" max="1.0" step="0.01" />
+      <span>{{(amplitude * 100) | number:0}}%</span>
     </div>
     <div class="mt1">
       <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
