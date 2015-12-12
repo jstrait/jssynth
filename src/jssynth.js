@@ -28,7 +28,7 @@ JSSynth.Instrument = function(config) {
 
   var instrument = {};
 
-  instrument.playNote = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
+  instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     if (note.getFrequency() > 0.0) {
       // Base sound generator
       var oscillator = buildOscillator(audioContext, config.waveform, note.getFrequency());
@@ -59,7 +59,7 @@ JSSynth.Instrument = function(config) {
       pitchLfoOscillator.start(gateOnTime);
       filterLfoOscillator.start(gateOnTime);
 
-      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.amplitude, config.envelope, gateOnTime, gateOffTime);
+      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       masterGain.gain.setValueAtTime(0.0, gateOnTime);
@@ -162,7 +162,7 @@ JSSynth.Pattern = function() {
         noteTimeDuration = stepDuration * note.getStepDuration();
 
         if (!track.isMuted()) {
-          track.getInstrument().playNote(audioContext, audioDestination, note, currentTime, currentTime + noteTimeDuration);
+          track.getInstrument().playNote(audioContext, audioDestination, note, track.getAmplitude(), currentTime, currentTime + noteTimeDuration);
         }
       });
 
@@ -189,6 +189,7 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
   track.getInstrument = function() { return instrument; };
+  track.getAmplitude  = function() { return 1.0; };
   track.getSequence   = function() { return sequence; };
   track.isMuted       = function() { return isMuted; };
 

@@ -92,7 +92,6 @@ app.controller('controller', ['$scope', function($scope) {
 
     return {
       waveform:  $scope.instruments[0].waveform,
-      amplitude: 1.0,
       lfo: {
         waveform:  $scope.instruments[0].lfoWaveform,
         frequency: parseFloat($scope.instruments[0].lfoFrequency),
