@@ -82,7 +82,7 @@
       <li class="list-style-none" ng-repeat="track in tracks">
         <button style="width: 8%;" class="button-small inline-block {{$parent.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button><ul class="sequencer inline-block">
           <li ng-repeat="note in track.notes">
-            <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index);" maxlength="4" type="text" />
+            <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
           </li>
         </ul><button class="button-small inline-block" style="width: 5%;" ng-click="removeTrack($index);">X</button>
       </li>

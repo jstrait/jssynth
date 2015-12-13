@@ -191,7 +191,7 @@ app.controller('controller', ['$scope', function($scope) {
     syncPatternTracks(synth.pattern);
   };
 
-  $scope.updateNotes = function(trackIndex) {
+  $scope.updateNotes = function() {
     syncPatternTracks(synth.pattern);
   };
 
