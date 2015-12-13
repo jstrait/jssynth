@@ -464,35 +464,41 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
   var buildOfflineAudioContext = function() {
     var numChannels = 1;
     var sampleRate = 44100;
+
+    // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
+    //       calculate a real value for this.
+    var maximumReleaseTime = 0.3;
+    var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
     var sampleCount = sampleRate * playbackTime;
 
+    var audioContext;
+
     if (window.OfflineAudioContext) {
-      return new OfflineAudioContext(numChannels, sampleCount, sampleRate);
+      audioContext = new OfflineAudioContext(numChannels, sampleCount, sampleRate);
     }
     else if (window.webkitOfflineAudioContext) {
-      return new webkitOfflineAudioContext(numChannels, sampleCount, sampleRate);
+      audioContext = new webkitOfflineAudioContext(numChannels, sampleCount, sampleRate);
     }
+
+    audioContext.oncomplete = function(e) {
+      var waveWriter = new JSSynth.WaveWriter();
+      var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
+      var blob = new Blob([outputView], { type: "audio/wav" });
+
+      completeCallback(blob);
+    };
+
+    return audioContext;
+
   };
 
   var sixteenthsPerMinute = tempo * 4;
   transport.stepInterval = 60.0 / sixteenthsPerMinute;
 
-  // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
-  //       calculate a real value for this.
-  var maximumReleaseTime = 0.3;
-  var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
   var offlineAudioContext = buildOfflineAudioContext();
   var masterGain = offlineAudioContext.createGain();
   masterGain.gain.value = amplitude;
   masterGain.connect(offlineAudioContext.destination);
-
-  offlineAudioContext.oncomplete = function(e) {
-    var waveWriter = new JSSynth.WaveWriter();
-    var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
-    var blob = new Blob([outputView], { type: "audio/wav" });
-
-    completeCallback(blob);
-  };
 
   transport.tick = function() {
     var scheduleAheadTime = pattern.stepCount() * transport.stepInterval;
