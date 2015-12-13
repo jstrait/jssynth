@@ -430,8 +430,6 @@ JSSynth.Transport = function(pattern, stopCallback) {
 
   var transport = {};
 
-  transport.getAudioContext = function() { return audioContext; };
-
   transport.setTempo = function(newTempo) {
     transport.tempo = newTempo;
 
@@ -495,8 +493,6 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
 
     completeCallback(blob);
   };
-
-  transport.getAudioContext = function() { return offlineAudioContext; };
 
   transport.tick = function() {
     var scheduleAheadTime = pattern.stepCount() * transport.stepInterval;

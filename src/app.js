@@ -3,8 +3,6 @@
 var app = angular.module('js110', []);
 
 app.controller('controller', ['$scope', function($scope) {
-  var audioContext;
-
   var synth = { };
 
   $scope.playing = false;
@@ -172,7 +170,6 @@ app.controller('controller', ['$scope', function($scope) {
     synth.transport = new JSSynth.Transport(synth.pattern, stopCallback);
 
     if (synth.transport) {
-      audioContext = synth.transport.getAudioContext();
       synth.transport.setTempo(parseInt($scope.tempo, 10));
     }
     else {
