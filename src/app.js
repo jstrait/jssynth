@@ -142,29 +142,17 @@ app.controller('controller', ['$scope', function($scope) {
     return serializer;
   };
 
-  var stopCallback = function() {
-    $scope.playing = false;
-    $scope.$digest();
-  };
-
-  var exportCompleteCallback = function(blob) {
-    var url  = window.URL.createObjectURL(blob);
-    document.getElementById("downloaded-file").src = url;
-
-    var hiddenDownloadLink = document.getElementById("hidden-download-link");
-    hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
-    hiddenDownloadLink.href = url;
-    hiddenDownloadLink.click();
-
-    window.URL.revokeObjectURL(blob);
-  };
-
   var syncPatternTracks = function(pattern) {
     var tracks = new Serializer().serialize();
     pattern.replaceTracks(tracks);
   };
 
   $scope.init = function() {
+    var stopCallback = function() {
+      $scope.playing = false;
+      $scope.$digest();
+    };
+
     synth.pattern = new JSSynth.Pattern();
     syncPatternTracks(synth.pattern);
     synth.transport = new JSSynth.Transport(synth.pattern, stopCallback);
@@ -179,19 +167,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
   $scope.init();
 
-  $scope.export = function() {
-    var pattern = new JSSynth.Pattern();
-    syncPatternTracks(pattern);
-
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), parseFloat($scope.amplitude), exportCompleteCallback);
-    offlineTransport.tick();
-  };
-
   $scope.updateInstrument = function() {
-    syncPatternTracks(synth.pattern);
-  };
-
-  $scope.updateNotes = function() {
     syncPatternTracks(synth.pattern);
   };
 
@@ -225,6 +201,15 @@ app.controller('controller', ['$scope', function($scope) {
     syncPatternTracks(synth.pattern);
   };
 
+  $scope.toggleTrackMute = function(index) {
+    $scope.tracks[index].muted = !$scope.tracks[index].muted;
+    syncPatternTracks(synth.pattern);
+  };
+
+  $scope.updateNotes = function() {
+    syncPatternTracks(synth.pattern);
+  };
+
   $scope.updateTempo = function() {
     synth.transport.setTempo(parseInt($scope.tempo, 10));
   };
@@ -233,18 +218,33 @@ app.controller('controller', ['$scope', function($scope) {
     synth.transport.setAmplitude(parseFloat($scope.amplitude));
   };
 
+  $scope.toggle = function() {
+    synth.transport.toggle();
+    $scope.playing = !$scope.playing;
+  };
+
   $scope.updateLoop = function() {
     synth.transport.loop = $scope.loop;
   };
 
-  $scope.toggleTrackMute = function(index) {
-    $scope.tracks[index].muted = !$scope.tracks[index].muted;
-    syncPatternTracks(synth.pattern);
-  };
+  $scope.export = function() {
+    var pattern = new JSSynth.Pattern();
+    syncPatternTracks(pattern);
 
-  $scope.toggle = function() {
-    synth.transport.toggle();
-    $scope.playing = !$scope.playing;
+    var exportCompleteCallback = function(blob) {
+      var url  = window.URL.createObjectURL(blob);
+      document.getElementById("downloaded-file").src = url;
+
+      var hiddenDownloadLink = document.getElementById("hidden-download-link");
+      hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
+      hiddenDownloadLink.href = url;
+      hiddenDownloadLink.click();
+
+      window.URL.revokeObjectURL(blob);
+    };
+
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), parseFloat($scope.amplitude), exportCompleteCallback);
+    offlineTransport.tick();
   };
 }]);
 
