@@ -121,6 +121,10 @@ input[type='range']::-webkit-slider-thumb:active {
   background: #f24;
 }
 
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
 input[type='range']::-moz-range-thumb {
   height: 1.5em;
   background: #130f30;
