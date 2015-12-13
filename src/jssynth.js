@@ -178,7 +178,7 @@ JSSynth.Pattern = function() {
       }
 
       currentTime += stepDuration;
-    };
+    }
   };
 
   pattern.reset();
@@ -471,7 +471,7 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
     }
     else if (window.webkitOfflineAudioContext) {
       return new webkitOfflineAudioContext(numChannels, sampleCount, sampleRate);
-    };
+    }
   };
 
   var sixteenthsPerMinute = tempo * 4;
