@@ -340,7 +340,7 @@ JSSynth.WaveWriter = function() {
 
   var WAVEFILE_HEADER_BYTE_COUNT = 44;
 
-  waveWriter.write = function(rawFloat32SampleData) {
+  waveWriter.write = function(rawFloat32SampleData, scaleFactor) {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
@@ -372,10 +372,11 @@ JSSynth.WaveWriter = function() {
     outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
+    var maxSampleValue = scaleFactor * 32767.0;
     // Float32Array doesn't appear to support forEach() in Safari 9
     for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
-      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * 32767.0, LITTLE_ENDIAN);
+      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * maxSampleValue, LITTLE_ENDIAN);
     }
 
     return outputView;
@@ -482,7 +483,12 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
 
     audioContext.oncomplete = function(e) {
       var waveWriter = new JSSynth.WaveWriter();
-      var outputView = waveWriter.write(e.renderedBuffer.getChannelData(0));
+
+      var sampleData = e.renderedBuffer.getChannelData(0);
+      var maxSampleValue = Math.max(...sampleData);
+      var scaleFactor = (1 / maxSampleValue) * amplitude;
+
+      var outputView = waveWriter.write(sampleData, scaleFactor);
       var blob = new Blob([outputView], { type: "audio/wav" });
 
       completeCallback(blob);
