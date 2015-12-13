@@ -87,42 +87,61 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: '-'},],
                    },];
 
-  var serializeInstrument = function() {
-    var filterCutoff = parseInt($scope.instruments[0].filterCutoff, 10);
 
-    return {
-      waveform:  $scope.instruments[0].waveform,
-      lfo: {
-        waveform:  $scope.instruments[0].lfoWaveform,
-        frequency: parseFloat($scope.instruments[0].lfoFrequency),
-        amplitude: parseInt($scope.instruments[0].lfoAmplitude, 10),
-      },
-      filter: {
-        cutoff:    filterCutoff,
-        resonance: parseInt($scope.instruments[0].filterResonance, 10),
+  var Serializer = function() {
+    var serializer = {};
+
+    var serializeInstrument = function() {
+      var filterCutoff = parseInt($scope.instruments[0].filterCutoff, 10);
+
+      return {
+        waveform:  $scope.instruments[0].waveform,
         lfo: {
-          waveform:  $scope.instruments[0].filterLFOWaveform,
-          frequency: parseFloat($scope.instruments[0].filterLFOFrequency),
-          amplitude: parseFloat($scope.instruments[0].filterLFOAmplitude) * filterCutoff,
+          waveform:  $scope.instruments[0].lfoWaveform,
+          frequency: parseFloat($scope.instruments[0].lfoFrequency),
+          amplitude: parseInt($scope.instruments[0].lfoAmplitude, 10),
         },
-      },
-      envelope: {
-        attack:  parseFloat($scope.instruments[0].envelopeAttack),
-        decay:   parseFloat($scope.instruments[0].envelopeDecay),
-        sustain: parseFloat($scope.instruments[0].envelopeSustain),
-        release: parseFloat($scope.instruments[0].envelopeRelease),
-      },
+        filter: {
+          cutoff:    filterCutoff,
+          resonance: parseInt($scope.instruments[0].filterResonance, 10),
+          lfo: {
+            waveform:  $scope.instruments[0].filterLFOWaveform,
+            frequency: parseFloat($scope.instruments[0].filterLFOFrequency),
+            amplitude: parseFloat($scope.instruments[0].filterLFOAmplitude) * filterCutoff,
+          },
+        },
+        envelope: {
+          attack:  parseFloat($scope.instruments[0].envelopeAttack),
+          decay:   parseFloat($scope.instruments[0].envelopeDecay),
+          sustain: parseFloat($scope.instruments[0].envelopeSustain),
+          release: parseFloat($scope.instruments[0].envelopeRelease),
+        },
+      };
     };
-  };
 
-  var parseTrack = function(track) {
-    var rawNotes = [];
+    var serializeTrackNotesIntoSequence = function(track) {
+      var rawNotes = [];
 
-    track.notes.forEach(function(note, index) {
-      rawNotes[index] = note.name;
-    });
+      track.notes.forEach(function(note, index) {
+        rawNotes[index] = note.name;
+      });
 
-    return rawNotes.join(' ');
+      return rawNotes.join(' ');
+    };
+
+    serializer.serialize = function() {
+      var instrument = new JSSynth.Instrument(serializeInstrument());
+
+      var tracks = [];
+      $scope.tracks.forEach(function(track) {
+        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+        tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+      });
+
+      return tracks;
+    };
+
+    return serializer;
   };
 
   var stopCallback = function() {
@@ -143,14 +162,7 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   var syncPatternTracks = function(pattern) {
-    var instrument = new JSSynth.Instrument(serializeInstrument());
-
-    var tracks = [];
-    $scope.tracks.forEach(function(track) {
-      var sequence = JSSynth.SequenceParser.parse(parseTrack(track));
-      tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-    });
-
+    var tracks = new Serializer().serialize();
     pattern.replaceTracks(tracks);
   };
 
