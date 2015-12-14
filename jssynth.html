@@ -80,19 +80,19 @@
     </ul>
 
     <div>
-      <ul class="ml0 pl0 inline-block overflow-hidden-x" style="box-sizing: border-box; width: 8%;">
+      <ul class="ml0 pl0 inline-block overflow-hidden-x button-mute-track">
         <li class="list-style-none" ng-repeat="track in tracks">
           <button class="button-small full-width {{$parent.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
         </li>
-      </ul><ul class="ml0 pl0 inline-block overflow-scroll-x" style="box-sizing: border-box; width: 87%;">
+      </ul><ul class="ml0 pl0 inline-block overflow-scroll-x track-notes">
         <li ng-repeat="track in tracks" class="inline-block list-style-none full-width">
           <ul class="ml0 pl0" style="white-space: nowrap;">
-            <li class="list-style-none inline-block" style="width: 6.25%; box-sizing: border-box; padding-left: 2px; padding-right: 2px;" ng-repeat="note in track.notes">
+            <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
               <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes();" maxlength="4" type="text" />
              </li>
           </ul>
         </li>
-      </ul><ul class="ml0 pl0 inline-block overflow-hidden-x" style="box-sizing: border-box; width: 5%;">
+      </ul><ul class="ml0 pl0 inline-block overflow-hidden-x button-delete-track">
         <li class="list-style-none" ng-repeat="track in tracks">
           <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
         </li>

@@ -162,6 +162,14 @@ input {
   cursor: pointer;
 }
 
+.note-container {
+  width: 6.25%;
+  min-width: 3.0rem;
+  box-sizing: border-box;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 input.note {
   width: 100%;
   text-align: center;
@@ -199,6 +207,21 @@ button {
 
 .button-full {
   width: 10.0rem;
+}
+
+.button-mute-track {
+  box-sizing: border-box;
+  width: 8%;
+}
+
+.button-delete-track {
+  box-sizing: border-box;
+  width: 5%;
+}
+
+.track-notes {
+  box-sizing: border-box;
+  width: 87%;
 }
 
 .list-style-none {
@@ -316,8 +339,18 @@ button {
   }
 
   button {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
     width: 100%;
+  }
+
+  .button-mute-track {
+    width: 15%;
+  }
+
+  .button-delete-track {
+    width: 8%;
+  }
+
+  .track-notes {
+    width: 77%;
   }
 }
