@@ -64,6 +64,7 @@ label.radioLabel {
   outline: none;
   border: solid black;
   border-width: 0 0 1px 0;
+  border-radius: 0;  /* For iOS */
   width: 20%;
 }
 
@@ -177,6 +178,7 @@ input.note {
   outline: none;
   border: 0;
   border-bottom: 1px solid #000;
+  border-radius: 0;  /* For iOS */
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   margin: 0;
