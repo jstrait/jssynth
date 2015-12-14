@@ -162,33 +162,17 @@ input {
   cursor: pointer;
 }
 
-ul.sequencer {
-  margin: 0;
-  padding: 0;
-  overflow-x: scroll;
-  white-space: nowrap;
-  width: 87%;
-}
-
-ul.sequencer li {
-  list-style-type: none;
-  width: 6.25%;
-  display: inline-block;
-}
-
 input.note {
   width: 100%;
-  border-top: 0;
-  border-right: 3px solid #fff;
-  border-left: 0;
-  border-bottom: 1px solid #000;
-  box-sizing: border-box;
   text-align: center;
+  box-sizing: border-box;
   outline: none;
-  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #000;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   margin: 0;
-  padding-top: 5px;
-  vertical-align: bottom;
+  font-size: 1.0rem;
 }
 
 input.note:focus {
@@ -238,6 +222,11 @@ button {
 .block { display: block; }
 .inline-block { display: inline-block; }
 .display-none { display: none; }
+
+.overflow-hidden-x { overflow-x: hidden; }
+.overflow-scroll-x { overflow-x: scroll; }
+
+.full-width { width: 100%; }
 
 .enabled {
   background: orange;
