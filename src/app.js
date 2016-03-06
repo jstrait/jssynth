@@ -236,9 +236,14 @@ app.controller('controller', ['$scope', function($scope) {
       document.getElementById("downloaded-file").src = url;
 
       var hiddenDownloadLink = document.getElementById("hidden-download-link");
-      hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
-      hiddenDownloadLink.href = url;
-      hiddenDownloadLink.click();
+      if (typeof hiddenDownloadLink.download != "undefined") {
+        hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
+        hiddenDownloadLink.href = url;
+        hiddenDownloadLink.click();
+      }
+      else {
+        alert("Downloading to Wave file is not supported in your browser.");
+      }
 
       window.URL.revokeObjectURL(blob);
     };

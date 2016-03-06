@@ -485,7 +485,15 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
       var waveWriter = new JSSynth.WaveWriter();
 
       var sampleData = e.renderedBuffer.getChannelData(0);
-      var maxSampleValue = Math.max(...sampleData);
+
+      // Using Math.max() can result in 'Maximum call stack size exceeded' errors,
+      // and Float32Array doesn't appear to support forEach() in Safari 9
+      var maxSampleValue = 0;
+      for (var i = 0; i < sampleData.length; i++) {
+        if (sampleData[i] > maxSampleValue) {
+          maxSampleValue = sampleData[i];
+        }
+      }
       var scaleFactor = (1 / maxSampleValue) * amplitude;
 
       var outputView = waveWriter.write(sampleData, scaleFactor);
