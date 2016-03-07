@@ -244,6 +244,7 @@ button {
 .mb1 { margin-bottom: 1.5rem; }
 .ml1 { margin-left: 1.5rem; }
 .mt2 { margin-top: 3.0rem; }
+.mb2 { margin-bottom: 3.0rem; }
 
 .pl0 { padding-left: 0.0rem; }
 
@@ -264,10 +265,6 @@ button {
 .enabled {
   background: orange;
   color: #fff;
-}
-
-#footer {
-  text-align: center;
 }
 
 @media (max-width: 1024px) {
