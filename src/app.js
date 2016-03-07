@@ -233,7 +233,6 @@ app.controller('controller', ['$scope', function($scope) {
 
     var exportCompleteCallback = function(blob) {
       var url  = window.URL.createObjectURL(blob);
-      document.getElementById("downloaded-file").src = url;
 
       var hiddenDownloadLink = document.getElementById("hidden-download-link");
       if (typeof hiddenDownloadLink.download != "undefined") {
