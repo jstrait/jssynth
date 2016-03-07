@@ -171,6 +171,13 @@ input {
   padding-right: 2px;
 }
 
+.note-column-header {
+  font-size: 1.0rem;
+  color: #ccc;
+  display: inline-block;
+  width: 100%;
+}
+
 input.note {
   width: 100%;
   text-align: center;
@@ -240,7 +247,8 @@ button {
 
 .pl0 { padding-left: 0.0rem; }
 
-.right { float: right; }
+.center { text-align: center; }
+.right  { float: right; }
 
 .underline { text-decoration: underline; }
 
