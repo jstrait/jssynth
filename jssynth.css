@@ -11,9 +11,9 @@ body {
 
 #container {
   margin: 1.5rem auto;
-  border: 2.0rem solid #130f30;
+  border: 1.25rem solid #130f30;
   padding: 3.0rem;
-  width: 850px;
+  width: 1024px;
   max-width: 100%;
   overflow: auto;
   box-sizing: border-box;
