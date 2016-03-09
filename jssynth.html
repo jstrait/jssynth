@@ -82,8 +82,8 @@
     <div>
       <ul class="ml0 pl0 inline-block overflow-hidden-x button-mute-track">
         <li></li>
-        <li class="list-style-none" ng-repeat="track in tracks">
-          <button class="button-small full-width {{$parent.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+        <li class="list-style-none" style="border-bottom: 1px solid #fff; font-size: 1.0rem; line-height: 2.125rem;" ng-repeat="track in tracks">
+          <button class="button-small {{$parent.tracks[$index].muted ? 'enabled' : ''}}" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="toggleTrackMute($index);">Mute</button>
         </li>
       </ul><ul class="ml0 pl0 inline-block overflow-scroll-x track-notes">
         <li class="inline-block list-style-none full-width">
@@ -100,8 +100,8 @@
         </li>
       </ul><ul class="ml0 pl0 inline-block overflow-hidden-x button-delete-track">
         <li></li>
-        <li class="list-style-none" ng-repeat="track in tracks">
-          <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
+        <li class="list-style-none" style="border-bottom: 1px solid #fff; font-size: 1.0rem; line-height: 2.125rem;" ng-repeat="track in tracks">
+          <button class="button-small full-width" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="removeTrack($index);">X</button>
         </li>
       </ul>
     </div>
