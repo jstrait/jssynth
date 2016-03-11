@@ -80,12 +80,12 @@
     </ul>
 
     <div>
-      <ul class="ml0 pl0 inline-block overflow-hidden-x button-mute-track">
+      <ul class="mt0 ml0 pl0 inline-block overflow-scroll-x button-mute-track" style="vertical-align: top;">
         <li></li>
         <li class="list-style-none" style="border-bottom: 1px solid #fff; font-size: 1.0rem; line-height: 2.125rem;" ng-repeat="track in tracks">
           <button class="button-small {{$parent.tracks[$index].muted ? 'enabled' : ''}}" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="toggleTrackMute($index);">Mute</button>
         </li>
-      </ul><ul class="ml0 pl0 inline-block overflow-scroll-x track-notes">
+      </ul><ul class="mt0 ml0 pl0 inline-block overflow-scroll-x track-notes" style="">
         <li class="inline-block list-style-none full-width">
           <ul class="ml0 pl0 center" style="white-space: nowrap;">
             <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
@@ -100,7 +100,7 @@
              </li>
           </ul>
         </li>
-      </ul><ul class="ml0 pl0 inline-block overflow-hidden-x button-delete-track">
+      </ul><ul class="mt0 ml0 pl0 inline-block overflow-scroll-x button-delete-track" style="vertical-align: top;">
         <li></li>
         <li class="list-style-none" style="border-bottom: 1px solid #fff; font-size: 1.0rem; line-height: 2.125rem;" ng-repeat="track in tracks">
           <button class="button-small full-width" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="removeTrack($index);">X</button>
