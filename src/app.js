@@ -314,8 +314,15 @@ app.directive('noteInput', function () {
            document.getElementById(nextNoteId).focus();
          };
 
+         var currentValue = element.val();
+
          if (e.keyCode === 32) {  // Space bar
            element.val('');
+         }
+         else if (e.keyCode >= 48 && e.keyCode <= 57) {  // Numbers 0 through 9
+           if (/^.*\d$/.test(currentValue)) {
+             element.val(currentValue.slice(0, currentValue.length - 1));
+           }
          }
          else if (e.keyCode === 189) {  // Dash
            element.val('');
