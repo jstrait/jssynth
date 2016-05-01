@@ -317,6 +317,9 @@ app.directive('noteInput', function () {
          if (e.keyCode === 32) {  // Space bar
            element.val('');
          }
+         else if (e.keyCode === 189) {  // Dash
+           element.val('');
+         }
          else if (e.keyCode === 37) {  // Left arrow key
            if (element[0].selectionStart === 0 && !(element.hasClass('firstNote'))) {
              changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: -1 });
