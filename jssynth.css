@@ -186,7 +186,7 @@ input.note {
   border: 0;
   border-bottom: 1px solid #000;
   border-radius: 0;  /* For iOS */
-  margin: 0;
+  margin: 0 0 1px 0;
   font-size: 1.0rem;
   line-height: 2.0rem;
 }
@@ -217,21 +217,6 @@ button {
   width: 10.0rem;
 }
 
-.button-mute-track {
-  box-sizing: border-box;
-  width: 8%;
-}
-
-.button-delete-track {
-  box-sizing: border-box;
-  width: 5%;
-}
-
-.track-notes {
-  box-sizing: border-box;
-  width: 87%;
-}
-
 .list-style-none {
   list-style-type: none;
 }
@@ -252,6 +237,7 @@ button {
 
 .underline { text-decoration: underline; }
 
+.flex { display: flex; }
 .block { display: block; }
 .inline-block { display: inline-block; }
 .display-none { display: none; }
@@ -259,6 +245,7 @@ button {
 .overflow-hidden-x { overflow-x: hidden; }
 .overflow-scroll-x { overflow-x: scroll; }
 
+.border-box { box-sizing: border-box; }
 .full-width { width: 100%; }
 
 .enabled {
@@ -311,18 +298,6 @@ button {
     margin: 0;
     padding: 0;
   }
-
-  .button-mute-track {
-    width: 13%;
-  }
-
-  .button-delete-track {
-    width: 8%;
-  }
-
-  .track-notes {
-    width: 79%;
-  }
 }
 
 @media (max-width: 480px) {
@@ -358,17 +333,5 @@ button {
 
   button {
     width: 100%;
-  }
-
-  .button-mute-track {
-    width: 15%;
-  }
-
-  .button-delete-track {
-    width: 8%;
-  }
-
-  .track-notes {
-    width: 77%;
   }
 }
