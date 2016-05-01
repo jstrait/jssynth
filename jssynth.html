@@ -205,6 +205,7 @@
       <button class="block button-full right" ng-click="addTrack();">Add Track</button>
     </div>
     <div class="mt2 mb0">
+      <h2 class="section-header">Transport</h2>
       <span class="control">
         <label class="control-label">Tempo:</label>
         <span class="annotated-input">
@@ -219,12 +220,17 @@
           <span>{{(amplitude * 100) | number:0}}%</span>
         </span>
       </span>
-    </div>
-    <div class="mt1">
-      <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
-      <span><input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav</span>
-      <button class="button-full" ng-click="export();">Download</button>
-      <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
+      <div class="mt1" style="overflow: auto;">
+        <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
+      </div>
+      <span class="control mt2">
+        <label class="control-label">File Name:</label>
+        <span class="annotated-input">
+          <input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav
+          <button class="ml1 button-full" ng-click="export();">Download</button>
+          <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
+        </span>
+      </span>
     </div>
   </div>
 </div>
