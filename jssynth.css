@@ -45,14 +45,7 @@ body {
   margin-top: 1.5rem;
 }
 
-label {
-  width: 30%;
-  display: inline-block;
-  box-sizing: border-box;
-}
-
 label.radioLabel {
-  width: auto;
   margin-right: 0.75em;
 }
 
@@ -66,6 +59,33 @@ label.radioLabel {
   border-width: 0 0 1px 0;
   border-radius: 0;  /* For iOS */
   width: 20%;
+}
+
+.control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.control-label {
+  width: 30%;
+  box-sizing: border-box;
+}
+
+.control .annotated-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.control .annotated-input input {
+  flex: 1;
+}
+
+.control .annotated-input span {
+  width: 5.0rem;
+  padding-left: 0.5rem;
+  box-sizing: border-box;
 }
 
 input[type='text'].ng-invalid.ng-dirty {
@@ -147,10 +167,6 @@ input[type='range']::-moz-range-track {
   background: #ccc;
   border: 0;
   outline: none;
-}
-
-input {
-  width: 56%;
 }
 
 .helperToggleContainer {
@@ -275,28 +291,20 @@ button {
     padding: 0;
   }
 
-  label {
+  .control {
+    align-items: flex-start;
+  }
+
+  .control-label {
     width: 35%;
   }
 
-  input {
-    width: 45%;
-  }
-
-  .waveform {
-    float: left;
-  }
-
   .waveformOptionsContainer {
-    width: 65%;
-    display: inline-block;
+    flex-wrap: wrap;
   }
 
   .radioContainer {
-    width: 50%;
-    display: inline-block;
-    margin: 0;
-    padding: 0;
+    flex: 0 0 50%;
   }
 }
 
@@ -310,25 +318,20 @@ button {
     line-height: 4.5rem;
   }
 
-  label {
+  .control {
+    flex-direction: column;
+  }
+
+  .control-label {
+    width: 100%;
+  }
+
+  .annotated-input {
     width: 100%;
   }
 
   .indented {
     padding-left: 0;
-  }
-
-  input {
-    width: 73%;
-  }
-
-  .waveform {
-    float: none;
-  }
-
-  .waveformOptionsContainer {
-    width: 100%;
-    display: block;
   }
 
   button {
