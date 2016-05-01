@@ -206,7 +206,24 @@ app.controller('controller', ['$scope', function($scope) {
     syncPatternTracks(synth.pattern);
   };
 
-  $scope.updateNotes = function() {
+  $scope.updateNotes = function(trackIndex, noteIndex) {
+    var newNoteName = $scope.tracks[trackIndex].notes[noteIndex].name;
+
+    if (newNoteName === "-") {
+      var i = noteIndex - 1;
+      while (i >= 0 && $scope.tracks[trackIndex].notes[i].name === "") {
+        $scope.tracks[trackIndex].notes[i].name = "-";
+        i -= 1;
+      }
+    }
+    else if (newNoteName === "") {
+      var i = noteIndex + 1;
+      while (i < $scope.tracks[trackIndex].notes.length && $scope.tracks[trackIndex].notes[i].name === "-") {
+        $scope.tracks[trackIndex].notes[i].name = "";
+        i += 1;
+      }
+    }
+
     syncPatternTracks(synth.pattern);
   };
 
