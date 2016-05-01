@@ -333,7 +333,7 @@ app.directive('noteInput', function () {
            }
          }
          else if (e.keyCode === 39) {  // Right arrow key
-           if (element[0].selectionEnd === element.val().length && !(element.hasClass('lastNote'))) {
+           if (element[0].selectionEnd === currentValue.length && !(element.hasClass('lastNote'))) {
              changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: 1 });
            }
          }
