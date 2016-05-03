@@ -355,12 +355,6 @@ app.directive('noteInput', function () {
          if (e.keyCode === 32) {  // Space bar
            element.val('');
          }
-         else if (e.keyCode >= 65 && e.keyCode <= 71) {  // Letters A through F
-           if (/^[abcdefgABCDEFG].*$/.test(currentValue)) {
-             element.val(currentValue.slice(1, currentValue.length));
-             element[0].setSelectionRange(0, 0);
-           }
-         }
          else if (e.keyCode >= 48 && e.keyCode <= 57) {  // Numbers 0 through 9
            if (/^.*\d$/.test(currentValue)) {
              element.val(currentValue.slice(0, currentValue.length - 1));
