@@ -454,7 +454,7 @@ JSSynth.Transport = function(pattern, stopCallback) {
 
   transport.loop = true;
   transport.setTempo(100);
-  transport.setAmplitude(0.5);
+  transport.setAmplitude(0.25);
 
   return transport;
 };

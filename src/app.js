@@ -6,7 +6,7 @@ app.controller('controller', ['$scope', function($scope) {
   var synth = { };
 
   $scope.playing = false;
-  $scope.amplitude = 0.5;
+  $scope.amplitude = 0.25;
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-110";
