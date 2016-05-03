@@ -226,7 +226,7 @@ button {
 
 .button-small {
   font-size: 1.0rem;
-  padding: 0.0rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .button-full {
@@ -258,11 +258,17 @@ button {
 .inline-block { display: inline-block; }
 .display-none { display: none; }
 
+.flex-uniform-size { flex: 1; }
+.flex-column { flex-direction: column; }
+
+.overflow-auto     { overflow: auto; }
 .overflow-hidden-x { overflow-x: hidden; }
 .overflow-scroll-x { overflow-x: scroll; }
 
 .border-box { box-sizing: border-box; }
 .full-width { width: 100%; }
+
+.no-whitespace-wrap { white-space: nowrap; }
 
 .enabled {
   background: orange;

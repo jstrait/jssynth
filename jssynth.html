@@ -170,38 +170,38 @@
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
     </ul>
 
-    <div class="flex" style="justify-content: space-between;">
-      <ul class="flex mt0 ml0 pl0 overflow-scroll-x border-box" style="align-items: center; flex-direction: column;">
-        <li class="list-style-none inline-block note-container" style="flex: 1;"><span class="note-column-header">&nbsp;</span></li>
-        <li class="list-style-none" style="font-size: 1.0rem; line-height: 2.125rem; flex: 1;" ng-repeat="track in tracks">
-          <button class="button-small {{$parent.tracks[$index].muted ? 'enabled' : ''}}" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="toggleTrackMute($index);">Mute</button>
+    <div class="flex">
+      <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
+        <li class="flex-uniform-size list-style-none" ng-repeat="track in tracks">
+          <button class="button-small track-button {{$parent.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
         </li>
       </ul>
-      <ul class="flex mt0 ml0 pl0 overflow-scroll-x border-box" style="flex: 1; align-items: center; flex-direction: column;">
-        <li class="inline-block list-style-none full-width" style="flex: 1;">
-          <ul class="ml0 pl0 center" style="white-space: nowrap;">
+      <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="inline-block list-style-none full-width">
+          <ul class="ml0 pl0 center no-whitespace-wrap">
             <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
               <span class="note-column-header">{{n}}</span>
             </li>
           </ul>
         </li>
-        <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="flex: 1;">
-          <ul class="ml0 pl0" style="white-space: nowrap;">
+        <li ng-repeat="track in tracks" class="inline-block list-style-none full-width">
+          <ul class="ml0 pl0 no-whitespace-wrap">
             <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
               <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
              </li>
           </ul>
         </li>
       </ul>
-      <ul class="flex mt0 ml0 pl0 overflow-scroll-x border-box" style="align-items: center; flex-direction: column;">
-        <li class="list-style-none" style="flex: 1;">&nbsp;</li>
-        <li class="list-style-none" style="font-size: 1.0rem; line-height: 2.125rem; flex: 1;" ng-repeat="track in tracks">
-          <button class="button-small full-width" style="padding-top: 0.25rem; padding-bottom: 0.25rem; padding-left: 0.5rem; padding-right: 0.5rem; box-sizing: border-box;" ng-click="removeTrack($index);">X</button>
+      <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="list-style-none flex-uniform-size">&nbsp;</li>
+        <li class="list-style-none flex-uniform-size" ng-repeat="track in tracks">
+          <button class="button-small full-width track-button" ng-click="removeTrack($index);">X</button>
         </li>
       </ul>
     </div>
 
-    <div class="mb1" style="overflow: auto;">
+    <div class="mb1 overflow-auto">
       <button class="block button-full right" ng-click="addTrack();">Add Track</button>
     </div>
     <div class="mt2 mb0">
@@ -220,7 +220,7 @@
           <span>{{(amplitude * 100) | number:0}}%</span>
         </span>
       </span>
-      <div class="mt1" style="overflow: auto;">
+      <div class="mt1 overflow-auto">
         <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
       </div>
       <span class="control mt2">
