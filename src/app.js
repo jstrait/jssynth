@@ -217,7 +217,13 @@ app.controller('controller', ['$scope', function($scope) {
 
   $scope.removeTrack = function(index) {
     $scope.tracks.splice(index, 1);
-    syncPatternTracks(synth.pattern);
+
+    if ($scope.tracks.length === 0) {
+      $scope.addTrack();
+    }
+    else {
+      syncPatternTracks(synth.pattern);
+    }
   };
 
   $scope.toggleTrackMute = function(index) {
