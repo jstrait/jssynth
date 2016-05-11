@@ -199,32 +199,32 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
 
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
-    var i, j;
+    var i;
     var noteName = null, octave = null;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
     var inProgressNoteDuration = 1;
-    for (i = 0; i < splitNotes.length; i++) {
-      if (splitNotes[i] === "-") {
+    splitNotes.forEach(function(note) {
+      if (note === "-") {
         inProgressNoteDuration += 1;
       }
       else {
         if (noteName !== null) {
           sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
-          for (j = 0; j < (inProgressNoteDuration - 1); j++) {
+          for (i = 0; i < (inProgressNoteDuration - 1); i++) {
             sequence.push(new JSSynth.Note("", null, 1));
           }
         }
 
-        noteName = splitNotes[i].slice(0, -1);
-        octave = splitNotes[i].slice(-1);
+        noteName = note.slice(0, -1);
+        octave = note.slice(-1);
         inProgressNoteDuration = 1;
       }
-    }
+    });
 
     sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
-    for (j = 0; j < (inProgressNoteDuration - 1); j++) {
+    for (i = 0; i < (inProgressNoteDuration - 1); i++) {
       sequence.push(new JSSynth.Note("", null, 1));
     }
 
