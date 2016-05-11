@@ -103,6 +103,98 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[9].getOctave()).toEqual(NaN);
     expect(parsedSequence[9].getStepDuration()).toEqual(1);
   });
+
+  it("should properly parse a sequence containing trailing spaces", function() {
+    var rawSequence = "A4 - - -   ";
+
+    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+
+    expect(parsedSequence.length).toEqual(7);
+
+    expect(parsedSequence[0].getNoteName()).toEqual("A");
+    expect(parsedSequence[0].getOctave()).toEqual(4);
+    expect(parsedSequence[0].getStepDuration()).toEqual(4);
+
+    expect(parsedSequence[1].getNoteName()).toEqual("");
+    expect(parsedSequence[1].getOctave()).toEqual(NaN);
+    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[2].getNoteName()).toEqual("");
+    expect(parsedSequence[2].getOctave()).toEqual(NaN);
+    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[3].getNoteName()).toEqual("");
+    expect(parsedSequence[3].getOctave()).toEqual(NaN);
+    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[4].getNoteName()).toEqual("");
+    expect(parsedSequence[4].getOctave()).toEqual(NaN);
+    expect(parsedSequence[4].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[5].getNoteName()).toEqual("");
+    expect(parsedSequence[5].getOctave()).toEqual(NaN);
+    expect(parsedSequence[5].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[6].getNoteName()).toEqual("");
+    expect(parsedSequence[6].getOctave()).toEqual(NaN);
+    expect(parsedSequence[6].getStepDuration()).toEqual(1);
+  });
+
+  it("should properly parse a sequence with unattached sustain characters ('-')", function() {
+    var rawSequence = "A4 -  - - C2";
+
+    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+
+    expect(parsedSequence.length).toEqual(6);
+
+    expect(parsedSequence[0].getNoteName()).toEqual("A");
+    expect(parsedSequence[0].getOctave()).toEqual(4);
+    expect(parsedSequence[0].getStepDuration()).toEqual(2);
+
+    expect(parsedSequence[1].getNoteName()).toEqual("");
+    expect(parsedSequence[1].getOctave()).toEqual(NaN);
+    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[2].getNoteName()).toEqual("");
+    expect(parsedSequence[2].getOctave()).toEqual(NaN);
+    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[3].getNoteName()).toEqual("");
+    expect(parsedSequence[3].getOctave()).toEqual(NaN);
+    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[4].getNoteName()).toEqual("");
+    expect(parsedSequence[4].getOctave()).toEqual(NaN);
+    expect(parsedSequence[4].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[5].getNoteName()).toEqual("C");
+    expect(parsedSequence[5].getOctave()).toEqual(2);
+    expect(parsedSequence[5].getStepDuration()).toEqual(1);
+  });
+
+  it("should properly parse a sequence with leading sustain characters ('-')", function() {
+    var rawSequence = "- - - -";
+
+    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+
+    expect(parsedSequence.length).toEqual(4);
+
+    expect(parsedSequence[0].getNoteName()).toEqual("");
+    expect(parsedSequence[0].getOctave()).toEqual(NaN);
+    expect(parsedSequence[0].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[1].getNoteName()).toEqual("");
+    expect(parsedSequence[1].getOctave()).toEqual(NaN);
+    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[2].getNoteName()).toEqual("");
+    expect(parsedSequence[2].getOctave()).toEqual(NaN);
+    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[3].getNoteName()).toEqual("");
+    expect(parsedSequence[3].getOctave()).toEqual(NaN);
+    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+  });
 });
 
 

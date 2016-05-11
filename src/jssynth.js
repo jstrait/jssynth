@@ -204,17 +204,38 @@ JSSynth.SequenceParser = {
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
+    var addNote = function(noteName, octave, duration) {
+      sequence.push(new JSSynth.Note(noteName, octave, duration));
+      for (i = 0; i < (duration - 1); i++) {
+        sequence.push(new JSSynth.Note("", null, 1));
+      }
+    };
+
     var inProgressNoteDuration = 1;
     splitNotes.forEach(function(note) {
-      if (note === "-") {
-        inProgressNoteDuration += 1;
+      if (note === "-") { 
+        if (noteName !== null) {
+          inProgressNoteDuration += 1;
+        }
+        else {
+          // If an unattached '-', treat it the same as ' '
+          inProgressNoteDuration = 1;
+          addNote("", null, 1);
+        }
+      }
+      else if (note === "") {
+        if (noteName !== null) {
+          addNote(noteName, octave, inProgressNoteDuration);
+        }
+        addNote("", null, 1);
+
+        inProgressNoteDuration = 1;
+        noteName = null;
+        octave = null;
       }
       else {
         if (noteName !== null) {
-          sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
-          for (i = 0; i < (inProgressNoteDuration - 1); i++) {
-            sequence.push(new JSSynth.Note("", null, 1));
-          }
+          addNote(noteName, octave, inProgressNoteDuration);
         }
 
         noteName = note.slice(0, -1);
@@ -223,9 +244,8 @@ JSSynth.SequenceParser = {
       }
     });
 
-    sequence.push(new JSSynth.Note(noteName, octave, inProgressNoteDuration));
-    for (i = 0; i < (inProgressNoteDuration - 1); i++) {
-      sequence.push(new JSSynth.Note("", null, 1));
+    if (noteName !== null) {
+      addNote(noteName, octave, inProgressNoteDuration);
     }
 
     return sequence;
