@@ -17,6 +17,27 @@ describe("JSSynth.Note", function() {
     expect(note.getFrequency()).toEqual(NaN);
   });
 
+  it("should handle enharmonic equivalents properly", function() {
+    var note1 = new JSSynth.Note("D#", 3, 1);
+    var note2 = new JSSynth.Note("Eb", 3, 1);
+    var note3 = new JSSynth.Note("Fbb", 3, 1);
+
+    expect(note1.getNoteName()).toEqual('D#');
+    expect(note1.getOctave()).toEqual(3);
+    expect(note1.getStepDuration()).toEqual(1);
+    expect(note1.getFrequency()).toEqual(309.375);
+
+    expect(note1.getNoteName()).toEqual('D#');
+    expect(note1.getOctave()).toEqual(3);
+    expect(note1.getStepDuration()).toEqual(1);
+    expect(note1.getFrequency()).toEqual(309.375);
+
+    expect(note1.getNoteName()).toEqual('D#');
+    expect(note1.getOctave()).toEqual(3);
+    expect(note1.getStepDuration()).toEqual(1);
+    expect(note1.getFrequency()).toEqual(309.375);
+  });
+
   it("should convert string values to numbers where appropriate", function() {
     var note = new JSSynth.Note('A', '3', '2');
 
