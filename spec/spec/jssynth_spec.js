@@ -8,6 +8,15 @@ describe("JSSynth.Note", function() {
     expect(note.getFrequency()).toEqual(220.0);
   });
 
+  it("should construct a Note properly", function() {
+    var note = new JSSynth.Note('V', 3, 1);
+
+    expect(note.getNoteName()).toEqual('V');
+    expect(note.getOctave()).toEqual(3);
+    expect(note.getStepDuration()).toEqual(1);
+    expect(note.getFrequency()).toEqual(NaN);
+  });
+
   it("should convert string values to numbers where appropriate", function() {
     var note = new JSSynth.Note('A', '3', '2');
 
@@ -102,6 +111,30 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[9].getNoteName()).toEqual("");
     expect(parsedSequence[9].getOctave()).toEqual(NaN);
     expect(parsedSequence[9].getStepDuration()).toEqual(1);
+  });
+
+  it("should properly parse a sequence with bad note names", function() {
+    var rawSequence = "V3 - - -";
+
+    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+
+    expect(parsedSequence.length).toEqual(4);
+
+    expect(parsedSequence[0].getNoteName()).toEqual("V");
+    expect(parsedSequence[0].getOctave()).toEqual(3);
+    expect(parsedSequence[0].getStepDuration()).toEqual(4);
+
+    expect(parsedSequence[1].getNoteName()).toEqual("");
+    expect(parsedSequence[1].getOctave()).toEqual(NaN);
+    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[2].getNoteName()).toEqual("");
+    expect(parsedSequence[2].getOctave()).toEqual(NaN);
+    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+
+    expect(parsedSequence[3].getNoteName()).toEqual("");
+    expect(parsedSequence[3].getOctave()).toEqual(NaN);
+    expect(parsedSequence[3].getStepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence containing trailing spaces", function() {
