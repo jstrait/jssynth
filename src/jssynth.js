@@ -126,6 +126,7 @@ JSSynth.Pattern = function() {
   var pattern = {};
 
   var tracks = [];
+  var stepCount = 0;
 
   var sequenceIndex;
   var isFinishedPlaying;
@@ -133,6 +134,14 @@ JSSynth.Pattern = function() {
 
   pattern.replaceTracks = function(newTracks) {
     tracks = newTracks;
+
+    var maxLength = 0;
+    tracks.forEach(function(track) {
+      if (track.getSequence().length > maxLength) {
+        maxLength = track.getSequence().length;
+      }
+    });
+    stepCount = maxLength;
   };
 
   pattern.reset = function(newCurrentTime) {
@@ -141,14 +150,8 @@ JSSynth.Pattern = function() {
     currentTime = newCurrentTime;
   };
 
-  // TODO: Automatically force all Tracks to be the same length
   pattern.stepCount = function() {
-    if (tracks.length > 0) {
-      return tracks[0].getSequence().length;
-    }
-    else {
-      return 0;
-    }
+    return stepCount;
   };
 
   pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
@@ -167,7 +170,7 @@ JSSynth.Pattern = function() {
       });
 
       sequenceIndex += 1;
-      if (sequenceIndex >= this.stepCount()) {
+      if (sequenceIndex >= stepCount) {
         if (loop) {
           sequenceIndex = 0;
         }
