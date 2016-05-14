@@ -1,3 +1,27 @@
+describe("JSSynth.Pattern", function() {
+  it("should construct an empty Pattern properly", function() {
+    var pattern = new JSSynth.Pattern();
+
+    expect(pattern.stepCount()).toBe(0);
+    expect(pattern.isFinishedPlaying()).toBe(false);
+  });
+
+  it("should all replacing a Pattern's tracks properly", function() {
+    var instrument = null;
+
+    var tracks = [];
+    tracks.push(new JSSynth.Track(instrument, new JSSynth.SequenceParser.parse("A1 A1"), false));
+    tracks.push(new JSSynth.Track(instrument, new JSSynth.SequenceParser.parse("A1 A1 A1 A1"), false));
+    tracks.push(new JSSynth.Track(instrument, new JSSynth.SequenceParser.parse("A1 A1 A1 A1"), false));
+    tracks.push(new JSSynth.Track(instrument, new JSSynth.SequenceParser.parse("A1 A1 A1"), false));
+
+    var pattern = new JSSynth.Pattern();
+    pattern.replaceTracks(tracks);
+
+    expect(pattern.stepCount()).toBe(4);
+  });
+});
+
 describe("JSSynth.Note", function() {
   it("should construct a Note properly", function() {
     var note = new JSSynth.Note('A', 3, 1);
