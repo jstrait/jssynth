@@ -226,11 +226,14 @@
       <span class="control mt2">
         <label class="control-label">File Name:</label>
         <span class="annotated-input">
-          <input ng-model="downloadFileName" class="underlinedInput" type="text" />.wav
-          <button class="ml1 button-full" ng-click="export();">Download</button>
-          <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
+          <input ng-model="downloadFileName" class="underlinedInput" type="text" />
+          <span>.wav</span>
         </span>
       </span>
+      <div class="mt1 overflow-auto">
+        <button class="button-full right" ng-click="export();">Download</button>
+        <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
+      </div>
     </div>
   </div>
 </div>
