@@ -1,3 +1,3 @@
-# JS-100
+# JS-110
 
 A synthesizer that runs in your browser, built using AngularJS and the WebAudio API.
