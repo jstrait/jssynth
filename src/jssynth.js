@@ -29,9 +29,9 @@ JSSynth.Instrument = function(config) {
   var instrument = {};
 
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    if (note.getFrequency() > 0.0) {
+    if (note.frequency() > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(audioContext, config.waveform, note.getFrequency());
+      var oscillator = buildOscillator(audioContext, config.waveform, note.frequency());
 
       // LFO for base sound
       var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
@@ -137,8 +137,8 @@ JSSynth.Pattern = function() {
 
     var maxLength = 0;
     tracks.forEach(function(track) {
-      if (track.getSequence().length > maxLength) {
-        maxLength = track.getSequence().length;
+      if (track.sequence().length > maxLength) {
+        maxLength = track.sequence().length;
       }
     });
     stepCount = maxLength;
@@ -161,11 +161,11 @@ JSSynth.Pattern = function() {
 
     while (currentTime < endTime) {
       tracks.forEach(function(track) {
-        note = track.getSequence()[sequenceIndex];
-        noteTimeDuration = stepDuration * note.getStepDuration();
+        note = track.sequence()[sequenceIndex];
+        noteTimeDuration = stepDuration * note.stepDuration();
 
         if (!track.isMuted()) {
-          track.getInstrument().playNote(audioContext, audioDestination, note, track.getAmplitude(), currentTime, currentTime + noteTimeDuration);
+          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
         }
       });
 
@@ -191,10 +191,10 @@ JSSynth.Pattern = function() {
 JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
-  track.getInstrument = function() { return instrument; };
-  track.getAmplitude  = function() { return 1.0; };
-  track.getSequence   = function() { return sequence; };
-  track.isMuted       = function() { return isMuted; };
+  track.instrument = function() { return instrument; };
+  track.amplitude  = function() { return 1.0; };
+  track.sequence   = function() { return sequence; };
+  track.isMuted    = function() { return isMuted; };
 
   return track;
 };
@@ -271,10 +271,10 @@ JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
 
   var note = {};
 
-  note.getNoteName     = function() { return noteName; };
-  note.getOctave       = function() { return octave; };
-  note.getStepDuration = function() { return stepDuration; };
-  note.getFrequency    = function() { return frequency; };
+  note.name         = function() { return noteName; };
+  note.octave       = function() { return octave; };
+  note.stepDuration = function() { return stepDuration; };
+  note.frequency    = function() { return frequency; };
 
   return note;
 };

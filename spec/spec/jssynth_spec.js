@@ -26,19 +26,19 @@ describe("JSSynth.Note", function() {
   it("should construct a Note properly", function() {
     var note = new JSSynth.Note('A', 3, 1);
 
-    expect(note.getNoteName()).toEqual('A');
-    expect(note.getOctave()).toEqual(3);
-    expect(note.getStepDuration()).toEqual(1);
-    expect(note.getFrequency()).toEqual(220.0);
+    expect(note.name()).toEqual('A');
+    expect(note.octave()).toEqual(3);
+    expect(note.stepDuration()).toEqual(1);
+    expect(note.frequency()).toEqual(220.0);
   });
 
   it("should construct a Note properly", function() {
     var note = new JSSynth.Note('V', 3, 1);
 
-    expect(note.getNoteName()).toEqual('V');
-    expect(note.getOctave()).toEqual(3);
-    expect(note.getStepDuration()).toEqual(1);
-    expect(note.getFrequency()).toEqual(NaN);
+    expect(note.name()).toEqual('V');
+    expect(note.octave()).toEqual(3);
+    expect(note.stepDuration()).toEqual(1);
+    expect(note.frequency()).toEqual(NaN);
   });
 
   it("should handle enharmonic equivalents properly", function() {
@@ -46,38 +46,38 @@ describe("JSSynth.Note", function() {
     var note2 = new JSSynth.Note("Eb", 3, 1);
     var note3 = new JSSynth.Note("Fbb", 3, 1);
 
-    expect(note1.getNoteName()).toEqual('D#');
-    expect(note1.getOctave()).toEqual(3);
-    expect(note1.getStepDuration()).toEqual(1);
-    expect(note1.getFrequency()).toEqual(309.375);
+    expect(note1.name()).toEqual('D#');
+    expect(note1.octave()).toEqual(3);
+    expect(note1.stepDuration()).toEqual(1);
+    expect(note1.frequency()).toEqual(309.375);
 
-    expect(note1.getNoteName()).toEqual('D#');
-    expect(note1.getOctave()).toEqual(3);
-    expect(note1.getStepDuration()).toEqual(1);
-    expect(note1.getFrequency()).toEqual(309.375);
+    expect(note1.name()).toEqual('D#');
+    expect(note1.octave()).toEqual(3);
+    expect(note1.stepDuration()).toEqual(1);
+    expect(note1.frequency()).toEqual(309.375);
 
-    expect(note1.getNoteName()).toEqual('D#');
-    expect(note1.getOctave()).toEqual(3);
-    expect(note1.getStepDuration()).toEqual(1);
-    expect(note1.getFrequency()).toEqual(309.375);
+    expect(note1.name()).toEqual('D#');
+    expect(note1.octave()).toEqual(3);
+    expect(note1.stepDuration()).toEqual(1);
+    expect(note1.frequency()).toEqual(309.375);
   });
 
   it("should convert string values to numbers where appropriate", function() {
     var note = new JSSynth.Note('A', '3', '2');
 
-    expect(note.getNoteName()).toEqual('A');
-    expect(note.getOctave()).toEqual(3);
-    expect(note.getStepDuration()).toEqual(2);
-    expect(note.getFrequency()).toEqual(220.0);
+    expect(note.name()).toEqual('A');
+    expect(note.octave()).toEqual(3);
+    expect(note.stepDuration()).toEqual(2);
+    expect(note.frequency()).toEqual(220.0);
   });
 
   it("should convert string values to numbers where appropriate", function() {
     var note = new JSSynth.Note('', '', '');
 
-    expect(note.getNoteName()).toEqual('');
-    expect(note.getOctave()).toEqual(NaN);
-    expect(note.getStepDuration()).toEqual(NaN);
-    expect(note.getFrequency()).toEqual(NaN);
+    expect(note.name()).toEqual('');
+    expect(note.octave()).toEqual(NaN);
+    expect(note.stepDuration()).toEqual(NaN);
+    expect(note.frequency()).toEqual(NaN);
   });
 });
 
@@ -89,25 +89,25 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(5);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("A");
-    expect(parsedSequence[0].getOctave()).toEqual(4);
-    expect(parsedSequence[0].getStepDuration()).toEqual(1);
+    expect(parsedSequence[0].name()).toEqual("A");
+    expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("Bb");
-    expect(parsedSequence[1].getOctave()).toEqual(2);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("Bb");
+    expect(parsedSequence[1].octave()).toEqual(2);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("C#");
-    expect(parsedSequence[3].getOctave()).toEqual(5);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("C#");
+    expect(parsedSequence[3].octave()).toEqual(5);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[4].getNoteName()).toEqual("");
-    expect(parsedSequence[4].getOctave()).toEqual(NaN);
-    expect(parsedSequence[4].getStepDuration()).toEqual(1);
+    expect(parsedSequence[4].name()).toEqual("");
+    expect(parsedSequence[4].octave()).toEqual(NaN);
+    expect(parsedSequence[4].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence containing ties", function() {
@@ -117,45 +117,45 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(10);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("A");
-    expect(parsedSequence[0].getOctave()).toEqual(4);
-    expect(parsedSequence[0].getStepDuration()).toEqual(4);
+    expect(parsedSequence[0].name()).toEqual("A");
+    expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].stepDuration()).toEqual(4);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("");
-    expect(parsedSequence[1].getOctave()).toEqual(NaN);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("");
+    expect(parsedSequence[1].octave()).toEqual(NaN);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("");
-    expect(parsedSequence[3].getOctave()).toEqual(NaN);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("");
+    expect(parsedSequence[3].octave()).toEqual(NaN);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[4].getNoteName()).toEqual("C");
-    expect(parsedSequence[4].getOctave()).toEqual(2);
-    expect(parsedSequence[4].getStepDuration()).toEqual(2);
+    expect(parsedSequence[4].name()).toEqual("C");
+    expect(parsedSequence[4].octave()).toEqual(2);
+    expect(parsedSequence[4].stepDuration()).toEqual(2);
 
-    expect(parsedSequence[5].getNoteName()).toEqual("");
-    expect(parsedSequence[5].getOctave()).toEqual(NaN);
-    expect(parsedSequence[5].getStepDuration()).toEqual(1);
+    expect(parsedSequence[5].name()).toEqual("");
+    expect(parsedSequence[5].octave()).toEqual(NaN);
+    expect(parsedSequence[5].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[6].getNoteName()).toEqual("D");
-    expect(parsedSequence[6].getOctave()).toEqual(4);
-    expect(parsedSequence[6].getStepDuration()).toEqual(1);
+    expect(parsedSequence[6].name()).toEqual("D");
+    expect(parsedSequence[6].octave()).toEqual(4);
+    expect(parsedSequence[6].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[7].getNoteName()).toEqual("G");
-    expect(parsedSequence[7].getOctave()).toEqual(3);
-    expect(parsedSequence[7].getStepDuration()).toEqual(3);
+    expect(parsedSequence[7].name()).toEqual("G");
+    expect(parsedSequence[7].octave()).toEqual(3);
+    expect(parsedSequence[7].stepDuration()).toEqual(3);
 
-    expect(parsedSequence[8].getNoteName()).toEqual("");
-    expect(parsedSequence[8].getOctave()).toEqual(NaN);
-    expect(parsedSequence[8].getStepDuration()).toEqual(1);
+    expect(parsedSequence[8].name()).toEqual("");
+    expect(parsedSequence[8].octave()).toEqual(NaN);
+    expect(parsedSequence[8].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[9].getNoteName()).toEqual("");
-    expect(parsedSequence[9].getOctave()).toEqual(NaN);
-    expect(parsedSequence[9].getStepDuration()).toEqual(1);
+    expect(parsedSequence[9].name()).toEqual("");
+    expect(parsedSequence[9].octave()).toEqual(NaN);
+    expect(parsedSequence[9].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence with bad note names", function() {
@@ -165,21 +165,21 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(4);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("V");
-    expect(parsedSequence[0].getOctave()).toEqual(3);
-    expect(parsedSequence[0].getStepDuration()).toEqual(4);
+    expect(parsedSequence[0].name()).toEqual("V");
+    expect(parsedSequence[0].octave()).toEqual(3);
+    expect(parsedSequence[0].stepDuration()).toEqual(4);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("");
-    expect(parsedSequence[1].getOctave()).toEqual(NaN);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("");
+    expect(parsedSequence[1].octave()).toEqual(NaN);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("");
-    expect(parsedSequence[3].getOctave()).toEqual(NaN);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("");
+    expect(parsedSequence[3].octave()).toEqual(NaN);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence containing trailing spaces", function() {
@@ -189,33 +189,33 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(7);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("A");
-    expect(parsedSequence[0].getOctave()).toEqual(4);
-    expect(parsedSequence[0].getStepDuration()).toEqual(4);
+    expect(parsedSequence[0].name()).toEqual("A");
+    expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].stepDuration()).toEqual(4);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("");
-    expect(parsedSequence[1].getOctave()).toEqual(NaN);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("");
+    expect(parsedSequence[1].octave()).toEqual(NaN);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("");
-    expect(parsedSequence[3].getOctave()).toEqual(NaN);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("");
+    expect(parsedSequence[3].octave()).toEqual(NaN);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[4].getNoteName()).toEqual("");
-    expect(parsedSequence[4].getOctave()).toEqual(NaN);
-    expect(parsedSequence[4].getStepDuration()).toEqual(1);
+    expect(parsedSequence[4].name()).toEqual("");
+    expect(parsedSequence[4].octave()).toEqual(NaN);
+    expect(parsedSequence[4].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[5].getNoteName()).toEqual("");
-    expect(parsedSequence[5].getOctave()).toEqual(NaN);
-    expect(parsedSequence[5].getStepDuration()).toEqual(1);
+    expect(parsedSequence[5].name()).toEqual("");
+    expect(parsedSequence[5].octave()).toEqual(NaN);
+    expect(parsedSequence[5].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[6].getNoteName()).toEqual("");
-    expect(parsedSequence[6].getOctave()).toEqual(NaN);
-    expect(parsedSequence[6].getStepDuration()).toEqual(1);
+    expect(parsedSequence[6].name()).toEqual("");
+    expect(parsedSequence[6].octave()).toEqual(NaN);
+    expect(parsedSequence[6].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
@@ -225,29 +225,29 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(6);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("A");
-    expect(parsedSequence[0].getOctave()).toEqual(4);
-    expect(parsedSequence[0].getStepDuration()).toEqual(2);
+    expect(parsedSequence[0].name()).toEqual("A");
+    expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].stepDuration()).toEqual(2);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("");
-    expect(parsedSequence[1].getOctave()).toEqual(NaN);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("");
+    expect(parsedSequence[1].octave()).toEqual(NaN);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("");
-    expect(parsedSequence[3].getOctave()).toEqual(NaN);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("");
+    expect(parsedSequence[3].octave()).toEqual(NaN);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[4].getNoteName()).toEqual("");
-    expect(parsedSequence[4].getOctave()).toEqual(NaN);
-    expect(parsedSequence[4].getStepDuration()).toEqual(1);
+    expect(parsedSequence[4].name()).toEqual("");
+    expect(parsedSequence[4].octave()).toEqual(NaN);
+    expect(parsedSequence[4].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[5].getNoteName()).toEqual("C");
-    expect(parsedSequence[5].getOctave()).toEqual(2);
-    expect(parsedSequence[5].getStepDuration()).toEqual(1);
+    expect(parsedSequence[5].name()).toEqual("C");
+    expect(parsedSequence[5].octave()).toEqual(2);
+    expect(parsedSequence[5].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence with leading sustain characters ('-')", function() {
@@ -257,21 +257,21 @@ describe("JSSynth.SequenceParser", function() {
 
     expect(parsedSequence.length).toEqual(4);
 
-    expect(parsedSequence[0].getNoteName()).toEqual("");
-    expect(parsedSequence[0].getOctave()).toEqual(NaN);
-    expect(parsedSequence[0].getStepDuration()).toEqual(1);
+    expect(parsedSequence[0].name()).toEqual("");
+    expect(parsedSequence[0].octave()).toEqual(NaN);
+    expect(parsedSequence[0].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[1].getNoteName()).toEqual("");
-    expect(parsedSequence[1].getOctave()).toEqual(NaN);
-    expect(parsedSequence[1].getStepDuration()).toEqual(1);
+    expect(parsedSequence[1].name()).toEqual("");
+    expect(parsedSequence[1].octave()).toEqual(NaN);
+    expect(parsedSequence[1].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[2].getNoteName()).toEqual("");
-    expect(parsedSequence[2].getOctave()).toEqual(NaN);
-    expect(parsedSequence[2].getStepDuration()).toEqual(1);
+    expect(parsedSequence[2].name()).toEqual("");
+    expect(parsedSequence[2].octave()).toEqual(NaN);
+    expect(parsedSequence[2].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[3].getNoteName()).toEqual("");
-    expect(parsedSequence[3].getOctave()).toEqual(NaN);
-    expect(parsedSequence[3].getStepDuration()).toEqual(1);
+    expect(parsedSequence[3].name()).toEqual("");
+    expect(parsedSequence[3].octave()).toEqual(NaN);
+    expect(parsedSequence[3].stepDuration()).toEqual(1);
   });
 });
 
