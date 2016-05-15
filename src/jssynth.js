@@ -438,6 +438,20 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var start = function() {
     pattern.reset(audioContext.currentTime);
 
+    // Fix for Safari 9.1 (and maybe 9?)
+    // For some reason, the AudioContext on a new page load is in suspended state
+    // in this version of Safari, which means that no audio playback will occur.
+    // If you re-load the same page, it will no longer be in suspended state
+    // and audio playback will occur.
+    //
+    // This fixes this by detecting if the AudioContext is in suspended state,
+    // and manually forcing it to resume.
+    if (audioContext.state === 'suspended') {
+      if (audioContext.resume) {
+        audioContext.resume();
+      }
+    }
+
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
     playing = true;
