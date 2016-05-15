@@ -415,6 +415,24 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var masterGain;
 
   if (window.AudioContext) {
+    // Why do we create an AudioContext, immediately close it, and then
+    // recreate another one? Good question.
+    //
+    // The reason is that in iOS, there is a bug in which an AudioContext
+    // can be created with a sample rate of 48,000Hz, which for reasons
+    // causes audio playback to be distorted. If you re-load the page,
+    // the sample rate will be set to 41,000Hz instead, and playback
+    // will sound normal.
+    //
+    // Creating an AudioContext, closing it, and recreating another
+    // one works around this issue, I _think_ by basically simulating
+    // the page re-load behavior, causing the sample rate of the 2nd
+    // AudioContext to be 44,100Hz.
+    //
+    // This fix was figured out by searching Google, which returned
+    // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
+    audioContext = new AudioContext();
+    audioContext.close();
     audioContext = new AudioContext();
 
     masterGain = audioContext.createGain();
