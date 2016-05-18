@@ -13,7 +13,7 @@ Try it out here: [http://www.joelstrait.com/js-110](http://www.joelstrait.com/js
   * Envelope for base oscillator
 * Sequencer
   * 16 steps
-  * Unlimited tracks (within reason)
+  * Polyphony (i.e., multiple 'tracks')
   * Each track can be selectively muted
 * Tempo control
 * Volume control
