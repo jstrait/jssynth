@@ -61,8 +61,11 @@ label.radioLabel {
 }
 
 .control {
+  display: -webkit-flex;
   display: flex;
+  -webkit-flex-direction: row;
   flex-direction: row;
+  -webkit-align-items: center;
   align-items: center;
 }
 
@@ -72,12 +75,16 @@ label.radioLabel {
 }
 
 .control .annotated-input {
+  -webkit-flex: 1;
   flex: 1;
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: center;
   align-items: center;
 }
 
 .control .annotated-input input {
+  -webkit-flex: 1;
   flex: 1;
 }
 
@@ -252,13 +259,13 @@ button {
 
 .underline { text-decoration: underline; }
 
-.flex { display: flex; }
+.flex { display: -webkit-flex; display: flex; }
 .block { display: block; }
 .inline-block { display: inline-block; }
 .display-none { display: none; }
 
-.flex-uniform-size { flex: 1; }
-.flex-column { flex-direction: column; }
+.flex-uniform-size { -webkit-flex: 1; flex: 1; }
+.flex-column { -webkit-flex-direction: column; flex-direction: column; }
 
 .overflow-auto     { overflow: auto; }
 .overflow-hidden-x { overflow-x: hidden; }
@@ -297,6 +304,7 @@ button {
   }
 
   .control {
+    -webkit-align-items: flex-start;
     align-items: flex-start;
   }
 
@@ -305,10 +313,12 @@ button {
   }
 
   .waveformOptionsContainer {
+    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
 
   .radioContainer {
+    -webkit-flex: 0 0 50%;
     flex: 0 0 50%;
   }
 }
@@ -324,6 +334,7 @@ button {
   }
 
   .control {
+    -webkit-flex-direction: column;
     flex-direction: column;
   }
 
