@@ -432,8 +432,10 @@ JSSynth.Transport = function(pattern, stopCallback) {
     // This fix was figured out by searching Google, which returned
     // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
     audioContext = new AudioContext();
-    audioContext.close();
-    audioContext = new AudioContext();
+    if (audioContext.close) {
+      audioContext.close();
+      audioContext = new AudioContext();
+    }
 
     masterGain = audioContext.createGain();
     masterGain.connect(audioContext.destination);
