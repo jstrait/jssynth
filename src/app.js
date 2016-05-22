@@ -12,6 +12,21 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.downloadFileName = "js-110";
 
   $scope.instruments = [{
+                          waveform:           'square',
+                          lfoWaveform:        'sine',
+                          lfoFrequency:       5,
+                          lfoAmplitude:       10,
+                          filterCutoff:       1000,
+                          filterResonance:    0,
+                          filterLFOWaveform:  'sine',
+                          filterLFOFrequency: 5,
+                          filterLFOAmplitude: 0,
+                          envelopeAttack:     0.0,
+                          envelopeDecay:      0.0,
+                          envelopeSustain:    1.0,
+                          envelopeRelease:    0.0,
+                       },
+                       {
                           waveform:           'sawtooth',
                           lfoWaveform:        'sine',
                           lfoFrequency:       5,
@@ -27,113 +42,126 @@ app.controller('controller', ['$scope', function($scope) {
                           envelopeRelease:    0.0,
                        },];
 
-  $scope.tracks = [{
-                     muted: false,
-                     notes: [{name: 'E4'},
-                             {name: 'G4'},
-                             {name: ''},
-                             {name: 'E4'},
-                             {name: 'A5'},
-                             {name: '-'},
-                             {name: 'C5'},
-                             {name: '-'},
-                             {name: 'A5'},
-                             {name: '-'},
-                             {name: 'G4'},
-                             {name: '-'},
-                             {name: 'E4'},
-                             {name: 'D4'},
-                             {name: 'C4'},
-                             {name: ''},],
-                   },
-                   {
-                     muted: false,
-                     notes: [{name: 'C1'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: 'D1'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},],
-                   },
-                   {
-                     muted: false,
-                     notes: [{name: 'C3'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},],
-                   },
-                   {
-                     muted: false,
-                     notes: [{name: 'E3'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: '-'},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},],
-                   },];
+  $scope.tracks = [
+                    [
+                      {
+                        muted: false,
+                        notes: [{name: 'E4'},
+                                {name: 'G4'},
+                                {name: ''},
+                                {name: 'E4'},
+                                {name: 'A5'},
+                                {name: '-'},
+                                {name: 'C5'},
+                                {name: '-'},
+                                {name: 'A5'},
+                                {name: '-'},
+                                {name: 'G4'},
+                                {name: '-'},
+                                {name: 'E4'},
+                                {name: 'D4'},
+                                {name: 'C4'},
+                                {name: ''},],
+                      },
+                    ],
+
+                    [
+                      {
+                        muted: false,
+                        notes: [{name: 'C1'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: 'D1'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},],
+                      },
+                      {
+                        muted: false,
+                        notes: [{name: 'C3'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: ''},
+                                {name: ''},
+                                {name: ''},
+                                {name: ''},],
+                      },
+                      {
+                        muted: false,
+                        notes: [{name: 'E3'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: '-'},
+                                {name: ''},
+                                {name: ''},
+                                {name: ''},
+                                {name: ''},],
+                      },
+                    ],
+                  ];
 
 
   var Serializer = function() {
     var serializer = {};
 
-    var serializeInstrument = function() {
-      var filterCutoff = parseInt($scope.instruments[0].filterCutoff, 10);
+    var serializeInstruments = function() {
+      var serializedInstruments = [];
 
-      return {
-        waveform:  $scope.instruments[0].waveform,
-        lfo: {
-          waveform:  $scope.instruments[0].lfoWaveform,
-          frequency: parseFloat($scope.instruments[0].lfoFrequency),
-          amplitude: parseInt($scope.instruments[0].lfoAmplitude, 10),
-        },
-        filter: {
-          cutoff:    filterCutoff,
-          resonance: parseInt($scope.instruments[0].filterResonance, 10),
+      $scope.instruments.forEach(function(instrument) {
+        var filterCutoff = parseInt(instrument.filterCutoff, 10);
+
+        serializedInstruments.push({
+          waveform:  instrument.waveform,
           lfo: {
-            waveform:  $scope.instruments[0].filterLFOWaveform,
-            frequency: parseFloat($scope.instruments[0].filterLFOFrequency),
-            amplitude: parseFloat($scope.instruments[0].filterLFOAmplitude) * filterCutoff,
+            waveform:  instrument.lfoWaveform,
+            frequency: parseFloat(instrument.lfoFrequency),
+            amplitude: parseInt(instrument.lfoAmplitude, 10),
           },
-        },
-        envelope: {
-          attack:  parseFloat($scope.instruments[0].envelopeAttack),
-          decay:   parseFloat($scope.instruments[0].envelopeDecay),
-          sustain: parseFloat($scope.instruments[0].envelopeSustain),
-          release: parseFloat($scope.instruments[0].envelopeRelease),
-        },
-      };
+          filter: {
+            cutoff:    filterCutoff,
+            resonance: parseInt(instrument.filterResonance, 10),
+            lfo: {
+              waveform:  instrument.filterLFOWaveform,
+              frequency: parseFloat(instrument.filterLFOFrequency),
+              amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+            },
+          },
+          envelope: {
+            attack:  parseFloat(instrument.envelopeAttack),
+            decay:   parseFloat(instrument.envelopeDecay),
+            sustain: parseFloat(instrument.envelopeSustain),
+            release: parseFloat(instrument.envelopeRelease),
+          },
+        });
+      });
+
+      return serializedInstruments;
     };
 
     var serializeTrackNotesIntoSequence = function(track) {
@@ -147,12 +175,17 @@ app.controller('controller', ['$scope', function($scope) {
     };
 
     serializer.serialize = function() {
-      var instrument = new JSSynth.Instrument(serializeInstrument());
-
+      var serializedInstruments = serializeInstruments();
       var tracks = [];
-      $scope.tracks.forEach(function(track) {
-        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-        tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+
+      serializedInstruments.forEach(function(serializedInstrument, index) {
+        var instrument = new JSSynth.Instrument(serializedInstrument);
+        var instrumentTracks = $scope.tracks[index];
+
+        instrumentTracks.forEach(function(track) {
+          var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+          tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+        });
       });
 
       return tracks;
@@ -190,7 +223,7 @@ app.controller('controller', ['$scope', function($scope) {
     syncPatternTracks(synth.pattern);
   };
 
-  $scope.addTrack = function() {
+  $scope.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
                      notes: [{name: ''},
@@ -210,42 +243,43 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: ''},
                              {name: ''}],
                    };
-    $scope.tracks.push(newTrack);
+    $scope.tracks[instrumentIndex].push(newTrack);
 
     syncPatternTracks(synth.pattern);
   };
 
-  $scope.removeTrack = function(index) {
-    $scope.tracks.splice(index, 1);
+  $scope.removeTrack = function(instrumentIndex, trackIndex) {
+    $scope.tracks[instrumentIndex].splice(trackIndex, 1);
 
-    if ($scope.tracks.length === 0) {
-      $scope.addTrack();
+    if ($scope.tracks[instrumentIndex].length === 0) {
+      $scope.addTrack(instrumentIndex);
     }
     else {
       syncPatternTracks(synth.pattern);
     }
   };
 
-  $scope.toggleTrackMute = function(index) {
-    $scope.tracks[index].muted = !$scope.tracks[index].muted;
+  $scope.toggleTrackMute = function(instrumentIndex, trackIndex) {
+    console.log(instrumentIndex + ", " + trackIndex);
+    $scope.tracks[instrumentIndex][trackIndex].muted = !$scope.tracks[instrumentIndex][trackIndex].muted;
     syncPatternTracks(synth.pattern);
   };
 
-  $scope.updateNotes = function(trackIndex, noteIndex) {
+  $scope.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
     var i;
-    var newNoteName = $scope.tracks[trackIndex].notes[noteIndex].name;
+    var newNoteName = $scope.tracks[instrumentIndex][trackIndex].notes[noteIndex].name;
 
     if (newNoteName === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && $scope.tracks[trackIndex].notes[i].name === "") {
-        $scope.tracks[trackIndex].notes[i].name = "-";
+      while (i >= 0 && $scope.tracks[instrumentIndex][trackIndex].notes[i].name === "") {
+        $scope.tracks[instrumentIndex][trackIndex].notes[i].name = "-";
         i -= 1;
       }
     }
     else if (newNoteName === "") {
       i = noteIndex + 1;
-      while (i < $scope.tracks[trackIndex].notes.length && $scope.tracks[trackIndex].notes[i].name === "-") {
-        $scope.tracks[trackIndex].notes[i].name = "";
+      while (i < $scope.tracks[instrumentIndex][trackIndex].notes.length && $scope.tracks[instrumentIndex][trackIndex].notes[i].name === "-") {
+        $scope.tracks[instrumentIndex][trackIndex].notes[i].name = "";
         i += 1;
       }
     }
