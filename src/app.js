@@ -223,6 +223,30 @@ app.controller('controller', ['$scope', function($scope) {
     syncPatternTracks(synth.pattern);
   };
 
+  $scope.addInstrument = function() {
+    var newInstrument = {
+      waveform:           'sawtooth',
+      lfoWaveform:        'sine',
+      lfoFrequency:       5,
+      lfoAmplitude:       0,
+      filterCutoff:       1000,
+      filterResonance:    0,
+      filterLFOWaveform:  'sine',
+      filterLFOFrequency: 5,
+      filterLFOAmplitude: 0,
+      envelopeAttack:     0.0,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.0,
+    };
+
+    $scope.instruments.push(newInstrument);
+    $scope.tracks.push([]);
+    $scope.addTrack($scope.instruments.length - 1);
+
+    syncPatternTracks(synth.pattern);
+  };
+
   $scope.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
