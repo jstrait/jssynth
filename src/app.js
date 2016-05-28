@@ -2,7 +2,235 @@
 
 var app = angular.module('js110', []);
 
-app.controller('controller', ['$scope', function($scope) {
+app.factory('SynthService', ['$rootScope', function($rootScope) {
+  var instruments = [{
+                        name:               'Instrument 1',
+                        waveform:           'square',
+                        lfoWaveform:        'sine',
+                        lfoFrequency:       5,
+                        lfoAmplitude:       10,
+                        filterCutoff:       1000,
+                        filterResonance:    0,
+                        filterLFOWaveform:  'sine',
+                        filterLFOFrequency: 5,
+                        filterLFOAmplitude: 0,
+                        envelopeAttack:     0.0,
+                        envelopeDecay:      0.0,
+                        envelopeSustain:    1.0,
+                        envelopeRelease:    0.0,
+                     },
+                     {
+                        name:               'Instrument 2',
+                        waveform:           'sawtooth',
+                        lfoWaveform:        'sine',
+                        lfoFrequency:       5,
+                        lfoAmplitude:       0,
+                        filterCutoff:       1000,
+                        filterResonance:    0,
+                        filterLFOWaveform:  'sine',
+                        filterLFOFrequency: 5,
+                        filterLFOAmplitude: 0,
+                        envelopeAttack:     0.0,
+                        envelopeDecay:      0.0,
+                        envelopeSustain:    1.0,
+                        envelopeRelease:    0.0,
+                     },];
+
+  var tracks = [
+                 [
+                   {
+                     name: 'Pattern A',
+                     tracks: [
+                       {
+                         muted: false,
+                         notes: [{name: 'E4'},
+                                 {name: 'G4'},
+                                 {name: ''},
+                                 {name: 'E4'},
+                                 {name: 'A5'},
+                                 {name: '-'},
+                                 {name: 'C5'},
+                                 {name: '-'},
+                                 {name: 'A5'},
+                                 {name: '-'},
+                                 {name: 'G4'},
+                                 {name: '-'},
+                                 {name: 'E4'},
+                                 {name: 'D4'},
+                                 {name: 'C4'},
+                                 {name: ''},],
+                       },
+                     ],
+                   },
+                 ],
+
+                 [
+                   {
+                     name: 'Pattern B',
+                     tracks: [
+                       {
+                         muted: false,
+                         notes: [{name: 'C1'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: 'D1'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},],
+                       },
+                       {
+                         muted: false,
+                         notes: [{name: 'C3'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},],
+                       },
+                       {
+                         muted: false,
+                         notes: [{name: 'E3'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: '-'},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},
+                                 {name: ''},],
+                       },
+                     ],
+                   },
+                 ],
+               ];
+
+  
+  var synthService = {};
+
+  synthService.addInstrument = function() {
+    var newInstrument = {
+      waveform:           'sawtooth',
+      lfoWaveform:        'sine',
+      lfoFrequency:       5,
+      lfoAmplitude:       0,
+      filterCutoff:       1000,
+      filterResonance:    0,
+      filterLFOWaveform:  'sine',
+      filterLFOFrequency: 5,
+      filterLFOAmplitude: 0,
+      envelopeAttack:     0.0,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.0,
+    };
+
+    instruments.push(newInstrument);
+    tracks.push([
+      {
+        name: 'New Pattern',
+        tracks: [],
+      }
+    ]);
+    synthService.addTrack(instruments.length - 1);
+
+    $rootScope.$broadcast('SynthService.update');
+  };
+
+  synthService.addTrack = function(instrumentIndex) {
+    var newTrack = {
+                     muted: false,
+                     notes: [{name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''},
+                             {name: ''}],
+                   };
+    tracks[instrumentIndex][0].tracks.push(newTrack);
+
+    $rootScope.$broadcast('SynthService.update');
+  };
+
+  synthService.removeTrack = function(instrumentIndex, trackIndex) {
+    tracks[instrumentIndex][0].tracks.splice(trackIndex, 1);
+
+    if (tracks[instrumentIndex][0].tracks.length === 0) {
+      synthService.addTrack(instrumentIndex);
+    }
+
+    $rootScope.$broadcast('SynthService.update');
+  };
+
+  synthService.toggleTrackMute = function(instrumentIndex, trackIndex) {
+    tracks[instrumentIndex][0].tracks[trackIndex].muted = !tracks[instrumentIndex][0].tracks[trackIndex].muted;
+    $rootScope.$broadcast('SynthService.update');
+  };
+
+  synthService.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
+    var i;
+    var newNoteName = tracks[instrumentIndex][0].tracks[trackIndex].notes[noteIndex].name;
+
+    if (newNoteName === "-") {
+      i = noteIndex - 1;
+      while (i >= 0 && tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "") {
+        tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "-";
+        i -= 1;
+      }
+    }
+    else if (newNoteName === "") {
+      i = noteIndex + 1;
+      while (i < tracks[instrumentIndex][0].tracks[trackIndex].notes.length && tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "-") {
+        tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "";
+        i += 1;
+      }
+    }
+
+    $rootScope.$broadcast('SynthService.update');
+  };
+
+  synthService.instruments = function() { return instruments; };
+  synthService.tracks = function() { return tracks; };
+
+  return synthService;
+}]);
+
+app.controller('controller', ['$scope', 'SynthService', function($scope, SynthService) {
   var synth = { };
 
   $scope.playing = false;
@@ -11,133 +239,15 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.loop = true;
   $scope.downloadFileName = "js-110";
 
-  $scope.instruments = [{
-                          name:               'Instrument 1',
-                          waveform:           'square',
-                          lfoWaveform:        'sine',
-                          lfoFrequency:       5,
-                          lfoAmplitude:       10,
-                          filterCutoff:       1000,
-                          filterResonance:    0,
-                          filterLFOWaveform:  'sine',
-                          filterLFOFrequency: 5,
-                          filterLFOAmplitude: 0,
-                          envelopeAttack:     0.0,
-                          envelopeDecay:      0.0,
-                          envelopeSustain:    1.0,
-                          envelopeRelease:    0.0,
-                       },
-                       {
-                          name:               'Instrument 2',
-                          waveform:           'sawtooth',
-                          lfoWaveform:        'sine',
-                          lfoFrequency:       5,
-                          lfoAmplitude:       0,
-                          filterCutoff:       1000,
-                          filterResonance:    0,
-                          filterLFOWaveform:  'sine',
-                          filterLFOFrequency: 5,
-                          filterLFOAmplitude: 0,
-                          envelopeAttack:     0.0,
-                          envelopeDecay:      0.0,
-                          envelopeSustain:    1.0,
-                          envelopeRelease:    0.0,
-                       },];
+  $scope.instruments = SynthService.instruments();
+  $scope.tracks = SynthService.tracks();
 
-  $scope.tracks = [
-                    [
-                      {
-                        name: 'Pattern A',
-                        tracks: [
-                          {
-                            muted: false,
-                            notes: [{name: 'E4'},
-                                    {name: 'G4'},
-                                    {name: ''},
-                                    {name: 'E4'},
-                                    {name: 'A5'},
-                                    {name: '-'},
-                                    {name: 'C5'},
-                                    {name: '-'},
-                                    {name: 'A5'},
-                                    {name: '-'},
-                                    {name: 'G4'},
-                                    {name: '-'},
-                                    {name: 'E4'},
-                                    {name: 'D4'},
-                                    {name: 'C4'},
-                                    {name: ''},],
-                          },
-                        ],
-                      },
-                    ],
+  $scope.$on('SynthService.update', function(event) {
+    $scope.instruments = SynthService.instruments();
+    $scope.tracks = SynthService.tracks();
 
-                    [
-                      {
-                        name: 'Pattern B',
-                        tracks: [
-                          {
-                            muted: false,
-                            notes: [{name: 'C1'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: 'D1'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},],
-                          },
-                          {
-                            muted: false,
-                            notes: [{name: 'C3'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: ''},
-                                    {name: ''},
-                                    {name: ''},
-                                    {name: ''},],
-                          },
-                          {
-                            muted: false,
-                            notes: [{name: 'E3'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: '-'},
-                                    {name: ''},
-                                    {name: ''},
-                                    {name: ''},
-                                    {name: ''},],
-                          },
-                        ],
-                      },
-                    ],
-                  ];
-
+    syncPatternTracks(synth.pattern);
+  });
 
   var Serializer = function() {
     var serializer = {};
@@ -236,90 +346,23 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.addInstrument = function() {
-    var newInstrument = {
-      waveform:           'sawtooth',
-      lfoWaveform:        'sine',
-      lfoFrequency:       5,
-      lfoAmplitude:       0,
-      filterCutoff:       1000,
-      filterResonance:    0,
-      filterLFOWaveform:  'sine',
-      filterLFOFrequency: 5,
-      filterLFOAmplitude: 0,
-      envelopeAttack:     0.0,
-      envelopeDecay:      0.0,
-      envelopeSustain:    1.0,
-      envelopeRelease:    0.0,
-    };
-
-    $scope.instruments.push(newInstrument);
-    $scope.tracks.push([]);
-    $scope.addTrack($scope.instruments.length - 1);
-
-    syncPatternTracks(synth.pattern);
+    SynthService.addInstrument();
   };
 
   $scope.addTrack = function(instrumentIndex) {
-    var newTrack = {
-                     muted: false,
-                     notes: [{name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''}],
-                   };
-    $scope.tracks[instrumentIndex][0].tracks.push(newTrack);
-
-    syncPatternTracks(synth.pattern);
+    SynthService.addTrack(instrumentIndex);
   };
 
   $scope.removeTrack = function(instrumentIndex, trackIndex) {
-    $scope.tracks[instrumentIndex][0].tracks.splice(trackIndex, 1);
-
-    if ($scope.tracks[instrumentIndex][0].tracks.length === 0) {
-      $scope.addTrack(instrumentIndex);
-    }
-    else {
-      syncPatternTracks(synth.pattern);
-    }
+    SynthService.removeTrack(instrumentIndex, trackIndex);
   };
 
   $scope.toggleTrackMute = function(instrumentIndex, trackIndex) {
-    $scope.tracks[instrumentIndex][0].tracks[trackIndex].muted = !$scope.tracks[instrumentIndex][0].tracks[trackIndex].muted;
-    syncPatternTracks(synth.pattern);
+    SynthService.toggleTrackMute(instrumentIndex, trackIndex);
   };
 
   $scope.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
-    var i;
-    var newNoteName = $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[noteIndex].name;
-
-    if (newNoteName === "-") {
-      i = noteIndex - 1;
-      while (i >= 0 && $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "") {
-        $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "-";
-        i -= 1;
-      }
-    }
-    else if (newNoteName === "") {
-      i = noteIndex + 1;
-      while (i < $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes.length && $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "-") {
-        $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "";
-        i += 1;
-      }
-    }
-
-    syncPatternTracks(synth.pattern);
+    SynthService.updateNotes(instrumentIndex, trackIndex, noteIndex);
   };
 
   $scope.updateTempo = function() {
