@@ -12,6 +12,7 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.downloadFileName = "js-110";
 
   $scope.instruments = [{
+                          name:               'Instrument 1',
                           waveform:           'square',
                           lfoWaveform:        'sine',
                           lfoFrequency:       5,
@@ -27,6 +28,7 @@ app.controller('controller', ['$scope', function($scope) {
                           envelopeRelease:    0.0,
                        },
                        {
+                          name:               'Instrument 2',
                           waveform:           'sawtooth',
                           lfoWaveform:        'sine',
                           lfoFrequency:       5,

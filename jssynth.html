@@ -17,6 +17,10 @@
   <span class="tagline">High Resolution Web Synthesizer</span>
   <div ng-repeat="instrument in instruments">
     <div>
+      <span class="control">
+        <label class="control-label">Name:</label>
+        <input class="underlinedInput" ng-model="instrument.name" type="text" />
+      </span>
       <h2 class="section-header">Sound Generator</h2>
       <span class="control">
         <label class="control-label">Waveform:</label>
@@ -175,7 +179,7 @@
     </ul>
 
     <div ng-repeat="instrument in instruments" ng-init="instrumentIndex = $index">
-      <h3>Instrument {{$index + 1}}</h3>
+      <h3>{{instrument.name}}</h3>
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
