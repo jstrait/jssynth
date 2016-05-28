@@ -47,83 +47,93 @@ app.controller('controller', ['$scope', function($scope) {
   $scope.tracks = [
                     [
                       {
-                        muted: false,
-                        notes: [{name: 'E4'},
-                                {name: 'G4'},
-                                {name: ''},
-                                {name: 'E4'},
-                                {name: 'A5'},
-                                {name: '-'},
-                                {name: 'C5'},
-                                {name: '-'},
-                                {name: 'A5'},
-                                {name: '-'},
-                                {name: 'G4'},
-                                {name: '-'},
-                                {name: 'E4'},
-                                {name: 'D4'},
-                                {name: 'C4'},
-                                {name: ''},],
+                        name: 'Pattern A',
+                        tracks: [
+                          {
+                            muted: false,
+                            notes: [{name: 'E4'},
+                                    {name: 'G4'},
+                                    {name: ''},
+                                    {name: 'E4'},
+                                    {name: 'A5'},
+                                    {name: '-'},
+                                    {name: 'C5'},
+                                    {name: '-'},
+                                    {name: 'A5'},
+                                    {name: '-'},
+                                    {name: 'G4'},
+                                    {name: '-'},
+                                    {name: 'E4'},
+                                    {name: 'D4'},
+                                    {name: 'C4'},
+                                    {name: ''},],
+                          },
+                        ],
                       },
                     ],
 
                     [
                       {
-                        muted: false,
-                        notes: [{name: 'C1'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: 'D1'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},],
-                      },
-                      {
-                        muted: false,
-                        notes: [{name: 'C3'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: ''},
-                                {name: ''},
-                                {name: ''},
-                                {name: ''},],
-                      },
-                      {
-                        muted: false,
-                        notes: [{name: 'E3'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: '-'},
-                                {name: ''},
-                                {name: ''},
-                                {name: ''},
-                                {name: ''},],
+                        name: 'Pattern B',
+                        tracks: [
+                          {
+                            muted: false,
+                            notes: [{name: 'C1'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: 'D1'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},],
+                          },
+                          {
+                            muted: false,
+                            notes: [{name: 'C3'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: ''},
+                                    {name: ''},
+                                    {name: ''},
+                                    {name: ''},],
+                          },
+                          {
+                            muted: false,
+                            notes: [{name: 'E3'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: '-'},
+                                    {name: ''},
+                                    {name: ''},
+                                    {name: ''},
+                                    {name: ''},],
+                          },
+                        ],
                       },
                     ],
                   ];
@@ -182,7 +192,7 @@ app.controller('controller', ['$scope', function($scope) {
 
       serializedInstruments.forEach(function(serializedInstrument, index) {
         var instrument = new JSSynth.Instrument(serializedInstrument);
-        var instrumentTracks = $scope.tracks[index];
+        var instrumentTracks = $scope.tracks[index][0].tracks;
 
         instrumentTracks.forEach(function(track) {
           var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
@@ -269,15 +279,15 @@ app.controller('controller', ['$scope', function($scope) {
                              {name: ''},
                              {name: ''}],
                    };
-    $scope.tracks[instrumentIndex].push(newTrack);
+    $scope.tracks[instrumentIndex][0].tracks.push(newTrack);
 
     syncPatternTracks(synth.pattern);
   };
 
   $scope.removeTrack = function(instrumentIndex, trackIndex) {
-    $scope.tracks[instrumentIndex].splice(trackIndex, 1);
+    $scope.tracks[instrumentIndex][0].tracks.splice(trackIndex, 1);
 
-    if ($scope.tracks[instrumentIndex].length === 0) {
+    if ($scope.tracks[instrumentIndex][0].tracks.length === 0) {
       $scope.addTrack(instrumentIndex);
     }
     else {
@@ -286,26 +296,25 @@ app.controller('controller', ['$scope', function($scope) {
   };
 
   $scope.toggleTrackMute = function(instrumentIndex, trackIndex) {
-    console.log(instrumentIndex + ", " + trackIndex);
-    $scope.tracks[instrumentIndex][trackIndex].muted = !$scope.tracks[instrumentIndex][trackIndex].muted;
+    $scope.tracks[instrumentIndex][0].tracks[trackIndex].muted = !$scope.tracks[instrumentIndex][0].tracks[trackIndex].muted;
     syncPatternTracks(synth.pattern);
   };
 
   $scope.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
     var i;
-    var newNoteName = $scope.tracks[instrumentIndex][trackIndex].notes[noteIndex].name;
+    var newNoteName = $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[noteIndex].name;
 
     if (newNoteName === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && $scope.tracks[instrumentIndex][trackIndex].notes[i].name === "") {
-        $scope.tracks[instrumentIndex][trackIndex].notes[i].name = "-";
+      while (i >= 0 && $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "") {
+        $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "-";
         i -= 1;
       }
     }
     else if (newNoteName === "") {
       i = noteIndex + 1;
-      while (i < $scope.tracks[instrumentIndex][trackIndex].notes.length && $scope.tracks[instrumentIndex][trackIndex].notes[i].name === "-") {
-        $scope.tracks[instrumentIndex][trackIndex].notes[i].name = "";
+      while (i < $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes.length && $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "-") {
+        $scope.tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "";
         i += 1;
       }
     }
