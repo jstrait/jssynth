@@ -3,7 +3,21 @@
 var app = angular.module('js120', []);
 
 app.factory('InstrumentService', ['$rootScope', function($rootScope) {
+  var IDGenerator = function() {
+    var nextId = 0;
+
+    return {
+      next: function() {
+        nextId++;
+
+        return nextId;  
+      },
+   };
+  };
+  var idGenerator = new IDGenerator();
+
   var instruments = [{
+                        id:                 idGenerator.next(),
                         name:               'Instrument 1',
                         waveform:           'square',
                         lfoWaveform:        'sine',
@@ -20,6 +34,7 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
                         envelopeRelease:    0.0,
                      },
                      {
+                        id:                 idGenerator.next(),
                         name:               'Instrument 2',
                         waveform:           'sawtooth',
                         lfoWaveform:        'sine',
@@ -39,7 +54,10 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
   var instrumentService = {};
 
   instrumentService.addInstrument = function() {
+    var id = idGenerator.next();
     var newInstrument = {
+      id:                 id,
+      name:               'Instrument ' + id,
       waveform:           'sawtooth',
       lfoWaveform:        'sine',
       lfoFrequency:       5,
@@ -70,10 +88,10 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
 }]);
 
 app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
-  var tracks = [
-                 [
+  var patterns = [
                    {
                      name: 'Pattern A',
+                     instrumentID: 0,
                      tracks: [
                        {
                          muted: false,
@@ -96,11 +114,9 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
                        },
                      ],
                    },
-                 ],
-
-                 [
                    {
                      name: 'Pattern B',
+                     instrumentID: 1,
                      tracks: [
                        {
                          muted: false,
@@ -161,8 +177,7 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
                        },
                      ],
                    },
-                 ],
-               ];
+                 ];
 
   var Serializer = function() {
     var serializer = {};
@@ -217,7 +232,7 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
 
       serializedInstruments.forEach(function(serializedInstrument, index) {
         var instrument = new JSSynth.Instrument(serializedInstrument);
-        var instrumentTracks = tracks[index][0].tracks;
+        var instrumentTracks = patterns[index].tracks;
 
         instrumentTracks.forEach(function(track) {
           var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
@@ -236,12 +251,11 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
 
   synthService.addInstrument = function() {
     InstrumentService.addInstrument();
-    tracks.push([
-      {
-        name: 'New Pattern',
-        tracks: [],
-      }
-    ]);
+    patterns.push({
+      instrumentId: InstrumentService.instruments()[InstrumentService.instruments().length - 1],
+      name: 'New Pattern',
+      tracks: [],
+    });
     synthService.addTrack(InstrumentService.instruments().length - 1);
 
     $rootScope.$broadcast('SynthService.update');
@@ -267,15 +281,15 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
                              {name: ''},
                              {name: ''}],
                    };
-    tracks[instrumentIndex][0].tracks.push(newTrack);
+    patterns[instrumentIndex].tracks.push(newTrack);
 
     $rootScope.$broadcast('SynthService.update');
   };
 
   synthService.removeTrack = function(instrumentIndex, trackIndex) {
-    tracks[instrumentIndex][0].tracks.splice(trackIndex, 1);
+    patterns[instrumentIndex].tracks.splice(trackIndex, 1);
 
-    if (tracks[instrumentIndex][0].tracks.length === 0) {
+    if (patterns[instrumentIndex].tracks.length === 0) {
       synthService.addTrack(instrumentIndex);
     }
 
@@ -283,25 +297,25 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
   };
 
   synthService.toggleTrackMute = function(instrumentIndex, trackIndex) {
-    tracks[instrumentIndex][0].tracks[trackIndex].muted = !tracks[instrumentIndex][0].tracks[trackIndex].muted;
+    patterns[instrumentIndex].tracks[trackIndex].muted = !patterns[instrumentIndex].tracks[trackIndex].muted;
     $rootScope.$broadcast('SynthService.update');
   };
 
   synthService.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
     var i;
-    var newNoteName = tracks[instrumentIndex][0].tracks[trackIndex].notes[noteIndex].name;
+    var newNoteName = patterns[instrumentIndex].tracks[trackIndex].notes[noteIndex].name;
 
     if (newNoteName === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "") {
-        tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "-";
+      while (i >= 0 && patterns[instrumentIndex].tracks[trackIndex].notes[i].name === "") {
+        patterns[instrumentIndex].tracks[trackIndex].notes[i].name = "-";
         i -= 1;
       }
     }
     else if (newNoteName === "") {
       i = noteIndex + 1;
-      while (i < tracks[instrumentIndex][0].tracks[trackIndex].notes.length && tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name === "-") {
-        tracks[instrumentIndex][0].tracks[trackIndex].notes[i].name = "";
+      while (i < patterns[instrumentIndex].tracks[trackIndex].notes.length && patterns[instrumentIndex].tracks[trackIndex].notes[i].name === "-") {
+        patterns[instrumentIndex].tracks[trackIndex].notes[i].name = "";
         i += 1;
       }
     }
@@ -309,7 +323,7 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
     $rootScope.$broadcast('SynthService.update');
   };
  
-  synthService.tracks = function() { return tracks; };
+  synthService.patterns = function() { return patterns; };
 
   synthService.serialize = function() {
     return new Serializer().serialize();
@@ -372,14 +386,14 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 
 app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
   $scope.instruments = InstrumentService.instruments();
-  $scope.tracks = SynthService.tracks();
+  $scope.patterns = SynthService.patterns();
 
   $scope.$on('InstrumentService.update', function(event) {
     $scope.instruments = InstrumentService.instruments();
   });
 
   $scope.$on('SynthService.update', function(event) {
-    $scope.tracks = SynthService.tracks();
+    $scope.patterns = SynthService.patterns();
   });
 
   $scope.updateInstrument = function() {
