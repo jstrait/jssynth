@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('js110', []);
+var app = angular.module('js120', []);
 
 app.factory('SynthService', ['$rootScope', function($rootScope) {
   var instruments = [{
@@ -320,7 +320,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   var transport = new JSSynth.Transport(pattern, stopCallback);
 
   if (!transport) {
-    alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-110. Try a recent version of Chrome, Safari, or Firefox.");
+    alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-120. Try a recent version of Chrome, Safari, or Firefox.");
     return;
   }
 
@@ -397,7 +397,7 @@ app.controller('TransportController', ['$scope', 'SynthService', 'TransportServi
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
   $scope.loop = true;
-  $scope.downloadFileName = "js-110";
+  $scope.downloadFileName = "js-120";
 
   TransportService.setPattern(SynthService.serialize());
   $scope.$on('SynthService.update', function(event) {
