@@ -166,46 +166,50 @@
           </span>
         </span>
       </div>
-
-      <div class="flex">
-          <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-            <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
-            <li class="flex-uniform-size list-style-none" ng-repeat="track in patterns[instrumentIndex].tracks">
-              <button class="button-small track-button {{$parent.patterns[instrumentIndex].tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(instrumentIndex, $index);">Mute</button>
-            </li>
-          </ul>
-          <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
-            <li class="inline-block list-style-none full-width">
-              <ul class="ml0 pl0 center no-whitespace-wrap">
-                <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
-                  <span class="note-column-header">{{n}}</span>
-                </li>
-              </ul>
-            </li>
-            <li ng-repeat="track in patterns[instrumentIndex].tracks" class="inline-block list-style-none full-width">
-              <ul class="ml0 pl0 no-whitespace-wrap">
-                <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
-                  <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes(instrumentIndex, $parent.$index, $index);" maxlength="4" type="text" />
-                 </li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-            <li class="list-style-none flex-uniform-size">&nbsp;</li>
-            <li class="list-style-none flex-uniform-size" ng-repeat="track in tracks[instrumentIndex].tracks">
-              <button class="button-small full-width track-button" ng-click="removeTrack(instrumentIndex, $index);">X</button>
-            </li>
-          </ul>
-        </div>
-        <div class="mb1 overflow-auto">
-          <button class="block button-full right" ng-click="addTrack(instrumentIndex);">Add Track</button>
-        </div>
     </div>
     <div class="mb1 overflow-auto">
       <button class="block button-full right" ng-click="addInstrument();">Add Instrument</button>
     </div>
   </div>
-  
+
+  <div ng-controller="PatternController">
+    <div ng-repeat="pattern in patterns" ng-init="instrumentIndex = $index">
+      <div class="flex">
+        <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+          <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
+          <li class="flex-uniform-size list-style-none" ng-repeat="track in patterns[instrumentIndex].tracks">
+            <button class="button-small track-button {{$parent.patterns[instrumentIndex].tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(instrumentIndex, $index);">Mute</button>
+          </li>
+        </ul>
+        <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
+          <li class="inline-block list-style-none full-width">
+            <ul class="ml0 pl0 center no-whitespace-wrap">
+              <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
+                <span class="note-column-header">{{n}}</span>
+              </li>
+            </ul>
+          </li>
+          <li ng-repeat="track in patterns[instrumentIndex].tracks" class="inline-block list-style-none full-width">
+            <ul class="ml0 pl0 no-whitespace-wrap">
+              <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
+                <input note-input id="track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes(instrumentIndex, $parent.$index, $index);" maxlength="4" type="text" />
+               </li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+          <li class="list-style-none flex-uniform-size">&nbsp;</li>
+          <li class="list-style-none flex-uniform-size" ng-repeat="track in patterns[instrumentIndex].tracks">
+            <button class="button-small full-width track-button" ng-click="removeTrack(instrumentIndex, $index);">X</button>
+          </li>
+        </ul>
+      </div>
+      <div class="mb1 overflow-auto">
+        <button class="block button-full right" ng-click="addTrack(instrumentIndex);">Add Track</button>
+      </div>
+    </div>
+  </div>
+
   <div>
     <h2 class="section-header">Sequencer<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>
     <ul class="toggleable" ng-show="show">

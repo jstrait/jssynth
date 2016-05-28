@@ -249,18 +249,6 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
   
   var synthService = {};
 
-  synthService.addInstrument = function() {
-    InstrumentService.addInstrument();
-    patterns.push({
-      instrumentId: InstrumentService.instruments()[InstrumentService.instruments().length - 1],
-      name: 'New Pattern',
-      tracks: [],
-    });
-    synthService.addTrack(InstrumentService.instruments().length - 1);
-
-    $rootScope.$broadcast('SynthService.update');
-  };
-
   synthService.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
@@ -386,38 +374,42 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 
 app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
   $scope.instruments = InstrumentService.instruments();
-  $scope.patterns = SynthService.patterns();
 
   $scope.$on('InstrumentService.update', function(event) {
     $scope.instruments = InstrumentService.instruments();
   });
 
-  $scope.$on('SynthService.update', function(event) {
-    $scope.patterns = SynthService.patterns();
-  });
+  $scope.addInstrument = function() {
+    InstrumentService.addInstrument();
+  };
 
   $scope.updateInstrument = function() {
     InstrumentService.updateInstrument();
   };
+}]);
 
-  $scope.addInstrument = function() {
-    SynthService.addInstrument();
+
+app.controller('PatternController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
+  $scope.patterns = SynthService.patterns();
+
+  $scope.$on('SynthService.update', function(event) {
+    $scope.patterns = SynthService.patterns();
+  });
+
+  $scope.addTrack = function(patternIndex) {
+    SynthService.addTrack(patternIndex);
   };
 
-  $scope.addTrack = function(instrumentIndex) {
-    SynthService.addTrack(instrumentIndex);
+  $scope.removeTrack = function(patternIndex, trackIndex) {
+    SynthService.removeTrack(patternIndex, trackIndex);
   };
 
-  $scope.removeTrack = function(instrumentIndex, trackIndex) {
-    SynthService.removeTrack(instrumentIndex, trackIndex);
+  $scope.toggleTrackMute = function(patternIndex, trackIndex) {
+    SynthService.toggleTrackMute(patternIndex, trackIndex);
   };
 
-  $scope.toggleTrackMute = function(instrumentIndex, trackIndex) {
-    SynthService.toggleTrackMute(instrumentIndex, trackIndex);
-  };
-
-  $scope.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
-    SynthService.updateNotes(instrumentIndex, trackIndex, noteIndex);
+  $scope.updateNotes = function(patternIndex, trackIndex, noteIndex) {
+    SynthService.updateNotes(patternIndex, trackIndex, noteIndex);
   };
 }]);
 
