@@ -2,7 +2,7 @@
 
 var app = angular.module('js120', []);
 
-app.factory('SynthService', ['$rootScope', function($rootScope) {
+app.factory('InstrumentService', ['$rootScope', function($rootScope) {
   var instruments = [{
                         name:               'Instrument 1',
                         waveform:           'square',
@@ -36,6 +36,40 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
                         envelopeRelease:    0.0,
                      },];
 
+  var instrumentService = {};
+
+  instrumentService.addInstrument = function() {
+    var newInstrument = {
+      waveform:           'sawtooth',
+      lfoWaveform:        'sine',
+      lfoFrequency:       5,
+      lfoAmplitude:       0,
+      filterCutoff:       1000,
+      filterResonance:    0,
+      filterLFOWaveform:  'sine',
+      filterLFOFrequency: 5,
+      filterLFOAmplitude: 0,
+      envelopeAttack:     0.0,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.0,
+    };
+
+    instruments.push(newInstrument);
+
+    $rootScope.$broadcast('InstrumentService.update');
+  };
+
+  instrumentService.updateInstrument = function() {
+    $rootScope.$broadcast('InstrumentService.update');
+  };
+
+  instrumentService.instruments = function() { return instruments; };
+
+  return instrumentService;
+}]);
+
+app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
   var tracks = [
                  [
                    {
@@ -136,7 +170,7 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
     var serializeInstruments = function() {
       var serializedInstruments = [];
 
-      instruments.forEach(function(instrument) {
+      InstrumentService.instruments().forEach(function(instrument) {
         var filterCutoff = parseInt(instrument.filterCutoff, 10);
 
         serializedInstruments.push({
@@ -201,35 +235,15 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
   var synthService = {};
 
   synthService.addInstrument = function() {
-    var newInstrument = {
-      waveform:           'sawtooth',
-      lfoWaveform:        'sine',
-      lfoFrequency:       5,
-      lfoAmplitude:       0,
-      filterCutoff:       1000,
-      filterResonance:    0,
-      filterLFOWaveform:  'sine',
-      filterLFOFrequency: 5,
-      filterLFOAmplitude: 0,
-      envelopeAttack:     0.0,
-      envelopeDecay:      0.0,
-      envelopeSustain:    1.0,
-      envelopeRelease:    0.0,
-    };
-
-    instruments.push(newInstrument);
+    InstrumentService.addInstrument();
     tracks.push([
       {
         name: 'New Pattern',
         tracks: [],
       }
     ]);
-    synthService.addTrack(instruments.length - 1);
+    synthService.addTrack(InstrumentService.instruments().length - 1);
 
-    $rootScope.$broadcast('SynthService.update');
-  };
-
-  synthService.updateInstrument = function() {
     $rootScope.$broadcast('SynthService.update');
   };
 
@@ -294,8 +308,7 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
 
     $rootScope.$broadcast('SynthService.update');
   };
-
-  synthService.instruments = function() { return instruments; };
+ 
   synthService.tracks = function() { return tracks; };
 
   synthService.serialize = function() {
@@ -357,17 +370,20 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 }]);
 
 
-app.controller('InstrumentController', ['$scope', 'SynthService', function($scope, SynthService) {
-  $scope.instruments = SynthService.instruments();
+app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
+  $scope.instruments = InstrumentService.instruments();
   $scope.tracks = SynthService.tracks();
 
+  $scope.$on('InstrumentService.update', function(event) {
+    $scope.instruments = InstrumentService.instruments();
+  });
+
   $scope.$on('SynthService.update', function(event) {
-    $scope.instruments = SynthService.instruments();
     $scope.tracks = SynthService.tracks();
   });
 
   $scope.updateInstrument = function() {
-    SynthService.updateInstrument();
+    InstrumentService.updateInstrument();
   };
 
   $scope.addInstrument = function() {
@@ -400,6 +416,9 @@ app.controller('TransportController', ['$scope', 'SynthService', 'TransportServi
   $scope.downloadFileName = "js-120";
 
   TransportService.setPattern(SynthService.serialize());
+  $scope.$on('InstrumentService.update', function(event) {
+    TransportService.setPattern(SynthService.serialize());
+  });
   $scope.$on('SynthService.update', function(event) {
     TransportService.setPattern(SynthService.serialize());
   });
