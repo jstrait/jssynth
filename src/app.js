@@ -130,6 +130,73 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
                  ],
                ];
 
+  var Serializer = function() {
+    var serializer = {};
+
+    var serializeInstruments = function() {
+      var serializedInstruments = [];
+
+      instruments.forEach(function(instrument) {
+        var filterCutoff = parseInt(instrument.filterCutoff, 10);
+
+        serializedInstruments.push({
+          waveform:  instrument.waveform,
+          lfo: {
+            waveform:  instrument.lfoWaveform,
+            frequency: parseFloat(instrument.lfoFrequency),
+            amplitude: parseInt(instrument.lfoAmplitude, 10),
+          },
+          filter: {
+            cutoff:    filterCutoff,
+            resonance: parseInt(instrument.filterResonance, 10),
+            lfo: {
+              waveform:  instrument.filterLFOWaveform,
+              frequency: parseFloat(instrument.filterLFOFrequency),
+              amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+            },
+          },
+          envelope: {
+            attack:  parseFloat(instrument.envelopeAttack),
+            decay:   parseFloat(instrument.envelopeDecay),
+            sustain: parseFloat(instrument.envelopeSustain),
+            release: parseFloat(instrument.envelopeRelease),
+          },
+        });
+      });
+
+      return serializedInstruments;
+    };
+
+    var serializeTrackNotesIntoSequence = function(track) {
+      var rawNotes = [];
+
+      track.notes.forEach(function(note, index) {
+        rawNotes[index] = note.name;
+      });
+
+      return rawNotes.join(' ');
+    };
+
+    serializer.serialize = function() {
+      var serializedInstruments = serializeInstruments();
+      var serializedTracks = [];
+
+      serializedInstruments.forEach(function(serializedInstrument, index) {
+        var instrument = new JSSynth.Instrument(serializedInstrument);
+        var instrumentTracks = tracks[index][0].tracks;
+
+        instrumentTracks.forEach(function(track) {
+          var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+          serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+        });
+      });
+
+      return serializedTracks;
+    };
+
+    return serializer;
+  };
+
   
   var synthService = {};
 
@@ -227,12 +294,66 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
   synthService.instruments = function() { return instruments; };
   synthService.tracks = function() { return tracks; };
 
+  synthService.serialize = function() {
+    return new Serializer().serialize();
+  };
+
   return synthService;
 }]);
 
-app.controller('controller', ['$scope', 'SynthService', function($scope, SynthService) {
-  var synth = { };
 
+app.factory('TransportService', ['$rootScope', function($rootScope) {
+  var playing = false;
+  var amplitude = 0.25;
+  var tempo = 100;
+  var loop = true;
+
+  var stopCallback = function() {
+    playing = false;
+  };
+
+  var pattern = new JSSynth.Pattern();
+  var transport = new JSSynth.Transport(pattern, stopCallback);
+
+  if (!transport) {
+    alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-110. Try a recent version of Chrome, Safari, or Firefox.");
+    return;
+  }
+
+  var transportService = {};
+
+  transportService.toggle = function() {
+    transport.toggle();
+  };
+
+  transportService.setTempo = function(newTempo) {
+    tempo = newTempo;
+    transport.setTempo(newTempo);
+  };
+
+  transportService.setAmplitude = function(newAmplitude) {
+    amplitude = newAmplitude;
+    transport.setAmplitude(newAmplitude);
+  };
+
+  transportService.setPattern = function(newTracks) {
+    pattern.replaceTracks(newTracks);
+  };
+
+  transportService.loop = function(newLoop) {
+    loop = newLoop;
+  };
+
+  transportService.export = function(exportCompleteCallback) {
+    var offlineTransport = new JSSynth.OfflineTransport(pattern, tempo, amplitude, exportCompleteCallback);
+    offlineTransport.tick();
+  };
+
+  return transportService;
+}]);
+
+
+app.controller('controller', ['$scope', 'SynthService', 'TransportService', function($scope, SynthService, TransportService) {
   $scope.playing = false;
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
@@ -246,103 +367,20 @@ app.controller('controller', ['$scope', 'SynthService', function($scope, SynthSe
     $scope.instruments = SynthService.instruments();
     $scope.tracks = SynthService.tracks();
 
-    syncPatternTracks(synth.pattern);
+    syncPatternTracks(SynthService.serialize());
   });
 
-  var Serializer = function() {
-    var serializer = {};
-
-    var serializeInstruments = function() {
-      var serializedInstruments = [];
-
-      $scope.instruments.forEach(function(instrument) {
-        var filterCutoff = parseInt(instrument.filterCutoff, 10);
-
-        serializedInstruments.push({
-          waveform:  instrument.waveform,
-          lfo: {
-            waveform:  instrument.lfoWaveform,
-            frequency: parseFloat(instrument.lfoFrequency),
-            amplitude: parseInt(instrument.lfoAmplitude, 10),
-          },
-          filter: {
-            cutoff:    filterCutoff,
-            resonance: parseInt(instrument.filterResonance, 10),
-            lfo: {
-              waveform:  instrument.filterLFOWaveform,
-              frequency: parseFloat(instrument.filterLFOFrequency),
-              amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
-            },
-          },
-          envelope: {
-            attack:  parseFloat(instrument.envelopeAttack),
-            decay:   parseFloat(instrument.envelopeDecay),
-            sustain: parseFloat(instrument.envelopeSustain),
-            release: parseFloat(instrument.envelopeRelease),
-          },
-        });
-      });
-
-      return serializedInstruments;
-    };
-
-    var serializeTrackNotesIntoSequence = function(track) {
-      var rawNotes = [];
-
-      track.notes.forEach(function(note, index) {
-        rawNotes[index] = note.name;
-      });
-
-      return rawNotes.join(' ');
-    };
-
-    serializer.serialize = function() {
-      var serializedInstruments = serializeInstruments();
-      var tracks = [];
-
-      serializedInstruments.forEach(function(serializedInstrument, index) {
-        var instrument = new JSSynth.Instrument(serializedInstrument);
-        var instrumentTracks = $scope.tracks[index][0].tracks;
-
-        instrumentTracks.forEach(function(track) {
-          var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-          tracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-        });
-      });
-
-      return tracks;
-    };
-
-    return serializer;
-  };
-
   var syncPatternTracks = function(pattern) {
-    var tracks = new Serializer().serialize();
-    pattern.replaceTracks(tracks);
+    TransportService.setPattern(pattern);
   };
 
   $scope.init = function() {
-    var stopCallback = function() {
-      $scope.playing = false;
-      $scope.$digest();
-    };
-
-    synth.pattern = new JSSynth.Pattern();
-    syncPatternTracks(synth.pattern);
-    synth.transport = new JSSynth.Transport(synth.pattern, stopCallback);
-
-    if (synth.transport) {
-      synth.transport.setTempo(parseInt($scope.tempo, 10));
-    }
-    else {
-      alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-110. Try a recent version of Chrome, Safari, or Firefox.");
-      return;
-    }
+    syncPatternTracks(SynthService.serialize());
   };
   $scope.init();
 
   $scope.updateInstrument = function() {
-    syncPatternTracks(synth.pattern);
+    syncPatternTracks(SynthService.serialize());
   };
 
   $scope.addInstrument = function() {
@@ -366,26 +404,23 @@ app.controller('controller', ['$scope', 'SynthService', function($scope, SynthSe
   };
 
   $scope.updateTempo = function() {
-    synth.transport.setTempo(parseInt($scope.tempo, 10));
+    TransportService.setTempo(parseInt($scope.tempo, 10));
   };
 
   $scope.updateAmplitude = function() {
-    synth.transport.setAmplitude(parseFloat($scope.amplitude));
+    TransportService.setAmplitude(parseFloat($scope.amplitude));
   };
 
   $scope.toggle = function() {
-    synth.transport.toggle();
+    TransportService.toggle();
     $scope.playing = !$scope.playing;
   };
 
   $scope.updateLoop = function() {
-    synth.transport.loop = $scope.loop;
+    TransportService.loop = $scope.loop;
   };
 
   $scope.export = function() {
-    var pattern = new JSSynth.Pattern();
-    syncPatternTracks(pattern);
-
     var exportCompleteCallback = function(blob) {
       var url  = window.URL.createObjectURL(blob);
 
@@ -402,8 +437,7 @@ app.controller('controller', ['$scope', 'SynthService', function($scope, SynthSe
       window.URL.revokeObjectURL(blob);
     };
 
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, parseInt($scope.tempo, 10), parseFloat($scope.amplitude), exportCompleteCallback);
-    offlineTransport.tick();
+    TransportService.export(exportCompleteCallback);
   };
 }]);
 
