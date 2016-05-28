@@ -178,74 +178,6 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
                      ],
                    },
                  ];
-
-  var Serializer = function() {
-    var serializer = {};
-
-    var serializeInstruments = function() {
-      var serializedInstruments = [];
-
-      InstrumentService.instruments().forEach(function(instrument) {
-        var filterCutoff = parseInt(instrument.filterCutoff, 10);
-
-        serializedInstruments.push({
-          waveform:  instrument.waveform,
-          lfo: {
-            waveform:  instrument.lfoWaveform,
-            frequency: parseFloat(instrument.lfoFrequency),
-            amplitude: parseInt(instrument.lfoAmplitude, 10),
-          },
-          filter: {
-            cutoff:    filterCutoff,
-            resonance: parseInt(instrument.filterResonance, 10),
-            lfo: {
-              waveform:  instrument.filterLFOWaveform,
-              frequency: parseFloat(instrument.filterLFOFrequency),
-              amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
-            },
-          },
-          envelope: {
-            attack:  parseFloat(instrument.envelopeAttack),
-            decay:   parseFloat(instrument.envelopeDecay),
-            sustain: parseFloat(instrument.envelopeSustain),
-            release: parseFloat(instrument.envelopeRelease),
-          },
-        });
-      });
-
-      return serializedInstruments;
-    };
-
-    var serializeTrackNotesIntoSequence = function(track) {
-      var rawNotes = [];
-
-      track.notes.forEach(function(note, index) {
-        rawNotes[index] = note.name;
-      });
-
-      return rawNotes.join(' ');
-    };
-
-    serializer.serialize = function() {
-      var serializedInstruments = serializeInstruments();
-      var serializedTracks = [];
-
-      serializedInstruments.forEach(function(serializedInstrument, index) {
-        var instrument = new JSSynth.Instrument(serializedInstrument);
-        var instrumentTracks = patterns[index].tracks;
-
-        instrumentTracks.forEach(function(track) {
-          var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-          serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-        });
-      });
-
-      return serializedTracks;
-    };
-
-    return serializer;
-  };
-
   
   var patternService = {};
 
@@ -313,11 +245,76 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
  
   patternService.patterns = function() { return patterns; };
 
-  patternService.serialize = function() {
-    return new Serializer().serialize();
+  return patternService;
+}]);
+
+
+app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
+  var serializeInstruments = function() {
+    var serializedInstruments = [];
+
+    InstrumentService.instruments().forEach(function(instrument) {
+      var filterCutoff = parseInt(instrument.filterCutoff, 10);
+
+      serializedInstruments.push({
+        waveform:  instrument.waveform,
+        lfo: {
+          waveform:  instrument.lfoWaveform,
+          frequency: parseFloat(instrument.lfoFrequency),
+          amplitude: parseInt(instrument.lfoAmplitude, 10),
+        },
+        filter: {
+          cutoff:    filterCutoff,
+          resonance: parseInt(instrument.filterResonance, 10),
+          lfo: {
+            waveform:  instrument.filterLFOWaveform,
+            frequency: parseFloat(instrument.filterLFOFrequency),
+            amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+          },
+        },
+        envelope: {
+          attack:  parseFloat(instrument.envelopeAttack),
+          decay:   parseFloat(instrument.envelopeDecay),
+          sustain: parseFloat(instrument.envelopeSustain),
+          release: parseFloat(instrument.envelopeRelease),
+        },
+      });
+    });
+
+    return serializedInstruments;
   };
 
-  return patternService;
+  var serializeTrackNotesIntoSequence = function(track) {
+    var rawNotes = [];
+
+    track.notes.forEach(function(note, index) {
+      rawNotes[index] = note.name;
+    });
+
+    return rawNotes.join(' ');
+  };
+
+  var serializationService = {};
+
+  serializationService.serialize = function() {
+    var serializedInstruments = serializeInstruments();
+    var patterns = PatternService.patterns();
+    var serializedTracks = [];
+
+    serializedInstruments.forEach(function(serializedInstrument, index) {
+      var instrument = new JSSynth.Instrument(serializedInstrument);
+      var instrumentTracks = patterns[index].tracks;
+
+      instrumentTracks.forEach(function(track) {
+        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+        serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+      });
+    });
+
+    return serializedTracks;
+  };
+
+  return serializationService;
 }]);
 
 
@@ -414,19 +411,19 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
-app.controller('TransportController', ['$scope', 'PatternService', 'TransportService', function($scope, PatternService, TransportService) {
+app.controller('TransportController', ['$scope', 'SerializationService', 'TransportService', function($scope, SerializationService, TransportService) {
   $scope.playing = false;
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-120";
 
-  TransportService.setPattern(PatternService.serialize());
+  TransportService.setPattern(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
-    TransportService.setPattern(PatternService.serialize());
+    TransportService.setPattern(SerializationService.serialize());
   });
   $scope.$on('PatternService.update', function(event) {
-    TransportService.setPattern(PatternService.serialize());
+    TransportService.setPattern(SerializationService.serialize());
   });
 
   $scope.updateTempo = function() {
