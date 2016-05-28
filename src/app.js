@@ -87,7 +87,7 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
   return instrumentService;
 }]);
 
-app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
+app.factory('PatternService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
   var patterns = [
                    {
                      name: 'Pattern A',
@@ -247,9 +247,9 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
   };
 
   
-  var synthService = {};
+  var patternService = {};
 
-  synthService.addTrack = function(instrumentIndex) {
+  patternService.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
                      notes: [{name: ''},
@@ -271,25 +271,25 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
                    };
     patterns[instrumentIndex].tracks.push(newTrack);
 
-    $rootScope.$broadcast('SynthService.update');
+    $rootScope.$broadcast('PatternService.update');
   };
 
-  synthService.removeTrack = function(instrumentIndex, trackIndex) {
+  patternService.removeTrack = function(instrumentIndex, trackIndex) {
     patterns[instrumentIndex].tracks.splice(trackIndex, 1);
 
     if (patterns[instrumentIndex].tracks.length === 0) {
-      synthService.addTrack(instrumentIndex);
+      patternService.addTrack(instrumentIndex);
     }
 
-    $rootScope.$broadcast('SynthService.update');
+    $rootScope.$broadcast('PatternService.update');
   };
 
-  synthService.toggleTrackMute = function(instrumentIndex, trackIndex) {
+  patternService.toggleTrackMute = function(instrumentIndex, trackIndex) {
     patterns[instrumentIndex].tracks[trackIndex].muted = !patterns[instrumentIndex].tracks[trackIndex].muted;
-    $rootScope.$broadcast('SynthService.update');
+    $rootScope.$broadcast('PatternService.update');
   };
 
-  synthService.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
+  patternService.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
     var i;
     var newNoteName = patterns[instrumentIndex].tracks[trackIndex].notes[noteIndex].name;
 
@@ -308,16 +308,16 @@ app.factory('SynthService', ['$rootScope', 'InstrumentService', function($rootSc
       }
     }
 
-    $rootScope.$broadcast('SynthService.update');
+    $rootScope.$broadcast('PatternService.update');
   };
  
-  synthService.patterns = function() { return patterns; };
+  patternService.patterns = function() { return patterns; };
 
-  synthService.serialize = function() {
+  patternService.serialize = function() {
     return new Serializer().serialize();
   };
 
-  return synthService;
+  return patternService;
 }]);
 
 
@@ -372,7 +372,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 }]);
 
 
-app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
+app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
   $scope.instruments = InstrumentService.instruments();
 
   $scope.$on('InstrumentService.update', function(event) {
@@ -389,44 +389,44 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SynthSer
 }]);
 
 
-app.controller('PatternController', ['$scope', 'InstrumentService', 'SynthService', function($scope, InstrumentService, SynthService) {
-  $scope.patterns = SynthService.patterns();
+app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternService', function($scope, InstrumentService, PatternService) {
+  $scope.patterns = PatternService.patterns();
 
-  $scope.$on('SynthService.update', function(event) {
-    $scope.patterns = SynthService.patterns();
+  $scope.$on('PatternService.update', function(event) {
+    $scope.patterns = PatternService.patterns();
   });
 
   $scope.addTrack = function(patternIndex) {
-    SynthService.addTrack(patternIndex);
+    PatternService.addTrack(patternIndex);
   };
 
   $scope.removeTrack = function(patternIndex, trackIndex) {
-    SynthService.removeTrack(patternIndex, trackIndex);
+    PatternService.removeTrack(patternIndex, trackIndex);
   };
 
   $scope.toggleTrackMute = function(patternIndex, trackIndex) {
-    SynthService.toggleTrackMute(patternIndex, trackIndex);
+    PatternService.toggleTrackMute(patternIndex, trackIndex);
   };
 
   $scope.updateNotes = function(patternIndex, trackIndex, noteIndex) {
-    SynthService.updateNotes(patternIndex, trackIndex, noteIndex);
+    PatternService.updateNotes(patternIndex, trackIndex, noteIndex);
   };
 }]);
 
 
-app.controller('TransportController', ['$scope', 'SynthService', 'TransportService', function($scope, SynthService, TransportService) {
+app.controller('TransportController', ['$scope', 'PatternService', 'TransportService', function($scope, PatternService, TransportService) {
   $scope.playing = false;
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-120";
 
-  TransportService.setPattern(SynthService.serialize());
+  TransportService.setPattern(PatternService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
-    TransportService.setPattern(SynthService.serialize());
+    TransportService.setPattern(PatternService.serialize());
   });
-  $scope.$on('SynthService.update', function(event) {
-    TransportService.setPattern(SynthService.serialize());
+  $scope.$on('PatternService.update', function(event) {
+    TransportService.setPattern(PatternService.serialize());
   });
 
   $scope.updateTempo = function() {
