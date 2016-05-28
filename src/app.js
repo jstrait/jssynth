@@ -229,6 +229,10 @@ app.factory('SynthService', ['$rootScope', function($rootScope) {
     $rootScope.$broadcast('SynthService.update');
   };
 
+  synthService.updateInstrument = function() {
+    $rootScope.$broadcast('SynthService.update');
+  };
+
   synthService.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
@@ -353,34 +357,17 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 }]);
 
 
-app.controller('controller', ['$scope', 'SynthService', 'TransportService', function($scope, SynthService, TransportService) {
-  $scope.playing = false;
-  $scope.amplitude = 0.25;
-  $scope.tempo = 100;
-  $scope.loop = true;
-  $scope.downloadFileName = "js-110";
-
+app.controller('InstrumentController', ['$scope', 'SynthService', function($scope, SynthService) {
   $scope.instruments = SynthService.instruments();
   $scope.tracks = SynthService.tracks();
 
   $scope.$on('SynthService.update', function(event) {
     $scope.instruments = SynthService.instruments();
     $scope.tracks = SynthService.tracks();
-
-    syncPatternTracks(SynthService.serialize());
   });
 
-  var syncPatternTracks = function(pattern) {
-    TransportService.setPattern(pattern);
-  };
-
-  $scope.init = function() {
-    syncPatternTracks(SynthService.serialize());
-  };
-  $scope.init();
-
   $scope.updateInstrument = function() {
-    syncPatternTracks(SynthService.serialize());
+    SynthService.updateInstrument();
   };
 
   $scope.addInstrument = function() {
@@ -402,6 +389,20 @@ app.controller('controller', ['$scope', 'SynthService', 'TransportService', func
   $scope.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
     SynthService.updateNotes(instrumentIndex, trackIndex, noteIndex);
   };
+}]);
+
+
+app.controller('TransportController', ['$scope', 'SynthService', 'TransportService', function($scope, SynthService, TransportService) {
+  $scope.playing = false;
+  $scope.amplitude = 0.25;
+  $scope.tempo = 100;
+  $scope.loop = true;
+  $scope.downloadFileName = "js-110";
+
+  TransportService.setPattern(SynthService.serialize());
+  $scope.$on('SynthService.update', function(event) {
+    TransportService.setPattern(SynthService.serialize());
+  });
 
   $scope.updateTempo = function() {
     TransportService.setTempo(parseInt($scope.tempo, 10));
@@ -440,6 +441,7 @@ app.controller('controller', ['$scope', 'SynthService', 'TransportService', func
     TransportService.export(exportCompleteCallback);
   };
 }]);
+
 
 app.directive('noteInput', function () {
   return {
