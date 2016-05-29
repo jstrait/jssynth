@@ -128,11 +128,8 @@ JSSynth.Pattern = function() {
   var tracks = [];
   var stepCount = 0;
 
-  var sequenceIndex;
-  var isFinishedPlaying;
-  var currentTime;
-
   pattern.tracks = function() { return tracks; };
+  pattern.stepCount = function() { return stepCount; };
 
   pattern.replaceTracks = function(newTracks) {
     tracks = newTracks;
@@ -146,47 +143,6 @@ JSSynth.Pattern = function() {
     stepCount = maxLength;
   };
 
-  pattern.reset = function(newCurrentTime) {
-    sequenceIndex = 0;
-    isFinishedPlaying = false;
-    currentTime = newCurrentTime;
-  };
-
-  pattern.stepCount = function() {
-    return stepCount;
-  };
-
-  pattern.isFinishedPlaying = function() { return isFinishedPlaying; }
-
-  pattern.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
-    var note, noteTimeDuration;
-
-    while (currentTime < endTime) {
-      tracks.forEach(function(track) {
-        note = track.sequence()[sequenceIndex];
-        noteTimeDuration = stepDuration * note.stepDuration();
-
-        if (!track.isMuted()) {
-          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-        }
-      });
-
-      sequenceIndex += 1;
-      if (sequenceIndex >= stepCount) {
-        if (loop) {
-          sequenceIndex = 0;
-        }
-        else {
-          isFinishedPlaying = true;
-          return;
-        }
-      }
-
-      currentTime += stepDuration;
-    }
-  };
-
-  pattern.reset();
   return pattern;
 };
 
