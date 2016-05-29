@@ -424,6 +424,17 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternService', function($scope, InstrumentService, PatternService) {
   $scope.patterns = PatternService.patterns();
 
+  var buildInstrumentOptions = function() {
+    return InstrumentService.instruments().map(function(instrument) {
+     return { id: instrument.id, name: instrument.name };
+    });
+  };
+
+  $scope.instrumentOptions = buildInstrumentOptions();
+  $scope.$on('InstrumentService.update', function(event) {
+    $scope.instrumentOptions = buildInstrumentOptions();
+  });
+
   $scope.$on('PatternService.update', function(event) {
     $scope.patterns = PatternService.patterns();
   });
@@ -506,6 +517,23 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
     TransportService.export(exportCompleteCallback);
   };
 }]);
+
+
+// Copied from Angular docs, added to allow using an integer value
+// with a <select> tag.
+app.directive('convertToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(val) {
+        return parseInt(val, 10);
+      });
+      ngModel.$formatters.push(function(val) {
+        return '' + val;
+      });
+    }
+  };
+});
 
 
 app.directive('noteInput', function () {

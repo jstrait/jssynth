@@ -21,7 +21,7 @@
       <div>
         <span class="control">
           <label class="control-label">Name: {{instrument.id}}</label>
-          <input class="underlinedInput" ng-model="instrument.name" type="text" />
+          <input class="underlinedInput" ng-model="instrument.name" ng-change="updateInstrument();" type="text" />
         </span>
         <h2 class="section-header">Sound Generator</h2>
         <span class="control">
@@ -174,7 +174,9 @@
 
   <div ng-controller="PatternController">
     <div ng-repeat="pattern in patterns" ng-init="patternIndex = $index">
-      <input class="underlinedInput" ng-model="pattern.instrumentID" ng-change="changeInstrument(patternIndex);" type="text" />
+      <select ng-model="pattern.instrumentID" ng-change="changeInstrument(patternIndex);" convert-to-number>
+        <option ng-repeat="instrumentOption in instrumentOptions" value="{{instrumentOption.id}}">{{instrumentOption.name}}</option>
+      </select>
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
