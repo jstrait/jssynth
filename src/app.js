@@ -307,7 +307,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
   var patterns = [
                    { patternID: 1, },
                    { patternID: 2, },
-                   { patternID: 2, },
+                   { patternID: -1, },
                    { patternID: 1, },
                  ];
 
@@ -363,6 +363,33 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
   var serializePatterns = function(serializedInstruments) {
     var serializedPatterns = {};
 
+    var emptyPattern = {
+      id: -1,
+      name: 'Empty Pattern',
+      instrumentID: 1,
+      tracks: [
+        {
+          muted: false,
+          notes: [{name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},],
+        },
+      ],
+    };
+
     PatternService.patterns().forEach(function(pattern) {
       var serializedTracks = [];
       var instrument = serializedInstruments[pattern.instrumentID];
@@ -377,6 +404,15 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
       serializedPatterns[pattern.id] = serializedPattern;
     });
+
+    // Empty pattern
+    serializedPatterns[-1] = new JSSynth.Pattern();
+    var emptyTracks = [];
+    emptyPattern.tracks.forEach(function(track) {
+      var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+      emptyTracks.push(new JSSynth.Track(serializedInstruments[1], sequence, track.muted));
+    });
+    serializedPatterns[-1].replaceTracks(emptyTracks);
 
     return serializedPatterns;
   };
@@ -523,9 +559,13 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
   $scope.patterns = SequencerService.patterns();
 
   var buildPatternOptions = function() {
-    return PatternService.patterns().map(function(pattern) {
+    var patternOptions = PatternService.patterns().map(function(pattern) {
       return { id: pattern.id, name: pattern.name };
     });
+
+    patternOptions.unshift({ id: -1, name: ''});
+
+    return patternOptions;
   };
 
   $scope.patternOptions = buildPatternOptions();
