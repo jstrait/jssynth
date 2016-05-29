@@ -185,6 +185,36 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
+  patternService.addPattern = function() {
+    var newPattern = {
+      name: 'Pattern B',
+      instrumentID: 2,
+      tracks: [
+        {
+          muted: false,
+          notes: [{name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},
+                  {name: ''},],
+        },
+      ]
+    };
+
+    patterns.push(newPattern);
+  };
+
   patternService.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
@@ -397,6 +427,10 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
   $scope.$on('PatternService.update', function(event) {
     $scope.patterns = PatternService.patterns();
   });
+
+  $scope.addPattern = function() {
+    PatternService.addPattern();
+  };
 
   $scope.changeInstrument = function(patternIndex) {
     PatternService.changeInstrument(patternIndex);
