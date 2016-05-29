@@ -91,7 +91,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
   var patterns = [
                    {
                      name: 'Pattern A',
-                     instrumentID: 0,
+                     instrumentID: 1,
                      tracks: [
                        {
                          muted: false,
@@ -116,7 +116,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
                    },
                    {
                      name: 'Pattern B',
-                     instrumentID: 1,
+                     instrumentID: 2,
                      tracks: [
                        {
                          muted: false,
@@ -251,12 +251,12 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 
 app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
   var serializeInstruments = function() {
-    var serializedInstruments = [];
+    var serializedInstruments = {};
 
     InstrumentService.instruments().forEach(function(instrument) {
       var filterCutoff = parseInt(instrument.filterCutoff, 10);
 
-      serializedInstruments.push({
+      var serializedConfig = {
         waveform:  instrument.waveform,
         lfo: {
           waveform:  instrument.lfoWaveform,
@@ -278,7 +278,9 @@ app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'Pattern
           sustain: parseFloat(instrument.envelopeSustain),
           release: parseFloat(instrument.envelopeRelease),
         },
-      });
+      };
+
+      serializedInstruments[instrument.id] = new JSSynth.Instrument(serializedConfig);
     });
 
     return serializedInstruments;
@@ -301,11 +303,10 @@ app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'Pattern
     var patterns = PatternService.patterns();
     var serializedTracks = [];
 
-    serializedInstruments.forEach(function(serializedInstrument, index) {
-      var instrument = new JSSynth.Instrument(serializedInstrument);
-      var instrumentTracks = patterns[index].tracks;
+    patterns.forEach(function(pattern, index) {
+      var instrument = serializedInstruments[pattern.instrumentID];
 
-      instrumentTracks.forEach(function(track) {
+      pattern.tracks.forEach(function(track) {
         var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
         serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
       });
