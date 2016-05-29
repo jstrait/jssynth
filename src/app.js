@@ -283,7 +283,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 }]);
 
 
-app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
+app.factory('SerializationService', ['InstrumentService', 'PatternService', function(InstrumentService, PatternService) {
   var serializeInstruments = function() {
     var serializedInstruments = {};
 
