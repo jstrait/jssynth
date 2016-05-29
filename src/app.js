@@ -334,19 +334,23 @@ app.factory('SerializationService', ['$rootScope', 'InstrumentService', 'Pattern
 
   serializationService.serialize = function() {
     var serializedInstruments = serializeInstruments();
-    var patterns = PatternService.patterns();
-    var serializedTracks = [];
+    var serializedPatterns = [];
 
-    patterns.forEach(function(pattern, index) {
+    PatternService.patterns().forEach(function(pattern, index) {
       var instrument = serializedInstruments[pattern.instrumentID];
+      var serializedTracks = [];
 
       pattern.tracks.forEach(function(track) {
         var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
         serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
       });
+
+      var serializedPattern = new JSSynth.Pattern();
+      serializedPattern.replaceTracks(serializedTracks);
+      serializedPatterns.push(serializedPattern);
     });
 
-    return serializedTracks;
+    return serializedPatterns;
   };
 
   return serializationService;
@@ -363,8 +367,8 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     playing = false;
   };
 
-  var pattern = new JSSynth.Pattern();
-  var transport = new JSSynth.Transport(pattern, stopCallback);
+  var songPlayer = new JSSynth.SongPlayer([new JSSynth.Pattern()]);
+  var transport = new JSSynth.Transport(songPlayer, stopCallback);
 
   if (!transport) {
     alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-120. Try a recent version of Chrome, Safari, or Firefox.");
@@ -387,8 +391,8 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     transport.setAmplitude(newAmplitude);
   };
 
-  transportService.setPattern = function(newTracks) {
-    pattern.replaceTracks(newTracks);
+  transportService.setPatterns = function(newPatterns) {
+    songPlayer.replacePatterns(newPatterns);
   };
 
   transportService.loop = function(newLoop) {
@@ -396,7 +400,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   };
 
   transportService.export = function(exportCompleteCallback) {
-    var offlineTransport = new JSSynth.OfflineTransport(pattern, tempo, amplitude, exportCompleteCallback);
+    var offlineTransport = new JSSynth.OfflineTransport(songPlayer, tempo, amplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
@@ -472,12 +476,12 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.loop = true;
   $scope.downloadFileName = "js-120";
 
-  TransportService.setPattern(SerializationService.serialize());
+  TransportService.setPatterns(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
-    TransportService.setPattern(SerializationService.serialize());
+    TransportService.setPatterns(SerializationService.serialize());
   });
   $scope.$on('PatternService.update', function(event) {
-    TransportService.setPattern(SerializationService.serialize());
+    TransportService.setPatterns(SerializationService.serialize());
   });
 
   $scope.updateTempo = function() {

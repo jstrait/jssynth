@@ -132,6 +132,8 @@ JSSynth.Pattern = function() {
   var isFinishedPlaying;
   var currentTime;
 
+  pattern.tracks = function() { return tracks; };
+
   pattern.replaceTracks = function(newTracks) {
     tracks = newTracks;
 
@@ -187,6 +189,81 @@ JSSynth.Pattern = function() {
   pattern.reset();
   return pattern;
 };
+
+
+JSSynth.SongPlayer = function(patterns) {
+  var patternIndex;
+  var sequenceIndex;
+  var isFinishedPlaying;
+  var currentTime;
+
+  var songPlayer = {};
+
+  songPlayer.reset = function(newCurrentTime) {
+    patternIndex = 0;
+    sequenceIndex = 0;
+    isFinishedPlaying = false;
+    currentTime = newCurrentTime;
+  };
+
+  songPlayer.stepCount = function() {
+    var stepCount = 0;
+
+    patterns.forEach(function(pattern) {
+      stepCount += pattern.stepCount();
+    });
+
+    return stepCount;
+  };
+
+  songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
+
+  songPlayer.replacePatterns = function(newPatterns) {
+    patterns = newPatterns;
+  };
+
+  songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
+    var note, noteTimeDuration;
+
+    var pattern = patterns[patternIndex];
+
+    while (currentTime < endTime) {
+      pattern.tracks().forEach(function(track) {
+        note = track.sequence()[sequenceIndex];
+        noteTimeDuration = stepDuration * note.stepDuration();
+
+        if (!track.isMuted()) {
+          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+        }
+      });
+
+      sequenceIndex += 1;
+      if (sequenceIndex >= pattern.stepCount()) {
+        patternIndex += 1;
+        sequenceIndex = 0;
+
+        if (patternIndex >= patterns.length) {
+          if (loop) {
+            patternIndex = 0;
+          }
+          else {
+            isFinishedPlaying = true;
+            return;
+          }
+        }
+
+        pattern = patterns[patternIndex];
+      }
+
+      currentTime += stepDuration;
+    }
+  };
+
+  songPlayer.reset();
+
+  return songPlayer;
+};
+
 
 JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
@@ -408,7 +485,7 @@ JSSynth.WaveWriter = function() {
   return waveWriter;
 };
 
-JSSynth.Transport = function(pattern, stopCallback) {
+JSSynth.Transport = function(songPlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
   var audioContext;
@@ -447,16 +524,16 @@ JSSynth.Transport = function(pattern, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    pattern.tick(audioContext, masterGain, finalTime, transport.stepInterval, transport.loop);
+    songPlayer.tick(audioContext, masterGain, finalTime, transport.stepInterval, transport.loop);
 
-    if (pattern.isFinishedPlaying()) {
+    if (songPlayer.isFinishedPlaying()) {
       stop();
       window.setTimeout(stopCallback, transport.stepInterval * 1000);
     }
   };
 
   var start = function() {
-    pattern.reset(audioContext.currentTime);
+    songPlayer.reset(audioContext.currentTime);
 
     // Fix for Safari 9.1 (and maybe 9?)
     // For some reason, the AudioContext on a new page load is in suspended state
@@ -516,7 +593,7 @@ JSSynth.Transport = function(pattern, stopCallback) {
   return transport;
 };
 
-JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback) {
+JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallback) {
   var transport = {};
 
   var buildOfflineAudioContext = function() {
@@ -526,7 +603,7 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
     // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
     //       calculate a real value for this.
     var maximumReleaseTime = 0.3;
-    var playbackTime = (pattern.stepCount() * transport.stepInterval) + maximumReleaseTime;
+    var playbackTime = (songPlayer.stepCount() * transport.stepInterval) + maximumReleaseTime;
     var sampleCount = sampleRate * playbackTime;
 
     var audioContext;
@@ -572,12 +649,12 @@ JSSynth.OfflineTransport = function(pattern, tempo, amplitude, completeCallback)
   masterGain.connect(offlineAudioContext.destination);
 
   transport.tick = function() {
-    var scheduleAheadTime = pattern.stepCount() * transport.stepInterval;
+    var scheduleAheadTime = songPlayer.stepCount() * transport.stepInterval;
     var startTime = offlineAudioContext.currentTime;
     var finalTime = startTime + scheduleAheadTime;
 
-    pattern.reset(startTime);
-    pattern.tick(offlineAudioContext, masterGain, finalTime, transport.stepInterval, false);
+    songPlayer.reset(startTime);
+    songPlayer.tick(offlineAudioContext, masterGain, finalTime, transport.stepInterval, false);
 
     offlineAudioContext.startRendering();
   };
