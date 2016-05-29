@@ -174,6 +174,7 @@
 
   <div ng-controller="PatternController">
     <div ng-repeat="pattern in patterns" ng-init="instrumentIndex = $index">
+      <input class="underlinedInput" ng-model="pattern.instrumentID" ng-change="changeInstrument(instrumentIndex);" type="text" />
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>

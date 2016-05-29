@@ -181,6 +181,10 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
   
   var patternService = {};
 
+  patternService.changeInstrument = function(patternIndex) {
+    $rootScope.$broadcast('PatternService.update');
+  };
+
   patternService.addTrack = function(instrumentIndex) {
     var newTrack = {
                      muted: false,
@@ -393,6 +397,10 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
   $scope.$on('PatternService.update', function(event) {
     $scope.patterns = PatternService.patterns();
   });
+
+  $scope.changeInstrument = function(patternIndex) {
+    PatternService.changeInstrument(patternIndex);
+  };
 
   $scope.addTrack = function(patternIndex) {
     PatternService.addTrack(patternIndex);
