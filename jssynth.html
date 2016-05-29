@@ -226,6 +226,13 @@
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
     </ul>
   <div>
+  <div ng-controller="SequencerController">
+    <div class="inline-block mr1" ng-repeat="pattern in patterns" ng-init="sequencerIndex = $index">
+      <select ng-model="pattern.id" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
+        <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
+      </select>
+    </div>
+  </div>
 
   <div ng-controller="TransportController">
     <div class="mt2 mb0">

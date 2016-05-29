@@ -88,9 +88,23 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
 }]);
 
 app.factory('PatternService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
+  var IDGenerator = function() {
+    var nextId = 0;
+
+    return {
+      next: function() {
+        nextId++;
+
+        return nextId;  
+      },
+   };
+  };
+  var idGenerator = new IDGenerator();
+
   var patterns = [
                    {
-                     name: 'Pattern A',
+                     id: idGenerator.next(),
+                     name: 'Pattern 1',
                      instrumentID: 1,
                      tracks: [
                        {
@@ -115,7 +129,8 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
                      ],
                    },
                    {
-                     name: 'Pattern B',
+                     id: idGenerator.next(),
+                     name: 'Pattern 2',
                      instrumentID: 2,
                      tracks: [
                        {
@@ -186,8 +201,11 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
   };
 
   patternService.addPattern = function() {
+    var id = idGenerator.next();
+
     var newPattern = {
-      name: 'Pattern B',
+      id: id,
+      name: 'Pattern ' + id,
       instrumentID: 2,
       tracks: [
         {
@@ -213,6 +231,8 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     };
 
     patterns.push(newPattern);
+
+    $rootScope.$broadcast('PatternService.update');
   };
 
   patternService.addTrack = function(instrumentIndex) {
@@ -283,7 +303,27 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 }]);
 
 
-app.factory('SerializationService', ['InstrumentService', 'PatternService', function(InstrumentService, PatternService) {
+app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
+  var patterns = [
+                   { id: 1, },
+                   { id: 2, },
+                   { id: 2, },
+                   { id: 1, },
+                 ];
+
+  var sequencerService = {};
+
+  sequencerService.patterns = function() { return patterns; };
+
+  sequencerService.changeSequencer = function(sequenceIndex) {
+    $rootScope.$broadcast('SequencerService.update');
+  };
+
+  return sequencerService;
+}]);
+
+
+app.factory('SerializationService', ['InstrumentService', 'PatternService', 'SequencerService', function(InstrumentService, PatternService, SequencerService) {
   var serializeInstruments = function() {
     var serializedInstruments = {};
 
@@ -320,6 +360,27 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', func
     return serializedInstruments;
   };
 
+  var serializePatterns = function(serializedInstruments) {
+    var serializedPatterns = {};
+
+    PatternService.patterns().forEach(function(pattern) {
+      var serializedTracks = [];
+      var instrument = serializedInstruments[pattern.instrumentID];
+
+      pattern.tracks.forEach(function(track) {
+        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
+        serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+      });
+
+      var serializedPattern = new JSSynth.Pattern();
+      serializedPattern.replaceTracks(serializedTracks);
+
+      serializedPatterns[pattern.id] = serializedPattern;
+    });
+
+    return serializedPatterns;
+  };
+
   var serializeTrackNotesIntoSequence = function(track) {
     var rawNotes = [];
 
@@ -334,23 +395,12 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', func
 
   serializationService.serialize = function() {
     var serializedInstruments = serializeInstruments();
-    var serializedPatterns = [];
+    var serializedPatterns = serializePatterns(serializedInstruments);
+    var serializedPatternSeqeunce = [];
 
-    PatternService.patterns().forEach(function(pattern, index) {
-      var instrument = serializedInstruments[pattern.instrumentID];
-      var serializedTracks = [];
-
-      pattern.tracks.forEach(function(track) {
-        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-        serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
-      });
-
-      var serializedPattern = new JSSynth.Pattern();
-      serializedPattern.replaceTracks(serializedTracks);
-      serializedPatterns.push(serializedPattern);
+    return SequencerService.patterns().map(function(patternInSequence) {
+      return serializedPatterns[patternInSequence.id];
     });
-
-    return serializedPatterns;
   };
 
   return serializationService;
@@ -469,6 +519,26 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
+app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerService', function($scope, PatternService, SequencerService) {
+  $scope.patterns = SequencerService.patterns();
+
+  var buildPatternOptions = function() {
+    return PatternService.patterns().map(function(pattern) {
+      return { id: pattern.id, name: pattern.name };
+    });
+  };
+
+  $scope.patternOptions = buildPatternOptions();
+  $scope.$on('PatternService.update', function(event) {
+    $scope.patternOptions = buildPatternOptions();
+  });
+
+  $scope.changeSequencer = function(sequenceIndex) {
+    SequencerService.changeSequencer(sequenceIndex);
+  };
+}]);
+
+
 app.controller('TransportController', ['$scope', 'SerializationService', 'TransportService', function($scope, SerializationService, TransportService) {
   $scope.playing = false;
   $scope.amplitude = 0.25;
@@ -481,6 +551,9 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
     TransportService.setPatterns(SerializationService.serialize());
   });
   $scope.$on('PatternService.update', function(event) {
+    TransportService.setPatterns(SerializationService.serialize());
+  });
+  $scope.$on('SequencerService.update', function(event) {
     TransportService.setPatterns(SerializationService.serialize());
   });
 
