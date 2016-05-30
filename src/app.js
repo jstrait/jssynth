@@ -305,10 +305,18 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 
 app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
   var patterns = [
-                   { patternID: 1, },
-                   { patternID: 2, },
-                   { patternID: -1, },
-                   { patternID: 1, },
+                   [
+                     { patternID: 1, },
+                     { patternID: 2, },
+                     { patternID: -1, },
+                     { patternID: 1, },
+                   ],
+                   [
+                     { patternID: 2, },
+                     { patternID: -1, },
+                     { patternID: -1, },
+                     { patternID: 1, },
+                   ],
                  ];
 
   var sequencerService = {};
@@ -432,11 +440,18 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
   serializationService.serialize = function() {
     var serializedInstruments = serializeInstruments();
     var serializedPatterns = serializePatterns(serializedInstruments);
-    var serializedPatternSeqeunce = [];
+    var serializedPatternSequence = [];
 
-    return SequencerService.patterns().map(function(patternInSequence) {
-      return serializedPatterns[patternInSequence.patternID];
-    });
+    var sequencerPatterns = SequencerService.patterns()
+    var totalSteps = sequencerPatterns[0].length;
+
+    for (var i = 0; i < totalSteps; i++) {
+      serializedPatternSequence[i] = sequencerPatterns.map(function(row) {
+        return serializedPatterns[row[i].patternID]
+      });
+    }
+
+    return serializedPatternSequence;
   };
 
   return serializationService;

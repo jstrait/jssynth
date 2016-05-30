@@ -184,17 +184,19 @@ JSSynth.SongPlayer = function(patterns) {
     var pattern = patterns[patternIndex];
 
     while (currentTime < endTime) {
-      pattern.tracks().forEach(function(track) {
-        note = track.sequence()[sequenceIndex];
-        noteTimeDuration = stepDuration * note.stepDuration();
+      pattern.forEach(function(subPattern) {
+        subPattern.tracks().forEach(function(track) {
+          note = track.sequence()[sequenceIndex];
+          noteTimeDuration = stepDuration * note.stepDuration();
 
-        if (!track.isMuted()) {
-          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-        }
+          if (!track.isMuted()) {
+            track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+          }
+        });
       });
 
       sequenceIndex += 1;
-      if (sequenceIndex >= pattern.stepCount()) {
+      if (sequenceIndex >= pattern[0].stepCount()) {
         patternIndex += 1;
         sequenceIndex = 0;
 
