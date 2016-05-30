@@ -16,8 +16,14 @@
   <h1 class="logo mt0 mb0">JS-120</h1>
   <span class="tagline">High Resolution Web Synthesizer</span>
 
+  <div ng-controller="InstrumentCollectionController">
+    <select ng-model="selectedInstrumentID" ng-change="changeSelectedInstrument();" convert-to-number>
+      <option ng-repeat="instrumentOption in instrumentOptions" value="{{instrumentOption.id}}">{{instrumentOption.name}}</option>
+    </select>
+    <button class="block button-full right" ng-click="addInstrument();">Add</button>
+  </div>
+
   <div ng-controller="InstrumentController">
-    <div ng-repeat="instrument in instruments" ng-init="instrumentIndex = $index">
       <div>
         <span class="control">
           <label class="control-label">Name: {{instrument.id}}</label>
@@ -167,10 +173,6 @@
         </span>
       </div>
     </div>
-    <div class="mb1 overflow-auto">
-      <button class="block button-full right" ng-click="addInstrument();">Add Instrument</button>
-    </div>
-  </div>
 
   <div ng-controller="PatternController">
     <div ng-repeat="pattern in patterns" ng-init="patternIndex = $index">

@@ -82,6 +82,17 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
     $rootScope.$broadcast('InstrumentService.update');
   };
 
+  instrumentService.instrumentByID = function(targetID) {
+    for (var i = 0; i < instruments.length; i++) {
+      if (instruments[i].id === targetID) {
+        return instruments[i];
+      }
+    }
+
+    console.log("Oops, returning null!");
+    return null;
+  };
+
   instrumentService.instruments = function() { return instruments; };
 
   return instrumentService;
@@ -524,16 +535,42 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 }]);
 
 
-app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
-  $scope.instruments = InstrumentService.instruments();
+app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'InstrumentService', function($rootScope, $scope, InstrumentService) {
+  var buildInstrumentOptions = function() {
+    return InstrumentService.instruments().map(function(instrument) {
+     return { id: instrument.id, name: instrument.name };
+    });
+  };
 
+  $scope.instrumentOptions = buildInstrumentOptions();
   $scope.$on('InstrumentService.update', function(event) {
-    $scope.instruments = InstrumentService.instruments();
+    $scope.instrumentOptions = buildInstrumentOptions();
   });
+
+  $scope.selectedInstrumentID = 1;
 
   $scope.addInstrument = function() {
     InstrumentService.addInstrument();
   };
+
+  $scope.changeSelectedInstrument = function() {
+    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: $scope.selectedInstrumentID });
+  };
+}]);
+
+
+app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
+  var instrumentID = 1;
+  
+  $scope.instrument = InstrumentService.instrumentByID(instrumentID);
+  $scope.$on('InstrumentCollectionController.selectedInstrumentChanged', function(event, args) {
+    instrumentID = args.instrumentID;
+    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
+  });
+
+  $scope.$on('InstrumentService.update', function(event) {
+    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
+  });
 
   $scope.updateInstrument = function() {
     InstrumentService.updateInstrument();
