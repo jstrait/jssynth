@@ -327,6 +327,17 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
     $rootScope.$broadcast('SequencerService.update');
   };
 
+  sequencerService.addRow = function(rowIndex) {
+    patterns.push([
+      { patternID: -1, },
+      { patternID: -1, },
+      { patternID: -1, },
+      { patternID: -1, },
+    ]);
+
+    $rootScope.$broadcast('SequencerService.update');
+  };
+
   return sequencerService;
 }]);
 
@@ -590,6 +601,10 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
 
   $scope.changeSequencer = function(sequenceIndex) {
     SequencerService.changeSequencer(sequenceIndex);
+  };
+
+  $scope.addRow = function(rowIndex) {
+    SequencerService.addRow(rowIndex);
   };
 }]);
 
