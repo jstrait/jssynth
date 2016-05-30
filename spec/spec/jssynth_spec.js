@@ -3,7 +3,6 @@ describe("JSSynth.Pattern", function() {
     var pattern = new JSSynth.Pattern();
 
     expect(pattern.stepCount()).toBe(0);
-    expect(pattern.isFinishedPlaying()).toBe(false);
   });
 
   it("should all replacing a Pattern's tracks properly", function() {
