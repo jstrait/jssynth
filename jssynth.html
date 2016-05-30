@@ -231,7 +231,8 @@
   <div>
   <div ng-controller="SequencerController">
     <div ng-repeat="row in patterns">
-      <div class="inline-block mr1" ng-repeat="pattern in row" ng-init="sequencerIndex = $index">
+      <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
+      <div class="inline-block mr1" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
         <select ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
           <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
         </select>

@@ -320,18 +320,24 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 
 app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
   var patterns = [
-                   [
-                     { patternID: 1, },
-                     { patternID: 2, },
-                     { patternID: -1, },
-                     { patternID: 1, },
-                   ],
-                   [
-                     { patternID: 2, },
-                     { patternID: -1, },
-                     { patternID: -1, },
-                     { patternID: 1, },
-                   ],
+                   {
+                     muted: false,
+                     patterns: [
+                        { patternID: 1, },
+                       { patternID: 2, },
+                       { patternID: -1, },
+                       { patternID: 1, },
+                     ],
+                   },
+                   {
+                     muted: false,
+                     patterns: [
+                       { patternID: 2, },
+                       { patternID: -1, },
+                       { patternID: -1, },
+                       { patternID: 1, },
+                     ],
+                   }
                  ];
 
   var sequencerService = {};
@@ -343,13 +349,21 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
   };
 
   sequencerService.addRow = function(rowIndex) {
-    patterns.push([
-      { patternID: -1, },
-      { patternID: -1, },
-      { patternID: -1, },
-      { patternID: -1, },
-    ]);
+    patterns.push({
+      muted: false,
+      patterns: [
+        { patternID: -1, },
+        { patternID: -1, },
+        { patternID: -1, },
+        { patternID: -1, },
+      ],
+    });
 
+    $rootScope.$broadcast('SequencerService.update');
+  };
+
+  sequencerService.toggleRowMute = function(rowIndex) {
+    patterns[rowIndex].muted = !patterns[rowIndex].muted;
     $rootScope.$broadcast('SequencerService.update');
   };
 
@@ -468,12 +482,12 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatterns = serializePatterns(serializedInstruments);
     var serializedPatternSequence = [];
 
-    var sequencerPatterns = SequencerService.patterns()
-    var totalSteps = sequencerPatterns[0].length;
+    var sequencerPatterns = SequencerService.patterns();
+    var totalSteps = sequencerPatterns[0].patterns.length;
 
     for (var i = 0; i < totalSteps; i++) {
       serializedPatternSequence[i] = sequencerPatterns.map(function(row) {
-        return serializedPatterns[row[i].patternID]
+        return serializedPatterns[row.patterns[i].patternID];
       });
     }
 
@@ -650,6 +664,10 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
 
   $scope.addRow = function(rowIndex) {
     SequencerService.addRow(rowIndex);
+  };
+
+  $scope.toggleRowMute = function(rowIndex) {
+    SequencerService.toggleRowMute(rowIndex);
   };
 }]);
 
