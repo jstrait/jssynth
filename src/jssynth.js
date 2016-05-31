@@ -147,29 +147,57 @@ JSSynth.Pattern = function() {
 };
 
 
+JSSynth.PatternPlayer = function(pattern) {
+  var isComplete = false;
+
+  var stepIndex = 0;
+  var stepCount = 16;
+
+  var patternPlayer = {};
+
+  patternPlayer.isComplete = function() { return isComplete; };
+
+  patternPlayer.step = function(audioContext, audioDestination, stepDuration, currentTime) {
+    var note, noteTimeDuration;
+
+    var notes = pattern.tracks().forEach(function(track) {
+      if (!track.isMuted()) {
+        note = track.sequence()[stepIndex];
+        noteTimeDuration = stepDuration * note.stepDuration();
+
+        track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+      }
+    });
+
+    stepIndex += 1;
+    isComplete = (stepIndex >= stepCount);
+
+    return notes;
+  };
+
+  return patternPlayer;
+};
+
+
 JSSynth.SongPlayer = function(patterns) {
   var patternIndex;
-  var sequenceIndex;
   var isFinishedPlaying;
   var currentTime;
+  var patternPlayers;
 
   var songPlayer = {};
 
   songPlayer.reset = function(newCurrentTime) {
     patternIndex = 0;
-    sequenceIndex = 0;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
+    patternPlayers = patterns[0].map(function(pattern) {
+      return new JSSynth.PatternPlayer(pattern);
+    });
   };
 
   songPlayer.stepCount = function() {
-    var stepCount = 0;
-
-    patterns.forEach(function(pattern) {
-      stepCount += pattern.stepCount();
-    });
-
-    return stepCount;
+    return 64;
   };
 
   songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
@@ -179,26 +207,13 @@ JSSynth.SongPlayer = function(patterns) {
   };
 
   songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
-    var note, noteTimeDuration;
-
-    var pattern = patterns[patternIndex];
-
     while (currentTime < endTime) {
-      pattern.forEach(function(subPattern) {
-        subPattern.tracks().forEach(function(track) {
-          note = track.sequence()[sequenceIndex];
-          noteTimeDuration = stepDuration * note.stepDuration();
-
-          if (!track.isMuted()) {
-            track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-          }
-        });
+      patternPlayers.forEach(function(patternPlayer) {
+        patternPlayer.step(audioContext, audioDestination, stepDuration, currentTime);
       });
 
-      sequenceIndex += 1;
-      if (sequenceIndex >= pattern[0].stepCount()) {
+      if (patternPlayers[0].isComplete()) {
         patternIndex += 1;
-        sequenceIndex = 0;
 
         if (patternIndex >= patterns.length) {
           if (loop) {
@@ -210,7 +225,9 @@ JSSynth.SongPlayer = function(patterns) {
           }
         }
 
-        pattern = patterns[patternIndex];
+        patternPlayers = patterns[patternIndex].map(function(pattern) {
+          return new JSSynth.PatternPlayer(pattern);
+        });
       }
 
       currentTime += stepDuration;

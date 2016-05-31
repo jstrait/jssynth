@@ -508,7 +508,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     playing = false;
   };
 
-  var songPlayer = new JSSynth.SongPlayer([new JSSynth.Pattern()]);
+  var songPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
   var transport = new JSSynth.Transport(songPlayer, stopCallback);
 
   if (!transport) {
