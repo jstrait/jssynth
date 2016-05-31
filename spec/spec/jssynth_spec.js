@@ -86,8 +86,6 @@ describe("JSSynth.SequenceParser", function() {
     var rawSequence = "A4 Bb2  C#5 ";
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(5);
-
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(1);
@@ -95,18 +93,10 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[1].name()).toEqual("Bb");
     expect(parsedSequence[1].octave()).toEqual(2);
     expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
+console.log(parsedSequence);
     expect(parsedSequence[3].name()).toEqual("C#");
     expect(parsedSequence[3].octave()).toEqual(5);
     expect(parsedSequence[3].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toEqual(NaN);
-    expect(parsedSequence[4].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence containing ties", function() {
@@ -114,31 +104,13 @@ describe("JSSynth.SequenceParser", function() {
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(10);
-
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(4);
 
-    expect(parsedSequence[1].name()).toEqual("");
-    expect(parsedSequence[1].octave()).toEqual(NaN);
-    expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[3].name()).toEqual("");
-    expect(parsedSequence[3].octave()).toEqual(NaN);
-    expect(parsedSequence[3].stepDuration()).toEqual(1);
-
     expect(parsedSequence[4].name()).toEqual("C");
     expect(parsedSequence[4].octave()).toEqual(2);
     expect(parsedSequence[4].stepDuration()).toEqual(2);
-
-    expect(parsedSequence[5].name()).toEqual("");
-    expect(parsedSequence[5].octave()).toEqual(NaN);
-    expect(parsedSequence[5].stepDuration()).toEqual(1);
 
     expect(parsedSequence[6].name()).toEqual("D");
     expect(parsedSequence[6].octave()).toEqual(4);
@@ -147,14 +119,6 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[7].name()).toEqual("G");
     expect(parsedSequence[7].octave()).toEqual(3);
     expect(parsedSequence[7].stepDuration()).toEqual(3);
-
-    expect(parsedSequence[8].name()).toEqual("");
-    expect(parsedSequence[8].octave()).toEqual(NaN);
-    expect(parsedSequence[8].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[9].name()).toEqual("");
-    expect(parsedSequence[9].octave()).toEqual(NaN);
-    expect(parsedSequence[9].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence with bad note names", function() {
@@ -162,23 +126,9 @@ describe("JSSynth.SequenceParser", function() {
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(4);
-
     expect(parsedSequence[0].name()).toEqual("V");
     expect(parsedSequence[0].octave()).toEqual(3);
     expect(parsedSequence[0].stepDuration()).toEqual(4);
-
-    expect(parsedSequence[1].name()).toEqual("");
-    expect(parsedSequence[1].octave()).toEqual(NaN);
-    expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[3].name()).toEqual("");
-    expect(parsedSequence[3].octave()).toEqual(NaN);
-    expect(parsedSequence[3].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence containing trailing spaces", function() {
@@ -186,63 +136,19 @@ describe("JSSynth.SequenceParser", function() {
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(7);
-
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(4);
-
-    expect(parsedSequence[1].name()).toEqual("");
-    expect(parsedSequence[1].octave()).toEqual(NaN);
-    expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[3].name()).toEqual("");
-    expect(parsedSequence[3].octave()).toEqual(NaN);
-    expect(parsedSequence[3].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toEqual(NaN);
-    expect(parsedSequence[4].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[5].name()).toEqual("");
-    expect(parsedSequence[5].octave()).toEqual(NaN);
-    expect(parsedSequence[5].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[6].name()).toEqual("");
-    expect(parsedSequence[6].octave()).toEqual(NaN);
-    expect(parsedSequence[6].stepDuration()).toEqual(1);
   });
 
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
     var rawSequence = "A4 -  - - C2";
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
-
-    expect(parsedSequence.length).toEqual(6);
-
+console.log(parsedSequence);
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(2);
-
-    expect(parsedSequence[1].name()).toEqual("");
-    expect(parsedSequence[1].octave()).toEqual(NaN);
-    expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[3].name()).toEqual("");
-    expect(parsedSequence[3].octave()).toEqual(NaN);
-    expect(parsedSequence[3].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toEqual(NaN);
-    expect(parsedSequence[4].stepDuration()).toEqual(1);
 
     expect(parsedSequence[5].name()).toEqual("C");
     expect(parsedSequence[5].octave()).toEqual(2);
@@ -254,23 +160,7 @@ describe("JSSynth.SequenceParser", function() {
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(4);
-
-    expect(parsedSequence[0].name()).toEqual("");
-    expect(parsedSequence[0].octave()).toEqual(NaN);
-    expect(parsedSequence[0].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[1].name()).toEqual("");
-    expect(parsedSequence[1].octave()).toEqual(NaN);
-    expect(parsedSequence[1].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toEqual(NaN);
-    expect(parsedSequence[2].stepDuration()).toEqual(1);
-
-    expect(parsedSequence[3].name()).toEqual("");
-    expect(parsedSequence[3].octave()).toEqual(NaN);
-    expect(parsedSequence[3].stepDuration()).toEqual(1);
+    expect(parsedSequence).toEqual([]);
   });
 });
 

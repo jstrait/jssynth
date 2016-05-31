@@ -163,9 +163,11 @@ JSSynth.PatternPlayer = function(pattern) {
     var notes = pattern.tracks().forEach(function(track) {
       if (!track.isMuted()) {
         note = track.sequence()[stepIndex];
-        noteTimeDuration = stepDuration * note.stepDuration();
+        if (note) {
+          noteTimeDuration = stepDuration * note.stepDuration();
 
-        track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+        }
       }
     });
 
@@ -256,16 +258,13 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
 
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
-    var i;
     var noteName = null, octave = null;
+    var sequenceIndex = 0;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
 
-    var addNote = function(noteName, octave, duration) {
-      sequence.push(new JSSynth.Note(noteName, octave, duration));
-      for (i = 0; i < (duration - 1); i++) {
-        sequence.push(new JSSynth.Note("", null, 1));
-      }
+    var addNote = function(index, noteName, octave, duration) {
+      sequence[index] = new JSSynth.Note(noteName, octave, duration);
     };
 
     var inProgressNoteDuration = 1;
@@ -277,22 +276,24 @@ JSSynth.SequenceParser = {
         else {
           // If an unattached '-', treat it the same as ' '
           inProgressNoteDuration = 1;
-          addNote("", null, 1);
+          sequenceIndex += 1;
         }
       }
       else if (note === "") {
         if (noteName !== null) {
-          addNote(noteName, octave, inProgressNoteDuration);
+          addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
+          sequenceIndex += inProgressNoteDuration;
         }
-        addNote("", null, 1);
 
+        sequenceIndex += 1;
         inProgressNoteDuration = 1;
         noteName = null;
         octave = null;
       }
       else {
         if (noteName !== null) {
-          addNote(noteName, octave, inProgressNoteDuration);
+          addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
+          sequenceIndex += inProgressNoteDuration;
         }
 
         noteName = note.slice(0, -1);
@@ -302,7 +303,7 @@ JSSynth.SequenceParser = {
     });
 
     if (noteName !== null) {
-      addNote(noteName, octave, inProgressNoteDuration);
+      addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
     }
 
     return sequence;
