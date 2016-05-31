@@ -486,7 +486,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var totalSteps = sequencerPatterns[0].patterns.length;
 
     for (var i = 0; i < totalSteps; i++) {
-      serializedPatternSequence[i] = sequencerPatterns.map(function(row) {
+      serializedPatternSequence[i * 16] = sequencerPatterns.map(function(row) {
         return serializedPatterns[row.patterns[i].patternID];
       });
     }

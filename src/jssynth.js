@@ -180,7 +180,7 @@ JSSynth.PatternPlayer = function(pattern) {
 
 
 JSSynth.SongPlayer = function(patterns) {
-  var patternIndex;
+  var stepIndex;
   var isFinishedPlaying;
   var currentTime;
   var patternPlayers;
@@ -188,12 +188,10 @@ JSSynth.SongPlayer = function(patterns) {
   var songPlayer = {};
 
   songPlayer.reset = function(newCurrentTime) {
-    patternIndex = 0;
+    stepIndex = 0;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
-    patternPlayers = patterns[0].map(function(pattern) {
-      return new JSSynth.PatternPlayer(pattern);
-    });
+    patternPlayers = [];
   };
 
   songPlayer.stepCount = function() {
@@ -208,26 +206,30 @@ JSSynth.SongPlayer = function(patterns) {
 
   songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
     while (currentTime < endTime) {
+      var incomingPatterns = patterns[stepIndex];
+      if (incomingPatterns) {
+        incomingPatterns.forEach(function(incomingPattern) {
+          patternPlayers.push(new JSSynth.PatternPlayer(incomingPattern));
+        });
+      }
+
       patternPlayers.forEach(function(patternPlayer) {
         patternPlayer.step(audioContext, audioDestination, stepDuration, currentTime);
       });
 
-      if (patternPlayers[0].isComplete()) {
-        patternIndex += 1;
+      patternPlayers = patternPlayers.filter(function(patternPlayer) {
+        return !patternPlayer.isComplete();
+      });
 
-        if (patternIndex >= patterns.length) {
-          if (loop) {
-            patternIndex = 0;
-          }
-          else {
-            isFinishedPlaying = true;
-            return;
-          }
+      stepIndex += 1;
+      if (stepIndex >= songPlayer.stepCount()) {
+        if (loop) {
+          stepIndex = 0;
         }
-
-        patternPlayers = patterns[patternIndex].map(function(pattern) {
-          return new JSSynth.PatternPlayer(pattern);
-        });
+        else {
+          isFinishedPlaying = true;
+          return;
+        }
       }
 
       currentTime += stepDuration;
