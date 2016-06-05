@@ -323,9 +323,13 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
                    {
                      muted: false,
                      patterns: [
-                        { patternID: 1, },
+                       { patternID: 1, },
                        { patternID: 2, },
                        { patternID: -1, },
+                       { patternID: 1, },
+                       { patternID: 1, },
+                       { patternID: 1, },
+                       { patternID: 1, },
                        { patternID: 1, },
                      ],
                    },
@@ -335,7 +339,11 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
                        { patternID: 2, },
                        { patternID: -1, },
                        { patternID: -1, },
-                       { patternID: 1, },
+                       { patternID: 2, },
+                       { patternID: 2, },
+                       { patternID: 2, },
+                       { patternID: 2, },
+                       { patternID: 2, },
                      ],
                    }
                  ];
@@ -352,6 +360,10 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
     patterns.push({
       muted: false,
       patterns: [
+        { patternID: -1, },
+        { patternID: -1, },
+        { patternID: -1, },
+        { patternID: -1, },
         { patternID: -1, },
         { patternID: -1, },
         { patternID: -1, },
@@ -697,7 +709,7 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
 
   $scope.syncCurrentStep = function() {
     if (TransportService.currentStep()) {
-      $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 4) + 1;
+      $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 8) + 1;
     }
     else
     {

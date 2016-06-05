@@ -197,7 +197,7 @@ JSSynth.SongPlayer = function(patterns) {
   };
 
   songPlayer.stepCount = function() {
-    return 64;
+    return 128;
   };
 
   songPlayer.currentStep = function() {
