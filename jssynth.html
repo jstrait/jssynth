@@ -230,6 +230,7 @@
     </ul>
   <div>
   <div ng-controller="SequencerController">
+    Current pattern: <span transport-progress ng-model="currentStep"></span>
     <div ng-repeat="row in patterns">
       <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
       <div class="inline-block mr1" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">

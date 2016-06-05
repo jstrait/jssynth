@@ -540,6 +540,10 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     loop = newLoop;
   };
 
+  transportService.currentStep = function() {
+    return transport.elapsedSteps();
+  };
+
   transportService.export = function(exportCompleteCallback) {
     var offlineTransport = new JSSynth.OfflineTransport(songPlayer, tempo, amplitude, exportCompleteCallback);
     offlineTransport.tick();
@@ -640,8 +644,9 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
-app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerService', function($scope, PatternService, SequencerService) {
+app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerService', 'TransportService', function($scope, PatternService, SequencerService, TransportService) {
   $scope.patterns = SequencerService.patterns();
+  $scope.currentStep = 1;
 
   var buildPatternOptions = function() {
     var patternOptions = PatternService.patterns().map(function(pattern) {
@@ -668,6 +673,10 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
 
   $scope.toggleRowMute = function(rowIndex) {
     SequencerService.toggleRowMute(rowIndex);
+  };
+
+  $scope.syncCurrentStep = function() {
+    $scope.currentStep = TransportService.currentStep();
   };
 }]);
 
@@ -744,6 +753,28 @@ app.directive('convertToNumber', function() {
     }
   };
 });
+
+
+app.directive('transportProgress', ['$interval', function($interval) {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ctrl) {
+      if (!ctrl) return;
+      var updateProgress = function() {
+        scope.syncCurrentStep();
+        element.text(Math.floor((scope.currentStep / 16) % 4) + 1);
+      };
+
+      element.on('$destroy', function() {
+        $interval.cancel(timeoutId);
+      });
+
+      var timeoutId = $interval(function() {
+        updateProgress();
+      }, 1);
+    },
+  };
+}]);
 
 
 app.directive('noteInput', function () {

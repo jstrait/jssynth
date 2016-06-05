@@ -200,6 +200,10 @@ JSSynth.SongPlayer = function(patterns) {
     return 64;
   };
 
+  songPlayer.currentStep = function() {
+    return stepIndex;
+  };
+
   songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
 
   songPlayer.replacePatterns = function(newPatterns) {
@@ -468,6 +472,8 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var TICK_INTERVAL = 50;         // in milliseconds
   var audioContext;
   var masterGain;
+  var startTime;
+  var stopTime;
 
   if (window.AudioContext) {
     // Why do we create an AudioContext, immediately close it, and then
@@ -511,7 +517,9 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   };
 
   var start = function() {
-    songPlayer.reset(audioContext.currentTime);
+    startTime = audioContext.currentTime;
+    stopTime = null;
+    songPlayer.reset(startTime);
 
     // Fix for Safari 9.1 (and maybe 9?)
     // For some reason, the AudioContext on a new page load is in suspended state
@@ -533,6 +541,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   };
 
   var stop = function() {
+    stopTime = audioContext.currentTime;
     window.clearInterval(timeoutId);
     playing = false;
   };
@@ -562,6 +571,25 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
     else {
       start();
     }
+  };
+
+  var elapsedTime = function() {
+    var elapsedTime;
+    if (!startTime) {
+      elapsedTime = 0.0;
+    }
+    else if (stopTime) {
+      elapsedTime = (stopTime - startTime);
+    }
+    else {
+      elapsedTime = (audioContext.currentTime - startTime);
+    }
+    
+    return elapsedTime;
+  };
+
+  transport.elapsedSteps = function() {
+    return elapsedTime() / transport.stepInterval;
   };
 
   transport.loop = true;
