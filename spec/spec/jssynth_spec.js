@@ -93,7 +93,7 @@ describe("JSSynth.SequenceParser", function() {
     expect(parsedSequence[1].name()).toEqual("Bb");
     expect(parsedSequence[1].octave()).toEqual(2);
     expect(parsedSequence[1].stepDuration()).toEqual(1);
-console.log(parsedSequence);
+
     expect(parsedSequence[3].name()).toEqual("C#");
     expect(parsedSequence[3].octave()).toEqual(5);
     expect(parsedSequence[3].stepDuration()).toEqual(1);
@@ -145,7 +145,7 @@ console.log(parsedSequence);
     var rawSequence = "A4 -  - - C2";
 
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
-console.log(parsedSequence);
+
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(2);
