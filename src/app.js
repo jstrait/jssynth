@@ -362,6 +362,16 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
     $rootScope.$broadcast('SequencerService.update');
   };
 
+  sequencerService.removeRow = function(rowIndex) {
+    patterns.splice(rowIndex, 1);
+
+    if (patterns.length === 0) {
+      sequencerService.addRow(0);
+    }
+
+    $rootScope.$broadcast('SequencerService.update');
+  };
+
   sequencerService.toggleRowMute = function(rowIndex) {
     patterns[rowIndex].muted = !patterns[rowIndex].muted;
     $rootScope.$broadcast('SequencerService.update');
@@ -669,6 +679,10 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
 
   $scope.addRow = function(rowIndex) {
     SequencerService.addRow(rowIndex);
+  };
+
+  $scope.removeRow = function(rowIndex) {
+    SequencerService.removeRow(rowIndex);
   };
 
   $scope.toggleRowMute = function(rowIndex) {
