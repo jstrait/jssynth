@@ -690,7 +690,7 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
   };
 
   $scope.syncCurrentStep = function() {
-    $scope.currentStep = TransportService.currentStep();
+    $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 4) + 1;
   };
 }]);
 
@@ -776,7 +776,6 @@ app.directive('transportProgress', ['$interval', function($interval) {
       if (!ctrl) return;
       var updateProgress = function() {
         scope.syncCurrentStep();
-        element.text(Math.floor((scope.currentStep / 16) % 4) + 1);
       };
 
       element.on('$destroy', function() {
