@@ -262,52 +262,29 @@ JSSynth.Track = function(instrument, sequence, isMuted) {
 
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
-    var noteName = null, octave = null;
-    var sequenceIndex = 0;
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
+    var noteString;
+    var i;
+    var noteName;
+    var octave;
+    var noteDuration = 1;
 
-    var addNote = function(index, noteName, octave, duration) {
-      sequence[index] = new JSSynth.Note(noteName, octave, duration);
-    };
+    for (i = splitNotes.length - 1; i >= 0; i--) {
+      noteString = splitNotes[i];
 
-    var inProgressNoteDuration = 1;
-    splitNotes.forEach(function(note) {
-      if (note === "-") { 
-        if (noteName !== null) {
-          inProgressNoteDuration += 1;
-        }
-        else {
-          // If an unattached '-', treat it the same as ' '
-          inProgressNoteDuration = 1;
-          sequenceIndex += 1;
-        }
+      if (noteString === "-") {
+        noteDuration += 1;
       }
-      else if (note === "") {
-        if (noteName !== null) {
-          addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
-          sequenceIndex += inProgressNoteDuration;
-        }
-
-        sequenceIndex += 1;
-        inProgressNoteDuration = 1;
-        noteName = null;
-        octave = null;
+      else if (noteString === " ") {
+        noteDuration = 1;
       }
       else {
-        if (noteName !== null) {
-          addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
-          sequenceIndex += inProgressNoteDuration;
-        }
-
-        noteName = note.slice(0, -1);
-        octave = note.slice(-1);
-        inProgressNoteDuration = 1;
+        noteName = noteString.slice(0, -1);
+        octave = noteString.slice(-1);
+        sequence[i] = new JSSynth.Note(noteName, octave, noteDuration);
+        noteDuration = 1;
       }
-    });
-
-    if (noteName !== null) {
-      addNote(sequenceIndex, noteName, octave, inProgressNoteDuration);
     }
 
     return sequence;
