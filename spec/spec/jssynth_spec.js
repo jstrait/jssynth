@@ -50,15 +50,15 @@ describe("JSSynth.Note", function() {
     expect(note1.stepDuration()).toEqual(1);
     expect(note1.frequency()).toEqual(309.375);
 
-    expect(note1.name()).toEqual('D#');
-    expect(note1.octave()).toEqual(3);
-    expect(note1.stepDuration()).toEqual(1);
-    expect(note1.frequency()).toEqual(309.375);
+    expect(note2.name()).toEqual('Eb');
+    expect(note2.octave()).toEqual(3);
+    expect(note2.stepDuration()).toEqual(1);
+    expect(note2.frequency()).toEqual(309.375);
 
-    expect(note1.name()).toEqual('D#');
-    expect(note1.octave()).toEqual(3);
-    expect(note1.stepDuration()).toEqual(1);
-    expect(note1.frequency()).toEqual(309.375);
+    expect(note3.name()).toEqual('Fbb');
+    expect(note3.octave()).toEqual(3);
+    expect(note3.stepDuration()).toEqual(1);
+    expect(note3.frequency()).toEqual(309.375);
   });
 
   it("should convert string values to numbers where appropriate", function() {

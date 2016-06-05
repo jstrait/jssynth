@@ -259,11 +259,10 @@ JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
   var MIDDLE_A_FREQUENCY = 440.0;
 
   var calculateFrequency = function(noteName, octave) {
-    noteName = ENHARMONIC_EQUIVALENTS[noteName];
+    var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
     var octaveMultiplier = Math.pow(2.0, (octave - MIDDLE_OCTAVE));
-    var frequency = NOTE_RATIOS[noteName] * MIDDLE_A_FREQUENCY * octaveMultiplier;
 
-    return frequency;
+    return NOTE_RATIOS[normalizedNoteName] * MIDDLE_A_FREQUENCY * octaveMultiplier;
   };
 
   var noteName = newNoteName;
