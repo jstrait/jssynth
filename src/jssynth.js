@@ -147,107 +147,6 @@ JSSynth.Pattern = function() {
 };
 
 
-JSSynth.PatternPlayer = function(pattern) {
-  var isComplete = false;
-
-  var stepIndex = 0;
-  var stepCount = 16;
-
-  var patternPlayer = {};
-
-  patternPlayer.isComplete = function() { return isComplete; };
-
-  patternPlayer.step = function(audioContext, audioDestination, stepDuration, currentTime) {
-    var note, noteTimeDuration;
-
-    var notes = pattern.tracks().forEach(function(track) {
-      if (!track.isMuted()) {
-        note = track.sequence()[stepIndex];
-        if (note) {
-          noteTimeDuration = stepDuration * note.stepDuration();
-
-          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-        }
-      }
-    });
-
-    stepIndex += 1;
-    isComplete = (stepIndex >= stepCount);
-
-    return notes;
-  };
-
-  return patternPlayer;
-};
-
-
-JSSynth.SongPlayer = function(patterns) {
-  var stepIndex;
-  var isFinishedPlaying;
-  var currentTime;
-  var patternPlayers;
-
-  var songPlayer = {};
-
-  songPlayer.reset = function(newCurrentTime) {
-    stepIndex = 0;
-    isFinishedPlaying = false;
-    currentTime = newCurrentTime;
-    patternPlayers = [];
-  };
-
-  songPlayer.stepCount = function() {
-    return 128;
-  };
-
-  songPlayer.currentStep = function() {
-    return stepIndex;
-  };
-
-  songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
-
-  songPlayer.replacePatterns = function(newPatterns) {
-    patterns = newPatterns;
-  };
-
-  songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
-    while (currentTime < endTime) {
-      var incomingPatterns = patterns[stepIndex];
-      if (incomingPatterns) {
-        incomingPatterns.forEach(function(incomingPattern) {
-          patternPlayers.push(new JSSynth.PatternPlayer(incomingPattern));
-        });
-      }
-
-      patternPlayers.forEach(function(patternPlayer) {
-        patternPlayer.step(audioContext, audioDestination, stepDuration, currentTime);
-      });
-
-      patternPlayers = patternPlayers.filter(function(patternPlayer) {
-        return !patternPlayer.isComplete();
-      });
-
-      stepIndex += 1;
-      if (stepIndex >= songPlayer.stepCount()) {
-        if (loop) {
-          stepIndex = 0;
-        }
-        else {
-          isFinishedPlaying = true;
-          return;
-        }
-      }
-
-      currentTime += stepDuration;
-    }
-  };
-
-  songPlayer.reset();
-
-  return songPlayer;
-};
-
-
 JSSynth.Track = function(instrument, sequence, isMuted) {
   var track = {};
 
@@ -384,65 +283,107 @@ JSSynth.MusicTheory = {
   MIDDLE_A_FREQUENCY: 440.0,
 };
 
-JSSynth.WaveWriter = function() {
-  var waveWriter = {};
 
-  var LITTLE_ENDIAN = true;
-  var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
-  var NUM_CHANNELS = 1;
-  var BITS_PER_SAMPLE = 16;
-  var BYTES_PER_SAMPLE = 2;
-  var SAMPLE_RATE = 44100;
+JSSynth.PatternPlayer = function(pattern) {
+  var isComplete = false;
 
-  var BLOCK_ALIGN = (BITS_PER_SAMPLE / 8) * NUM_CHANNELS;
-  var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
+  var stepIndex = 0;
+  var stepCount = 16;
 
-  var WAVEFILE_HEADER_BYTE_COUNT = 44;
+  var patternPlayer = {};
 
-  waveWriter.write = function(rawFloat32SampleData, scaleFactor) {
-    var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
-    var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
-    var outputView = new DataView(new ArrayBuffer(fileLength));
-    var i;
+  patternPlayer.isComplete = function() { return isComplete; };
 
-    outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8(  1, "I".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8(  2, "F".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8(  3, "F".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint32( 4, 36 + sampleDataByteCount, LITTLE_ENDIAN);
-    outputView.setUint8(  8, "W".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8(  9, "A".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 10, "V".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 11, "E".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 12, "f".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 13, "m".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 14, "t".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 15, " ".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint32(16, 16, LITTLE_ENDIAN);
-    outputView.setUint16(20, AUDIO_FORMAT_CODE, LITTLE_ENDIAN);
-    outputView.setUint16(22, NUM_CHANNELS, LITTLE_ENDIAN);
-    outputView.setUint32(24, SAMPLE_RATE, LITTLE_ENDIAN);
-    outputView.setUint32(28, BYTE_RATE, LITTLE_ENDIAN);
-    outputView.setUint16(32, BLOCK_ALIGN, LITTLE_ENDIAN);
-    outputView.setUint16(34, BITS_PER_SAMPLE, LITTLE_ENDIAN);
-    outputView.setUint8( 36, "d".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 37, "a".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 38, "t".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
+  patternPlayer.step = function(audioContext, audioDestination, stepDuration, currentTime) {
+    var note, noteTimeDuration;
 
-    var maxSampleValue = scaleFactor * 32767.0;
-    // Float32Array doesn't appear to support forEach() in Safari 9
-    for (i = 0; i < rawFloat32SampleData.length; i++) {
-      // Should this round?
-      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * maxSampleValue, LITTLE_ENDIAN);
-    }
+    var notes = pattern.tracks().forEach(function(track) {
+      if (!track.isMuted()) {
+        note = track.sequence()[stepIndex];
+        if (note) {
+          noteTimeDuration = stepDuration * note.stepDuration();
 
-    return outputView;
+          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
+        }
+      }
+    });
+
+    stepIndex += 1;
+    isComplete = (stepIndex >= stepCount);
+
+    return notes;
   };
 
-  return waveWriter;
+  return patternPlayer;
 };
+
+
+JSSynth.SongPlayer = function(patterns) {
+  var stepIndex;
+  var isFinishedPlaying;
+  var currentTime;
+  var patternPlayers;
+
+  var songPlayer = {};
+
+  songPlayer.reset = function(newCurrentTime) {
+    stepIndex = 0;
+    isFinishedPlaying = false;
+    currentTime = newCurrentTime;
+    patternPlayers = [];
+  };
+
+  songPlayer.stepCount = function() {
+    return 128;
+  };
+
+  songPlayer.currentStep = function() {
+    return stepIndex;
+  };
+
+  songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
+
+  songPlayer.replacePatterns = function(newPatterns) {
+    patterns = newPatterns;
+  };
+
+  songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
+    while (currentTime < endTime) {
+      var incomingPatterns = patterns[stepIndex];
+      if (incomingPatterns) {
+        incomingPatterns.forEach(function(incomingPattern) {
+          patternPlayers.push(new JSSynth.PatternPlayer(incomingPattern));
+        });
+      }
+
+      patternPlayers.forEach(function(patternPlayer) {
+        patternPlayer.step(audioContext, audioDestination, stepDuration, currentTime);
+      });
+
+      patternPlayers = patternPlayers.filter(function(patternPlayer) {
+        return !patternPlayer.isComplete();
+      });
+
+      stepIndex += 1;
+      if (stepIndex >= songPlayer.stepCount()) {
+        if (loop) {
+          stepIndex = 0;
+        }
+        else {
+          isFinishedPlaying = true;
+          return;
+        }
+      }
+
+      currentTime += stepDuration;
+    }
+  };
+
+  songPlayer.reset();
+
+  return songPlayer;
+};
+
 
 JSSynth.Transport = function(songPlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
@@ -576,6 +517,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   return transport;
 };
 
+
 JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallback) {
   var transport = {};
 
@@ -643,4 +585,65 @@ JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallba
   };
 
   return transport;
+};
+
+
+JSSynth.WaveWriter = function() {
+  var waveWriter = {};
+
+  var LITTLE_ENDIAN = true;
+  var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
+  var NUM_CHANNELS = 1;
+  var BITS_PER_SAMPLE = 16;
+  var BYTES_PER_SAMPLE = 2;
+  var SAMPLE_RATE = 44100;
+
+  var BLOCK_ALIGN = (BITS_PER_SAMPLE / 8) * NUM_CHANNELS;
+  var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
+
+  var WAVEFILE_HEADER_BYTE_COUNT = 44;
+
+  waveWriter.write = function(rawFloat32SampleData, scaleFactor) {
+    var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
+    var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
+    var outputView = new DataView(new ArrayBuffer(fileLength));
+    var i;
+
+    outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  1, "I".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  2, "F".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  3, "F".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32( 4, 36 + sampleDataByteCount, LITTLE_ENDIAN);
+    outputView.setUint8(  8, "W".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8(  9, "A".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 10, "V".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 11, "E".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 12, "f".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 13, "m".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 14, "t".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 15, " ".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32(16, 16, LITTLE_ENDIAN);
+    outputView.setUint16(20, AUDIO_FORMAT_CODE, LITTLE_ENDIAN);
+    outputView.setUint16(22, NUM_CHANNELS, LITTLE_ENDIAN);
+    outputView.setUint32(24, SAMPLE_RATE, LITTLE_ENDIAN);
+    outputView.setUint32(28, BYTE_RATE, LITTLE_ENDIAN);
+    outputView.setUint16(32, BLOCK_ALIGN, LITTLE_ENDIAN);
+    outputView.setUint16(34, BITS_PER_SAMPLE, LITTLE_ENDIAN);
+    outputView.setUint8( 36, "d".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 37, "a".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 38, "t".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
+    outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
+
+    var maxSampleValue = scaleFactor * 32767.0;
+    // Float32Array doesn't appear to support forEach() in Safari 9
+    for (i = 0; i < rawFloat32SampleData.length; i++) {
+      // Should this round?
+      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * maxSampleValue, LITTLE_ENDIAN);
+    }
+
+    return outputView;
+  };
+
+  return waveWriter;
 };
