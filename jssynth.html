@@ -231,13 +231,37 @@
   <div>
   <div ng-controller="SequencerController">
     Current pattern: <span transport-progress ng-model="currentStep"></span>
-    <div ng-repeat="row in patterns">
-      <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
-      <div class="inline-block mr1" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
-        <select ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
-          <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
-        </select>
-      </div>
+    <div class="flex">
+      <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
+        <li class="flex-uniform-size list-style-none" ng-repeat="row in patterns">
+          <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
+        </li>
+      </ul>
+      <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="inline-block list-style-none full-width">
+          <ul class="ml0 pl0 center no-whitespace-wrap">
+            <li class="list-style-none inline-block" ng-repeat="n in [1,2,3,4,]">
+              <span class="note-column-header">{{n}}</span>
+            </li>
+          </ul>
+        </li>
+        <li ng-repeat="row in patterns" class="inline-block list-style-none full-width">
+          <ul class="ml0 pl0 no-whitespace-wrap">
+            <li class="inline-block mr1" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
+              <select ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
+                <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
+              </select>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li class="list-style-none flex-uniform-size">&nbsp;</li>
+        <li class="list-style-none flex-uniform-size" ng-repeat="row in patterns">
+          <button class="button-small full-width track-button" ng-click="removeRow(patternIndex, $index);">X</button>
+        </li>
+      </ul>
     </div>
     <div class="mb1 overflow-auto">
       <button class="block button-full right" ng-click="addRow();">Add Row</button>
