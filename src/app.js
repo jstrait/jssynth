@@ -530,6 +530,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 
   transportService.toggle = function() {
     transport.toggle();
+    playing = !playing;
   };
 
   transportService.setTempo = function(newTempo) {
@@ -551,7 +552,12 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   };
 
   transportService.currentStep = function() {
-    return transport.elapsedSteps();
+    if (playing) {
+      return transport.elapsedSteps();
+    }
+    else {
+      return null;
+    }
   };
 
   transportService.export = function(exportCompleteCallback) {
@@ -690,7 +696,13 @@ app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerSer
   };
 
   $scope.syncCurrentStep = function() {
-    $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 4) + 1;
+    if (TransportService.currentStep()) {
+      $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 4) + 1;
+    }
+    else
+    {
+      $scope.currentStep = null;
+    }
   };
 }]);
 
