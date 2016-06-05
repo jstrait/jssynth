@@ -76,6 +76,8 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
     instruments.push(newInstrument);
 
     $rootScope.$broadcast('InstrumentService.update');
+
+    return newInstrument;
   };
 
   instrumentService.updateInstrument = function() {
@@ -596,7 +598,9 @@ app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'Instr
   $scope.selectedInstrumentID = 1;
 
   $scope.addInstrument = function() {
-    InstrumentService.addInstrument();
+    var newInstrument = InstrumentService.addInstrument();
+    $scope.selectedInstrumentID = newInstrument.id;
+    $scope.changeSelectedInstrument();
   };
 
   $scope.changeSelectedInstrument = function() {
