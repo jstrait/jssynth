@@ -273,11 +273,12 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.removeTrack = function(instrumentIndex, trackIndex) {
-    patterns[instrumentIndex].tracks.splice(trackIndex, 1);
+  patternService.removeTrack = function(patternID, trackIndex) {
+    var pattern = patternService.patternByID(patternID);
+    pattern.tracks.splice(trackIndex, 1);
 
-    if (patterns[instrumentIndex].tracks.length === 0) {
-      patternService.addTrack(instrumentIndex);
+    if (pattern.tracks.length === 0) {
+      patternService.addTrack(patternID);
     }
 
     $rootScope.$broadcast('PatternService.update');
@@ -693,8 +694,8 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     PatternService.addTrack(patternID);
   };
 
-  $scope.removeTrack = function(patternIndex, trackIndex) {
-    PatternService.removeTrack(patternIndex, trackIndex);
+  $scope.removeTrack = function(patternID, trackIndex) {
+    PatternService.removeTrack(patternID, trackIndex);
   };
 
   $scope.toggleTrackMute = function(patternIndex, trackIndex) {

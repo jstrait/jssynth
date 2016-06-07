@@ -213,7 +213,7 @@
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="list-style-none flex-uniform-size">&nbsp;</li>
           <li class="list-style-none flex-uniform-size" ng-repeat="track in patterns[patternIndex].tracks">
-            <button class="button-small full-width track-button" ng-click="removeTrack(patternIndex, $index);">X</button>
+            <button class="button-small full-width track-button" ng-click="removeTrack(pattern.id, $index);">X</button>
           </li>
         </ul>
       </div>
