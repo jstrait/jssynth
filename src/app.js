@@ -284,8 +284,9 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.toggleTrackMute = function(instrumentIndex, trackIndex) {
-    patterns[instrumentIndex].tracks[trackIndex].muted = !patterns[instrumentIndex].tracks[trackIndex].muted;
+  patternService.toggleTrackMute = function(patternID, trackIndex) {
+    var pattern = patternService.patternByID(patternID);
+    pattern.tracks[trackIndex].muted = !pattern.tracks[trackIndex].muted;
     $rootScope.$broadcast('PatternService.update');
   };
 
