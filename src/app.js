@@ -521,8 +521,12 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var totalSteps = sequencerPatterns[0].patterns.length;
 
     for (var i = 0; i < totalSteps; i++) {
-      serializedPatternSequence[i * 16] = sequencerPatterns.map(function(row) {
-        return serializedPatterns[row.patterns[i].patternID];
+      serializedPatternSequence[i * 16] = [];
+      
+      sequencerPatterns.forEach(function(row) {
+        if (!row.muted) {
+          serializedPatternSequence[i * 16].push(serializedPatterns[row.patterns[i].patternID]);
+        }
       });
     }
 
