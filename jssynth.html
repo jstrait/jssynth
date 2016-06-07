@@ -205,7 +205,7 @@
           <li ng-repeat="track in patterns[patternIndex].tracks" class="inline-block list-style-none full-width">
             <ul class="ml0 pl0 no-whitespace-wrap">
               <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
-                <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes(patternIndex, $parent.$index, $index);" maxlength="4" type="text" />
+                <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes(pattern.id, $parent.$index, $index);" maxlength="4" type="text" />
                </li>
             </ul>
           </li>

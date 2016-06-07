@@ -294,21 +294,22 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.updateNotes = function(instrumentIndex, trackIndex, noteIndex) {
+  patternService.updateNotes = function(patternID, trackIndex, noteIndex) {
     var i;
-    var newNoteName = patterns[instrumentIndex].tracks[trackIndex].notes[noteIndex].name;
+    var pattern = patternService.patternByID(patternID);
+    var newNoteName = pattern.tracks[trackIndex].notes[noteIndex].name;
 
     if (newNoteName === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && patterns[instrumentIndex].tracks[trackIndex].notes[i].name === "") {
-        patterns[instrumentIndex].tracks[trackIndex].notes[i].name = "-";
+      while (i >= 0 && pattern.tracks[trackIndex].notes[i].name === "") {
+        pattern.tracks[trackIndex].notes[i].name = "-";
         i -= 1;
       }
     }
     else if (newNoteName === "") {
       i = noteIndex + 1;
-      while (i < patterns[instrumentIndex].tracks[trackIndex].notes.length && patterns[instrumentIndex].tracks[trackIndex].notes[i].name === "-") {
-        patterns[instrumentIndex].tracks[trackIndex].notes[i].name = "";
+      while (i < pattern.tracks[trackIndex].notes.length && pattern.tracks[trackIndex].notes[i].name === "-") {
+        pattern.tracks[trackIndex].notes[i].name = "";
         i += 1;
       }
     }
