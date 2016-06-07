@@ -176,9 +176,6 @@
 
   <div ng-controller="PatternController">
     <div ng-repeat="pattern in patterns" ng-init="patternIndex = $index">
-      <select ng-model="pattern.instrumentID" ng-change="changeInstrument(patternIndex);" convert-to-number>
-        <option ng-repeat="instrumentOption in instrumentOptions" value="{{instrumentOption.id}}">{{instrumentOption.name}}</option>
-      </select>
       <input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" />
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
