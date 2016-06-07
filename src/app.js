@@ -893,9 +893,10 @@ app.directive('noteInput', function () {
 
        element.bind('keydown', function(e) {
          var changeCurrentlySelectedNote = function(element, config) {
-           var trackIndex = parseInt(element[0].id.split("-")[1], 10);
-           var noteIndex = parseInt(element[0].id.split("-")[3], 10);
-           var nextNoteId = 'track-' + (trackIndex + config.trackIndexDelta) + '-note-' + (noteIndex + config.noteIndexDelta);
+           var patternID = parseInt(element[0].id.split("-")[1], 10);
+           var trackIndex = parseInt(element[0].id.split("-")[3], 10);
+           var noteIndex = parseInt(element[0].id.split("-")[5], 10);
+           var nextNoteId = 'pattern-' + patternID + '-track-' + (trackIndex + config.trackIndexDelta) + '-note-' + (noteIndex + config.noteIndexDelta);
 
            document.getElementById(nextNoteId).focus();
          };
