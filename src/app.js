@@ -247,7 +247,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.addTrack = function(instrumentIndex) {
+  patternService.addTrack = function(patternID) {
     var newTrack = {
                      muted: false,
                      notes: [{name: ''},
@@ -267,7 +267,8 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
                              {name: ''},
                              {name: ''}],
                    };
-    patterns[instrumentIndex].tracks.push(newTrack);
+    var pattern = patternService.patternByID(patternID);
+    pattern.tracks.push(newTrack);
 
     $rootScope.$broadcast('PatternService.update');
   };
@@ -314,6 +315,16 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
   };
  
   patternService.patterns = function() { return patterns; };
+
+  patternService.patternByID = function(targetID) {
+    for (var i = 0; i < patterns.length; i++) {
+      if (patterns[i].id === targetID) {
+        return patterns[i];
+      }
+    }
+
+    return null;
+  };
 
   patternService.patternsByInstrumentID = function(targetID) {
     var filteredPatterns = [];
@@ -678,8 +689,8 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     PatternService.changeInstrument(patternIndex);
   };
 
-  $scope.addTrack = function(patternIndex) {
-    PatternService.addTrack(patternIndex);
+  $scope.addTrack = function(patternID) {
+    PatternService.addTrack(patternID);
   };
 
   $scope.removeTrack = function(patternIndex, trackIndex) {
