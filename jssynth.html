@@ -175,7 +175,16 @@
   </div>
 
   <div ng-controller="PatternController">
-    <h2 class="section-header">Patterns</h2>
+    <div>
+      <h2 class="section-header">Patterns<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>
+      <ul class="toggleable" ng-show="show">
+        <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
+        <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
+        <li>Use &mdash; to lengthen a note. For example, &lsquo;A4&mdash;&mdash;&mdash;&rsquo; will last for 4 steps, while &lsquo;A4&mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
+        <li>Press <code>SPACE</code> to clear the current note</li>
+        <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
+      </ul>
+    </div>
     <div ng-repeat="pattern in patterns" ng-init="patternIndex = $index">
       <input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" />
       <div class="flex">
@@ -216,18 +225,9 @@
       <button class="block button-full right" ng-click="addPattern();">Add Pattern</button>
     </div>
   </div>
-
-  <div>
-    <h2 class="section-header">Sequencer<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>
-    <ul class="toggleable" ng-show="show">
-      <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
-      <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
-      <li>Use &mdash; to lengthen a note. For example, &lsquo;A4&mdash;&mdash;&mdash;&rsquo; will last for 4 steps, while &lsquo;A4&mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
-      <li>Press <code>SPACE</code> to clear the current note</li>
-      <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
-    </ul>
-  </div>
+ 
   <div ng-controller="SequencerController">
+    <h2 class="section-header">Sequencer</h2>
     <div class="flex">
       <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
         <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
