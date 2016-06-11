@@ -629,11 +629,12 @@ app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'Instr
   $scope.addInstrument = function() {
     var newInstrument = InstrumentService.addInstrument();
     $scope.selectedInstrumentID = newInstrument.id;
-    $scope.changeSelectedInstrument();
+    $scope.changeSelectedInstrument(newInstrument.id);
   };
 
-  $scope.changeSelectedInstrument = function() {
-    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: $scope.selectedInstrumentID });
+  $scope.changeSelectedInstrument = function(instrumentID) {
+    $scope.selectedInstrumentID = instrumentID;
+    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: instrumentID });
   };
 }]);
 

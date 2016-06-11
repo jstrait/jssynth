@@ -239,6 +239,8 @@ button {
   width: 10.0rem;
 }
 
+.bgLightGray { background: #ebebeb; }
+
 .list-style-none {
   list-style-type: none;
 }
@@ -254,6 +256,7 @@ button {
 .mb2 { margin-bottom: 3.0rem; }
 
 .pl0 { padding-left: 0.0rem; }
+.p1  { padding: 1.5rem; }
 
 .center { text-align: center; }
 .right  { float: right; }
@@ -277,9 +280,15 @@ button {
 
 .no-whitespace-wrap { white-space: nowrap; }
 
+.pointer { cursor: pointer; }
+
 .enabled {
   background: orange;
   color: #fff;
+}
+
+.selectedOption {
+  background: #c1c1c1;
 }
 
 @media (max-width: 1024px) {
