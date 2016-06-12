@@ -248,15 +248,15 @@
       <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
         <li class="inline-block list-style-none full-width">
           <ul class="ml0 pl0 center no-whitespace-wrap">
-            <li class="list-style-none inline-block" style="width: 12.5%;" transport-progress ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
+            <li class="list-style-none inline-block border-box" style="width: 99px; padding-right: 8px;" transport-progress ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
               <span class="inline-block" style="border-radius: 50%; width: 32px;" ng-class="{enabled: currentStep === n}">{{n}}</span>
             </li>
           </ul>
         </li>
         <li ng-repeat="row in patterns" class="inline-block list-style-none full-width">
           <ul class="ml0 pl0 no-whitespace-wrap">
-            <li class="inline-block center" style="width: 12.5%;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
-              <select ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
+            <li class="inline-block center border-box" style="width: 99px; padding-right: 8px;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
+              <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
                 <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
               </select>
             </li>
