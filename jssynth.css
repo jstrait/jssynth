@@ -258,7 +258,8 @@ button {
 .mb2 { margin-bottom: 3.0rem; }
 
 .pl0 { padding-left: 0.0rem; }
-.p1  { padding: 1.5rem; }
+.pl1 { padding-left: 1.5rem; }
+.pr1 { padding-right: 1.5rem; }
 
 .center { text-align: center; }
 .right  { float: right; }
@@ -290,7 +291,8 @@ button {
 }
 
 .selectedOption {
-  background: #c1c1c1;
+  background: #130f30;
+  color: #fff;
 }
 
 @media (max-width: 1024px) {
