@@ -15,9 +15,10 @@
 <body>
 <div id="container">
   <h1 class="logo mt0 mb0">JS-120</h1>
-  <span class="tagline">High Resolution Web Synthesizer</span>
+  <span class="tagline mb2">High Resolution Web Synthesizer</span>
 
-  <div ng-controller="InstrumentCollectionController" class="flex mt2">
+  <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Instruments</h2>
+  <div ng-controller="InstrumentCollectionController" class="flex">
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="instrumentOption in instrumentOptions" ng-click="changeSelectedInstrument(instrumentOption.id);" ng-class="{bgLightGray: !(instrumentOption.id === selectedInstrumentID), selectedOption: instrumentOption.id === selectedInstrumentID}">
         {{instrumentOption.name}}
@@ -179,7 +180,8 @@
     </div>
   </div>
 
-  <div ng-controller="PatternCollectionController" class="flex mt2">
+  <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Patterns</h2>
+  <div ng-controller="PatternCollectionController" class="flex">
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
         {{patternOption.name}}
@@ -190,7 +192,7 @@
 
   <div ng-controller="PatternController">
     <div>
-      <h2 class="section-header">Patterns<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>
+      <label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
       <ul class="toggleable" ng-show="show">
         <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
         <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
@@ -198,9 +200,6 @@
         <li>Press <code>SPACE</code> to clear the current note</li>
         <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
       </ul>
-    </div>
-    <div>
-      <input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" />
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
@@ -238,7 +237,7 @@
   </div>
  
   <div ng-controller="SequencerController">
-    <h2 class="section-header">Sequencer</h2>
+    <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Sequencer</h2>
     <div class="flex">
       <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
         <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
@@ -278,7 +277,7 @@
 
   <div ng-controller="TransportController">
     <div class="mt2 mb0">
-      <h2 class="section-header">Transport</h2>
+      <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Transport</h2>
       <span class="control">
         <label class="control-label">Tempo:</label>
         <span class="annotated-input">
