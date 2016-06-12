@@ -245,6 +245,23 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     return newPattern;
   };
 
+  patternService.removePattern = function(patternID) {
+    var patternIndex = patternIndexByID(patternID);
+    patterns.splice(patternIndex, 1);
+
+    $rootScope.$broadcast('PatternService.update');
+  };
+
+  var patternIndexByID = function(targetID) {
+    for (var i = 0; i < patterns.length; i++) {
+      if (patterns[i].id === targetID) {
+        return i;
+      }
+    }
+
+    return null;
+  };
+
   patternService.addTrack = function(patternID) {
     var newTrack = {
                      muted: false,
@@ -412,6 +429,16 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
   sequencerService.toggleRowMute = function(rowIndex) {
     patterns[rowIndex].muted = !patterns[rowIndex].muted;
     $rootScope.$broadcast('SequencerService.update');
+  };
+
+  sequencerService.unsetPattern = function(patternID) {
+    patterns.forEach(function(pattern) {
+      pattern.patterns.forEach(function(subPattern) {
+        if (subPattern.patternID === patternID) {
+          subPattern.patternID = -1;
+        }
+      });
+    });
   };
 
   return sequencerService;

@@ -49,7 +49,7 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 }]);
 
 
-app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternService', function($rootScope, $scope, PatternService) {
+app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
   var instrumentID = 1;
 
   var buildPatternOptions = function() {
@@ -73,6 +73,11 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   $scope.addPattern = function() {
     var newPattern = PatternService.addPattern(instrumentID);
     $scope.changeSelectedPattern(newPattern.id);
+  };
+
+  $scope.removePattern = function(patternID) {
+    SequencerService.unsetPattern(patternID);
+    PatternService.removePattern(patternID);
   };
 
   $scope.changeSelectedPattern = function(patternID) {
