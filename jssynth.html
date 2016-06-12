@@ -199,13 +199,13 @@
         <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
       </ul>
     </div>
-    <div ng-repeat="pattern in patterns" ng-init="patternIndex = $index">
-      <input class="underlinedInput" ng-model="pattern.name" ng-change="updateName(pattern.id);" type="text" />
+    <div>
+      <input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" />
       <div class="flex">
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
-          <li class="flex-uniform-size list-style-none" ng-repeat="track in patterns[patternIndex].tracks">
-            <button class="button-small track-button {{$parent.patterns[patternIndex].tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(pattern.id, $index);">Mute</button>
+          <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
+            <button class="button-small track-button {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
           </li>
         </ul>
         <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -216,23 +216,23 @@
               </li>
             </ul>
           </li>
-          <li ng-repeat="track in patterns[patternIndex].tracks" class="inline-block list-style-none full-width">
+          <li ng-repeat="track in pattern.tracks" class="inline-block list-style-none full-width">
             <ul class="ml0 pl0 no-whitespace-wrap">
               <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
-                <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes(pattern.id, $parent.$index, $index);" maxlength="4" type="text" />
+                <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
                </li>
             </ul>
           </li>
         </ul>
         <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li class="list-style-none flex-uniform-size">&nbsp;</li>
-          <li class="list-style-none flex-uniform-size" ng-repeat="track in patterns[patternIndex].tracks">
-            <button class="button-small full-width track-button" ng-click="removeTrack(pattern.id, $index);">X</button>
+          <li class="list-style-none flex-uniform-size" ng-repeat="track in pattern.tracks">
+            <button class="button-small full-width track-button" ng-click="removeTrack($index);">X</button>
           </li>
         </ul>
       </div>
       <div class="mb1 overflow-auto">
-        <button class="block button-full right" ng-click="addTrack(pattern.id);">Add Track</button>
+        <button class="block button-full right" ng-click="addTrack();">Add Track</button>
       </div>
     </div>
   </div>

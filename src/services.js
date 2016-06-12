@@ -241,6 +241,8 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     patterns.push(newPattern);
 
     $rootScope.$broadcast('PatternService.update');
+
+    return newPattern;
   };
 
   patternService.addTrack = function(patternID) {
