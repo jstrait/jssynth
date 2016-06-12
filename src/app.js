@@ -2,7 +2,7 @@
 
 var app = angular.module('js120', []);
 
-app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'InstrumentService', function($rootScope, $scope, InstrumentService) {
+app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'InstrumentService', 'PatternService', function($rootScope, $scope, InstrumentService, PatternService) {
   var buildInstrumentOptions = function() {
     return InstrumentService.instruments().map(function(instrument) {
      return { id: instrument.id, name: instrument.name };
@@ -18,6 +18,7 @@ app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'Instr
 
   $scope.addInstrument = function() {
     var newInstrument = InstrumentService.addInstrument();
+    PatternService.addPattern(newInstrument.id);
     $scope.selectedInstrumentID = newInstrument.id;
     $scope.changeSelectedInstrument(newInstrument.id);
   };
