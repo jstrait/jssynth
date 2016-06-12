@@ -14,10 +14,10 @@
 </head>
 <body>
 <div id="container">
-  <h1 class="logo mt0 mb0">JS-120</h1>
+  <h1 class="logo h1 mt0 mb0">JS-120</h1>
   <span class="tagline mb2">High Resolution Web Synthesizer</span>
 
-  <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Instruments</h2>
+  <h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Instruments</h2>
   <div ng-controller="InstrumentCollectionController" class="flex">
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="instrumentOption in instrumentOptions" ng-click="changeSelectedInstrument(instrumentOption.id);" ng-class="{bgLightGray: !(instrumentOption.id === selectedInstrumentID), selectedOption: instrumentOption.id === selectedInstrumentID}">
@@ -35,7 +35,7 @@
           <input class="underlinedInput" ng-model="instrument.name" ng-change="updateInstrument();" type="text" />
         </span>
       </span>
-      <h2 class="section-header">Sound Generator</h2>
+      <h2 class="h3 section-header">Sound Generator</h2>
       <span class="control">
         <label class="control-label">Waveform:</label>
         <span class="flex waveformOptionsContainer">
@@ -95,7 +95,7 @@
       </span>
     </div>
     <div>
-      <h2 class="section-header">Filter</h2>
+      <h2 class="h3 section-header">Filter</h2>
       <span class="control">
         <label class="control-label">Cutoff:</label>
         <span class="annotated-input">
@@ -148,7 +148,7 @@
       </span>
     </div>
     <div>
-      <h2 class="section-header">Envelope</h2>
+      <h2 class="h3 section-header">Envelope</h2>
       <span class="control">
         <label class="control-label">Attack Speed:</label>
         <span class="annotated-input">
@@ -180,7 +180,7 @@
     </div>
   </div>
 
-  <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Patterns</h2>
+  <h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Patterns</h2>
   <div ng-controller="PatternCollectionController" class="flex">
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
@@ -237,7 +237,7 @@
   </div>
  
   <div ng-controller="SequencerController">
-    <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Sequencer</h2>
+    <h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Sequencer</h2>
     <div class="flex">
       <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
         <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
@@ -294,7 +294,7 @@
       <div class="mt1 overflow-auto">
         <button class="button-full right {{playing ? 'enabled' : ''}}" ng-click="toggle();">Play</button>
       </div>
-      <h2 class="mt2 mb0" style="font-size: 3.0rem; line-height: 4.5rem;">Export</h2>
+      <h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Export</h2>
       <span class="control mt2">
         <label class="control-label">File Name:</label>
         <span class="annotated-input">

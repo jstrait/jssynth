@@ -21,7 +21,6 @@ body {
 }
 
 .logo {
-  font-size: 6.0rem;
   line-height: 6.0rem;
   font-weight: bold;
   color: #c00;
@@ -33,7 +32,6 @@ body {
 }
 
 .section-header {
-  font-size: 1.5rem;
   line-height: 1.5rem;
   margin-top: 4.5rem;
 }
@@ -244,6 +242,10 @@ button {
 .list-style-none {
   list-style-type: none;
 }
+
+.h1 { font-size: 6.0rem; }
+.h2 { font-size: 3.0rem; }
+.h3 { font-size: 1.5rem; }
 
 .mt0 { margin-top: 0; }
 .mb0 { margin-bottom: 0; }
