@@ -185,7 +185,7 @@
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
         {{patternOption.name}}
-        <button class="button-small" ng-click="removePattern(patternOption.id);">X</button>
+        <button class="button-small" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
       </li>
     </ul>
     <button class="block button-small" ng-click="addPattern();">Add</button>
