@@ -179,6 +179,15 @@
     </div>
   </div>
 
+  <div ng-controller="PatternCollectionController" class="flex mt2">
+    <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
+      <li class="list-style-none flex-uniform-size center pointer p1 border-box" style="border-right: 2px solid #fff;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
+        {{patternOption.name}}
+      </li>
+    </ul>
+    <button class="block button-small" ng-click="addPattern();">Add</button>
+  </div>
+
   <div ng-controller="PatternController">
     <div>
       <h2 class="section-header">Patterns<span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span></h2>
@@ -225,9 +234,6 @@
       <div class="mb1 overflow-auto">
         <button class="block button-full right" ng-click="addTrack(pattern.id);">Add Track</button>
       </div>
-    </div>
-    <div class="mb1 overflow-auto">
-      <button class="block button-full right" ng-click="addPattern();">Add Pattern</button>
     </div>
   </div>
  
