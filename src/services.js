@@ -204,7 +204,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
   
   var patternService = {};
 
-  patternService.changeInstrument = function(patternIndex) {
+  patternService.changeInstrument = function(patternID) {
     $rootScope.$broadcast('PatternService.update');
   };
 
@@ -286,7 +286,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.updateName = function(patternIndex) {
+  patternService.updateName = function(patternID) {
     $rootScope.$broadcast('PatternService.update');
   };
 

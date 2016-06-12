@@ -104,12 +104,12 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     $scope.patterns = PatternService.patternsByInstrumentID(instrumentID);
   });
 
-  $scope.updateName = function(patternIndex) {
-    PatternService.updateName(patternIndex);
+  $scope.updateName = function(patternID) {
+    PatternService.updateName(patternID);
   };
 
-  $scope.changeInstrument = function(patternIndex) {
-    PatternService.changeInstrument(patternIndex);
+  $scope.changeInstrument = function(patternID) {
+    PatternService.changeInstrument(patternID);
   };
 
   $scope.addTrack = function(patternID) {
@@ -120,12 +120,12 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     PatternService.removeTrack(patternID, trackIndex);
   };
 
-  $scope.toggleTrackMute = function(patternIndex, trackIndex) {
-    PatternService.toggleTrackMute(patternIndex, trackIndex);
+  $scope.toggleTrackMute = function(patternID, trackIndex) {
+    PatternService.toggleTrackMute(patternID, trackIndex);
   };
 
-  $scope.updateNotes = function(patternIndex, trackIndex, noteIndex) {
-    PatternService.updateNotes(patternIndex, trackIndex, noteIndex);
+  $scope.updateNotes = function(patternID, trackIndex, noteIndex) {
+    PatternService.updateNotes(patternID, trackIndex, noteIndex);
   };
 }]);
 
