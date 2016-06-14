@@ -233,7 +233,13 @@ button {
   width: 10.0rem;
 }
 
-.bgLightGray { background: #ebebeb; }
+.bgLightGray {
+  border: #ddd 2px solid;
+}
+
+.bgLightGray:hover {
+  background: #fafafa;
+}
 
 .list-style-none {
   list-style-type: none;
@@ -288,8 +294,8 @@ button {
 }
 
 .selectedOption {
-  background: #130f30;
-  color: #fff;
+  border: #ddd 2px solid;
+  background: #ddd;
 }
 
 @media (max-width: 1024px) {
