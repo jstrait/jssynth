@@ -28,18 +28,14 @@ body {
 
 .tagline {
   color: #aaa;
-  display: block;
 }
 
 .section-header {
   line-height: 1.5rem;
-  margin-top: 4.5rem;
 }
 
 .sub-section-header {
-  display: block;
   color: #aaa;
-  margin-top: 1.5rem;
 }
 
 label.radioLabel {
@@ -256,6 +252,7 @@ button {
 .ml1 { margin-left: 1.5rem; }
 .mt2 { margin-top: 3.0rem; }
 .mb2 { margin-bottom: 3.0rem; }
+.mt3 { margin-top: 4.5rem; }
 
 .pl0 { padding-left: 0.0rem; }
 .pl1 { padding-left: 1.5rem; }
