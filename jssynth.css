@@ -119,7 +119,7 @@ input[type='radio']:checked {
 input[type='range'] {
   background-color: #ccc;
   -webkit-appearance: none;
-  height: 1.5em;
+  height: 2px;
   margin: 0;
   padding: 0;
   outline: none;
@@ -129,9 +129,9 @@ input[type='range'] {
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 1.5em;
+  width: 1.5em;
+  border-radius: 0.75rem;
   background: #130f30;
-  width: 3.0em;
-  border-radius: 10px;
 }
 
 input[type='range']::-webkit-slider-thumb:hover {
@@ -148,10 +148,10 @@ input[type=range]::-moz-focus-outer {
 
 input[type='range']::-moz-range-thumb {
   height: 1.5em;
+  width: 1.5em;
+  border-radius: 0.75rem;
   background: #130f30;
-  width: 3.0em;
   border: 0;
-  border-radius: 10px;
 }
 
 input[type='range']::-moz-range-thumb:hover {
