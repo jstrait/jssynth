@@ -368,8 +368,8 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
                      muted: false,
                      patterns: [
                        { patternID: 1, },
-                       { patternID: 2, },
-                       { patternID: -1, },
+                       { patternID: 1, },
+                       { patternID: 1, },
                        { patternID: 1, },
                        { patternID: 1, },
                        { patternID: 1, },
@@ -381,8 +381,8 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
                      muted: false,
                      patterns: [
                        { patternID: 2, },
-                       { patternID: -1, },
-                       { patternID: -1, },
+                       { patternID: 2, },
+                       { patternID: 2, },
                        { patternID: 2, },
                        { patternID: 2, },
                        { patternID: 2, },
