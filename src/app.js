@@ -277,6 +277,21 @@ app.directive('transportProgress', ['$interval', function($interval) {
 }]);
 
 
+app.directive('instrumentEditor', function() {
+  var controller = ['$scope', function ($scope) { }];
+
+  return {
+    restrict: 'A',
+    scope: {
+      instrument: '=',
+      updateInstrument: '&',
+    },
+    controller: controller,
+    templateUrl: 'instrument.html',
+  };
+});
+
+
 app.directive('noteInput', function () {
   return {
     require: 'ngModel',
