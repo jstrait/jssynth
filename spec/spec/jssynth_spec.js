@@ -1,3 +1,5 @@
+"use strict";
+
 describe("JSSynth.Pattern", function() {
   it("should construct an empty Pattern properly", function() {
     var pattern = new JSSynth.Pattern();

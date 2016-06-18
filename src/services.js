@@ -1,3 +1,5 @@
+"use strict";
+
 app.factory('InstrumentService', ['$rootScope', function($rootScope) {
   var IDGenerator = function() {
     var nextId = 0;
