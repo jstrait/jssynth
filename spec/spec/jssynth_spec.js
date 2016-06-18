@@ -1,5 +1,142 @@
 "use strict";
 
+describe("InstrumentService", function() {
+  var instrumentService, rootScope;
+  
+  beforeEach(angular.mock.module('js120'));
+  beforeEach(angular.mock.inject(function(InstrumentService, $rootScope) {
+    instrumentService = InstrumentService;
+    rootScope = $rootScope.$new();
+  }));
+
+  it("should be initialized with the correct set of Instruments", function() {
+    expect(instrumentService.instruments()).toEqual([
+      {
+        id:                 1,
+        name:               'Instrument 1',
+        waveform:           'square',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       10,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      },
+      {
+        id:                 2,
+        name:               'Instrument 2',
+        waveform:           'sawtooth',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       0,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      },
+    ]);
+  });
+
+  it("should add a new instrument successfully", function() {
+    instrumentService.addInstrument();
+
+    expect(instrumentService.instruments()).toEqual([
+      {
+        id:                 1,
+        name:               'Instrument 1',
+        waveform:           'square',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       10,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      },
+      {
+        id:                 2,
+        name:               'Instrument 2',
+        waveform:           'sawtooth',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       0,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      },
+      {
+        id:                 3,
+        name:               'Instrument 3',
+        waveform:           'sawtooth',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       0,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      },
+    ]);
+  });
+
+  describe("instrumentById", function() {
+    it("should find the correct Instrument by ID", function() {
+      var instrument = instrumentService.instrumentByID(2);
+
+      expect(instrument).toEqual({
+        id:                 2,
+        name:               'Instrument 2',
+        waveform:           'sawtooth',
+        lfoWaveform:        'sine',
+        lfoFrequency:       5,
+        lfoAmplitude:       0,
+        filterCutoff:       1000,
+        filterResonance:    0,
+        filterLFOWaveform:  'sine',
+        filterLFOFrequency: 5,
+        filterLFOAmplitude: 0,
+        envelopeAttack:     0.0,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      });
+    });
+
+    it("should return the correct value for a non-existent Instrument", function() {
+      var instrument = instrumentService.instrumentByID(20);
+
+      expect(instrument).toBe(null);
+    });
+  });
+})
+
 describe("JSSynth.Pattern", function() {
   it("should construct an empty Pattern properly", function() {
     var pattern = new JSSynth.Pattern();
