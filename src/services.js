@@ -362,7 +362,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 }]);
 
 
-app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
+app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
   var patterns = [
                    {
                      instrumentID: 1,
@@ -403,7 +403,11 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
   };
 
   sequencerService.addRow = function(rowIndex) {
+    var newInstrument = InstrumentService.addInstrument();
+    var newPattern = PatternService.addPattern(newInstrument.id);
+
     patterns.push({
+      instrumentID: newInstrument.id,
       muted: false,
       patterns: [
         { patternID: -1, },
