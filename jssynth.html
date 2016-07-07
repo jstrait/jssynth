@@ -59,6 +59,7 @@
       <li class="flex-uniform-size list-style-none pl1 pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; height: 4.5rem;" ng-repeat="row in patterns">
         <input class="underlinedInput full-width" ng-model="row.name" type="text" />
         <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
+        <button class="button-small track-button" ng-click="changeSelectedInstrument(row.instrumentID);">Edit</button>
       </li>
     </ul>
     <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">

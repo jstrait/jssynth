@@ -135,7 +135,7 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
-app.controller('SequencerController', ['$scope', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($scope, InstrumentService, PatternService, SequencerService, TransportService) {
+app.controller('SequencerController', ['$rootScope', '$scope', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($rootScope, $scope, InstrumentService, PatternService, SequencerService, TransportService) {
   $scope.patterns = SequencerService.patterns();
   $scope.currentStep = 1;
 
@@ -173,6 +173,10 @@ app.controller('SequencerController', ['$scope', 'InstrumentService', 'PatternSe
 
   $scope.toggleRowMute = function(rowIndex) {
     SequencerService.toggleRowMute(rowIndex);
+  };
+
+  $scope.changeSelectedInstrument = function(instrumentID) {
+    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: instrumentID })
   };
 
   $scope.syncCurrentStep = function() {
