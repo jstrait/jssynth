@@ -365,6 +365,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
   var patterns = [
                    {
+                     instrumentID: 1,
                      muted: false,
                      patterns: [
                        { patternID: 1, },
@@ -378,6 +379,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', function($ro
                      ],
                    },
                    {
+                     instrumentID: 2,
                      muted: false,
                      patterns: [
                        { patternID: 2, },

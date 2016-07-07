@@ -135,16 +135,21 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
-app.controller('SequencerController', ['$scope', 'PatternService', 'SequencerService', 'TransportService', function($scope, PatternService, SequencerService, TransportService) {
+app.controller('SequencerController', ['$scope', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($scope, InstrumentService, PatternService, SequencerService, TransportService) {
   $scope.patterns = SequencerService.patterns();
   $scope.currentStep = 1;
 
   var buildPatternOptions = function() {
-    var patternOptions = PatternService.patterns().map(function(pattern) {
-      return { id: pattern.id, name: pattern.name };
-    });
+    var patternOptions = InstrumentService.instruments().map(function(instrument) {
+      var instrumentPatterns = PatternService.patternsByInstrumentID(instrument.id);
+      var options = instrumentPatterns.map(function(pattern) {
+        return { id: pattern.id, name: pattern.name, }
+      });
 
-    patternOptions.unshift({ id: -1, name: ''});
+      options.unshift({ id: -1, name: ''})
+
+      return options;
+    });
 
     return patternOptions;
   };

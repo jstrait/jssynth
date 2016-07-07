@@ -72,7 +72,7 @@
         <ul class="ml0 pl0 no-whitespace-wrap">
           <li class="inline-block center border-box pl1 pr1" style="width: 150px; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
             <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
-              <option ng-repeat="patternOption in patternOptions" value="{{patternOption.id}}">{{patternOption.name}}</option>
+              <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
             </select>
           </li>
         </ul>
