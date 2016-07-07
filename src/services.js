@@ -365,6 +365,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
   var patterns = [
                    {
+                     name: 'Track 1',
                      instrumentID: 1,
                      muted: false,
                      patterns: [
@@ -379,6 +380,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
                      ],
                    },
                    {
+                     name: 'Track 2',
                      instrumentID: 2,
                      muted: false,
                      patterns: [
@@ -407,6 +409,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
     var newPattern = PatternService.addPattern(newInstrument.id);
 
     patterns.push({
+      name: 'New Track',
       instrumentID: newInstrument.id,
       muted: false,
       patterns: [
