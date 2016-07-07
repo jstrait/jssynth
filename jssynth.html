@@ -87,14 +87,14 @@
       </li>
     </ul>
   </div>
-  <div class="mb1 overflow-auto">
+  <div class="overflow-auto">
     <button class="block button-full right" ng-click="addRow();">Add Track</button>
   </div>
 </div>
 
 <div id="container">
   <h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Instruments</h2>
-  <div ng-controller="InstrumentCollectionController" class="flex">
+  <div ng-controller="InstrumentCollectionController" class="flex display-none">
     <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
       <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="instrumentOption in instrumentOptions" ng-click="changeSelectedInstrument(instrumentOption.id);" ng-class="{bgLightGray: !(instrumentOption.id === selectedInstrumentID), selectedOption: instrumentOption.id === selectedInstrumentID}">
         <span class="pl1 pr1">{{instrumentOption.name}}</span>
