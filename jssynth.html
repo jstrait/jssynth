@@ -72,7 +72,7 @@
       </li>
       <li ng-repeat="row in patterns" class="inline-block list-style-none full-width" style="height: 4.5rem;">
         <ul class="ml0 pl0 no-whitespace-wrap" style="height: 100%;">
-          <li class="inline-block center border-box pl1 pr1" style="width: 150px; height: 100%; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index">
+          <li class="inline-block center border-box pl1 pr1" style="width: 150px; height: 100%; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
             <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
               <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
             </select>
