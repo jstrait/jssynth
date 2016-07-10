@@ -55,14 +55,14 @@
 <div ng-controller="SequencerController" class="mt3">
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 250px;">
-      <li class="list-style-none inline-block" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;"><span class="note-column-header">&nbsp;</span></li>
-      <li class="flex-uniform-size list-style-none pl1 pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; margin-bottom: 300px;" ng-repeat="track in tracks">
+      <li class="list-style-none inline-block border-box" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;"><span>&nbsp;</span></li>
+      <li class="flex-uniform-size list-style-none pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; margin-bottom: 291px;" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" type="text" />
           <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
           <button class="button-small track-button" ng-click="changeSelectedInstrument(track.instrumentID);">Edit</button>
         </div>
-        <div instrument-editor-2 instrument-id="1" style="position: absolute; width: 100%; overflow-x: scroll; display: flex;"></div>
+        <div instrument-editor-2 instrument-id="1" class="border-box pb1" style="position: absolute; width: 100%; border-bottom: 1px solid #ddd; overflow-x: scroll; display: flex;"></div>
       </li>
     </ul>
     <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -73,7 +73,7 @@
           </li>
         </ul>
       </li>
-      <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="height: 4.5rem; margin-bottom: 300px;">
+      <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="height: 4.5rem; margin-bottom: 291px;">
         <ul class="ml0 pl0 no-whitespace-wrap" style="height: 100%;">
           <li class="inline-block center border-box pl1 pr1" style="width: 150px; height: 100%; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
             <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
