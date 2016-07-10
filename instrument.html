@@ -1,9 +1,4 @@
-<span class="control mt2 display-none">
-  <label class="control-label">Name:</label>
-  <span class="annotated-input">
-    <input class="underlinedInput" ng-model="instrument.name" ng-change="updateInstrument();" type="text" />
-  </span>
-</span>
+<div class="pr1" style="width: 600px; min-width: 600px;">
 <h2 class="h3 section-header">Sound Generator</h2>
 <span class="control">
   <label class="control-label">Waveform:</label>
@@ -63,11 +58,11 @@
   </span>
 </span>
 </div>
-<div>
-<h2 class="h3 mt3 section-header">Filter</h2>
+<div class="pl1 pr1" style="width: 600px; min-width: 600px;">
+<h2 class="h3 section-header">Filter</h2>
 <span class="control">
   <label class="control-label">Cutoff:</label>
-  <span class="annotated-input">
+  <span class="annotated-input"> 
     <input ng-model="instrument.filterCutoff" ng-change="updateInstrument();" type="range" min="50" max="9950" step="50" />
     <span>{{instrument.filterCutoff}}Hz</span>
   </span>
@@ -116,8 +111,8 @@
   </span>
 </span>
 </div>
-<div>
-<h2 class="h3 mt3 section-header">Envelope</h2>
+<div class="pl1" style="width: 600px; min-width: 600px;">
+<h2 class="h3 section-header">Envelope</h2>
 <span class="control">
   <label class="control-label">Attack Speed:</label>
   <span class="annotated-input">
@@ -146,3 +141,4 @@
     <span>{{instrument.envelopeRelease * 1000}} ms</span>
   </span>
 </span>
+</div>
