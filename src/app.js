@@ -111,7 +111,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   var timeoutId;
 
   $scope.patterns = SequencerService.patterns();
-  $scope.currentStep = 1;
+  $scope.currentStep = null;
 
   var buildPatternOptions = function() {
     var patternOptions = InstrumentService.instruments().map(function(instrument) {
