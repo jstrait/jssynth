@@ -65,7 +65,7 @@
     <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="inline-block list-style-none full-width">
         <ul class="ml0 pl0 no-whitespace-wrap">
-          <li class="list-style-none inline-block border-box" style="width: 150px; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" transport-progress ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
+          <li class="list-style-none inline-block border-box" style="width: 150px; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
             <span class="inline-block center full-width" ng-class="{enabled: currentStep === n}">{{n}}</span>
           </li>
         </ul>

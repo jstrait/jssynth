@@ -107,7 +107,9 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 }]);
 
 
-app.controller('SequencerController', ['$rootScope', '$scope', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($rootScope, $scope, InstrumentService, PatternService, SequencerService, TransportService) {
+app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($rootScope, $scope, $interval, InstrumentService, PatternService, SequencerService, TransportService) {
+  var timeoutId;
+
   $scope.patterns = SequencerService.patterns();
   $scope.currentStep = 1;
 
@@ -125,6 +127,16 @@ app.controller('SequencerController', ['$rootScope', '$scope', 'InstrumentServic
 
     return patternOptions;
   };
+
+  $scope.$on('TransportService.start', function(event) {
+    var timeoutId = $interval(function() {
+      $scope.syncCurrentStep();
+    }, 15);
+  });
+
+  $scope.$on('TransportService.stop', function(event) {
+    $interval.cancel(timeoutId);
+  });
 
   $scope.patternOptions = buildPatternOptions();
   $scope.$on('PatternService.update', function(event) {
@@ -235,27 +247,6 @@ app.directive('convertToNumber', function() {
     }
   };
 });
-
-
-app.directive('transportProgress', ['$interval', function($interval) {
-  return {
-    require: 'ngModel',
-    link: function(scope, element, attrs, ctrl) {
-      if (!ctrl) return;
-      var updateProgress = function() {
-        scope.syncCurrentStep();
-      };
-
-      element.on('$destroy', function() {
-        $interval.cancel(timeoutId);
-      });
-
-      var timeoutId = $interval(function() {
-        updateProgress();
-      }, 1);
-    },
-  };
-}]);
 
 
 app.directive('instrumentEditor', function() {

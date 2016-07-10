@@ -610,6 +610,13 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   transportService.toggle = function() {
     transport.toggle();
     playing = !playing;
+
+    if (playing) {
+      $rootScope.$broadcast('TransportService.start');
+    }
+    else {
+      $rootScope.$broadcast('TransportService.stop');
+    }
   };
 
   transportService.setTempo = function(newTempo) {
