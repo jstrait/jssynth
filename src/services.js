@@ -363,7 +363,7 @@ app.factory('PatternService', ['$rootScope', 'InstrumentService', function($root
 
 
 app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
-  var patterns = [
+  var tracks = [
                    {
                      name: 'Track 1',
                      instrumentID: 1,
@@ -398,17 +398,17 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
 
   var sequencerService = {};
 
-  sequencerService.patterns = function() { return patterns; };
+  sequencerService.tracks = function() { return tracks; };
 
   sequencerService.changeSequencer = function(sequenceIndex) {
     $rootScope.$broadcast('SequencerService.update');
   };
 
-  sequencerService.addRow = function(rowIndex) {
+  sequencerService.addTrack = function() {
     var newInstrument = InstrumentService.addInstrument();
     var newPattern = PatternService.addPattern(newInstrument.id);
 
-    patterns.push({
+    tracks.push({
       name: 'New Track',
       instrumentID: newInstrument.id,
       muted: false,
@@ -427,26 +427,26 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
     $rootScope.$broadcast('SequencerService.update');
   };
 
-  sequencerService.removeRow = function(rowIndex) {
-    patterns.splice(rowIndex, 1);
+  sequencerService.removeTrack = function(trackIndex) {
+    tracks.splice(trackIndex, 1);
 
-    if (patterns.length === 0) {
-      sequencerService.addRow(0);
+    if (tracks.length === 0) {
+      sequencerService.addTrack();
     }
 
     $rootScope.$broadcast('SequencerService.update');
   };
 
-  sequencerService.toggleRowMute = function(rowIndex) {
-    patterns[rowIndex].muted = !patterns[rowIndex].muted;
+  sequencerService.toggleTrackMute = function(trackIndex) {
+    tracks[trackIndex].muted = !tracks[trackIndex].muted;
     $rootScope.$broadcast('SequencerService.update');
   };
 
   sequencerService.unsetPattern = function(patternID) {
-    patterns.forEach(function(pattern) {
-      pattern.patterns.forEach(function(subPattern) {
-        if (subPattern.patternID === patternID) {
-          subPattern.patternID = -1;
+    tracks.forEach(function(track) {
+      track.patterns.forEach(function(pattern) {
+        if (pattern.patternID === patternID) {
+          pattern.patternID = -1;
         }
       });
     });
@@ -567,7 +567,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatterns = serializePatterns(serializedInstruments);
     var serializedPatternSequence = [];
 
-    var sequencerPatterns = SequencerService.patterns();
+    var sequencerPatterns = SequencerService.tracks();
     var totalSteps = sequencerPatterns[0].patterns.length;
 
     for (var i = 0; i < totalSteps; i++) {

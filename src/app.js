@@ -110,7 +110,7 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($rootScope, $scope, $interval, InstrumentService, PatternService, SequencerService, TransportService) {
   var timeoutId;
 
-  $scope.patterns = SequencerService.patterns();
+  $scope.tracks = SequencerService.tracks();
   $scope.currentStep = null;
 
   var buildPatternOptions = function() {
@@ -147,16 +147,16 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     SequencerService.changeSequencer(sequenceIndex);
   };
 
-  $scope.addRow = function(rowIndex) {
-    SequencerService.addRow(rowIndex);
+  $scope.addTrack = function() {
+    SequencerService.addTrack();
   };
 
-  $scope.removeRow = function(rowIndex) {
-    SequencerService.removeRow(rowIndex);
+  $scope.removeTrack = function(trackIndex) {
+    SequencerService.removeTrack(trackIndex);
   };
 
-  $scope.toggleRowMute = function(rowIndex) {
-    SequencerService.toggleRowMute(rowIndex);
+  $scope.toggleTrackMute = function(trackIndex) {
+    SequencerService.toggleTrackMute(trackIndex);
   };
 
   $scope.changeSelectedInstrument = function(instrumentID) {

@@ -56,10 +56,10 @@
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 250px;">
       <li class="list-style-none inline-block" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;"><span class="note-column-header">&nbsp;</span></li>
-      <li class="flex-uniform-size list-style-none pl1 pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; height: 4.5rem;" ng-repeat="row in patterns">
-        <input class="underlinedInput full-width" ng-model="row.name" type="text" />
-        <button class="button-small track-button {{row.muted ? 'enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
-        <button class="button-small track-button" ng-click="changeSelectedInstrument(row.instrumentID);">Edit</button>
+      <li class="flex-uniform-size list-style-none pl1 pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; height: 4.5rem;" ng-repeat="track in tracks">
+        <input class="underlinedInput full-width" ng-model="track.name" type="text" />
+        <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+        <button class="button-small track-button" ng-click="changeSelectedInstrument(track.instrumentID);">Edit</button>
       </li>
     </ul>
     <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -70,9 +70,9 @@
           </li>
         </ul>
       </li>
-      <li ng-repeat="row in patterns" class="inline-block list-style-none full-width" style="height: 4.5rem;">
+      <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="height: 4.5rem;">
         <ul class="ml0 pl0 no-whitespace-wrap" style="height: 100%;">
-          <li class="inline-block center border-box pl1 pr1" style="width: 150px; height: 100%; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in row.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
+          <li class="inline-block center border-box pl1 pr1" style="width: 150px; height: 100%; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
             <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
               <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
             </select>
@@ -82,13 +82,13 @@
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="list-style-none flex-uniform-size">&nbsp;</li>
-      <li class="list-style-none flex-uniform-size" ng-repeat="row in patterns">
-        <button class="button-small full-width track-button" ng-click="removeRow($index);">X</button>
+      <li class="list-style-none flex-uniform-size" ng-repeat="track in tracks">
+        <button class="button-small full-width track-button" ng-click="removeTrack($index);">X</button>
       </li>
     </ul>
   </div>
   <div class="overflow-auto">
-    <button class="block button-full right" ng-click="addRow();">Add Track</button>
+    <button class="block button-full right" ng-click="addTrack();">Add Track</button>
   </div>
 </div>
 
