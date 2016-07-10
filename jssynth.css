@@ -208,7 +208,6 @@ input.note:focus {
 }
 
 button {
-  background: #ccc;
   border: 0;
   outline: none;
   font-size: 1.5rem;
@@ -284,6 +283,21 @@ button {
 .no-whitespace-wrap { white-space: nowrap; }
 
 .pointer { cursor: pointer; }
+
+.button-hollow {
+  background: #fff;
+  border-color: #130f30;
+}
+
+.button-hollow-large {
+  border: 4px solid;
+}
+
+.button-hollow-enabled {
+  background: orange;
+  border-color: orange;
+  color: #fff;
+}
 
 .enabled {
   background: orange;
