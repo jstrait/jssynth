@@ -92,15 +92,6 @@
   </div>
 </div>
 
-<div ng-controller="InstrumentCollectionController" class="flex display-none">
-  <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
-    <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="instrumentOption in instrumentOptions" ng-click="changeSelectedInstrument(instrumentOption.id);" ng-class="{bgLightGray: !(instrumentOption.id === selectedInstrumentID), selectedOption: instrumentOption.id === selectedInstrumentID}">
-      <span class="pl1 pr1">{{instrumentOption.name}}</span>
-    </li>
-  </ul>
-  <button class="block button-small" ng-click="addInstrument();">Add</button>
-</div>
-
 <div ng-controller="InstrumentController">
   <div instrument-editor instrument="instrument" update-instrument="updateInstrument()" style="overflow-x: scroll; display: flex;"></div>
 </div>

@@ -2,34 +2,6 @@
 
 var app = angular.module('js120', []);
 
-app.controller('InstrumentCollectionController', ['$rootScope', '$scope', 'InstrumentService', 'PatternService', function($rootScope, $scope, InstrumentService, PatternService) {
-  var buildInstrumentOptions = function() {
-    return InstrumentService.instruments().map(function(instrument) {
-     return { id: instrument.id, name: instrument.name };
-    });
-  };
-
-  $scope.instrumentOptions = buildInstrumentOptions();
-  $scope.$on('InstrumentService.update', function(event) {
-    $scope.instrumentOptions = buildInstrumentOptions();
-  });
-
-  $scope.selectedInstrumentID = 1;
-
-  $scope.addInstrument = function() {
-    var newInstrument = InstrumentService.addInstrument();
-    PatternService.addPattern(newInstrument.id);
-    $scope.selectedInstrumentID = newInstrument.id;
-    $scope.changeSelectedInstrument(newInstrument.id);
-  };
-
-  $scope.changeSelectedInstrument = function(instrumentID) {
-    $scope.selectedInstrumentID = instrumentID;
-    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: instrumentID });
-  };
-}]);
-
-
 app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
   var instrumentID = 1;
   
