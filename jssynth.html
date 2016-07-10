@@ -92,7 +92,6 @@
   </div>
 </div>
 
-<h2 class="h2 mt2 mb0" style="line-height: 4.5rem;">Instruments</h2>
 <div ng-controller="InstrumentCollectionController" class="flex display-none">
   <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
     <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="instrumentOption in instrumentOptions" ng-click="changeSelectedInstrument(instrumentOption.id);" ng-class="{bgLightGray: !(instrumentOption.id === selectedInstrumentID), selectedOption: instrumentOption.id === selectedInstrumentID}">
