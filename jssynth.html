@@ -13,12 +13,12 @@
   <script src="src/analytics.js"></script>
 </head>
 <body class="ml1 mr1 mt1">
-<div class="flex mb2" style="align-items: center;">
+<div class="flex mb2" style="align-items: center;" ng-controller="TransportController">
   <div>
     <h1 class="logo h2 mt0 mb0" style="line-height: 1.0em;">JS-120</h1>
     <span class="tagline">Web Synthesizer</span>
   </div>
-  <div class="flex" style="flex: 1;align-items: center; justify-content: center;" ng-controller="TransportController">
+  <div class="flex" style="flex: 1;align-items: center; justify-content: center;">
     <button class="mr1 button-hollow button-hollow-large {{playing ? 'button-hollow-enabled' : ''}}" style="border-radius: 50%;" ng-click="toggle();">►</button>
     <span class="inline-block">
       <span class="control">
