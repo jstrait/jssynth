@@ -55,7 +55,7 @@
 <div ng-controller="SequencerController" class="mt3">
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 250px;">
-      <li class="list-style-none inline-block border-box bb br"><span>&nbsp;</span></li>
+      <li class="list-style-none inline-block border-box bt bb br"><span>&nbsp;</span></li>
       <li class="flex-uniform-size list-style-none pr1 bb br" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
@@ -67,7 +67,7 @@
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="inline-block list-style-none full-width">
         <ul class="ml0 pl0 no-whitespace-wrap">
-          <li class="list-style-none inline-block border-box bb br" style="width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
+          <li class="list-style-none inline-block border-box bt bb br" style="width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
             <span class="inline-block center full-width" ng-class="{enabled: currentStep === n}">{{n}}</span>
           </li>
         </ul>
@@ -85,14 +85,14 @@
       </li>
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-      <li class="list-style-none flex-uniform-size">&nbsp;</li>
-      <li class="list-style-none flex-uniform-size" ng-repeat="track in tracks">
-        <button class="button-small full-width" ng-click="removeTrack(track.id);">X</button>
+      <li class="list-style-none inline-block border-box bt bb br"><span>&nbsp;</span></li>
+      <li class="flex flex-align-center flex-uniform-size list-style-none pl1 pr1 bb br" ng-repeat="track in tracks">
+        <button class="button-small full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>
   </div>
   <div class="overflow-auto">
-    <button class="block button-full right" ng-click="addTrack();">Add Track</button>
+    <button class="block button-full button-hollow" ng-click="addTrack();">Add Track</button>
   </div>
 </div>
 
