@@ -292,6 +292,8 @@ button {
 
 .flex-uniform-size { -webkit-flex: 1; flex: 1; }
 .flex-column { -webkit-flex-direction: column; flex-direction: column; }
+.flex-align-center { -webkit-align-items: center; align-items: center; }
+.flex-justify-center { -webkit-justify-content: center; justify-content: center; }
 
 .overflow-auto     { overflow: auto; }
 .overflow-hidden-x { overflow-x: hidden; }

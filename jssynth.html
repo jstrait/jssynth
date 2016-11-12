@@ -13,12 +13,12 @@
   <script src="src/analytics.js"></script>
 </head>
 <body class="ml1 mr1 mt1">
-<div class="flex mb2" style="align-items: center;" ng-controller="TransportController">
+<div class="flex mb2" ng-controller="TransportController">
   <div>
     <h1 class="logo h2 mt0 mb0" style="line-height: 1.0em;">JS-120</h1>
     <span class="tagline">Web Synthesizer</span>
   </div>
-  <div class="flex flex-uniform-size" style="align-items: center; justify-content: center;">
+  <div class="flex flex-uniform-size flex-align-center flex-justify-center">
     <button class="mr1 round button-hollow button-hollow-large {{playing ? 'button-enabled' : ''}}" ng-click="toggle();">►</button>
     <span class="inline-block" style="width: 22.0rem; max-width: 100%;">
       <span class="control">
@@ -75,7 +75,7 @@
       <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="height: 4.5rem;">
         <ul class="ml0 pl0 no-whitespace-wrap" style="height: 100%;">
           <li class="inline-block center border-box bb br" style="width: 150px; height: 100%;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
-            <span class="flex pl1 pr1 border-box" style="width: 100%; height: 100%; align-items: center;">
+            <span class="flex flex-align-center pl1 pr1 border-box" style="width: 100%; height: 100%;">
               <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
                 <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
               </select>
@@ -106,7 +106,7 @@
     <div tab-pane title="Patterns">
       <div id="container">
         <div ng-controller="PatternCollectionController" class="flex mb2">
-          <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
+          <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x">
             <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
               <span class="pl1 pr1">{{patternOption.name}}</span><button class="button-small" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
             </li>
