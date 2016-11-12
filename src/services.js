@@ -1,7 +1,9 @@
 "use strict";
 
-app.factory('InstrumentService', ['$rootScope', function($rootScope) {
-  var IDGenerator = function() {
+app.factory('IdGeneratorService', function() {
+  var IdGeneratorService = {};
+
+  IdGeneratorService.buildGenerator = function() {
     var nextId = 0;
 
     return {
@@ -12,7 +14,12 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
       },
    };
   };
-  var idGenerator = new IDGenerator();
+
+  return IdGeneratorService;
+});
+
+app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($rootScope, IdGeneratorService) {
+  var idGenerator = IdGeneratorService.buildGenerator();
 
   var instruments = [{
                         id:                 idGenerator.next(),
@@ -97,19 +104,8 @@ app.factory('InstrumentService', ['$rootScope', function($rootScope) {
   return instrumentService;
 }]);
 
-app.factory('PatternService', ['$rootScope', 'InstrumentService', function($rootScope, InstrumentService) {
-  var IDGenerator = function() {
-    var nextId = 0;
-
-    return {
-      next: function() {
-        nextId++;
-
-        return nextId;  
-      },
-   };
-  };
-  var idGenerator = new IDGenerator();
+app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentService', function($rootScope, IdGeneratorService, InstrumentService) {
+  var idGenerator = IdGeneratorService.buildGenerator();
 
   var patterns = [
                    {
