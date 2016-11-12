@@ -100,7 +100,7 @@
   <div tab-list title="{{trackName}}" class="mt1 pb1 bb">
     <div tab-pane title="Instrument">
       <div ng-controller="InstrumentController">
-        <div instrument-editor instrument="instrument" update-instrument="updateInstrument()" style="overflow-x: scroll; display: flex;"></div>
+        <div instrument-editor instrument="instrument" class="flex overflow-scroll-x" update-instrument="updateInstrument()"></div>
       </div>
     </div>
     <div tab-pane title="Patterns">
