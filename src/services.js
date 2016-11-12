@@ -364,7 +364,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
   var tracks = [
                    {
                      id: idGenerator.next(),
-                     name: 'Track 1',
+                     name: 'Melody',
                      instrumentID: 1,
                      muted: false,
                      patterns: [
@@ -380,7 +380,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
                    },
                    {
                      id: idGenerator.next(),
-                     name: 'Track 2',
+                     name: 'Chords',
                      instrumentID: 2,
                      muted: false,
                      patterns: [
