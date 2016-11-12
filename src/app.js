@@ -111,6 +111,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   var timeoutId;
 
   $scope.tracks = SequencerService.tracks();
+  $scope.selectedTrack = SequencerService.trackByID(1);
   $scope.currentStep = null;
 
   var buildPatternOptions = function() {
@@ -159,8 +160,9 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     SequencerService.toggleTrackMute(trackID);
   };
 
-  $scope.changeSelectedInstrument = function(instrumentID) {
-    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: instrumentID })
+  $scope.changeSelectedTrack = function(trackID) {
+    $scope.selectedTrack = SequencerService.trackByID(trackID);
+    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: $scope.selectedTrack.instrumentID, });
   };
 
   $scope.syncCurrentStep = function() {

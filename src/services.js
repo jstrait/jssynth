@@ -414,6 +414,16 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     $rootScope.$broadcast('SequencerService.update');
   };
 
+  sequencerService.trackByID = function(targetID) {
+    for (var i = 0; i < tracks.length; i++) {
+      if (tracks[i].id === targetID) {
+        return tracks[i];
+      }
+    }
+
+    return null;
+  };
+
   sequencerService.addTrack = function() {
     var newInstrument = InstrumentService.addInstrument();
     var newPattern = PatternService.addPattern(newInstrument.id);

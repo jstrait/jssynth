@@ -60,7 +60,7 @@
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" type="text" />
           <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
-          <button class="button-small track-button" ng-click="changeSelectedInstrument(track.instrumentID);">Edit</button>
+          <button class="button-small track-button {{track.id === selectedTrack.id ? 'enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
         </div>
       </li>
     </ul>
