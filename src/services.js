@@ -358,9 +358,12 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
 }]);
 
 
-app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternService', function($rootScope, InstrumentService, PatternService) {
+app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'InstrumentService', 'PatternService', function($rootScope, IdGeneratorService, InstrumentService, PatternService) {
+  var idGenerator = IdGeneratorService.buildGenerator();
+
   var tracks = [
                    {
+                     id: idGenerator.next(),
                      name: 'Track 1',
                      instrumentID: 1,
                      muted: false,
@@ -376,6 +379,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
                      ],
                    },
                    {
+                     id: idGenerator.next(),
                      name: 'Track 2',
                      instrumentID: 2,
                      muted: false,
@@ -405,6 +409,7 @@ app.factory('SequencerService', ['$rootScope', 'InstrumentService', 'PatternServ
     var newPattern = PatternService.addPattern(newInstrument.id);
 
     tracks.push({
+      id: idGenerator.next(),
       name: 'New Track',
       instrumentID: newInstrument.id,
       muted: false,
