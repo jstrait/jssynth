@@ -162,8 +162,13 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 
   $scope.changeSelectedTrack = function(trackID) {
     $scope.selectedTrack = SequencerService.trackByID(trackID);
+    $rootScope.$broadcast('SequencerController.selectedTrackChanged', { trackID: $scope.selectedTrack.id, });
     $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: $scope.selectedTrack.instrumentID, });
   };
+
+  $scope.changeTrackName = function(trackID) {
+    $rootScope.$broadcast('SequencerController.trackNameChanged', { trackID: trackID, });
+  }
 
   $scope.syncCurrentStep = function() {
     if (TransportService.currentStep()) {
@@ -174,6 +179,25 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
       $scope.currentStep = null;
     }
   };
+}]);
+
+
+app.controller('TrackEditorController', ['$scope', 'SequencerService', function($scope, SequencerService) {
+  $scope.trackID = 1;
+  $scope.trackName = SequencerService.trackByID($scope.trackID).name;
+
+  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
+    var track = SequencerService.trackByID(args.trackID);
+    $scope.trackID = track.id;
+    $scope.trackName = track.name;
+  });
+
+  $scope.$on('SequencerController.trackNameChanged', function(event, args) {
+    if (args.trackID === $scope.trackID) {
+      var track = SequencerService.trackByID(args.trackID);
+      $scope.trackName = track.name;
+    }
+  });
 }]);
 
 
@@ -286,7 +310,9 @@ app.directive('tabList', function() {
   return {
     restrict: 'A',
     transclude: true,
-    scope: {},
+    scope: {
+      title: '@',
+    },
     controller: ['$scope', function($scope) {
       var panes = $scope.panes = [];
 

@@ -58,7 +58,7 @@
       <li class="list-style-none inline-block border-box" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;"><span>&nbsp;</span></li>
       <li class="flex-uniform-size list-style-none pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
-          <input class="underlinedInput full-width" ng-model="track.name" type="text" />
+          <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
           <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
           <button class="button-hollow button-small {{track.id === selectedTrack.id ? 'button-enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
         </div>
@@ -94,71 +94,69 @@
   <div class="overflow-auto">
     <button class="block button-full right" ng-click="addTrack();">Add Track</button>
   </div>
-  
-  <div class="mt1 pt1" style="border-top: 1px solid #ddd;">
-    <h2 class="mt0 mb0">{{selectedTrack.name}}</h2>
-  </div>
 </div>
 
-<div tab-list style="border-bottom: 1px solid #ddd;" class="mt1 pb1">
-  <div tab-pane title="Instrument">
-    <div ng-controller="InstrumentController">
-      <div instrument-editor instrument="instrument" update-instrument="updateInstrument()" style="overflow-x: scroll; display: flex;"></div>
-    </div>
-  </div>
-  <div tab-pane title="Patterns">
-    <div id="container">
-      <div ng-controller="PatternCollectionController" class="flex mb2">
-        <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
-          <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
-            <span class="pl1 pr1">{{patternOption.name}}</span><button class="button-small" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
-          </li>
-        </ul>
-        <button class="block button-small" ng-click="addPattern();">Add</button>
+<div ng-controller="TrackEditorController" class="mt2" style="border-top: 1px solid #ddd;">
+  <div tab-list title="{{trackName}}" style="border-bottom: 1px solid #ddd;" class="mt1 pb1">
+    <div tab-pane title="Instrument">
+      <div ng-controller="InstrumentController">
+        <div instrument-editor instrument="instrument" update-instrument="updateInstrument()" style="overflow-x: scroll; display: flex;"></div>
       </div>
-
-      <div ng-controller="PatternController">
-        <div>
-          <label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
-          <ul class="toggleable" ng-show="show">
-            <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
-            <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
-            <li>Use &mdash; to lengthen a note. For example, &lsquo;A4&mdash;&mdash;&mdash;&rsquo; will last for 4 steps, while &lsquo;A4&mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
-            <li>Press <code>SPACE</code> to clear the current note</li>
-            <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
+    </div>
+    <div tab-pane title="Patterns">
+      <div id="container">
+        <div ng-controller="PatternCollectionController" class="flex mb2">
+          <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x" style="align-items: center;">
+            <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
+              <span class="pl1 pr1">{{patternOption.name}}</span><button class="button-small" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
+            </li>
           </ul>
-          <div class="flex">
-            <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-              <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
-              <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
-                <button class="button-small {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
-              </li>
+          <button class="block button-small" ng-click="addPattern();">Add</button>
+        </div>
+
+        <div ng-controller="PatternController">
+          <div>
+            <label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
+            <ul class="toggleable" ng-show="show">
+              <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
+              <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
+              <li>Use &mdash; to lengthen a note. For example, &lsquo;A4&mdash;&mdash;&mdash;&rsquo; will last for 4 steps, while &lsquo;A4&mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
+              <li>Press <code>SPACE</code> to clear the current note</li>
+              <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between tracks</li>
             </ul>
-            <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
-              <li class="inline-block list-style-none full-width">
-                <ul class="ml0 pl0 center no-whitespace-wrap">
-                  <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
-                    <span class="note-column-header">{{n}}</span>
-                  </li>
-                </ul>
-              </li>
-              <li ng-repeat="track in pattern.tracks" class="inline-block list-style-none full-width">
-                <ul class="ml0 pl0 no-whitespace-wrap">
-                  <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
-                    <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
-                   </li>
-                </ul>
-              </li>
-            </ul>
-            <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-              <li class="list-style-none flex-uniform-size">&nbsp;</li>
-              <li class="list-style-none flex-uniform-size" ng-repeat="track in pattern.tracks">
-                <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
-              </li>
-            </ul>
-          </div>
-          <div class="mb1 overflow-auto">
-            <button class="block button-full right" ng-click="addTrack();">Add Row</button>
+            <div class="flex">
+              <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+                <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
+                <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
+                  <button class="button-small {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+                </li>
+              </ul>
+              <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
+                <li class="inline-block list-style-none full-width">
+                  <ul class="ml0 pl0 center no-whitespace-wrap">
+                    <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
+                      <span class="note-column-header">{{n}}</span>
+                    </li>
+                  </ul>
+                </li>
+                <li ng-repeat="track in pattern.tracks" class="inline-block list-style-none full-width">
+                  <ul class="ml0 pl0 no-whitespace-wrap">
+                    <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
+                      <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
+                     </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+                <li class="list-style-none flex-uniform-size">&nbsp;</li>
+                <li class="list-style-none flex-uniform-size" ng-repeat="track in pattern.tracks">
+                  <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
+                </li>
+              </ul>
+            </div>
+            <div class="mb1 overflow-auto">
+              <button class="block button-full right" ng-click="addTrack();">Add Row</button>
+            </div>
           </div>
         </div>
       </div>

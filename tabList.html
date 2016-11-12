@@ -1,4 +1,5 @@
-<ul class="m0 pl0">
+<h2 class="mt0 mb0 mr1 inline-block">{{title}}</h2>
+<ul class="m0 pl0 inline-block">
   <li class="inline-block list-style-none mr1" ng-repeat="pane in panes" ng-class="{active:pane.selected}">
     <a href="" class="paneTab" ng-class="{paneTabSelected:pane.selected}" ng-click="select(pane)">{{pane.title}}</a>
   </li>
