@@ -59,8 +59,8 @@
       <li class="flex-uniform-size list-style-none pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" type="text" />
-          <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
-          <button class="button-small track-button {{track.id === selectedTrack.id ? 'enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
+          <button class="button-small {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
+          <button class="button-small {{track.id === selectedTrack.id ? 'enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
         </div>
       </li>
     </ul>
@@ -87,7 +87,7 @@
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="list-style-none flex-uniform-size">&nbsp;</li>
       <li class="list-style-none flex-uniform-size" ng-repeat="track in tracks">
-        <button class="button-small full-width track-button" ng-click="removeTrack(track.id);">X</button>
+        <button class="button-small full-width" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>
   </div>
@@ -131,7 +131,7 @@
             <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
               <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
               <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
-                <button class="button-small track-button {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+                <button class="button-small {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
               </li>
             </ul>
             <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -153,7 +153,7 @@
             <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
               <li class="list-style-none flex-uniform-size">&nbsp;</li>
               <li class="list-style-none flex-uniform-size" ng-repeat="track in pattern.tracks">
-                <button class="button-small full-width track-button" ng-click="removeTrack($index);">X</button>
+                <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
               </li>
             </ul>
           </div>
