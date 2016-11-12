@@ -94,9 +94,13 @@
   <div class="overflow-auto">
     <button class="block button-full right" ng-click="addTrack();">Add Track</button>
   </div>
+  
+  <div class="mt1 pt1" style="border-top: 1px solid #ddd;">
+    <h2 class="mt0 mb0">{{selectedTrack.name}}</h2>
+  </div>
 </div>
 
-<div tab-list style="border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;" class="mt1 pb1">
+<div tab-list style="border-bottom: 1px solid #ddd;" class="mt1 pb1">
   <div tab-pane title="Instrument">
     <div ng-controller="InstrumentController">
       <div instrument-editor instrument="instrument" update-instrument="updateInstrument()" style="overflow-x: scroll; display: flex;"></div>

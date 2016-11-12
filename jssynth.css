@@ -258,6 +258,7 @@ button {
 .pl0 { padding-left: 0.0rem; }
 .pl1 { padding-left: 1.5rem; }
 .pr1 { padding-right: 1.5rem; }
+.pt1 { padding-top: 1.5rem; }
 .pb1 { padding-bottom: 1.5rem; }
 
 .center { text-align: center; }
