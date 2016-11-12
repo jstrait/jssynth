@@ -281,6 +281,8 @@ button {
 .center { text-align: center; }
 .right  { float: right; }
 
+.round { border-radius: 50%; }
+
 .underline { text-decoration: underline; }
 
 .flex { display: -webkit-flex; display: flex; }
