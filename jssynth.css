@@ -241,14 +241,6 @@ button {
   color: #fff;
 }
 
-.bgLightGray {
-  border: #ddd 2px solid;
-}
-
-.bgLightGray:hover {
-  background: #fafafa;
-}
-
 .list-style-none {
   list-style-type: none;
 }
@@ -326,8 +318,12 @@ button {
   text-decoration: none;
 }
 
+.paneTabUnselected {
+  border-bottom: 2px solid #ddd;
+}
+
 .paneTabSelected {
-  border-bottom: 2px solid orange;
+  border-bottom: 4px solid orange;
 }
 
 @media (max-width: 1024px) {

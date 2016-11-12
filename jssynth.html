@@ -107,8 +107,8 @@
       <div id="container">
         <div ng-controller="PatternCollectionController" class="flex mb2">
           <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x">
-            <li class="list-style-none center pointer border-box" style="border-radius: 10px; margin-right: 4px;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);" ng-class="{bgLightGray: !(patternOption.id === selectedPatternID), selectedOption: patternOption.id === selectedPatternID}">
-              <span class="pl1 pr1">{{patternOption.name}}</span><button class="button-small" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
+            <li class="list-style-none pointer border-box mr1" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);"  ng-class="{paneTabSelected: (patternOption.id === selectedPatternID), paneTabUnselected: (patternOption.id !== selectedPatternID)}">
+              <span>{{patternOption.name}}</span><button class="button-small button-hollow round ml1" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
             </li>
           </ul>
           <button class="block button-small" ng-click="addPattern();">Add</button>
