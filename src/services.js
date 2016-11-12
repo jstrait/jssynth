@@ -396,6 +396,16 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
                    }
                  ];
 
+  var trackIndexByID = function(targetID) {
+    for (var i = 0; i < tracks.length; i++) {
+      if (tracks[i].id === targetID) {
+        return i;
+      }
+    }
+
+    return null;
+  };
+
   var sequencerService = {};
 
   sequencerService.tracks = function() { return tracks; };
@@ -428,7 +438,8 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     $rootScope.$broadcast('SequencerService.update');
   };
 
-  sequencerService.removeTrack = function(trackIndex) {
+  sequencerService.removeTrack = function(trackID) {
+    var trackIndex = trackIndexByID(trackID);
     tracks.splice(trackIndex, 1);
 
     if (tracks.length === 0) {

@@ -151,8 +151,8 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     SequencerService.addTrack();
   };
 
-  $scope.removeTrack = function(trackIndex) {
-    SequencerService.removeTrack(trackIndex);
+  $scope.removeTrack = function(trackID) {
+    SequencerService.removeTrack(trackID);
   };
 
   $scope.toggleTrackMute = function(trackIndex) {
