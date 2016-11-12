@@ -19,7 +19,7 @@
     <span class="tagline">Web Synthesizer</span>
   </div>
   <div class="flex" style="flex: 1;align-items: center; justify-content: center;">
-    <button class="mr1 button-hollow button-hollow-large {{playing ? 'button-hollow-enabled' : ''}}" style="border-radius: 50%;" ng-click="toggle();">►</button>
+    <button class="mr1 button-hollow button-hollow-large {{playing ? 'button-enabled' : ''}}" style="border-radius: 50%;" ng-click="toggle();">►</button>
     <span class="inline-block" style="width: 22.0rem; max-width: 100%;">
       <span class="control">
         <label class="control-label" style="text-align: right;">Tempo&nbsp;&nbsp;</label>
@@ -59,8 +59,8 @@
       <li class="flex-uniform-size list-style-none pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" type="text" />
-          <button class="button-small {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
-          <button class="button-small {{track.id === selectedTrack.id ? 'enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
+          <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
+          <button class="button-hollow button-small {{track.id === selectedTrack.id ? 'button-enabled' : ''}}" ng-click="changeSelectedTrack(track.id);">Edit</button>
         </div>
       </li>
     </ul>
