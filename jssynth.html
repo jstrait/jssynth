@@ -59,7 +59,7 @@
       <li class="flex-uniform-size list-style-none pr1" style="border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" type="text" />
-          <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+          <button class="button-small track-button {{track.muted ? 'enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
           <button class="button-small track-button" ng-click="changeSelectedInstrument(track.instrumentID);">Edit</button>
         </div>
       </li>

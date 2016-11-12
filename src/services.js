@@ -449,7 +449,8 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     $rootScope.$broadcast('SequencerService.update');
   };
 
-  sequencerService.toggleTrackMute = function(trackIndex) {
+  sequencerService.toggleTrackMute = function(trackID) {
+    var trackIndex = trackIndexByID(trackID);
     tracks[trackIndex].muted = !tracks[trackIndex].muted;
     $rootScope.$broadcast('SequencerService.update');
   };
