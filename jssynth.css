@@ -315,6 +315,15 @@ button {
   background: #ddd;
 }
 
+.paneTab {
+  color: #000;
+  text-decoration: none;
+}
+
+.paneTabSelected {
+  border-bottom: 2px solid orange;
+}
+
 @media (max-width: 1024px) {
   body {
     background: #fff;

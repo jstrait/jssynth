@@ -1,6 +1,6 @@
 <ul class="m0 pl0">
   <li class="inline-block list-style-none mr1" ng-repeat="pane in panes" ng-class="{active:pane.selected}">
-    <a href="" ng-click="select(pane)">{{pane.title}}</a>
+    <a href="" class="paneTab" ng-class="{paneTabSelected:pane.selected}" ng-click="select(pane)">{{pane.title}}</a>
   </li>
 </ul>
 <div class="tab-content" ng-transclude></div>
