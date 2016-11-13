@@ -290,22 +290,6 @@ app.directive('instrumentEditor', function() {
 });
 
 
-app.directive('instrumentEditor2', ['InstrumentService', function(InstrumentService) {
-  return {
-    restrict: 'A',
-    scope: {},
-    link: function(scope, elem, attrs) {
-      scope.instrument = InstrumentService.instrumentByID(parseInt(attrs.instrumentId, 10));
-
-      scope.updateInstrument = function() {
-        InstrumentService.updateInstrument();
-      };
-    },
-    templateUrl: 'instrument.html',
-  };
-}]);
-
-
 app.directive('tabList', function() {
   return {
     restrict: 'A',
