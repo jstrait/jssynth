@@ -128,7 +128,7 @@
               <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
                 <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
                 <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
-                  <button class="button-small {{pattern.tracks[$index].muted ? 'enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
+                  <button class="button-small button-hollow {{pattern.tracks[$index].muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
                 </li>
               </ul>
               <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -150,7 +150,7 @@
               <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
                 <li class="list-style-none flex-uniform-size">&nbsp;</li>
                 <li class="list-style-none flex-uniform-size" ng-repeat="track in pattern.tracks">
-                  <button class="button-small full-width" ng-click="removeTrack($index);">X</button>
+                  <button class="button-small full-width round" ng-click="removeTrack($index);">X</button>
                 </li>
               </ul>
             </div>
