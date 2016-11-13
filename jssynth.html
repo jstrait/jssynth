@@ -54,8 +54,8 @@
 
 <div ng-controller="SequencerController" class="mt3">
   <div class="flex">
-    <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 250px;">
-      <li class="list-style-none inline-block border-box bt bb br"><span>&nbsp;</span></li>
+    <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 200px;">
+      <li class="list-style-none border-box bt bb br"><span>&nbsp;</span></li>
       <li class="flex-uniform-size list-style-none pr1 bb br" ng-repeat="track in tracks">
         <div style="height: 4.5rem;">
           <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
@@ -64,18 +64,18 @@
         </div>
       </li>
     </ul>
-    <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+    <ul class="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="inline-block list-style-none full-width">
-        <ul class="ml0 pl0 no-whitespace-wrap">
-          <li class="list-style-none inline-block border-box bt bb br" style="width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
+        <ul class="flex ml0 pl0 no-whitespace-wrap">
+          <li class="flex-uniform-size list-style-none border-box bt bb br" style="min-width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
             <span class="inline-block center full-width" ng-class="{enabled: currentStep === n}">{{n}}</span>
           </li>
         </ul>
       </li>
-      <li ng-repeat="track in tracks" class="inline-block list-style-none full-width" style="height: 4.5rem;">
-        <ul class="ml0 pl0 no-whitespace-wrap" style="height: 100%;">
-          <li class="inline-block center border-box bb br" style="width: 150px; height: 100%;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
-            <span class="flex flex-align-center pl1 pr1 border-box" style="width: 100%; height: 100%;">
+      <li ng-repeat="track in tracks" class="list-style-none full-width" style="height: 4.5rem;">
+        <ul class="flex ml0 pl0 no-whitespace-wrap" style="height: 100%;">
+          <li class="flex-uniform-size list-style-none center border-box bb br" style="min-width: 150px; height: 100%;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
+            <span class="flex flex-align-center pl1 pr1 border-box" style="height: 100%;">
               <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer(sequencerIndex);" convert-to-number>
                 <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
               </select>
@@ -85,8 +85,8 @@
       </li>
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-      <li class="list-style-none inline-block border-box bt bb br"><span>&nbsp;</span></li>
-      <li class="flex flex-align-center flex-uniform-size list-style-none pl1 pr1 bb br" ng-repeat="track in tracks">
+      <li class="list-style-none inline-block border-box bt bb bl"><span>&nbsp;</span></li>
+      <li class="flex flex-align-center flex-uniform-size list-style-none pl1 bb bl" ng-repeat="track in tracks">
         <button class="button-small full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>
