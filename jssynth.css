@@ -235,7 +235,13 @@ button {
   border-color: #130f30;
 }
 
-.button-enabled {
+.button-hollow:hover {
+  background: papayawhip;
+  border-color: orange;
+  color: orange;
+}
+
+.button-enabled, .button-enabled:hover {
   background: orange;
   border-color: orange;
   color: #fff;
