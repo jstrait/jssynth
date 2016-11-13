@@ -55,7 +55,7 @@
 <div ng-controller="SequencerController" class="mt3">
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 200px;">
-      <li class="list-style-none border-box bt bb br"><span>&nbsp;</span></li>
+      <li class="list-style-none border-box bb"><span>&nbsp;</span></li>
       <li class="flex-uniform-size list-style-none pr1 bb br" ng-repeat="track in tracks">
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
         <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
@@ -65,7 +65,7 @@
     <ul class="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
       <li class="inline-block list-style-none full-width">
         <ul class="flex ml0 pl0 no-whitespace-wrap">
-          <li class="flex-uniform-size list-style-none border-box bt bb br" style="min-width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
+          <li class="flex-uniform-size list-style-none border-box bb" style="min-width: 150px;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
             <span class="inline-block center full-width" ng-class="{enabled: currentStep === n}">{{n}}</span>
           </li>
         </ul>
@@ -83,7 +83,7 @@
       </li>
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-      <li class="list-style-none inline-block border-box bt bb bl"><span>&nbsp;</span></li>
+      <li class="list-style-none inline-block border-box bb"><span>&nbsp;</span></li>
       <li class="flex flex-align-center flex-uniform-size list-style-none pl1 bb bl" ng-repeat="track in tracks">
         <button class="button-small button-hollow full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
