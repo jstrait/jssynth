@@ -2,12 +2,12 @@
 
 var app = angular.module('js120', []);
 
-app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
+app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SequencerService', function($scope, InstrumentService, SequencerService) {
   var instrumentID = 1;
   
   $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-  $scope.$on('InstrumentCollectionController.selectedInstrumentChanged', function(event, args) {
-    instrumentID = args.instrumentID;
+  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
+    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.instrument = InstrumentService.instrumentByID(instrumentID);
   });
 
@@ -31,8 +31,8 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   };
 
   $scope.patternOptions = buildPatternOptions();
-  $scope.$on('InstrumentCollectionController.selectedInstrumentChanged', function(event, args) {
-    instrumentID = args.instrumentID;
+  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
+    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.patternOptions = buildPatternOptions();
     $scope.changeSelectedPattern($scope.patternOptions[0].id);
   });
@@ -187,7 +187,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   $scope.changeSelectedTrack = function(trackID) {
     $scope.selectedTrack = SequencerService.trackByID(trackID);
     $rootScope.$broadcast('SequencerController.selectedTrackChanged', { trackID: $scope.selectedTrack.id, });
-    $rootScope.$broadcast('InstrumentCollectionController.selectedInstrumentChanged', { instrumentID: $scope.selectedTrack.instrumentID, });
   };
 
   $scope.changeTrackName = function(trackID) {
