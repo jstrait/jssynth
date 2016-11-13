@@ -145,7 +145,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
         return { id: pattern.id, name: pattern.name, }
       });
 
-      options.unshift({ id: -1, name: ''})
+      options.unshift({ id: -1, name: ''});
 
       return options;
     });
