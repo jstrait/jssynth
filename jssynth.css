@@ -15,16 +15,8 @@ body {
   color: #c00;
 }
 
-.tagline {
-  color: #aaa;
-}
-
 .section-header {
   line-height: 1.5rem;
-}
-
-.sub-section-header {
-  color: #aaa;
 }
 
 label.radioLabel {
@@ -237,6 +229,8 @@ button {
   border-color: orange;
   color: #fff;
 }
+
+.lightText { color: #aaa; }
 
 .list-style-none {
   list-style-type: none;
