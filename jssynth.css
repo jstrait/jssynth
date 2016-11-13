@@ -262,6 +262,7 @@ button {
 .pr1 { padding-right: 1.5rem; }
 .pt1 { padding-top: 1.5rem; }
 .pb1 { padding-bottom: 1.5rem; }
+.pt2 { padding-top: 3.0rem; }
 
 .bt  { border-top: 1px solid #ddd; }
 .bb  { border-bottom: 1px solid #ddd; }

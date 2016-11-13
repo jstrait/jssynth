@@ -13,7 +13,7 @@
   <script src="src/analytics.js"></script>
 </head>
 <body class="ml1 mr1 mt1">
-<div id="header" class="flex mb2 full-width" ng-controller="TransportController">
+<div id="header" class="flex mb1 full-width" ng-controller="TransportController">
   <div id="logo-container">
     <h1 class="logo h2 mt0 mb0" style="line-height: 1.0em;">JS-120</h1>
     <span class="tagline">Web Synthesizer</span>
@@ -52,7 +52,8 @@
   </div>
 </div>
 
-<div ng-controller="SequencerController" class="mt3">
+<div ng-controller="SequencerController" class="pt2" style="border-top: 2px solid #ddd;">
+  <h2 class="mt0 mb0">Sequencer</h2>
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" style="width: 200px;">
       <li class="list-style-none border-box bb"><span>&nbsp;</span></li>
@@ -94,8 +95,8 @@
   </div>
 </div>
 
-<div ng-controller="TrackEditorController" class="mt2 bt">
-  <div tab-list title="{{trackName}}" class="mt1 pb1 bb">
+<div ng-controller="TrackEditorController" class="mt2" style="border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
+  <div tab-list title="{{trackName}}" class="mt1 pb1">
     <div tab-pane title="Instrument">
       <div ng-controller="InstrumentController">
         <div instrument-editor instrument="instrument" class="flex overflow-scroll-x" update-instrument="updateInstrument()"></div>
