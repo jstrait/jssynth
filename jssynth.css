@@ -9,13 +9,6 @@ body {
   font-weight: 300;
 }
 
-#container {
-  margin: 1.5rem auto;
-  width: 1024px;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
 .logo {
   line-height: 6.0rem;
   font-weight: bold;
@@ -332,10 +325,7 @@ button {
 }
 
 @media (max-width: 1024px) {
-  #container {
-    border: 0;
-    border-radius: 0;
-  }
+
 }
 
 @media (max-width: 768px) {
@@ -361,12 +351,6 @@ button {
   #download-container {
     order: 2;
     flex: 1 50%;
-  }
-
-  #container {
-    border: 0;
-    border-radius: 0;
-    padding: 0;
   }
 
   .control {
