@@ -114,7 +114,7 @@
 
       <div ng-controller="PatternController">
         <div>
-          <label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="helperToggleContainer"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
+          <label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="h4"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
           <ul class="toggleable" ng-show="show">
             <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
             <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
@@ -124,7 +124,7 @@
           </ul>
           <div class="flex">
             <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-              <li class="flex-uniform-size list-style-none inline-block note-container"><span class="note-column-header">&nbsp;</span></li>
+              <li class="flex-uniform-size list-style-none inline-block note-container"><span class="h4 note-column-header">&nbsp;</span></li>
               <li class="flex-uniform-size list-style-none" ng-repeat="track in pattern.tracks">
                 <button class="button-small button-hollow {{pattern.tracks[$index].muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute($index);">Mute</button>
               </li>
@@ -133,14 +133,14 @@
               <li class="inline-block list-style-none full-width">
                 <ul class="ml0 pl0 center no-whitespace-wrap">
                   <li class="list-style-none inline-block note-container" ng-repeat="n in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]">
-                    <span class="note-column-header">{{n}}</span>
+                    <span class="h4 note-column-header">{{n}}</span>
                   </li>
                 </ul>
               </li>
               <li ng-repeat="track in pattern.tracks" class="inline-block list-style-none full-width">
                 <ul class="ml0 pl0 no-whitespace-wrap">
                   <li class="list-style-none inline-block note-container" ng-repeat="note in track.notes">
-                    <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" ng-class="{note: true, firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
+                    <input note-input id="pattern-{{pattern.id}}-track-{{$parent.$index}}-note-{{$index}}" class="h4 note" ng-class="{firstTrack: $parent.$first, lastTrack: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
                    </li>
                 </ul>
               </li>

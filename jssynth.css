@@ -150,11 +150,6 @@ input[type='range']::-moz-range-track {
   outline: none;
 }
 
-.helperToggleContainer {
-  font-size: 1.0rem;
-  font-weight: normal;
-}
-
 .helperToggle {
   color: #0af;
   cursor: pointer;
@@ -169,10 +164,7 @@ input[type='range']::-moz-range-track {
 }
 
 .note-column-header {
-  font-size: 1.0rem;
   color: #ccc;
-  display: inline-block;
-  width: 100%;
 }
 
 input.note {
@@ -205,7 +197,6 @@ button {
 }
 
 .button-small {
-  font-size: 1.0rem;
   padding: 0.25rem 0.5rem;
   border-width: 2px;
 }
@@ -239,6 +230,7 @@ button {
 .h1 { font-size: 6.0rem; }
 .h2 { font-size: 3.0rem; }
 .h3 { font-size: 1.5rem; }
+.h4 { font-size: 1.0rem; }
 
 .mt0 { margin-top: 0; }
 .mb0 { margin-bottom: 0; }
