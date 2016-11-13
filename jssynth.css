@@ -223,7 +223,7 @@ button {
 
 .button-hollow {
   background: #fff;
-  border-color: #130f30;
+  border-color: #ccc;
 }
 
 .button-hollow:hover {
