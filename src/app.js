@@ -48,8 +48,32 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   };
 
   $scope.removePattern = function(patternID) {
+    var i;
+    var newSelectedPatternID;
+    
+    if (patternID === $scope.selectedPatternID) {
+      i = 0;
+      while (i < $scope.patternOptions.length && $scope.patternOptions[i].id !== patternID) {
+        i++;
+      }
+
+      if (i === ($scope.patternOptions.length - 1)) {
+        newSelectedPatternID = $scope.patternOptions[i - 1].id;
+      }
+      else {
+        newSelectedPatternID = $scope.patternOptions[i + 1].id;
+      }
+    }
+    else {
+      newSelectedPatternID = $scope.selectedPatternID;
+    }
+
     SequencerService.unsetPattern(patternID);
     PatternService.removePattern(patternID);
+
+    if (newSelectedPatternID !== patternID) {
+      $scope.changeSelectedPattern(newSelectedPatternID);
+    }
   };
 
   $scope.changeSelectedPattern = function(patternID) {
