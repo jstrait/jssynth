@@ -343,6 +343,26 @@ button {
     margin: 1.5rem;
   }
 
+  #header {
+    flex-flow: row wrap;
+  }
+
+  #logo-container {
+    order: 1
+    flex: 1 50%;
+  }
+
+  #transport {
+    order: 3;
+    flex: 1 100%;
+    padding-top: 1.5rem;
+  }
+
+  #download-container {
+    order: 2;
+    flex: 1 50%;
+  }
+
   #container {
     border: 0;
     border-radius: 0;
@@ -372,11 +392,6 @@ button {
 @media (max-width: 480px) {
   body {
     margin: 1.0rem;
-  }
-
-  .logo {
-    font-size: 4.5rem;
-    line-height: 4.5rem;
   }
 
   .control {
