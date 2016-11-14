@@ -305,6 +305,24 @@ button {
   border-bottom: 4px solid orange;
 }
 
+.expanded {
+  width: 200px;
+}
+
+.contracted {
+  width: 40px;
+  overflow: hidden;
+}
+
+.contracted > li {
+  padding-right: 0;
+}
+
+.contracted > li > button {
+  display: none;
+  border: 20px solid black;
+}
+
 @media (hover) {
   .button-hollow:hover {
     background: papayawhip;
