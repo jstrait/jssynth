@@ -96,10 +96,10 @@
 </div>
 
 <div ng-controller="TrackEditorController" class="mt2" style="border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
-  <div tab-list title="{{trackName}}" class="mt1 pb1">
+  <div tab-list title="{{trackName}}" class="mt1">
     <div tab-pane title="Instrument">
       <div ng-controller="InstrumentController">
-        <div instrument-editor instrument="instrument" class="flex overflow-scroll-x" update-instrument="updateInstrument()"></div>
+        <div instrument-editor instrument="instrument" class="flex overflow-scroll-x pb1" update-instrument="updateInstrument()"></div>
       </div>
     </div>
     <div tab-pane title="Patterns" class="mt1">
