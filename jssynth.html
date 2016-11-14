@@ -55,8 +55,8 @@
 <div ng-controller="SequencerController" class="pt2" style="border-top: 2px solid #ddd;">
   <h2 class="mt0 mb1">Sequencer</h2>
   <div class="flex">
-    <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
-      <li class="list-style-none border-box bb"><span><button class="button-small button-hollow" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button></span></li>
+    <ul class="flex flex-column mt0 ml0 pl0 border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
+      <li class="list-style-none border-box bb"><span><button class="button-small button-hollow pt0 pb0" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button></span></li>
       <li class="flex-uniform-size list-style-none pr1 bb br" ng-repeat="track in tracks">
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
         <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
@@ -83,9 +83,9 @@
         </ul>
       </li>
     </ul>
-    <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{'display-none': (expanded === false)}">
+    <ul class="flex flex-column mt0 ml0 pl0 border-box" ng-class="{'display-none': (expanded === false)}">
       <li class="list-style-none inline-block border-box bb"><span>&nbsp;</span></li>
-      <li class="flex flex-align-center flex-uniform-size list-style-none bb bl" style="padding-left: 4px;" ng-repeat="track in tracks">
+      <li class="flex flex-align-center flex-uniform-size list-style-none bb bl" style="padding-left: 1.0rem;" ng-repeat="track in tracks">
         <button class="button-small button-hollow full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>

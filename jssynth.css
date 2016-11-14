@@ -237,6 +237,8 @@ button {
 .mb2 { margin-bottom: 3.0rem; }
 .mt3 { margin-top: 4.5rem; }
 
+.pt0 { padding-top: 0.0rem; }
+.pb0 { padding-bottom: 0.0rem; }
 .pl0 { padding-left: 0.0rem; }
 .pl1 { padding-left: 1.5rem; }
 .pr1 { padding-right: 1.5rem; }
