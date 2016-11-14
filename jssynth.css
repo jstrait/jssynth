@@ -209,12 +209,6 @@ button {
   border-color: #ccc;
 }
 
-.button-hollow:hover {
-  background: papayawhip;
-  border-color: orange;
-  color: orange;
-}
-
 .button-enabled, .button-enabled:hover {
   background: orange;
   border-color: orange;
@@ -309,6 +303,14 @@ button {
 
 .paneTabSelected {
   border-bottom: 4px solid orange;
+}
+
+@media (hover) {
+  .button-hollow:hover {
+    background: papayawhip;
+    border-color: orange;
+    color: orange;
+  }
 }
 
 @media (max-width: 1024px) {
