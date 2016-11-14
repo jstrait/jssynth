@@ -238,6 +238,8 @@ app.controller('TrackEditorController', ['$scope', 'SequencerService', function(
 
 
 app.controller('TransportController', ['$scope', 'SerializationService', 'TransportService', function($scope, SerializationService, TransportService) {
+  var downloadEnabled = typeof document.getElementById("hidden-download-link").download !== "undefined";
+
   $scope.playing = false;
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
@@ -273,18 +275,18 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   };
 
   $scope.export = function() {
-    var exportCompleteCallback = function(blob) {
+    if (!downloadEnabled) {
+      alert("Downloading to Wave file is not supported in your browser.");
+      return;
+    }
+
+    var exportCompleteCallback = function(blob) {      
       var url  = window.URL.createObjectURL(blob);
 
       var hiddenDownloadLink = document.getElementById("hidden-download-link");
-      if (typeof hiddenDownloadLink.download != "undefined") {
-        hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
-        hiddenDownloadLink.href = url;
-        hiddenDownloadLink.click();
-      }
-      else {
-        alert("Downloading to Wave file is not supported in your browser.");
-      }
+      hiddenDownloadLink.download = $scope.downloadFileName + ".wav";
+      hiddenDownloadLink.href = url;
+      hiddenDownloadLink.click();
 
       window.URL.revokeObjectURL(blob);
     };
