@@ -15,6 +15,11 @@ body {
   color: #c00;
 }
 
+#transport {
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
 .section-header {
   line-height: 1.5rem;
 }
@@ -351,6 +356,8 @@ button {
     order: 3;
     flex: 1 100%;
     padding-top: 1.5rem;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
   }
 
   #download-container {
@@ -381,6 +388,11 @@ button {
 @media (max-width: 480px) {
   body {
     margin: 1.0rem;
+  }
+
+  #transport .control {
+    -webkit-flex-direction: row;
+    flex-direction: row;
   }
 
   .control {
