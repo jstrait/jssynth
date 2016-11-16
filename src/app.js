@@ -191,7 +191,35 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   };
 
   $scope.removeTrack = function(trackID) {
+    var i;
+    var newSelectedTrackID;
+    
+    if (trackID === $scope.selectedTrack.id) {
+      i = 0;
+      while (i < $scope.tracks.length && $scope.tracks[i].id !== trackID) {
+        i++;
+      }
+
+      if (i === ($scope.tracks.length - 1)) {
+        newSelectedTrackID = $scope.tracks[i - 1].id;
+      }
+      else {
+        newSelectedTrackID = $scope.tracks[i + 1].id;
+      }
+    }
+    else {
+      newSelectedTrackID = $scope.selectedTrack.id;
+    }
+
+    SequencerService.unsetPattern(trackID);
+    PatternService.removePattern(trackID);
+
+    if (newSelectedTrackID !== trackID) {
+      $scope.changeSelectedTrack(newSelectedTrackID);
+    }
+
     SequencerService.removeTrack(trackID);
+    $scope.patternOptions = buildPatternOptions();
   };
 
   $scope.toggleTrackMute = function(trackID) {

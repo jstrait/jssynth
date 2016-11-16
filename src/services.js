@@ -85,6 +85,23 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
     return newInstrument;
   };
 
+  instrumentService.removeInstrument = function(instrumentID) {
+    var i;
+
+    var instrumentIndex = null;
+    for (i = 0; i < instruments.length; i++) {
+      if (instruments[i].id === instrumentID) {
+        instrumentIndex = i;
+      }
+    }
+
+    if (instrumentIndex !== null) {
+      instruments.splice(instrumentIndex, 1);
+    }
+
+    $rootScope.$broadcast('InstrumentService.update');
+  };
+
   instrumentService.updateInstrument = function() {
     $rootScope.$broadcast('InstrumentService.update');
   };
@@ -452,7 +469,15 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
   };
 
   sequencerService.removeTrack = function(trackID) {
+    var track = sequencerService.trackByID(trackID);
     var trackIndex = trackIndexByID(trackID);
+
+    PatternService.patternsByInstrumentID(track.instrumentID).forEach(function(pattern) {
+      PatternService.removePattern(pattern.id);
+    });
+
+    InstrumentService.removeInstrument(track.instrumentID);
+
     tracks.splice(trackIndex, 1);
 
     if (tracks.length === 0) {
