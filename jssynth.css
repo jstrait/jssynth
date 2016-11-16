@@ -81,7 +81,7 @@ input[type='text'].ng-invalid.ng-dirty {
 input[type='text'] {
   font-family: "Helvetica Neue", arial, sans-serif;
   font-size: 1.20rem;
-  font-weight: normal;
+  font-weight: 300;
 }
 
 input[type='radio'] {
@@ -183,6 +183,7 @@ input.note {
   margin: 0 0 1px 0;
   font-size: 1.0rem;
   line-height: 2.0rem;
+  font-weight: normal;
 }
 
 input.note:focus {
