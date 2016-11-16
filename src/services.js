@@ -428,7 +428,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     var newInstrument = InstrumentService.addInstrument();
     var newPattern = PatternService.addPattern(newInstrument.id);
 
-    tracks.push({
+    var newTrack = {
       id: idGenerator.next(),
       name: 'New Track',
       instrumentID: newInstrument.id,
@@ -443,9 +443,12 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
         { patternID: -1, },
         { patternID: -1, },
       ],
-    });
+    };
+    tracks.push(newTrack);
 
     $rootScope.$broadcast('SequencerService.update');
+
+    return newTrack;
   };
 
   sequencerService.removeTrack = function(trackID) {
