@@ -193,7 +193,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   $scope.removeTrack = function(trackID) {
     var i;
     var newSelectedTrackID;
-    
+
     if (trackID === $scope.selectedTrack.id) {
       i = 0;
       while (i < $scope.tracks.length && $scope.tracks[i].id !== trackID) {
@@ -210,9 +210,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     else {
       newSelectedTrackID = $scope.selectedTrack.id;
     }
-
-    SequencerService.unsetPattern(trackID);
-    PatternService.removePattern(trackID);
 
     if (newSelectedTrackID !== trackID) {
       $scope.changeSelectedTrack(newSelectedTrackID);
