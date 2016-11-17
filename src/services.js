@@ -219,10 +219,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
   
   var patternService = {};
 
-  patternService.changeInstrument = function(patternID) {
-    $rootScope.$broadcast('PatternService.update');
-  };
-
   patternService.addPattern = function(instrumentID) {
     var id = idGenerator.next();
 

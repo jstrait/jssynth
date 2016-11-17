@@ -109,10 +109,6 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     PatternService.updateName($scope.pattern.id);
   };
 
-  $scope.changeInstrument = function() {
-    PatternService.changeInstrument($scope.pattern.id);
-  };
-
   $scope.addTrack = function() {
     PatternService.addTrack($scope.pattern.id);
   };
