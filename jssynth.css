@@ -223,9 +223,7 @@ button {
 
 .lightText { color: #aaa; }
 
-.list-style-none {
-  list-style-type: none;
-}
+.list-style-none { list-style-type: none; }
 
 .h1 { font-size: 6.0rem; }
 .h2 { font-size: 3.0rem; }
