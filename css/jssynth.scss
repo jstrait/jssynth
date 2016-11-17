@@ -346,6 +346,11 @@ button {
   display: none;
 }
 
+.instrument-panel {
+  min-width: 600px;
+}
+
+
 @media (hover) {
   .button-hollow:hover {
     background: $light-orange;
@@ -398,6 +403,29 @@ button {
   .radioContainer {
     -webkit-flex: 0 0 50%;
     flex: 0 0 50%;
+  }
+
+  .instrument-panel-container {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .instrument-panel {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .instrument-panel:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
   }
 }
 
