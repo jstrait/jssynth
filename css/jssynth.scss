@@ -1,10 +1,19 @@
+$font-family: "Helvetica Neue", arial, sans-serif;
+$orange: orange;
+$light-orange: papayawhip;
+$red: #c00;
+$red-highlight: #f24;
+$black: #130f30;
+$white: #fff;
+
+
 body {
   margin: 1.5rem;
   padding: 0;
-  font-family: "Helvetica Neue", arial, sans-serif;
+  font-family: $font-family;
   font-size: 20px;
-  background: #fff;
-  color: #130f30;
+  background: $white;
+  color: $black;
   line-height: 1.5em;
   font-weight: 300;
 }
@@ -12,7 +21,7 @@ body {
 .logo {
   line-height: 6.0rem;
   font-weight: bold;
-  color: #c00;
+  color: $red;
 }
 
 #transport {
@@ -34,7 +43,7 @@ label.radioLabel {
 
 .underlinedInput {
   outline: none;
-  border: solid black;
+  border: solid $black;
   border-width: 0 0 1px 0;
   border-radius: 0;  /* For iOS */
   width: 20%;
@@ -79,9 +88,10 @@ input[type='text'].ng-invalid.ng-dirty {
 }
 
 input[type='text'] {
-  font-family: "Helvetica Neue", arial, sans-serif;
+  font-family: $font-family;
   font-size: 1.20rem;
   font-weight: 300;
+  color: $black;
 }
 
 input[type='radio'] {
@@ -91,7 +101,7 @@ input[type='radio'] {
   width: 1.0rem;
   height: 1.0rem;
   outline: none;
-  border: 2px solid #130f30;
+  border: 2px solid $black;
   box-sizing: border-box;
   vertical-align: text-top;
 }
@@ -99,7 +109,7 @@ input[type='radio'] {
 input[type='radio']:unchecked { }
 
 input[type='radio']:checked {
-  background-color: #130f30;
+  background-color: $black;
 }
 
 input[type='range'] {
@@ -117,15 +127,15 @@ input[type='range']::-webkit-slider-thumb {
   height: 1.5em;
   width: 1.5em;
   border-radius: 0.75rem;
-  background: #130f30;
+  background: $black;
 }
 
 input[type='range']::-webkit-slider-thumb:hover {
-  background: #c00;
+  background: $red;
 }
 
 input[type='range']::-webkit-slider-thumb:active {
-  background: #f24;
+  background: $red-highlight;
 }
 
 input[type=range]::-moz-focus-outer {
@@ -136,16 +146,16 @@ input[type='range']::-moz-range-thumb {
   height: 1.5em;
   width: 1.5em;
   border-radius: 0.75rem;
-  background: #130f30;
+  background: $black;
   border: 0;
 }
 
 input[type='range']::-moz-range-thumb:hover {
-  background: #c00;
+  background: $red;
 }
 
 input[type='range']::-moz-range-thumb:active {
-  background: #f24;
+  background: $red-highlight;
 }
 
 input[type='range']::-moz-range-track {
@@ -178,7 +188,7 @@ input.note {
   box-sizing: border-box;
   outline: none;
   border: 0;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid $black;
   border-radius: 0;  /* For iOS */
   margin: 0 0 1px 0;
   font-size: 1.0rem;
@@ -196,9 +206,9 @@ button {
   outline: none;
   font-size: 1.0rem;
   padding: 0.75rem;
-  font-family: "Helvetica Neue", arial, sans-serif;
+  font-family: $font-family;
   border-radius: 10px;
-  color: #130f30;
+  color: $black;
   cursor: pointer;
 }
 
@@ -211,14 +221,14 @@ button {
 }
 
 .button-hollow {
-  background: #fff;
+  background: $white;
   border-color: #ccc;
 }
 
 .button-enabled, .button-enabled:hover {
-  background: orange;
-  border-color: orange;
-  color: #fff;
+  background: $orange;
+  border-color: $orange;
+  color: $white;
 }
 
 .lightText { color: #aaa; }
@@ -284,13 +294,13 @@ button {
 .pointer { cursor: pointer; }
 
 .enabled {
-  background: orange;
-  color: #fff;
+  background: $orange;
+  color: $white;
 }
 
 .enabledlight {
-  background: papayawhip;
-  color: #fff;
+  background: $light-orange;
+  color: $white;
 }
 
 .selectedOption {
@@ -299,7 +309,7 @@ button {
 }
 
 .paneTab {
-  color: #000;
+  color: $black;
   text-decoration: none;
 }
 
@@ -308,7 +318,7 @@ button {
 }
 
 .paneTabSelected {
-  border-bottom: 4px solid orange;
+  border-bottom: 4px solid $orange;
 }
 
 .expanded {
@@ -326,14 +336,13 @@ button {
 
 .contracted > li > button {
   display: none;
-  border: 20px solid black;
 }
 
 @media (hover) {
   .button-hollow:hover {
-    background: papayawhip;
-    border-color: orange;
-    color: orange;
+    background: $light-orange;
+    border-color: $orange;
+    color: $orange;
   }
 }
 
