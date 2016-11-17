@@ -11,7 +11,7 @@
   <script src="jssynth.js"></script>
 </head>
 <body>
-<div id="header" class="flex flex-align-center mb1 full-width" ng-controller="TransportController">
+<div id="header" class="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width" ng-controller="TransportController">
   <div id="logo-container">
     <h1 class="logo h2 mt0 mb0" style="line-height: 1.0em;">JS-120</h1>
     <span class="lightText">Web Synthesizer</span>
@@ -50,7 +50,7 @@
   </div>
 </div>
 
-<div ng-controller="SequencerController" class="pt2" style="border-top: 2px solid #ddd;">
+<div ng-controller="SequencerController" class="pl1 pr1 pt2 pb1 border-box" style="border-top: 2px solid #ddd;">
   <h2 class="mt0 mb1">Sequencer</h2>
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
@@ -94,7 +94,7 @@
   </div>
 </div>
 
-<div ng-controller="TrackEditorController" class="mt2" style="border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
+<div ng-controller="TrackEditorController" class="mt2 pl1 pr1 pt1 pb1 border-box" style="border-top: 2px solid #ddd; border-bottom: 2px solid #ddd;">
   <div tab-list title="{{trackName}}" class="mt1">
     <div tab-pane title="Instrument">
       <div ng-controller="InstrumentController">
@@ -161,6 +161,6 @@
   </div>
 </div>
 
-<p class="center mt2 mb2">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
+<p class="center mt2 mb2 pl1 pr1 border-box">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
 </body>
 </html>
