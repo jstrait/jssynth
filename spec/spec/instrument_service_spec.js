@@ -44,6 +44,7 @@ describe("InstrumentService", function() {
   beforeEach(angular.mock.inject(function(InstrumentService, $rootScope) {
     instrumentService = InstrumentService;
     rootScope = $rootScope.$new();
+    spyOn($rootScope, '$broadcast');
   }));
 
   it("should be initialized with the correct set of Instruments", function() {
@@ -74,6 +75,7 @@ describe("InstrumentService", function() {
     );
 
     expect(instrumentService.instruments()).toEqual(expectedResult);
+    expect(rootScope.$broadcast).toHaveBeenCalledWith('InstrumentService.update');
   });
 
   describe("removeInstrument", function() {
@@ -81,12 +83,21 @@ describe("InstrumentService", function() {
       instrumentService.removeInstrument(1);
 
       expect(instrumentService.instruments()).toEqual([ DEFAULT_INSTRUMENTS[1] ]);
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('InstrumentService.update');
     });
 
     it("should do nothing when removing a non-existent Instrument", function() {
       instrumentService.removeInstrument(1232432);
 
       expect(instrumentService.instruments()).toEqual(DEFAULT_INSTRUMENTS);
+    });
+  });
+
+  describe("updateInstrument", function() {
+    it("should broadcast a message that the instrument was updated", function() {
+      instrumentService.updateInstrument();
+
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('InstrumentService.update');
     });
   });
 
