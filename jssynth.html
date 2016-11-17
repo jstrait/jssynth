@@ -103,13 +103,13 @@
       </div>
     </div>
     <div tab-pane title="Patterns" class="mt1">
-      <div ng-controller="PatternCollectionController" class="flex mb2">
+      <div ng-controller="PatternCollectionController" class="mb2">
         <ul class="flex flex-uniform-size pl0 mt0 mb0 overflow-scroll-x">
           <li class="list-style-none pointer border-box mr1" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);"  ng-class="{paneTabSelected: (patternOption.id === selectedPatternID), paneTabUnselected: (patternOption.id !== selectedPatternID)}">
             <span>{{patternOption.name}}</span><button class="button-small button-hollow round ml1" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">X</button>
           </li>
         </ul>
-        <button class="block button-small button-hollow " ng-click="addPattern();">Add Pattern</button>
+        <button class="block button-full button-hollow mt1" ng-click="addPattern();">Add Pattern</button>
       </div>
 
       <div ng-controller="PatternController">
@@ -153,7 +153,7 @@
             </ul>
           </div>
           <div class="mb1 overflow-auto">
-            <button class="block button-full button-hollow  right" ng-click="addTrack();">Add Row</button>
+            <button class="block button-full button-hollow" ng-click="addTrack();">Add Row</button>
           </div>
         </div>
       </div>
