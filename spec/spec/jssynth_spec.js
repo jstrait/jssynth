@@ -106,6 +106,73 @@ describe("InstrumentService", function() {
     ]);
   });
 
+  describe("removeInstrument", function() {
+    it("should remove an existing instrument correctly", function() {
+      instrumentService.removeInstrument(1);
+
+      expect(instrumentService.instruments()).toEqual([
+        {
+          id:                 2,
+          name:               'Instrument 2',
+          waveform:           'sawtooth',
+          lfoWaveform:        'sine',
+          lfoFrequency:       5,
+          lfoAmplitude:       0,
+          filterCutoff:       1000,
+          filterResonance:    0,
+          filterLFOWaveform:  'sine',
+          filterLFOFrequency: 5,
+          filterLFOAmplitude: 0,
+          envelopeAttack:     0.0,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
+        }
+      ]);
+    });
+
+    it("should do nothing when removing a non-existent Instrument", function() {
+      instrumentService.removeInstrument(1232432);
+
+      expect(instrumentService.instruments()).toEqual([
+        {
+          id:                 1,
+          name:               'Instrument 1',
+          waveform:           'square',
+          lfoWaveform:        'sine',
+          lfoFrequency:       5,
+          lfoAmplitude:       10,
+          filterCutoff:       1000,
+          filterResonance:    0,
+          filterLFOWaveform:  'sine',
+          filterLFOFrequency: 5,
+          filterLFOAmplitude: 0,
+          envelopeAttack:     0.0,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
+        },
+        {
+          id:                 2,
+          name:               'Instrument 2',
+          waveform:           'sawtooth',
+          lfoWaveform:        'sine',
+          lfoFrequency:       5,
+          lfoAmplitude:       0,
+          filterCutoff:       1000,
+          filterResonance:    0,
+          filterLFOWaveform:  'sine',
+          filterLFOFrequency: 5,
+          filterLFOAmplitude: 0,
+          envelopeAttack:     0.0,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
+        },
+      ]);
+    });
+  });
+
   describe("instrumentById", function() {
     it("should find the correct Instrument by ID", function() {
       var instrument = instrumentService.instrumentByID(2);
