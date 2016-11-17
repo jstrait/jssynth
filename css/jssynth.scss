@@ -325,6 +325,10 @@ button {
   width: 200px;
 }
 
+.expanded > li > .short-name {
+  display: none;
+}
+
 .contracted {
   width: 40px;
   overflow: hidden;
@@ -335,6 +339,10 @@ button {
 }
 
 .contracted > li > button {
+  display: none;
+}
+
+.contracted > li > input {
   display: none;
 }
 
