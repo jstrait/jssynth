@@ -135,7 +135,7 @@ describe("InstrumentService", function() {
       expect(instrument).toBe(null);
     });
   });
-})
+});
 
 describe("JSSynth.Pattern", function() {
   it("should construct an empty Pattern properly", function() {
