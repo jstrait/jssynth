@@ -1,23 +1,44 @@
 <div class="pr1 br instrument-panel">
 <h2 class="h3 section-header">Sound Generator</h2>
 <span class="control">
-  <label class="control-label">Waveform:</label>
+  <label class="control-label">Waveform 1:</label>
   <span class="flex waveformOptionsContainer">
     <span class="radioContainer">
-      <input id="waveformSine" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sine" type="radio">
+      <input id="waveformSine" ng-model="instrument.waveform1" ng-change="updateInstrument();" value="sine" type="radio">
       <label for="waveformSine" class="radioLabel">Sine</label>
     </span>
     <span class="radioContainer">
-      <input id="waveformSquare" ng-model="instrument.waveform" ng-change="updateInstrument();" value="square" type="radio">
+      <input id="waveformSquare" ng-model="instrument.waveform1" ng-change="updateInstrument();" value="square" type="radio">
       <label for="waveformSquare" class="radioLabel">Square</label>
     </span>
     <span class="radioContainer">
-      <input id="waveformSaw" ng-model="instrument.waveform" ng-change="updateInstrument();" value="sawtooth" type="radio">
+      <input id="waveformSaw" ng-model="instrument.waveform1" ng-change="updateInstrument();" value="sawtooth" type="radio">
       <label for="waveformSaw" class="radioLabel">Saw</label>
     </span>
     <span class="radioContainer">
-      <input id="waveformTriangle" ng-model="instrument.waveform" ng-change="updateInstrument();" value="triangle" type="radio">
+      <input id="waveformTriangle" ng-model="instrument.waveform1" ng-change="updateInstrument();" value="triangle" type="radio">
       <label for="waveformTriangle" class="radioLabel">Triangle</label>
+    </span>
+  </span>
+</span>
+<span class="control">
+  <label class="control-label">Waveform 2:</label>
+  <span class="flex waveformOptionsContainer">
+    <span class="radioContainer">
+      <input id="waveformSine2" ng-model="instrument.waveform2" ng-change="updateInstrument();" value="sine" type="radio">
+      <label for="waveformSine2" class="radioLabel">Sine</label>
+    </span>
+    <span class="radioContainer">
+      <input id="waveformSquare2" ng-model="instrument.waveform2" ng-change="updateInstrument();" value="square" type="radio">
+      <label for="waveformSquare2" class="radioLabel">Square</label>
+    </span>
+    <span class="radioContainer">
+      <input id="waveformSaw2" ng-model="instrument.waveform2" ng-change="updateInstrument();" value="sawtooth" type="radio">
+      <label for="waveformSaw2" class="radioLabel">Saw</label>
+    </span>
+    <span class="radioContainer">
+      <input id="waveformTriangle2" ng-model="instrument.waveform2" ng-change="updateInstrument();" value="triangle" type="radio">
+      <label for="waveformTriangle2" class="radioLabel">Triangle</label>
     </span>
   </span>
 </span>

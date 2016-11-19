@@ -24,7 +24,8 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
   var instruments = [{
                         id:                 idGenerator.next(),
                         name:               'Instrument 1',
-                        waveform:           'square',
+                        waveform1:          'square',
+                        waveform2:          'sawtooth',
                         lfoWaveform:        'sine',
                         lfoFrequency:       5,
                         lfoAmplitude:       10,
@@ -41,7 +42,8 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
                      {
                         id:                 idGenerator.next(),
                         name:               'Instrument 2',
-                        waveform:           'sawtooth',
+                        waveform1:          'sawtooth',
+                        waveform2:          'sine',
                         lfoWaveform:        'sine',
                         lfoFrequency:       5,
                         lfoAmplitude:       0,
@@ -63,7 +65,8 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
     var newInstrument = {
       id:                 id,
       name:               'Instrument ' + id,
-      waveform:           'sawtooth',
+      waveform1:          'sawtooth',
+      waveform2:          'square',
       lfoWaveform:        'sine',
       lfoFrequency:       5,
       lfoAmplitude:       0,
@@ -511,7 +514,8 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       var filterCutoff = parseInt(instrument.filterCutoff, 10);
 
       var serializedConfig = {
-        waveform:  instrument.waveform,
+        waveform1: instrument.waveform1,
+        waveform2: instrument.waveform2,
         lfo: {
           waveform:  instrument.lfoWaveform,
           frequency: parseFloat(instrument.lfoFrequency),

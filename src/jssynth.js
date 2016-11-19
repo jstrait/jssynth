@@ -31,13 +31,17 @@ JSSynth.Instrument = function(config) {
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     if (note.frequency() > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(audioContext, config.waveform, note.frequency());
+      var oscillator = buildOscillator(audioContext, config.waveform1, note.frequency());
+
+      // Secondary sound generator
+      var oscillator2 = buildOscillator(audioContext, config.waveform2, note.frequency());
 
       // LFO for base sound
       var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
       var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
       pitchLfoGain.connect(oscillator.frequency);
+      pitchLfoGain.connect(oscillator2.frequency);
 
       // Filter
       var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
@@ -52,10 +56,12 @@ JSSynth.Instrument = function(config) {
       var masterGain = audioContext.createGain();
 
       oscillator.connect(filter);
+      oscillator2.connect(filter);
       filter.connect(masterGain);
       masterGain.connect(audioDestination);
 
       oscillator.start(gateOnTime);
+      oscillator2.start(gateOnTime);
       pitchLfoOscillator.start(gateOnTime);
       filterLfoOscillator.start(gateOnTime);
 
@@ -75,6 +81,7 @@ JSSynth.Instrument = function(config) {
       masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
 
       oscillator.stop(releaseEndTime);
+      oscillator2.stop(releaseEndTime);
       pitchLfoOscillator.stop(releaseEndTime);
       filterLfoOscillator.stop(releaseEndTime);
     }
