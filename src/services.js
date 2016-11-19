@@ -75,7 +75,7 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
       waveform1Octave:    0,
       waveform2:          'square',
       waveform2Detune:    0,
-      waveform1Octave:    0,
+      waveform2Octave:    0,
       lfoWaveform:        'sine',
       lfoFrequency:       5,
       lfoAmplitude:       0,
