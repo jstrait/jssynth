@@ -22,6 +22,13 @@
   </span>
 </span>
 <span class="control">
+  <label class="control-label">Octave:</label>
+  <span class="annotated-input">
+    <input ng-model="instrument.waveform1Octave" ng-change="updateInstrument();" type="range" min="-2" max="2" step="1" />
+    <span>{{instrument.waveform1Octave}}</span>
+  </span>
+</span>
+<span class="control">
   <label class="control-label">Waveform 2:</label>
   <span class="flex waveformOptionsContainer">
     <span class="radioContainer">
@@ -40,6 +47,13 @@
       <input id="waveformTriangle2" ng-model="instrument.waveform2" ng-change="updateInstrument();" value="triangle" type="radio">
       <label for="waveformTriangle2" class="radioLabel">Triangle</label>
     </span>
+  </span>
+</span>
+<span class="control">
+  <label class="control-label">Octave:</label>
+  <span class="annotated-input">
+    <input ng-model="instrument.waveform2Octave" ng-change="updateInstrument();" type="range" min="-2" max="2" step="1" />
+    <span>{{instrument.waveform2Octave}}</span>
   </span>
 </span>
 <span class="control">

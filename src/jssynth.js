@@ -31,10 +31,10 @@ JSSynth.Instrument = function(config) {
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     if (note.frequency() > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(audioContext, config.waveform1, note.frequency());
+      var oscillator = buildOscillator(audioContext, config.waveform1, note.frequency() * Math.pow(2, config.waveform1Octave));
 
       // Secondary sound generator
-      var oscillator2 = buildOscillator(audioContext, config.waveform2, note.frequency());
+      var oscillator2 = buildOscillator(audioContext, config.waveform2, note.frequency() * Math.pow(2, config.waveform2Octave));
       oscillator2.detune.value = config.waveform2Detune;
 
       // LFO for base sound
