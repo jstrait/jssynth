@@ -42,6 +42,14 @@
     </span>
   </span>
 </span>
+<span class="control">
+  <label class="control-label">Detune:</label>
+  <span class="annotated-input">
+    <input ng-model="instrument.waveform2Detune" ng-change="updateInstrument();" type="range" min="-100" max="100" step="1" />
+    <span>{{instrument.waveform2Detune}}c</span>
+  </span>
+</span>
+
 <span class="block mt1 lightText">Pitch Wobble:</span>
 <span class="control">
   <label class="control-label indented">Amount:</label>

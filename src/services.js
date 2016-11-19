@@ -26,6 +26,7 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
                         name:               'Instrument 1',
                         waveform1:          'square',
                         waveform2:          'sawtooth',
+                        waveform2Detune:    0,
                         lfoWaveform:        'sine',
                         lfoFrequency:       5,
                         lfoAmplitude:       10,
@@ -44,6 +45,7 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
                         name:               'Instrument 2',
                         waveform1:          'sawtooth',
                         waveform2:          'sine',
+                        waveform2Detune:    0,
                         lfoWaveform:        'sine',
                         lfoFrequency:       5,
                         lfoAmplitude:       0,
@@ -67,6 +69,7 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
       name:               'Instrument ' + id,
       waveform1:          'sawtooth',
       waveform2:          'square',
+      waveform2Detune:    0,
       lfoWaveform:        'sine',
       lfoFrequency:       5,
       lfoAmplitude:       0,
@@ -516,6 +519,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       var serializedConfig = {
         waveform1: instrument.waveform1,
         waveform2: instrument.waveform2,
+        waveform2Detune: instrument.waveform2Detune,
         lfo: {
           waveform:  instrument.lfoWaveform,
           frequency: parseFloat(instrument.lfoFrequency),

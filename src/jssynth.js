@@ -35,6 +35,7 @@ JSSynth.Instrument = function(config) {
 
       // Secondary sound generator
       var oscillator2 = buildOscillator(audioContext, config.waveform2, note.frequency());
+      oscillator2.detune.value = config.waveform2Detune;
 
       // LFO for base sound
       var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
