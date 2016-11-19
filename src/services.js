@@ -526,7 +526,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
         waveform1: instrument.waveform1,
         waveform1Octave: parseInt(instrument.waveform1Octave),
         waveform2: instrument.waveform2,
-        waveform2Detune: instrument.waveform2Detune,
+        waveform2Detune: parseInt(instrument.waveform2Detune),
         waveform2Octave: parseInt(instrument.waveform2Octave),
         lfo: {
           waveform:  instrument.lfoWaveform,
