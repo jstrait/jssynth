@@ -267,6 +267,7 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.tempo = 100;
   $scope.loop = true;
   $scope.downloadFileName = "js-120";
+  $scope.downloadBoxVisible = false;
 
   TransportService.setPatterns(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
@@ -294,6 +295,10 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
 
   $scope.updateLoop = function() {
     TransportService.loop = $scope.loop;
+  };
+
+  $scope.toggleDownloadBox = function() {
+    $scope.downloadBoxVisible = !$scope.downloadBoxVisible;
   };
 
   $scope.export = function() {
