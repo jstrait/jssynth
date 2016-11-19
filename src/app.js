@@ -109,20 +109,20 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
     PatternService.updateName($scope.pattern.id);
   };
 
-  $scope.addTrack = function() {
-    PatternService.addTrack($scope.pattern.id);
+  $scope.addRow = function() {
+    PatternService.addRow($scope.pattern.id);
   };
 
-  $scope.removeTrack = function(trackIndex) {
-    PatternService.removeTrack($scope.pattern.id, trackIndex);
+  $scope.removeRow = function(rowIndex) {
+    PatternService.removeRow($scope.pattern.id, rowIndex);
   };
 
-  $scope.toggleTrackMute = function(trackIndex) {
-    PatternService.toggleTrackMute($scope.pattern.id, trackIndex);
+  $scope.toggleRowMute = function(rowIndex) {
+    PatternService.toggleRowMute($scope.pattern.id, rowIndex);
   };
 
-  $scope.updateNotes = function(trackIndex, noteIndex) {
-    PatternService.updateNotes($scope.pattern.id, trackIndex, noteIndex);
+  $scope.updateNotes = function(rowIndex, noteIndex) {
+    PatternService.updateNotes($scope.pattern.id, rowIndex, noteIndex);
   };
 }]);
 

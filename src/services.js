@@ -129,7 +129,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      id: idGenerator.next(),
                      name: 'Pattern 1',
                      instrumentID: 1,
-                     tracks: [
+                     rows: [
                        {
                          muted: false,
                          notes: [{name: 'E4'},
@@ -155,7 +155,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      id: idGenerator.next(),
                      name: 'Pattern 2',
                      instrumentID: 2,
-                     tracks: [
+                     rows: [
                        {
                          muted: false,
                          notes: [{name: 'C1'},
@@ -226,7 +226,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
       id: id,
       name: 'Pattern ' + id,
       instrumentID: instrumentID,
-      tracks: [
+      rows: [
         {
           muted: false,
           notes: [{name: ''},
@@ -273,46 +273,46 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
     return null;
   };
 
-  patternService.addTrack = function(patternID) {
-    var newTrack = {
-                     muted: false,
-                     notes: [{name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''},
-                             {name: ''}],
+  patternService.addRow = function(patternID) {
+    var newRow = {
+                   muted: false,
+                   notes: [{name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''},
+                           {name: ''}],
                    };
     var pattern = patternService.patternByID(patternID);
-    pattern.tracks.push(newTrack);
+    pattern.rows.push(newRow);
 
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.removeTrack = function(patternID, trackIndex) {
+  patternService.removeRow = function(patternID, rowIndex) {
     var pattern = patternService.patternByID(patternID);
-    pattern.tracks.splice(trackIndex, 1);
+    pattern.rows.splice(rowIndex, 1);
 
-    if (pattern.tracks.length === 0) {
-      patternService.addTrack(patternID);
+    if (pattern.rows.length === 0) {
+      patternService.addRow(patternID);
     }
 
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.toggleTrackMute = function(patternID, trackIndex) {
+  patternService.toggleRowMute = function(patternID, rowIndex) {
     var pattern = patternService.patternByID(patternID);
-    pattern.tracks[trackIndex].muted = !pattern.tracks[trackIndex].muted;
+    pattern.rows[rowIndex].muted = !pattern.rows[rowIndex].muted;
     $rootScope.$broadcast('PatternService.update');
   };
 
@@ -320,22 +320,22 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
     $rootScope.$broadcast('PatternService.update');
   };
 
-  patternService.updateNotes = function(patternID, trackIndex, noteIndex) {
+  patternService.updateNotes = function(patternID, rowIndex, noteIndex) {
     var i;
     var pattern = patternService.patternByID(patternID);
-    var newNoteName = pattern.tracks[trackIndex].notes[noteIndex].name;
+    var newNoteName = pattern.rows[rowIndex].notes[noteIndex].name;
 
     if (newNoteName === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && pattern.tracks[trackIndex].notes[i].name === "") {
-        pattern.tracks[trackIndex].notes[i].name = "-";
+      while (i >= 0 && pattern.rows[rowIndex].notes[i].name === "") {
+        pattern.rows[rowIndex].notes[i].name = "-";
         i -= 1;
       }
     }
     else if (newNoteName === "") {
       i = noteIndex + 1;
-      while (i < pattern.tracks[trackIndex].notes.length && pattern.tracks[trackIndex].notes[i].name === "-") {
-        pattern.tracks[trackIndex].notes[i].name = "";
+      while (i < pattern.rows[rowIndex].notes.length && pattern.rows[rowIndex].notes[i].name === "-") {
+        pattern.rows[rowIndex].notes[i].name = "";
         i += 1;
       }
     }
@@ -574,9 +574,9 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       var serializedTracks = [];
       var instrument = serializedInstruments[pattern.instrumentID];
 
-      pattern.tracks.forEach(function(track) {
-        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-        serializedTracks.push(new JSSynth.Track(instrument, sequence, track.muted));
+      pattern.rows.forEach(function(row) {
+        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
+        serializedTracks.push(new JSSynth.Track(instrument, sequence, row.muted));
       });
 
       var serializedPattern = new JSSynth.Pattern();

@@ -132,9 +132,9 @@ app.directive('noteInput', function () {
        element.bind('keydown', function(e) {
          var changeCurrentlySelectedNote = function(element, config) {
            var patternID = parseInt(element[0].id.split("-")[1], 10);
-           var trackIndex = parseInt(element[0].id.split("-")[3], 10);
+           var rowIndex = parseInt(element[0].id.split("-")[3], 10);
            var noteIndex = parseInt(element[0].id.split("-")[5], 10);
-           var nextNoteId = 'pattern-' + patternID + '-track-' + (trackIndex + config.trackIndexDelta) + '-note-' + (noteIndex + config.noteIndexDelta);
+           var nextNoteId = 'pattern-' + patternID + '-row-' + (rowIndex + config.rowIndexDelta) + '-note-' + (noteIndex + config.noteIndexDelta);
 
            document.getElementById(nextNoteId).focus();
          };
@@ -154,22 +154,22 @@ app.directive('noteInput', function () {
          }
          else if (e.keyCode === 37) {  // Left arrow key
            if (element[0].selectionStart === 0 && !(element.hasClass('firstNote'))) {
-             changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: -1 });
+             changeCurrentlySelectedNote(element, { rowIndexDelta: 0, noteIndexDelta: -1 });
            }
          }
          else if (e.keyCode === 39) {  // Right arrow key
            if (element[0].selectionEnd === currentValue.length && !(element.hasClass('lastNote'))) {
-             changeCurrentlySelectedNote(element, { trackIndexDelta: 0, noteIndexDelta: 1 });
+             changeCurrentlySelectedNote(element, { rowIndexDelta: 0, noteIndexDelta: 1 });
            }
          }
          else if (e.keyCode === 38) {  // Up arrow key
-           if (!(element.hasClass('firstTrack'))) {
-             changeCurrentlySelectedNote(element, { trackIndexDelta: -1, noteIndexDelta: 0 });
+           if (!(element.hasClass('firstRow'))) {
+             changeCurrentlySelectedNote(element, { rowIndexDelta: -1, noteIndexDelta: 0 });
            }
          }
          else if (e.keyCode === 40) {  // Down arrow key
-           if (!(element.hasClass('lastTrack'))) {
-             changeCurrentlySelectedNote(element, { trackIndexDelta: 1, noteIndexDelta: 0 });
+           if (!(element.hasClass('lastRow'))) {
+             changeCurrentlySelectedNote(element, { rowIndexDelta: 1, noteIndexDelta: 0 });
            }
          }
        });
