@@ -79,7 +79,7 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
       lfoWaveform:        'sine',
       lfoFrequency:       5,
       lfoAmplitude:       0,
-      filterCutoff:       1000,
+      filterCutoff:       9950,
       filterResonance:    0,
       filterLFOWaveform:  'sine',
       filterLFOFrequency: 5,
