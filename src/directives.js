@@ -38,6 +38,23 @@ app.directive('instrumentEditor', function() {
 });
 
 
+app.directive('patternEditor', function() {
+  return {
+    restrict: 'A',
+    scope: {
+      pattern: '=',
+      updateName: '&',
+      addRow: '&',
+      removeRow: '&',
+      toggleRowMute: '&',
+      updateNotes: '&',
+    },
+    controller: 'PatternController',
+    templateUrl: 'pattern.html',
+  };
+});
+
+
 app.directive('sequencer', function() {
   return {
     restrict: 'A',
