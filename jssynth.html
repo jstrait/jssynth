@@ -55,12 +55,12 @@
   </div>
 </div>
 
-<div ng-controller="SequencerController" class="pl1 pr1 pt2 pb1 border-box" style="border-top: 2px solid #ddd;">
-  <h2 class="mt0 mb1">Sequencer</h2>
+<div ng-controller="SequencerController" class="pt2 pb1 border-box" style="border-top: 2px solid #ddd;">
+  <h2 class="mt0 mb1 pl1">Sequencer</h2>
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
-      <li class="list-style-none border-box bb"><span><button class="button-small button-hollow pt0 pb0" style="border-radius: 6px; width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button></span></li>
-      <li class="flex-uniform-size list-style-none pr1 border-box bb br" ng-repeat="track in tracks">
+      <li class="list-style-none pl1 border-box bb"><span><button class="button-small button-hollow pt0 pb0" style="border-radius: 6px; width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button></span></li>
+      <li class="flex-uniform-size list-style-none pl1 pr1 border-box bb br" ng-repeat="track in tracks">
         <span class="short-name">{{track.name | limitTo:2}}</span>
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
         <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
@@ -88,13 +88,13 @@
       </li>
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{'display-none': (expanded === false)}">
-      <li class="list-style-none inline-block border-box bb"><span>&nbsp;</span></li>
-      <li class="flex flex-align-center flex-uniform-size list-style-none border-box bb bl" style="padding-left: 1.0rem;" ng-repeat="track in tracks">
+      <li class="list-style-none inline-block pr1 border-box bb"><span>&nbsp;</span></li>
+      <li class="flex flex-align-center flex-uniform-size list-style-none border-box bb bl" style="padding-left: 1.0rem; padding-right: 1.0rem;" ng-repeat="track in tracks">
         <button class="button-small button-hollow full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>
   </div>
-  <div>
+  <div class="pl1">
     <button class="block button-full button-hollow" ng-click="addTrack();">Add Track</button>
   </div>
 </div>
