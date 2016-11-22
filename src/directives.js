@@ -38,6 +38,20 @@ app.directive('instrumentEditor', function() {
 });
 
 
+app.directive('patternList', function() {
+  return {
+    restrict: 'A',
+    scope: {
+      patternOptions: '=',
+      addPattern: '&',
+      removePattern: '&',
+    },
+    controller: 'PatternCollectionController',
+    templateUrl: 'pattern-list.html',
+  };
+});
+
+
 app.directive('patternEditor', function() {
   return {
     restrict: 'A',

@@ -1,0 +1,9 @@
+<div ng-controller="PatternCollectionController" class="mb2">
+  <ul class="pl0 mt0 mb0">
+    <li class="list-style-none inline-block pointer border-box mr1" style="width: 9.0rem;" ng-repeat="patternOption in patternOptions" ng-click="changeSelectedPattern(patternOption.id);"  ng-class="{paneTabSelected: (patternOption.id === selectedPatternID), paneTabUnselected: (patternOption.id !== selectedPatternID)}">
+      <span style="float: left; width: 7.0rem;">{{patternOption.name}}</span>
+      <button class="button-small button-hollow round right" style="padding: 0;" ng-click="removePattern(patternOption.id);" ng-class="{'display-none': (patternOptions.length <= 1)}">&nbsp;X&nbsp;</button>
+    </li>
+  </ul>
+  <button class="block button-full button-hollow" ng-click="addPattern();">Add Pattern</button>
+</div>
