@@ -26,7 +26,7 @@
   <label class="control-label indented">Octave:</label>
   <span class="annotated-input">
     <input ng-model="instrument.waveform1Octave" ng-change="updateInstrument();" type="range" min="-2" max="2" step="1" />
-    <span>{{instrument.waveform1Octave}}</span>
+    <span>{{instrument.waveform1Octave | octaveOffset}}</span>
   </span>
 </span>
 
@@ -56,7 +56,7 @@
   <label class="control-label indented">Octave:</label>
   <span class="annotated-input">
     <input ng-model="instrument.waveform2Octave" ng-change="updateInstrument();" type="range" min="-2" max="2" step="1" />
-    <span>{{instrument.waveform2Octave}}</span>
+    <span>{{instrument.waveform2Octave | octaveOffset}}</span>
   </span>
 </span>
 <span class="control">

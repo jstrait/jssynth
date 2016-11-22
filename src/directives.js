@@ -17,6 +17,14 @@ app.directive('convertToNumber', function() {
 });
 
 
+app.filter('octaveOffset', function() {
+  return function(input) {
+    var integer = parseInt(input);
+    return (integer > 0) ? ("+" + integer) : String(integer);
+  };
+});
+
+
 app.directive('instrumentEditor', function() {
   var controller = ['$scope', function ($scope) { }];
 
