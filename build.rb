@@ -3,7 +3,7 @@
 require 'rb-fsevent'
 
 def build
-  `uglifyjs src/*.js --compress --mangle --source-map jssynth.js.map > jssynth.js`
+  `uglifyjs src/*.js src/**/*.js --compress --mangle --source-map jssynth.js.map > jssynth.js`
   `sass css/jssynth.scss | uglifycss > jssynth.css`
 end
 
