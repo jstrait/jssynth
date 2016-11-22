@@ -26,15 +26,13 @@ app.filter('octaveOffset', function() {
 
 
 app.directive('instrumentEditor', function() {
-  var controller = ['$scope', function ($scope) { }];
-
   return {
     restrict: 'A',
     scope: {
       instrument: '=',
       updateInstrument: '&',
     },
-    controller: controller,
+    controller: 'InstrumentController',
     templateUrl: 'instrument.html',
   };
 });
