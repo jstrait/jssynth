@@ -5,6 +5,7 @@ $red: #c00;
 $red-highlight: #f24;
 $black: #130f30;
 $white: #fff;
+$border-color: #ddd;
 
 
 body {
@@ -86,7 +87,7 @@ label.radioLabel {
 .popup-box {
   background: $white;
   position: absolute;
-  border: 2px solid #ddd;
+  border: 2px solid $border-color;
   border-radius: 10px;
 }
 
@@ -97,7 +98,7 @@ label.radioLabel {
     right: 1.25rem;
     border-width: 1.25rem;
     border-style: solid;
-    border-color: transparent transparent #ddd transparent;
+    border-color: transparent transparent $border-color transparent;
 }
 
 .popup-box::after {
@@ -288,13 +289,13 @@ button {
 .pb1 { padding-bottom: 1.5rem; }
 .pt2 { padding-top: 3.0rem; }
 
-.bt  { border-top: 1px solid #ddd; }
-.bb  { border-bottom: 1px solid #ddd; }
-.bl  { border-left: 1px solid #ddd; }
-.br  { border-right: 1px solid #ddd; }
+.bt  { border-top: 1px solid $border-color; }
+.bb  { border-bottom: 1px solid $border-color; }
+.bl  { border-left: 1px solid $border-color; }
+.br  { border-right: 1px solid $border-color; }
 
-.bt-thick { border-top: 2px solid #ddd; }
-.bb-thick { border-bottom: 2px solid #ddd; }
+.bt-thick { border-top: 2px solid $border-color; }
+.bb-thick { border-bottom: 2px solid $border-color; }
 
 .center { text-align: center; }
 .right  { float: right; }
@@ -335,7 +336,7 @@ button {
 }
 
 .selectedOption {
-  border: #ddd 2px solid;
+  border: $border-color 2px solid;
   background: #ddd;
 }
 
@@ -345,7 +346,7 @@ button {
 }
 
 .paneTabUnselected {
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid $border-color;
 }
 
 .paneTabSelected {
@@ -450,7 +451,7 @@ button {
     padding-bottom: 1.5rem;
     border-left: 0;
     border-right: 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $border-color;
   }
 
   .instrument-panel:last-child {
