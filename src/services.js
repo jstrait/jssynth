@@ -523,11 +523,18 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       var filterCutoff = parseInt(instrument.filterCutoff, 10);
 
       var serializedConfig = {
-        waveform1: instrument.waveform1,
-        waveform1Octave: parseInt(instrument.waveform1Octave),
-        waveform2: instrument.waveform2,
-        waveform2Detune: parseInt(instrument.waveform2Detune),
-        waveform2Octave: parseInt(instrument.waveform2Octave),
+        oscillators: [
+          {
+            waveform: instrument.waveform1,
+            octave: parseInt(instrument.waveform1Octave),
+            detune: 0,
+          },
+          {
+            waveform: instrument.waveform2,
+            octave: parseInt(instrument.waveform2Octave),
+            detune: parseInt(instrument.waveform2Detune),
+          }
+        ],
         lfo: {
           waveform:  instrument.lfoWaveform,
           frequency: parseFloat(instrument.lfoFrequency),

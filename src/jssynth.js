@@ -3,10 +3,11 @@
 var JSSynth = JSSynth || {};
 
 JSSynth.Instrument = function(config) {
-  var buildOscillator = function(audioContext, waveform, frequency) {
+  var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
     oscillator.frequency.value = frequency;
+    oscillator.detune.value = detune;
  
     return oscillator;
   };
@@ -31,14 +32,19 @@ JSSynth.Instrument = function(config) {
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     if (note.frequency() > 0.0) {
       // Base sound generator
-      var oscillator = buildOscillator(audioContext, config.waveform1, note.frequency() * Math.pow(2, config.waveform1Octave));
+      var oscillator = buildOscillator(audioContext,
+                                           config.oscillators[0].waveform,
+                                           note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                           config.oscillators[0].detune);
 
       // Secondary sound generator
-      var oscillator2 = buildOscillator(audioContext, config.waveform2, note.frequency() * Math.pow(2, config.waveform2Octave));
-      oscillator2.detune.value = config.waveform2Detune;
+      var oscillator2 = buildOscillator(audioContext,
+                                        config.oscillators[1].waveform,
+                                        note.frequency() * Math.pow(2, config.oscillators[1].octave),
+                                        config.oscillators[1].detune);
 
       // LFO for base sound
-      var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency);
+      var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
       var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
       pitchLfoGain.connect(oscillator.frequency);
@@ -46,7 +52,7 @@ JSSynth.Instrument = function(config) {
 
       // Filter
       var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
-      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency);
+      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
       // pops/clicks.
       var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
