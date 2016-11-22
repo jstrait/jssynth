@@ -324,6 +324,10 @@ JSSynth.PatternPlayer = function(pattern) {
 
 
 JSSynth.SongPlayer = function(patterns) {
+  var MEASURES = 8;
+  var STEPS_PER_MEASURE = 16;
+  var STEP_COUNT = MEASURES * STEPS_PER_MEASURE;
+
   var stepIndex;
   var isFinishedPlaying;
   var currentTime;
@@ -339,7 +343,7 @@ JSSynth.SongPlayer = function(patterns) {
   };
 
   songPlayer.stepCount = function() {
-    return 128;
+    return STEP_COUNT;
   };
 
   songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
@@ -370,7 +374,7 @@ JSSynth.SongPlayer = function(patterns) {
       scheduledSteps.push({ step: stepIndex, time: currentTime });
 
       stepIndex += 1;
-      if (stepIndex >= songPlayer.stepCount()) {
+      if (stepIndex >= STEP_COUNT) {
         if (loop) {
           stepIndex = 0;
         }
