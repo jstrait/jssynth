@@ -229,7 +229,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   }
 
   $scope.syncCurrentStep = function() {
-    if (TransportService.currentStep()) {
+    if (TransportService.currentStep() !== null) {
       $scope.currentStep = Math.floor((TransportService.currentStep() / 16) % 8) + 1;
     }
     else
