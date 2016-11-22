@@ -38,6 +38,25 @@ app.directive('instrumentEditor', function() {
 });
 
 
+app.directive('sequencer', function() {
+  return {
+    restrict: 'A',
+    scope: {
+      expanded: '=',
+      addTrack: '&',
+      removeTrack: '&',
+      changeTrackName: '&',
+      toggleTrackMute: '&',
+      changeSelectedTrack: '&',
+      toggleExpansion: '&',
+      updateSequencer: '&',
+    },
+    controller: 'SequencerController',
+    templateUrl: 'sequencer.html',
+  };
+});
+
+
 app.directive('tabList', function() {
   return {
     restrict: 'A',
