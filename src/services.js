@@ -702,7 +702,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 
   transportService.currentStep = function() {
     if (playing) {
-      return transport.elapsedSteps();
+      return transport.currentStep();
     }
     else {
       return null;

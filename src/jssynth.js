@@ -342,10 +342,6 @@ JSSynth.SongPlayer = function(patterns) {
     return 128;
   };
 
-  songPlayer.currentStep = function() {
-    return stepIndex;
-  };
-
   songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
 
   songPlayer.replacePatterns = function(newPatterns) {
@@ -353,6 +349,8 @@ JSSynth.SongPlayer = function(patterns) {
   };
 
   songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
+    var scheduledSteps = [];
+    
     while (currentTime < endTime) {
       var incomingPatterns = patterns[stepIndex];
       if (incomingPatterns) {
@@ -369,6 +367,8 @@ JSSynth.SongPlayer = function(patterns) {
         return !patternPlayer.isComplete();
       });
 
+      scheduledSteps.push({ step: stepIndex, time: currentTime });
+
       stepIndex += 1;
       if (stepIndex >= songPlayer.stepCount()) {
         if (loop) {
@@ -382,6 +382,8 @@ JSSynth.SongPlayer = function(patterns) {
 
       currentTime += stepDuration;
     }
+
+    return scheduledSteps;
   };
 
   songPlayer.reset();
@@ -397,6 +399,8 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var masterGain;
   var startTime;
   var stopTime;
+  var currentStep;
+  var scheduledSteps;
 
   if (window.AudioContext) {
     // Why do we create an AudioContext, immediately close it, and then
@@ -431,7 +435,8 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    songPlayer.tick(audioContext, masterGain, finalTime, transport.stepInterval, transport.loop);
+    var newScheduledSteps = songPlayer.tick(audioContext, masterGain, finalTime, transport.stepInterval, transport.loop);
+    scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
       stop();
@@ -440,6 +445,8 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   };
 
   var start = function() {
+    currentStep = 0;
+    scheduledSteps = [];
     startTime = audioContext.currentTime;
     stopTime = null;
     songPlayer.reset(startTime);
@@ -496,23 +503,21 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
     }
   };
 
-  var elapsedTime = function() {
-    var elapsedTime;
-    if (!startTime) {
-      elapsedTime = 0.0;
+  transport.currentStep = function() {
+    if (!playing) {
+      return null;
     }
-    else if (stopTime) {
-      elapsedTime = (stopTime - startTime);
-    }
-    else {
-      elapsedTime = (audioContext.currentTime - startTime);
-    }
-    
-    return elapsedTime;
-  };
 
-  transport.elapsedSteps = function() {
-    return elapsedTime() / transport.stepInterval;
+    var currentTime = audioContext.currentTime;
+    var i = 0;
+    while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
+      currentStep = scheduledSteps[i].step;
+      scheduledSteps.splice(0, 1);
+      
+      i++;
+    }
+
+    return currentStep;
   };
 
   transport.loop = true;
