@@ -33,7 +33,7 @@ app.directive('instrumentEditor', function() {
       updateInstrument: '&',
     },
     controller: 'InstrumentController',
-    templateUrl: 'instrument.html',
+    templateUrl: 'templates/instrument_editor.html',
   };
 });
 
@@ -47,7 +47,7 @@ app.directive('patternList', function() {
       removePattern: '&',
     },
     controller: 'PatternCollectionController',
-    templateUrl: 'pattern-list.html',
+    templateUrl: 'templates/pattern_list.html',
   };
 });
 
@@ -64,7 +64,7 @@ app.directive('patternEditor', function() {
       updateNotes: '&',
     },
     controller: 'PatternController',
-    templateUrl: 'pattern.html',
+    templateUrl: 'templates/pattern_editor.html',
   };
 });
 
@@ -83,7 +83,7 @@ app.directive('sequencer', function() {
       updateSequencer: '&',
     },
     controller: 'SequencerController',
-    templateUrl: 'sequencer.html',
+    templateUrl: 'templates/sequencer.html',
   };
 });
 
