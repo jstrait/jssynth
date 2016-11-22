@@ -10,6 +10,10 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', 'Sequence
     instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.instrument = InstrumentService.instrumentByID(instrumentID);
   });
+  $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
+    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
+    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
+  });
 
   $scope.$on('InstrumentService.update', function(event) {
     $scope.instrument = InstrumentService.instrumentByID(instrumentID);
@@ -32,6 +36,11 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
 
   $scope.patternOptions = buildPatternOptions();
   $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
+    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
+    $scope.patternOptions = buildPatternOptions();
+    $scope.changeSelectedPattern($scope.patternOptions[0].id);
+  });
+  $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
     instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.patternOptions = buildPatternOptions();
     $scope.changeSelectedPattern($scope.patternOptions[0].id);
@@ -241,9 +250,22 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 }]);
 
 
-app.controller('TrackEditorController', ['$scope', 'SequencerService', function($scope, SequencerService) {
+app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerService', function($rootScope, $scope, SequencerService) {
   $scope.trackID = 1;
   $scope.trackName = SequencerService.trackByID($scope.trackID).name;
+  $scope.selectedTab = "instrument";
+
+  var buildTrackOptions = function() {
+    return SequencerService.tracks().map(function(track) {
+     return { id: track.id, name: track.name };
+    });
+  };
+
+  $scope.trackOptions = buildTrackOptions();
+
+  $scope.$on('SequencerService.update', function(event, args) {
+    $scope.trackOptions = buildTrackOptions();
+  });
 
   $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
     var track = SequencerService.trackByID(args.trackID);
@@ -252,11 +274,16 @@ app.controller('TrackEditorController', ['$scope', 'SequencerService', function(
   });
 
   $scope.$on('SequencerController.trackNameChanged', function(event, args) {
-    if (args.trackID === $scope.trackID) {
-      var track = SequencerService.trackByID(args.trackID);
-      $scope.trackName = track.name;
-    }
+    $scope.trackOptions = buildTrackOptions();
   });
+
+  $scope.changeSelectedTab = function(newSelectedTab) {
+    $scope.selectedTab = newSelectedTab;
+  };
+
+  $scope.changeSelectedTrack = function() {
+    $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
+  };
 }]);
 
 
