@@ -88,50 +88,6 @@ app.directive('sequencer', function() {
 });
 
 
-app.directive('tabList', function() {
-  return {
-    restrict: 'A',
-    transclude: true,
-    scope: {
-      title: '@',
-    },
-    controller: ['$scope', function($scope) {
-      var panes = $scope.panes = [];
-
-      $scope.select = function(pane) {
-        panes.forEach(function(pane) {
-          pane.selected = false;
-        });
-        pane.selected = true;
-      };
-
-      this.addPane = function(pane) {
-        if (panes.length === 0) {
-          $scope.select(pane);
-        }
-        panes.push(pane);
-      };
-    }],
-    templateUrl: 'tabList.html'
-  };
-});
-
-app.directive('tabPane', function() {
-  return {
-    require: '^^tabList',
-    restrict: 'A',
-    transclude: true,
-    scope: {
-      title: '@'
-    },
-    link: function(scope, element, attrs, tabsCtrl) {
-      tabsCtrl.addPane(scope);
-    },
-    templateUrl: 'tabPane.html'
-  };
-});
-
-
 app.directive('noteInput', function () {
   return {
     require: 'ngModel',
