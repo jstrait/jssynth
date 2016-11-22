@@ -152,13 +152,14 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   };
 
   $scope.$on('TransportService.start', function(event) {
-    var timeoutId = $interval(function() {
+    timeoutId = $interval(function() {
       $scope.syncCurrentStep();
     }, 15);
   });
 
   $scope.$on('TransportService.stop', function(event) {
     $interval.cancel(timeoutId);
+    $scope.currentStep = null;
   });
 
   $scope.patternOptions = buildPatternOptions();
