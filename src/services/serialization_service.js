@@ -123,9 +123,9 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatternSequence = [];
 
     var sequencerTracks = SequencerService.tracks();
-    var totalSteps = sequencerTracks[0].patterns.length;
+    var totalMeasures = sequencerTracks[0].patterns.length;
 
-    for (var i = 0; i < totalSteps; i++) {
+    for (var i = 0; i < totalMeasures; i++) {
       serializedPatternSequence[i * 16] = [];
       
       sequencerTracks.forEach(function(track) {
