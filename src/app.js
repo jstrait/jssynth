@@ -226,7 +226,11 @@ app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerServi
 
   $scope.trackOptions = buildTrackOptions();
 
-  $scope.$on('SequencerService.update', function(event, args) {
+  $scope.$on('SequencerService.addTrack', function(event, args) {
+    $scope.trackOptions = buildTrackOptions();
+  });
+
+  $scope.$on('SequencerService.removeTrack', function(event, args) {
     $scope.trackOptions = buildTrackOptions();
   });
 
