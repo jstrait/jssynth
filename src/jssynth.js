@@ -161,11 +161,11 @@ JSSynth.Pattern = function() {
 };
 
 
-JSSynth.Track = function(instrument, sequence, isMuted) {
+JSSynth.Track = function(instrument, sequence, isMuted, amplitude) {
   var track = {};
 
   track.instrument = function() { return instrument; };
-  track.amplitude  = function() { return 1.0; };
+  track.amplitude  = function() { return amplitude; };
   track.sequence   = function() { return sequence; };
   track.isMuted    = function() { return isMuted; };
 

@@ -42,7 +42,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     return new JSSynth.Instrument(serializedConfig);
   };
 
-  var serializePatterns = function(patterns, instrument) {
+  var serializePatterns = function(patterns, instrument, trackVolume) {
     var serializedPatterns = {};
 
     patterns.forEach(function(pattern) {
@@ -50,7 +50,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
       pattern.rows.forEach(function(row) {
         var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
-        serializedTracks.push(new JSSynth.Track(instrument, sequence, row.muted));
+        serializedTracks.push(new JSSynth.Track(instrument, sequence, row.muted, trackVolume));
       });
 
       var serializedPattern = new JSSynth.Pattern();
@@ -93,7 +93,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       }
 
       serializedInstrument = serializeInstrument(InstrumentService.instrumentByID(sequencerTrack.instrumentID));
-      serializedPatterns = serializePatterns(PatternService.patternsByTrackID(sequencerTrack.id), serializedInstrument);
+      serializedPatterns = serializePatterns(PatternService.patternsByTrackID(sequencerTrack.id), serializedInstrument, sequencerTrack.volume);
 
       for (i = 0; i < totalMeasures; i++) {
         if (sequencerTrack.patterns[i].patternID !== -1) {

@@ -9,6 +9,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
                      name: 'Melody',
                      instrumentID: 1,
                      muted: false,
+                     volume: 1.0,
                      patterns: [
                        { patternID: 1, },
                        { patternID: 1, },
@@ -25,6 +26,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
                      name: 'Chords',
                      instrumentID: 2,
                      muted: false,
+                     volume: 1.0,
                      patterns: [
                        { patternID: 2, },
                        { patternID: 2, },
@@ -74,6 +76,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
       name: 'New Track',
       instrumentID: newInstrument.id,
       muted: false,
+      volume: 1.0,
       patterns: [
         { patternID: -1, },
         { patternID: -1, },
