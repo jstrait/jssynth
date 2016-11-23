@@ -122,15 +122,15 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatterns = serializePatterns(serializedInstruments);
     var serializedPatternSequence = [];
 
-    var sequencerPatterns = SequencerService.tracks();
-    var totalSteps = sequencerPatterns[0].patterns.length;
+    var sequencerTracks = SequencerService.tracks();
+    var totalSteps = sequencerTracks[0].patterns.length;
 
     for (var i = 0; i < totalSteps; i++) {
       serializedPatternSequence[i * 16] = [];
       
-      sequencerPatterns.forEach(function(row) {
-        if (!row.muted) {
-          serializedPatternSequence[i * 16].push(serializedPatterns[row.patterns[i].patternID]);
+      sequencerTracks.forEach(function(track) {
+        if (!track.muted) {
+          serializedPatternSequence[i * 16].push(serializedPatterns[track.patterns[i].patternID]);
         }
       });
     }
