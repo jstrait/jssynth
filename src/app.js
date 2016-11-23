@@ -130,10 +130,12 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
 
 
 app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'InstrumentService', 'PatternService', 'SequencerService', 'TransportService', function($rootScope, $scope, $interval, InstrumentService, PatternService, SequencerService, TransportService) {
+  var LEFT_ARROW = "←";
+  var RIGHT_ARROW = "→";
   var timeoutId;
 
   $scope.expanded = true;
-  $scope.expansionToggleLabel = "<";
+  $scope.expansionToggleLabel = LEFT_ARROW;
   $scope.tracks = SequencerService.tracks();
   $scope.currentStep = null;
 
@@ -176,10 +178,10 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     $scope.expanded = !$scope.expanded;
 
     if ($scope.expanded) {
-      $scope.expansionToggleLabel = "<";
+      $scope.expansionToggleLabel = LEFT_ARROW;
     }
     else {
-      $scope.expansionToggleLabel = ">";
+      $scope.expansionToggleLabel = RIGHT_ARROW;
     }
   };
 
