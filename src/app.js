@@ -23,10 +23,10 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', 'Sequence
 
 
 app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
-  var instrumentID = 1;
+  var trackID = 1;
 
   var buildPatternOptions = function() {
-    return PatternService.patternsByInstrumentID(instrumentID).map(function(pattern) {
+    return PatternService.patternsByTrackID(trackID).map(function(pattern) {
      return { id: pattern.id, name: pattern.name };
     });
   };
@@ -34,7 +34,7 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   $scope.patternOptions = buildPatternOptions();
 
   $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
-    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
+    trackID = args.trackID;
     $scope.patternOptions = buildPatternOptions();
     $scope.changeSelectedPattern($scope.patternOptions[0].id);
   });
@@ -45,7 +45,7 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   $scope.selectedPatternID = 1;
 
   $scope.addPattern = function() {
-    var newPattern = PatternService.addPattern(instrumentID);
+    var newPattern = PatternService.addPattern(trackID);
     $scope.changeSelectedPattern(newPattern.id);
   };
 
@@ -138,9 +138,9 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   $scope.currentStep = null;
 
   var buildPatternOptions = function() {
-    var patternOptions = InstrumentService.instruments().map(function(instrument) {
-      var instrumentPatterns = PatternService.patternsByInstrumentID(instrument.id);
-      var options = instrumentPatterns.map(function(pattern) {
+    var patternOptions = $scope.tracks.map(function(track) {
+      var trackPatterns = PatternService.patternsByTrackID(track.id);
+      var options = trackPatterns.map(function(pattern) {
         return { id: pattern.id, name: pattern.name, }
       });
 

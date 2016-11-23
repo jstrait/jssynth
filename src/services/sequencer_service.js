@@ -68,7 +68,6 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
 
   sequencerService.addTrack = function() {
     var newInstrument = InstrumentService.addInstrument();
-    var newPattern = PatternService.addPattern(newInstrument.id);
 
     var newTrack = {
       id: idGenerator.next(),
@@ -88,6 +87,8 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     };
     tracks.push(newTrack);
 
+    var newPattern = PatternService.addPattern(newTrack.id);
+
     $rootScope.$broadcast('SequencerService.update');
 
     return newTrack;
@@ -97,7 +98,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     var track = sequencerService.trackByID(trackID);
     var trackIndex = trackIndexByID(trackID);
 
-    PatternService.patternsByInstrumentID(track.instrumentID).forEach(function(pattern) {
+    PatternService.patternsByTrackID(trackID).forEach(function(pattern) {
       PatternService.removePattern(pattern.id);
     });
 

@@ -7,7 +7,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                    {
                      id: idGenerator.next(),
                      name: 'Pattern 1',
-                     instrumentID: 1,
+                     trackID: 1,
                      rows: [
                        {
                          muted: false,
@@ -33,7 +33,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                    {
                      id: idGenerator.next(),
                      name: 'Pattern 2',
-                     instrumentID: 2,
+                     trackID: 2,
                      rows: [
                        {
                          muted: false,
@@ -98,13 +98,13 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
   
   var patternService = {};
 
-  patternService.addPattern = function(instrumentID) {
+  patternService.addPattern = function(trackID) {
     var id = idGenerator.next();
 
     var newPattern = {
       id: id,
       name: 'Pattern ' + id,
-      instrumentID: instrumentID,
+      trackID: trackID,
       rows: [
         {
           muted: false,
@@ -234,11 +234,11 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
     return null;
   };
 
-  patternService.patternsByInstrumentID = function(targetID) {
+  patternService.patternsByTrackID = function(trackID) {
     var filteredPatterns = [];
 
     for (var i = 0; i < patterns.length; i++) {
-      if (patterns[i].instrumentID === targetID) {
+      if (patterns[i].trackID === trackID) {
         filteredPatterns.push(patterns[i]);
       }
     }
