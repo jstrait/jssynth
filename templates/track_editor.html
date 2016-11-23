@@ -3,10 +3,10 @@
    <option ng-repeat="trackOption in trackOptions" value="{{trackOption.id}}">{{trackOption.name}}</option>
 </select>
 <ul class="m0 pl0 inline-block">
-  <li class="inline-block list-style-none mr1" ng-class="{active:pane.selected}">
+  <li class="inline-block list-style-none mr1">
     <a href="" class="paneTab" ng-class="{paneTabSelected:(selectedTab === 'instrument')}" ng-click="changeSelectedTab('instrument')">Instrument</a>
   </li>
-  <li class="inline-block list-style-none mr1" ng-class="{active:pane.selected}">
+  <li class="inline-block list-style-none mr1">
     <a href="" class="paneTab" ng-class="{paneTabSelected:(selectedTab === 'patterns')}" ng-click="changeSelectedTab('patterns')">Patterns</a>
   </li>
 </ul>
