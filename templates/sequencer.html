@@ -6,6 +6,7 @@
         <span class="short-name">{{track.name | limitTo:2}}</span>
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
         <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
+        <input ng-model="track.volume" ng-change="changeSequencer();" type="range" min="0.0" max="1.0" step="0.01" />
       </li>
     </ul>
     <ul class="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
