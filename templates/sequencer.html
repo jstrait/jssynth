@@ -5,7 +5,7 @@
       <li class="flex-uniform-size list-style-none pl1 pr1 border-box bb br" ng-repeat="track in tracks">
         <span class="short-name">{{track.name | limitTo:2}}</span>
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
-        <span class="flex flex-align-center">
+        <span class="sequencer-volume-container flex flex-align-center">
           <button class="button-hollow button-small {{track.muted ? 'button-enabled' : ''}}" ng-click="toggleTrackMute(track.id);">Mute</button>
           <input style="flex: 1; margin-left: 4px; width: 1px;" ng-model="track.volume" ng-change="changeSequencer();" type="range" min="0.0" max="1.0" step="0.01" />
         </span>

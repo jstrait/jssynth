@@ -372,11 +372,11 @@ button {
   padding-right: 0;
 }
 
-.contracted > li > button {
+.contracted > li > input {
   display: none;
 }
 
-.contracted > li > input {
+.contracted > li > .sequencer-volume-container {
   display: none;
 }
 
