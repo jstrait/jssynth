@@ -51,33 +51,6 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
   var serializePatterns = function(serializedInstruments) {
     var serializedPatterns = {};
 
-    var emptyPattern = {
-      id: -1,
-      name: 'Empty Pattern',
-      instrumentID: 1,
-      tracks: [
-        {
-          muted: false,
-          notes: [{name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},],
-        },
-      ],
-    };
-
     PatternService.patterns().forEach(function(pattern) {
       var serializedTracks = [];
       var instrument = serializedInstruments[pattern.instrumentID];
@@ -92,15 +65,6 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
       serializedPatterns[pattern.id] = serializedPattern;
     });
-
-    // Empty pattern
-    serializedPatterns[-1] = new JSSynth.Pattern();
-    var emptyTracks = [];
-    emptyPattern.tracks.forEach(function(track) {
-      var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(track));
-      emptyTracks.push(new JSSynth.Track(serializedInstruments[1], sequence, track.muted));
-    });
-    serializedPatterns[-1].replaceTracks(emptyTracks);
 
     return serializedPatterns;
   };
@@ -127,9 +91,9 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
     for (var i = 0; i < totalMeasures; i++) {
       serializedPatternSequence[i * 16] = [];
-      
+
       sequencerTracks.forEach(function(track) {
-        if (!track.muted) {
+        if (!track.muted && track.patterns[i].patternID !== -1) {
           serializedPatternSequence[i * 16].push(serializedPatterns[track.patterns[i].patternID]);
         }
       });
