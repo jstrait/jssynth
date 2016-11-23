@@ -6,10 +6,7 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', 'Sequence
   var instrumentID = 1;
   
   $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
-    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
-    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-  });
+
   $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
     instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.instrument = InstrumentService.instrumentByID(instrumentID);
@@ -35,11 +32,7 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
   };
 
   $scope.patternOptions = buildPatternOptions();
-  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
-    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
-    $scope.patternOptions = buildPatternOptions();
-    $scope.changeSelectedPattern($scope.patternOptions[0].id);
-  });
+
   $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
     instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
     $scope.patternOptions = buildPatternOptions();
@@ -142,7 +135,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   $scope.expanded = true;
   $scope.expansionToggleLabel = "<";
   $scope.tracks = SequencerService.tracks();
-  $scope.selectedTrack = SequencerService.trackByID(1);
   $scope.currentStep = null;
 
   var buildPatternOptions = function() {
@@ -193,33 +185,10 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 
   $scope.addTrack = function() {
     var newTrack = SequencerService.addTrack();
-    $scope.changeSelectedTrack(newTrack.id)
   };
 
   $scope.removeTrack = function(trackID) {
     var i;
-    var newSelectedTrackID;
-
-    if (trackID === $scope.selectedTrack.id) {
-      i = 0;
-      while (i < $scope.tracks.length && $scope.tracks[i].id !== trackID) {
-        i++;
-      }
-
-      if (i === ($scope.tracks.length - 1)) {
-        newSelectedTrackID = $scope.tracks[i - 1].id;
-      }
-      else {
-        newSelectedTrackID = $scope.tracks[i + 1].id;
-      }
-    }
-    else {
-      newSelectedTrackID = $scope.selectedTrack.id;
-    }
-
-    if (newSelectedTrackID !== trackID) {
-      $scope.changeSelectedTrack(newSelectedTrackID);
-    }
 
     SequencerService.removeTrack(trackID);
     $scope.patternOptions = buildPatternOptions();
@@ -227,11 +196,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 
   $scope.toggleTrackMute = function(trackID) {
     SequencerService.toggleTrackMute(trackID);
-  };
-
-  $scope.changeSelectedTrack = function(trackID) {
-    $scope.selectedTrack = SequencerService.trackByID(trackID);
-    $rootScope.$broadcast('SequencerController.selectedTrackChanged', { trackID: $scope.selectedTrack.id, });
   };
 
   $scope.changeTrackName = function(trackID) {
@@ -265,12 +229,6 @@ app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerServi
 
   $scope.$on('SequencerService.update', function(event, args) {
     $scope.trackOptions = buildTrackOptions();
-  });
-
-  $scope.$on('SequencerController.selectedTrackChanged', function(event, args) {
-    var track = SequencerService.trackByID(args.trackID);
-    $scope.trackID = track.id;
-    $scope.trackName = track.name;
   });
 
   $scope.$on('SequencerController.trackNameChanged', function(event, args) {
