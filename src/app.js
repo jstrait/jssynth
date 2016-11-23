@@ -216,7 +216,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 
 app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerService', function($rootScope, $scope, SequencerService) {
   $scope.trackID = 1;
-  $scope.trackName = SequencerService.trackByID($scope.trackID).name;
   $scope.selectedTab = "instrument";
 
   var buildTrackOptions = function() {
