@@ -54,7 +54,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
 
   sequencerService.tracks = function() { return tracks; };
 
-  sequencerService.changeSequencer = function(sequenceIndex) {
+  sequencerService.changeSequencer = function() {
     $rootScope.$broadcast('SequencerService.update');
   };
 

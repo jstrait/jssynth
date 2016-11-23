@@ -168,8 +168,8 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
     $scope.patternOptions = buildPatternOptions();
   });
 
-  $scope.changeSequencer = function(sequenceIndex) {
-    SequencerService.changeSequencer(sequenceIndex);
+  $scope.changeSequencer = function() {
+    SequencerService.changeSequencer();
   };
 
   $scope.toggleExpansion = function() {
