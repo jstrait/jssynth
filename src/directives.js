@@ -88,6 +88,16 @@ app.directive('sequencer', function() {
 });
 
 
+app.directive('trackEditor', function() {
+  return {
+    restrict: 'A',
+    scope: { },
+    controller: 'TrackEditorController',
+    templateUrl: 'templates/track_editor.html',
+  };
+});
+
+
 app.directive('noteInput', function () {
   return {
     require: 'ngModel',

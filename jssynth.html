@@ -56,26 +56,7 @@
 </div>
 
 <div sequencer expanded="true" class="pt2 pb1 border-box bt-thick"></div>
-
-<div ng-controller="TrackEditorController" class="mt2 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick">
-  <span>Now Editing:</span>
-  <select class="mr2" ng-model="trackID" ng-change="changeSelectedTrack();" convert-to-number>
-     <option ng-repeat="trackOption in trackOptions" value="{{trackOption.id}}">{{trackOption.name}}</option>
-  </select>
-  <ul class="m0 pl0 inline-block">
-    <li class="inline-block list-style-none mr1" ng-class="{active:pane.selected}">
-      <a href="" class="paneTab" ng-class="{paneTabSelected:(selectedTab === 'instrument')}" ng-click="changeSelectedTab('instrument')">Instrument</a>
-    </li>
-    <li class="inline-block list-style-none mr1" ng-class="{active:pane.selected}">
-      <a href="" class="paneTab" ng-class="{paneTabSelected:(selectedTab === 'patterns')}" ng-click="changeSelectedTab('patterns')">Patterns</a>
-    </li>
-  </ul>
-  <div instrument-editor instrument="instrument" class="flex overflow-scroll-x pb1 instrument-panel-container" ng-class="{'display-none':(selectedTab !== 'instrument')}" update-instrument="updateInstrument()"></div>
-  <div ng-class="{'display-none':(selectedTab !== 'patterns')}" >
-    <div pattern-list pattern-options="patternOptions"></div>
-    <div pattern-editor pattern="pattern"></div>
-  </div>
-</div>
+<div track-editor class="mt2 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick"></div>
 
 <p class="center mt2 mb2 pl1 pr1 border-box">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
 </body>
