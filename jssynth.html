@@ -10,7 +10,7 @@
   <script src="analytics.js"></script>
   <script src="jssynth.js"></script>
 </head>
-<body>
+<body class="flex flex-column">
 <div id="header" class="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width" ng-controller="TransportController">
   <div id="logo-container">
     <h1 class="logo h2 mt0 mb0" style="line-height: 1.0em;">JS-120</h1>
@@ -58,6 +58,8 @@
 <div sequencer expanded="true" class="pt2 pb1 border-box bt-thick"></div>
 <div track-editor class="mt2 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick"></div>
 
-<p class="center mt2 mb2 pl1 pr1 border-box">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
+<div class="flex flex-column mt2" style="flex: 1; justify-content: flex-end;">
+  <p class="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
+</div>
 </body>
 </html>
