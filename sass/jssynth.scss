@@ -124,6 +124,10 @@ label.radioLabel {
   cursor: pointer;
 }
 
+.sequencer-pattern:last-child {
+  border-right: none;
+}
+
 .note-container {
   width: 6.25%;
   min-width: 3.0rem;
