@@ -28,11 +28,12 @@ app.filter('octaveOffset', function() {
 app.directive('instrumentEditor', function() {
   return {
     restrict: 'A',
-    scope: {
+    scope: {},
+    bindToController: {
       instrument: '=',
-      updateInstrument: '&',
     },
     controller: 'InstrumentController',
+    controllerAs: 'ctrl',
     templateUrl: 'templates/instrument_editor.html',
   };
 });
@@ -93,6 +94,7 @@ app.directive('trackEditor', function() {
     restrict: 'A',
     scope: { },
     controller: 'TrackEditorController',
+    controllerAs: 'ctrl',
     templateUrl: 'templates/track_editor.html',
   };
 });

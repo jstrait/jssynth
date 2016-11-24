@@ -2,21 +2,8 @@
 
 var app = angular.module('js120', []);
 
-app.controller('InstrumentController', ['$scope', 'InstrumentService', 'SequencerService', function($scope, InstrumentService, SequencerService) {
-  var instrumentID = 1;
-  
-  $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-
-  $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
-    instrumentID = SequencerService.trackByID(args.trackID).instrumentID;
-    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-  });
-
-  $scope.$on('InstrumentService.update', function(event) {
-    $scope.instrument = InstrumentService.instrumentByID(instrumentID);
-  });
-
-  $scope.updateInstrument = function() {
+app.controller('InstrumentController', ['$scope', 'InstrumentService', function($scope, InstrumentService) {
+  this.updateInstrument = function() {
     InstrumentService.updateInstrument();
   };
 }]);
@@ -214,9 +201,11 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 }]);
 
 
-app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerService', function($rootScope, $scope, SequencerService) {
+app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerService', 'InstrumentService', function($rootScope, $scope, SequencerService, InstrumentService) {
   $scope.trackID = 1;
   $scope.selectedTab = "instrument";
+
+  $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
 
   var buildTrackOptions = function() {
     return SequencerService.tracks().map(function(track) {
@@ -243,6 +232,7 @@ app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerServi
   };
 
   $scope.changeSelectedTrack = function() {
+    $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
     $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
   };
 }]);
