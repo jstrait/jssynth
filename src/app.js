@@ -74,7 +74,6 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
 
 app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternService', function($scope, InstrumentService, PatternService) {
   var instrumentID = 1;
-  $scope.pattern = PatternService.patternByID(1);
 
   var buildInstrumentOptions = function() {
     return InstrumentService.instruments().map(function(instrument) {
@@ -86,32 +85,25 @@ app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternServ
   $scope.$on('InstrumentService.update', function(event) {
     $scope.instrumentOptions = buildInstrumentOptions();
   });
-  $scope.$on('PatternCollectionController.selectedPatternChanged', function(event, args) {
-    $scope.pattern = PatternService.patternByID(args.patternID);
-  });
 
-  $scope.$on('PatternService.update', function(event) {
-    $scope.pattern = PatternService.patternByID($scope.pattern.id);
-  });
-
-  $scope.updateName = function() {
-    PatternService.updateName($scope.pattern.id);
+  this.updateName = function() {
+    PatternService.updateName(this.pattern.id);
   };
 
-  $scope.addRow = function() {
-    PatternService.addRow($scope.pattern.id);
+  this.addRow = function() {
+    PatternService.addRow(this.pattern.id);
   };
 
-  $scope.removeRow = function(rowIndex) {
-    PatternService.removeRow($scope.pattern.id, rowIndex);
+  this.removeRow = function(rowIndex) {
+    PatternService.removeRow(this.pattern.id, rowIndex);
   };
 
-  $scope.toggleRowMute = function(rowIndex) {
-    PatternService.toggleRowMute($scope.pattern.id, rowIndex);
+  this.toggleRowMute = function(rowIndex) {
+    PatternService.toggleRowMute(this.pattern.id, rowIndex);
   };
 
-  $scope.updateNotes = function(rowIndex, noteIndex) {
-    PatternService.updateNotes($scope.pattern.id, rowIndex, noteIndex);
+  this.updateNotes = function(rowIndex, noteIndex) {
+    PatternService.updateNotes(this.pattern.id, rowIndex, noteIndex);
   };
 }]);
 
@@ -201,11 +193,14 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 }]);
 
 
-app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerService', 'InstrumentService', function($rootScope, $scope, SequencerService, InstrumentService) {
+app.controller('TrackEditorController',
+               ['$rootScope', '$scope', 'SequencerService', 'InstrumentService', 'PatternService',
+               function($rootScope, $scope, SequencerService, InstrumentService, PatternService) {
   $scope.trackID = 1;
   $scope.selectedTab = "instrument";
 
   $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
+  $scope.pattern = PatternService.patternsByTrackID($scope.trackID)[0];
 
   var buildTrackOptions = function() {
     return SequencerService.tracks().map(function(track) {
@@ -227,12 +222,22 @@ app.controller('TrackEditorController', ['$rootScope', '$scope', 'SequencerServi
     $scope.trackOptions = buildTrackOptions();
   });
 
+  $scope.$on('PatternCollectionController.selectedPatternChanged', function(event, args) {
+    $scope.pattern = PatternService.patternByID(args.patternID);
+  });
+
+   $scope.$on('PatternService.update', function(event, args) {
+     $scope.pattern = PatternService.patternByID($scope.pattern.id);
+  });
+
   $scope.changeSelectedTab = function(newSelectedTab) {
     $scope.selectedTab = newSelectedTab;
   };
 
   $scope.changeSelectedTrack = function() {
     $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
+    $scope.pattern = PatternService.patternsByTrackID($scope.trackID)[0];
+
     $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
   };
 }]);

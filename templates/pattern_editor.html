@@ -1,4 +1,4 @@
-<label>Name:</label><input class="underlinedInput" ng-model="pattern.name" ng-change="updateName();" type="text" /> <span class="h4"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
+<label>Name:</label><input class="underlinedInput" ng-model="ctrl.pattern.name" ng-change="ctrl.updateName();" type="text" /> <span class="h4"> - <a class="helperToggle underline" ng-click="show=!show">Tips and Tricks</a></span>
 <ul class="toggleable" ng-show="show">
   <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
   <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
@@ -9,8 +9,8 @@
 <div class="flex">
   <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
     <li class="flex-uniform-size list-style-none inline-block note-container"><span class="h4 note-column-header">&nbsp;</span></li>
-    <li class="flex-uniform-size list-style-none" ng-repeat="row in pattern.rows">
-      <button class="button-small button-hollow {{pattern.rows[$index].muted ? 'button-enabled' : ''}}" ng-click="toggleRowMute($index);">Mute</button>
+    <li class="flex-uniform-size list-style-none" ng-repeat="row in ctrl.pattern.rows">
+      <button class="button-small button-hollow {{ctrl.pattern.rows[$index].muted ? 'button-enabled' : ''}}" ng-click="ctrl.toggleRowMute($index);">Mute</button>
     </li>
   </ul>
   <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
@@ -21,21 +21,21 @@
         </li>
       </ul>
     </li>
-    <li ng-repeat="row in pattern.rows" class="inline-block list-style-none full-width">
+    <li ng-repeat="row in ctrl.pattern.rows" class="inline-block list-style-none full-width">
       <ul class="ml0 pl0 no-whitespace-wrap">
         <li class="list-style-none inline-block note-container" ng-repeat="note in row.notes">
-          <input note-input id="pattern-{{pattern.id}}-row-{{$parent.$index}}-note-{{$index}}" class="note" ng-class="{firstRow: $parent.$first, lastRow: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="updateNotes($parent.$index, $index);" maxlength="4" type="text" />
+          <input note-input id="pattern-{{pattern.id}}-row-{{$parent.$index}}-note-{{$index}}" class="note" ng-class="{firstRow: $parent.$first, lastRow: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="ctrl.updateNotes($parent.$index, $index);" maxlength="4" type="text" />
          </li>
       </ul>
     </li>
   </ul>
   <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
     <li class="list-style-none flex-uniform-size">&nbsp;</li>
-    <li class="list-style-none flex-uniform-size" ng-repeat="row in pattern.rows">
-      <button class="button-small button-hollow full-width round" ng-click="removeRow($index);">X</button>
+    <li class="list-style-none flex-uniform-size" ng-repeat="row in ctrl.pattern.rows">
+      <button class="button-small button-hollow full-width round" ng-click="ctrl.removeRow($index);">X</button>
     </li>
   </ul>
 </div>
 <div class="mb1 overflow-auto">
-  <button class="block button-full button-hollow" ng-click="addRow();">Add Row</button>
+  <button class="block button-full button-hollow" ng-click="ctrl.addRow();">Add Row</button>
 </div>

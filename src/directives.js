@@ -56,15 +56,12 @@ app.directive('patternList', function() {
 app.directive('patternEditor', function() {
   return {
     restrict: 'A',
-    scope: {
+    scope: {},
+    bindToController: {
       pattern: '=',
-      updateName: '&',
-      addRow: '&',
-      removeRow: '&',
-      toggleRowMute: '&',
-      updateNotes: '&',
     },
     controller: 'PatternController',
+    controllerAs: 'ctrl',
     templateUrl: 'templates/pattern_editor.html',
   };
 });
