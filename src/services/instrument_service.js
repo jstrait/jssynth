@@ -74,8 +74,6 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
 
     instruments.push(newInstrument);
 
-    $rootScope.$broadcast('InstrumentService.update');
-
     return newInstrument;
   };
 
@@ -92,8 +90,6 @@ app.factory('InstrumentService', ['$rootScope', 'IdGeneratorService', function($
     if (instrumentIndex !== null) {
       instruments.splice(instrumentIndex, 1);
     }
-
-    $rootScope.$broadcast('InstrumentService.update');
   };
 
   instrumentService.updateInstrument = function() {
