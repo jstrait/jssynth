@@ -242,6 +242,15 @@ input.note:focus {
     justify-content: space-between;
   }
 
+  .transport-controls {
+    width: 100%;
+  }
+
+  .transport-controls .control {
+    display: inline-block;
+    width: 50%;
+  }
+
   #download-container {
     order: 2;
     flex: 1 50%;
@@ -294,6 +303,15 @@ input.note:focus {
   #transport .control {
     -webkit-flex-direction: row;
     flex-direction: row;
+  }
+
+  .transport-controls {
+    width: auto;
+  }
+
+  .transport-controls .control {
+    width: auto;
+    display: flex;
   }
 
   .control {
