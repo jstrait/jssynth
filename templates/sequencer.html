@@ -21,8 +21,8 @@
       </li>
       <li ng-repeat="track in tracks" class="list-style-none full-width border-box" style="height: 6.0rem;">
         <ul class="flex full-height ml0 pl0 no-whitespace-wrap">
-          <li class="sequencer-pattern flex-uniform-size full-height list-style-none center border-box bb br" style="min-width: 150px;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
-            <span class="flex flex-align-center full-height pl1 pr1 border-box">
+          <li class="sequencer-pattern flex-uniform-size full-height list-style-none center border-box bb br" style="min-width: 9.0rem;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
+            <span class="flex flex-align-center full-height border-box" style="padding-left: 0.75rem; padding-right: 0.75rem;">
               <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer();" convert-to-number>
                 <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
               </select>
@@ -33,7 +33,7 @@
     </ul>
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{'display-none': (expanded === false)}">
       <li class="list-style-none inline-block pr1 border-box bb"><span>&nbsp;</span></li>
-      <li class="flex flex-align-center flex-uniform-size list-style-none border-box bb bl" style="padding-left: 1.0rem; padding-right: 1.0rem;" ng-repeat="track in tracks">
+      <li class="flex flex-align-center flex-uniform-size list-style-none border-box bb bl" style="padding-left: 0.75rem; padding-right: 0.75rem;" ng-repeat="track in tracks">
         <button class="button-small button-hollow full-width round" ng-click="removeTrack(track.id);">X</button>
       </li>
     </ul>
