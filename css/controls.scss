@@ -1,0 +1,145 @@
+input[type='text'].ng-invalid.ng-dirty {
+  background: #f66;
+}
+
+input[type='text'] {
+  font-family: $font-family;
+  font-size: 1.20rem;
+  font-weight: 300;
+  color: $black;
+}
+
+input[type='radio'] {
+  width: auto;
+  -webkit-appearance: none;
+  border-radius: 10px;
+  width: 1.0rem;
+  height: 1.0rem;
+  outline: none;
+  border: 2px solid $black;
+  box-sizing: border-box;
+  vertical-align: text-top;
+}
+
+input[type='radio']:unchecked { }
+
+input[type='radio']:checked {
+  background-color: $black;
+}
+
+input[type='range'] {
+  background-color: #ccc;
+  -webkit-appearance: none;
+  height: 2px;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border-radius: 10px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 0.75rem;
+  background: $black;
+}
+
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: #ccc;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  background: $red;
+}
+
+input[type='range']:disabled::-webkit-slider-thumb:hover {
+  background: #ccc;
+}
+
+input[type='range']::-webkit-slider-thumb:active {
+  background: $red-highlight;
+}
+
+input[type='range']:disabled::-webkit-slider-thumb:active {
+  background: #ccc;
+}
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type='range']::-moz-range-thumb {
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 0.75rem;
+  background: $black;
+  border: 0;
+}
+
+input[type='range']:disabled::-moz-range-thumb {
+  background: #ccc;
+}
+
+input[type='range']::-moz-range-thumb:hover {
+  background: $red;
+}
+
+input[type='range']:disabled::-moz-range-thumb:hover {
+  background: #ccc;
+}
+
+input[type='range']::-moz-range-thumb:active {
+  background: $red-highlight;
+}
+
+input[type='range']:disabled::-moz-range-thumb:active {
+  background: #ccc;
+}
+
+input[type='range']::-moz-range-track {
+  display: none;
+  background: #ccc;
+  border: 0;
+  outline: none;
+}
+
+button {
+  border: 3px solid #ddd;
+  background: #ddd;
+  outline: none;
+  font-size: 1.0rem;
+  padding: 0.75rem;
+  font-family: $font-family;
+  border-radius: 10px;
+  color: $black;
+  cursor: pointer;
+  margin: 0;
+}
+
+.button-small {
+  padding: 0.25rem 0.5rem;
+  border-width: 2px;
+}
+
+.button-full {
+}
+
+.button-hollow {
+  background: $white;
+  border-color: #ccc;
+}
+
+.button-enabled, .button-enabled:hover {
+  background: $orange;
+  border-color: $orange;
+  color: $white;
+}
+
+@media (hover) {
+  .button-hollow:hover {
+    background: $light-orange;
+    border-color: $orange;
+    color: $orange;
+  }
+}
