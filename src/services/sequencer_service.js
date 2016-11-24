@@ -114,7 +114,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
       sequencerService.addTrack();
     }
 
-    $rootScope.$broadcast('SequencerService.removeTrack');
+    $rootScope.$broadcast('SequencerService.removeTrack', { trackID: trackID });
     $rootScope.$broadcast('SequencerService.update');
   };
 

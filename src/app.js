@@ -203,6 +203,11 @@ app.controller('TrackEditorController',
 
   $scope.$on('SequencerService.removeTrack', function(event, args) {
     $scope.trackOptions = buildTrackOptions();
+
+    if (args.trackID === $scope.trackID) {
+      $scope.trackID = $scope.trackOptions[0].id;
+    }
+    $scope.changeSelectedTrack();
   });
 
   $scope.$on('SequencerController.trackNameChanged', function(event, args) {
