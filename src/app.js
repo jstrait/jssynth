@@ -190,8 +190,6 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   };
 
   $scope.removeTrack = function(trackID) {
-    var i;
-
     SequencerService.removeTrack(trackID);
     $scope.patternOptions = buildPatternOptions();
   };
