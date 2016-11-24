@@ -8,7 +8,7 @@ $white: #fff;
 $border-color: #ddd;
 
 @import "controls.scss";
-
+@import "base.scss";
 
 body {
   margin: 0;
@@ -151,70 +151,7 @@ input.note:focus {
 
 .lightText { color: #aaa; }
 
-.list-style-none { list-style-type: none; }
-
-.h1 { font-size: 6.0rem; }
-.h2 { font-size: 3.0rem; }
-.h3 { font-size: 1.5rem; }
-.h4 { font-size: 1.0rem; }
-
-.m0  { margin: 0; }
-.mt0 { margin-top: 0; }
-.mb0 { margin-bottom: 0; }
-.ml0 { margin-left: 0; }
-.mt1 { margin-top: 1.5rem; }
-.mr1 { margin-right: 1.5rem; }
-.mb1 { margin-bottom: 1.5rem; }
-.ml1 { margin-left: 1.5rem; }
-.mt2 { margin-top: 3.0rem; }
-.mb2 { margin-bottom: 3.0rem; }
-.mr2 { margin-right: 3.0rem; }
-.mt3 { margin-top: 4.5rem; }
-
-.pt0 { padding-top: 0.0rem; }
-.pb0 { padding-bottom: 0.0rem; }
-.pl0 { padding-left: 0.0rem; }
-.pl1 { padding-left: 1.5rem; }
-.pr1 { padding-right: 1.5rem; }
-.pt1 { padding-top: 1.5rem; }
-.pb1 { padding-bottom: 1.5rem; }
-.pt2 { padding-top: 3.0rem; }
-
-.bt  { border-top: 1px solid $border-color; }
-.bb  { border-bottom: 1px solid $border-color; }
-.bl  { border-left: 1px solid $border-color; }
-.br  { border-right: 1px solid $border-color; }
-
-.bt-thick { border-top: 2px solid $border-color; }
-.bb-thick { border-bottom: 2px solid $border-color; }
-
-.center { text-align: center; }
-.right  { float: right; }
-
-.round { border-radius: 50%; }
-
-.underline { text-decoration: underline; }
-
-.flex { display: -webkit-flex; display: flex; }
-.block { display: block; }
-.inline-block { display: inline-block; }
-.display-none { display: none; }
-
-.flex-uniform-size { -webkit-flex: 1; flex: 1; }
-.flex-column { -webkit-flex-direction: column; flex-direction: column; }
-.flex-align-center { -webkit-align-items: center; align-items: center; }
-.flex-justify-center { -webkit-justify-content: center; justify-content: center; }
-
-.overflow-auto     { overflow: auto; }
-.overflow-hidden-x { overflow-x: hidden; }
-.overflow-scroll-x { overflow-x: scroll; }
-
-.border-box { box-sizing: border-box; }
 .full-width { width: 100%; }
-
-.no-whitespace-wrap { white-space: nowrap; }
-
-.pointer { cursor: pointer; }
 
 .enabled {
   background: $orange;
