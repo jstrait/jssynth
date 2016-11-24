@@ -9,64 +9,42 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 }]);
 
 
-app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
-  var trackID = 1;
-
-  var buildPatternOptions = function() {
-    return PatternService.patternsByTrackID(trackID).map(function(pattern) {
-     return { id: pattern.id, name: pattern.name };
-    });
+app.controller('PatternListController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
+  this.addPattern = function() {
+    var newPattern = PatternService.addPattern(this.trackId);
+    this.changeSelectedPattern(newPattern.id);
   };
 
-  $scope.patternOptions = buildPatternOptions();
-
-  $scope.$on('TrackEditorController.selectedTrackChanged', function(event, args) {
-    trackID = args.trackID;
-    $scope.patternOptions = buildPatternOptions();
-    $scope.changeSelectedPattern($scope.patternOptions[0].id);
-  });
-  $scope.$on('PatternService.update', function(event) {
-    $scope.patternOptions = buildPatternOptions();
-  });
-
-  $scope.selectedPatternID = 1;
-
-  $scope.addPattern = function() {
-    var newPattern = PatternService.addPattern(trackID);
-    $scope.changeSelectedPattern(newPattern.id);
-  };
-
-  $scope.removePattern = function(patternID) {
+  this.removePattern = function(patternID) {
     var i;
     var newSelectedPatternID;
     
-    if (patternID === $scope.selectedPatternID) {
+    if (patternID === this.selectedPatternId) {
       i = 0;
-      while (i < $scope.patternOptions.length && $scope.patternOptions[i].id !== patternID) {
+      while (i < this.patternOptions.length && this.patternOptions[i].id !== patternID) {
         i++;
       }
 
-      if (i === ($scope.patternOptions.length - 1)) {
-        newSelectedPatternID = $scope.patternOptions[i - 1].id;
+      if (i === (this.patternOptions.length - 1)) {
+        newSelectedPatternID = this.patternOptions[i - 1].id;
       }
       else {
-        newSelectedPatternID = $scope.patternOptions[i + 1].id;
+        newSelectedPatternID = this.patternOptions[i + 1].id;
       }
     }
     else {
-      newSelectedPatternID = $scope.selectedPatternID;
+      newSelectedPatternID = this.selectedPatternId;
     }
 
     SequencerService.unsetPattern(patternID);
     PatternService.removePattern(patternID);
 
     if (newSelectedPatternID !== patternID) {
-      $scope.changeSelectedPattern(newSelectedPatternID);
+      this.changeSelectedPattern(newSelectedPatternID);
     }
   };
 
-  $scope.changeSelectedPattern = function(patternID) {
-    $scope.selectedPatternID = patternID;
+  this.changeSelectedPattern = function(patternID) {
     $rootScope.$broadcast('PatternCollectionController.selectedPatternChanged', { patternID: patternID });
   };
 }]);
@@ -197,6 +175,14 @@ app.controller('TrackEditorController',
 
   $scope.trackOptions = buildTrackOptions();
 
+  var buildPatternOptions = function() {
+    return PatternService.patternsByTrackID($scope.trackID).map(function(pattern) {
+     return { id: pattern.id, name: pattern.name };
+    });
+  };
+
+  $scope.patternOptions = buildPatternOptions();
+
   $scope.$on('SequencerService.addTrack', function(event, args) {
     $scope.trackOptions = buildTrackOptions();
   });
@@ -219,6 +205,7 @@ app.controller('TrackEditorController',
   });
 
    $scope.$on('PatternService.update', function(event, args) {
+     $scope.patternOptions = buildPatternOptions();
      $scope.pattern = PatternService.patternByID($scope.pattern.id);
   });
 
@@ -228,7 +215,8 @@ app.controller('TrackEditorController',
 
   $scope.changeSelectedTrack = function() {
     $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
-    $scope.pattern = PatternService.patternsByTrackID($scope.trackID)[0];
+    $scope.patternOptions = buildPatternOptions();
+    $scope.pattern = PatternService.patternByID($scope.patternOptions[0].id);
 
     $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
   };

@@ -42,12 +42,14 @@ app.directive('instrumentEditor', function() {
 app.directive('patternList', function() {
   return {
     restrict: 'A',
-    scope: {
+    scope: {},
+    bindToController: {
       patternOptions: '=',
-      addPattern: '&',
-      removePattern: '&',
+      selectedPatternId: '=',
+      trackId: '=',
     },
-    controller: 'PatternCollectionController',
+    controller: 'PatternListController',
+    controllerAs: 'ctrl',
     templateUrl: 'templates/pattern_list.html',
   };
 });
