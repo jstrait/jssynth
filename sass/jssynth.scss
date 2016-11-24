@@ -28,9 +28,9 @@ body {
 }
 
 .logo {
-  line-height: 6.0rem;
   font-weight: bold;
   color: $red;
+  line-height: 1.0em;
 }
 
 #transport {
@@ -234,6 +234,10 @@ input.note:focus {
     flex: 1 50%;
   }
 
+  .logo {
+    font-size: 2.0rem;
+  }
+
   #transport {
     order: 3;
     flex: 1 100%;
@@ -300,6 +304,10 @@ input.note:focus {
 }
 
 @media (max-width: 480px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+
   #transport .control {
     -webkit-flex-direction: row;
     flex-direction: row;
