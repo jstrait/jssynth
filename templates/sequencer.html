@@ -1,7 +1,11 @@
 <h2 class="mt0 mb1 pl1">Sequencer</h2>
   <div class="flex">
     <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
-      <li class="list-style-none pl1 border-box bb"><span><button class="button-small button-hollow pt0 pb0" style="border-radius: 6px; width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button></span></li>
+      <li class="list-style-none pl1 border-box bb">
+        <span>
+          <button class="button-small button-hollow pt0 pb0" style="border-radius: 6px; width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button>
+        </span>
+      </li>
       <li class="flex flex-column flex-uniform-size list-style-none pl1 pr1 border-box bb br" style="justify-content: center;" ng-repeat="track in tracks">
         <span class="short-name">{{track.name | limitTo:2}}</span>
         <input class="underlinedInput full-width" ng-model="track.name" ng-change="changeTrackName(track.id);" type="text" />
