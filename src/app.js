@@ -169,7 +169,7 @@ app.controller('TrackEditorController',
 
   var buildTrackOptions = function() {
     return SequencerService.tracks().map(function(track) {
-     return { id: track.id, name: track.name };
+      return { id: track.id, name: track.name };
     });
   };
 
@@ -177,7 +177,7 @@ app.controller('TrackEditorController',
 
   var buildPatternOptions = function() {
     return PatternService.patternsByTrackID($scope.trackID).map(function(pattern) {
-     return { id: pattern.id, name: pattern.name };
+      return { id: pattern.id, name: pattern.name };
     });
   };
 
