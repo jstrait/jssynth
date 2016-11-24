@@ -51,12 +51,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   };
 
   transportService.currentStep = function() {
-    if (playing) {
-      return transport.currentStep();
-    }
-    else {
-      return null;
-    }
+    return (playing) ? transport.currentStep() : null;
   };
 
   transportService.export = function(exportCompleteCallback) {
