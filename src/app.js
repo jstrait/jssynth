@@ -72,20 +72,7 @@ app.controller('PatternCollectionController', ['$rootScope', '$scope', 'PatternS
 }]);
 
 
-app.controller('PatternController', ['$scope', 'InstrumentService', 'PatternService', function($scope, InstrumentService, PatternService) {
-  var instrumentID = 1;
-
-  var buildInstrumentOptions = function() {
-    return InstrumentService.instruments().map(function(instrument) {
-     return { id: instrument.id, name: instrument.name };
-    });
-  };
-
-  $scope.instrumentOptions = buildInstrumentOptions();
-  $scope.$on('InstrumentService.update', function(event) {
-    $scope.instrumentOptions = buildInstrumentOptions();
-  });
-
+app.controller('PatternController', ['$scope', 'PatternService', function($scope, PatternService) {
   this.updateName = function() {
     PatternService.updateName(this.pattern.id);
   };
