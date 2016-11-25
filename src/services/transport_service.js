@@ -11,6 +11,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   };
 
   var songPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
+  var offlineSongPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
   var transport = new JSSynth.Transport(songPlayer, stopCallback);
 
   if (!transport) {
@@ -44,6 +45,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
 
   transportService.setPatterns = function(newPatterns) {
     songPlayer.replacePatterns(newPatterns);
+    offlineSongPlayer.replacePatterns(newPatterns);
   };
 
   transportService.loop = function(newLoop) {
@@ -55,7 +57,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   };
 
   transportService.export = function(exportCompleteCallback) {
-    var offlineTransport = new JSSynth.OfflineTransport(songPlayer, tempo, amplitude, exportCompleteCallback);
+    var offlineTransport = new JSSynth.OfflineTransport(offlineSongPlayer, tempo, amplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
