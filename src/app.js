@@ -9,7 +9,7 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 }]);
 
 
-app.controller('PatternListController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
+app.controller('PatternListController', ['$scope', 'PatternService', 'SequencerService', function($scope, PatternService, SequencerService) {
   this.removePattern = function(patternID) {
     var i;
     var newSelectedPatternID;
