@@ -47,6 +47,7 @@ app.directive('patternList', function() {
       patternOptions: '=',
       selectedPatternId: '=',
       trackId: '=',
+      onChangeSelectedPattern: '&',
     },
     controller: 'PatternListController',
     controllerAs: 'ctrl',

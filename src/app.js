@@ -12,7 +12,7 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 app.controller('PatternListController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
   this.addPattern = function() {
     var newPattern = PatternService.addPattern(this.trackId);
-    this.changeSelectedPattern(newPattern.id);
+    this.onChangeSelectedPattern({ patternID: newPattern.id });
   };
 
   this.removePattern = function(patternID) {
@@ -40,12 +40,8 @@ app.controller('PatternListController', ['$rootScope', '$scope', 'PatternService
     PatternService.removePattern(patternID);
 
     if (newSelectedPatternID !== patternID) {
-      this.changeSelectedPattern(newSelectedPatternID);
+      this.onChangeSelectedPattern({ patternID: newSelectedPatternID })
     }
-  };
-
-  this.changeSelectedPattern = function(patternID) {
-    $rootScope.$broadcast('PatternCollectionController.selectedPatternChanged', { patternID: patternID });
   };
 }]);
 
@@ -200,10 +196,6 @@ app.controller('TrackEditorController',
     $scope.trackOptions = buildTrackOptions();
   });
 
-  $scope.$on('PatternCollectionController.selectedPatternChanged', function(event, args) {
-    $scope.pattern = PatternService.patternByID(args.patternID);
-  });
-
    $scope.$on('PatternService.update', function(event, args) {
      $scope.patternOptions = buildPatternOptions();
      $scope.pattern = PatternService.patternByID($scope.pattern.id);
@@ -219,6 +211,10 @@ app.controller('TrackEditorController',
     $scope.pattern = PatternService.patternByID($scope.patternOptions[0].id);
 
     $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
+  };
+
+  $scope.changeSelectedPattern = function(patternID) {
+    $scope.pattern = PatternService.patternByID(patternID);
   };
 }]);
 
