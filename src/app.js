@@ -150,8 +150,8 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
 
 
 app.controller('TrackEditorController',
-               ['$rootScope', '$scope', 'SequencerService', 'InstrumentService', 'PatternService',
-               function($rootScope, $scope, SequencerService, InstrumentService, PatternService) {
+               ['$scope', 'SequencerService', 'InstrumentService', 'PatternService',
+               function($scope, SequencerService, InstrumentService, PatternService) {
   $scope.trackID = 1;
   $scope.selectedTab = "instrument";
 
@@ -204,8 +204,6 @@ app.controller('TrackEditorController',
     $scope.instrument = InstrumentService.instrumentByID(SequencerService.trackByID($scope.trackID).instrumentID);
     $scope.patternOptions = buildPatternOptions();
     $scope.pattern = PatternService.patternByID($scope.patternOptions[0].id);
-
-    $rootScope.$broadcast('TrackEditorController.selectedTrackChanged', { trackID: $scope.trackID });
   };
 
   $scope.changeSelectedPattern = function(patternID) {
