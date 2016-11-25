@@ -24,7 +24,7 @@
     <li ng-repeat="row in ctrl.pattern.rows" class="inline-block list-style-none full-width">
       <ul class="ml0 pl0 no-whitespace-wrap">
         <li class="list-style-none inline-block note-container" ng-repeat="note in row.notes">
-          <input note-input id="pattern-{{pattern.id}}-row-{{$parent.$index}}-note-{{$index}}" class="note" ng-class="{firstRow: $parent.$first, lastRow: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="ctrl.updateNotes($parent.$index, $index);" maxlength="4" type="text" />
+          <input note-input id="pattern-{{ctrl.pattern.id}}-row-{{$parent.$index}}-note-{{$index}}" class="note" ng-class="{firstRow: $parent.$first, lastRow: $parent.$last, firstNote: $first, lastNote: $last}" ng-model="note.name" ng-change="ctrl.updateNotes($parent.$index, $index);" maxlength="4" type="text" />
          </li>
       </ul>
     </li>
