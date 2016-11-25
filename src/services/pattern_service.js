@@ -130,7 +130,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
 
     patterns.push(newPattern);
 
-    $rootScope.$broadcast('PatternService.update');
+    $rootScope.$broadcast('PatternService.add');
 
     return newPattern;
   };
@@ -139,6 +139,7 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
     var patternIndex = patternIndexByID(patternID);
     patterns.splice(patternIndex, 1);
 
+    $rootScope.$broadcast('PatternService.remove');
     $rootScope.$broadcast('PatternService.update');
   };
 
