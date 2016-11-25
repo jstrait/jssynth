@@ -11,12 +11,12 @@
   <script src="jssynth.js"></script>
 </head>
 <body class="flex flex-column">
-<div id="header" class="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width" ng-controller="TransportController">
+<div id="header" class="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width">
   <div id="logo-container">
     <h1 class="logo h2 mt0 mb0">JS-120</h1>
     <span class="lightText">Web Synthesizer</span>
   </div>
-  <div id="transport" class="flex flex-uniform-size flex-align-center">
+  <div id="transport" class="flex flex-uniform-size flex-align-center" ng-controller="TransportController">
     <button class="mr1 round button-hollow button-hollow-large {{playing ? 'button-enabled' : ''}}" ng-click="toggle();">►</button>
     <span class="transport-controls inline-block">
       <span class="control">
@@ -34,7 +34,7 @@
       </span>
     </span>
   </div>
-  <div id="download-container">
+  <div id="download-container" ng-controller="ExportController">
     <div style="position: relative;">
       <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
         <span class="h3" style="line-height: 1.0rem;">&darr;</span>&nbsp; *.wav

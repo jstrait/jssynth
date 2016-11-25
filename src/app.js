@@ -224,14 +224,10 @@ app.controller('TrackEditorController',
 
 
 app.controller('TransportController', ['$scope', 'SerializationService', 'TransportService', function($scope, SerializationService, TransportService) {
-  var downloadEnabled = typeof document.getElementById("hidden-download-link").download !== "undefined";
-
   $scope.playing = false;
   $scope.amplitude = 0.25;
   $scope.tempo = 100;
   $scope.loop = true;
-  $scope.downloadFileName = "js-120";
-  $scope.downloadBoxVisible = false;
 
   TransportService.setPatterns(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
@@ -260,6 +256,14 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.updateLoop = function() {
     TransportService.loop = $scope.loop;
   };
+}]);
+
+
+app.controller('ExportController', ['$scope', 'TransportService', function($scope, TransportService) {
+  var downloadEnabled = typeof document.getElementById("hidden-download-link").download !== "undefined";
+
+  $scope.downloadFileName = "js-120";
+  $scope.downloadBoxVisible = false;
 
   $scope.toggleDownloadBox = function() {
     $scope.downloadBoxVisible = !$scope.downloadBoxVisible;
