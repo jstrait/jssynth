@@ -48,8 +48,9 @@ app.directive('patternList', function() {
       selectedPatternId: '=',
       onChangeSelectedPattern: '&',
       onAddPattern: '&',
+      onRemovePattern: '&',
     },
-    controller: 'PatternListController',
+    controller: function() {},
     controllerAs: 'ctrl',
     templateUrl: 'templates/pattern_list.html',
   };

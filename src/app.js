@@ -9,38 +9,6 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 }]);
 
 
-app.controller('PatternListController', ['$scope', 'PatternService', 'SequencerService', function($scope, PatternService, SequencerService) {
-  this.removePattern = function(patternID) {
-    var i;
-    var newSelectedPatternID;
-    
-    if (patternID === this.selectedPatternId) {
-      i = 0;
-      while (i < this.patternOptions.length && this.patternOptions[i].id !== patternID) {
-        i++;
-      }
-
-      if (i === (this.patternOptions.length - 1)) {
-        newSelectedPatternID = this.patternOptions[i - 1].id;
-      }
-      else {
-        newSelectedPatternID = this.patternOptions[i + 1].id;
-      }
-    }
-    else {
-      newSelectedPatternID = this.selectedPatternId;
-    }
-
-    SequencerService.unsetPattern(patternID);
-    PatternService.removePattern(patternID);
-
-    if (newSelectedPatternID !== patternID) {
-      this.onChangeSelectedPattern({ patternID: newSelectedPatternID })
-    }
-  };
-}]);
-
-
 app.controller('PatternController', ['$scope', 'PatternService', function($scope, PatternService) {
   this.updateName = function() {
     PatternService.updateName(this.pattern.id);
@@ -215,6 +183,36 @@ app.controller('TrackEditorController',
 
     $scope.patternOptions = buildPatternOptions();
     $scope.pattern = newPattern;
+  };
+
+  $scope.removePattern = function(patternID) {
+    var i;
+    var newSelectedPatternID;
+
+    if (patternID === $scope.pattern.id) {
+      i = 0;
+      while (i < this.patternOptions.length && this.patternOptions[i].id !== patternID) {
+        i++;
+      }
+
+      if (i === (this.patternOptions.length - 1)) {
+        newSelectedPatternID = this.patternOptions[i - 1].id;
+      }
+      else {
+        newSelectedPatternID = this.patternOptions[i + 1].id;
+      }
+    }
+    else {
+      newSelectedPatternID = $scope.pattern.id;
+    }
+
+    SequencerService.unsetPattern(patternID);
+    PatternService.removePattern(patternID);
+
+    $scope.patternOptions = buildPatternOptions();
+    if (newSelectedPatternID !== patternID) {
+      $scope.changeSelectedPattern(newSelectedPatternID);
+    }
   };
 }]);
 
