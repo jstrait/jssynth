@@ -10,11 +10,6 @@ app.controller('InstrumentController', ['$scope', 'InstrumentService', function(
 
 
 app.controller('PatternListController', ['$rootScope', '$scope', 'PatternService', 'SequencerService', function($rootScope, $scope, PatternService, SequencerService) {
-  this.addPattern = function() {
-    var newPattern = PatternService.addPattern(this.trackId);
-    this.onChangeSelectedPattern({ patternID: newPattern.id });
-  };
-
   this.removePattern = function(patternID) {
     var i;
     var newSelectedPatternID;
@@ -215,6 +210,13 @@ app.controller('TrackEditorController',
 
   $scope.changeSelectedPattern = function(patternID) {
     $scope.pattern = PatternService.patternByID(patternID);
+  };
+
+  $scope.addPattern = function() {
+    var newPattern = PatternService.addPattern($scope.trackID);
+
+    $scope.patternOptions = buildPatternOptions();
+    $scope.pattern = newPattern;
   };
 }]);
 

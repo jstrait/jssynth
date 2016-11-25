@@ -14,6 +14,6 @@
 </div>
 <div instrument-editor instrument="instrument" class="flex overflow-scroll-x pb1 instrument-panel-container" ng-class="{'display-none':(selectedTab !== 'instrument')}" update-instrument="updateInstrument()"></div>
 <div ng-class="{'display-none':(selectedTab !== 'patterns')}" >
-  <div pattern-list track-id="trackID" pattern-options="patternOptions" selected-pattern-id="pattern.id" on-change-selected-pattern="changeSelectedPattern(patternID);"></div>
+  <div pattern-list pattern-options="patternOptions" selected-pattern-id="pattern.id" on-change-selected-pattern="changeSelectedPattern(patternID);" on-add-pattern="addPattern()"></div>
   <div pattern-editor pattern="pattern"></div>
 </div>
