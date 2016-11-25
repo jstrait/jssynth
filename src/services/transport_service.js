@@ -13,11 +13,7 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   var songPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
   var offlineSongPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
   var transport = new JSSynth.Transport(songPlayer, stopCallback);
-
-  if (!transport) {
-    alert("Your browser doesn't appear to support WebAudio, and so won't be able to use the JS-120. Try a recent version of Chrome, Safari, or Firefox.");
-    return;
-  }
+  var enabled = (transport !== false);
 
   var transportService = {};
 
@@ -59,6 +55,10 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
   transportService.export = function(exportCompleteCallback) {
     var offlineTransport = new JSSynth.OfflineTransport(offlineSongPlayer, tempo, amplitude, exportCompleteCallback);
     offlineTransport.tick();
+  };
+
+  transportService.isEnabled = function() {
+    return enabled;
   };
 
   return transportService;

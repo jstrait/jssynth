@@ -250,6 +250,10 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.updateLoop = function() {
     TransportService.loop = $scope.loop;
   };
+
+  $scope.isEnabled = function() {
+    return TransportService.isEnabled();
+  };
 }]);
 
 
