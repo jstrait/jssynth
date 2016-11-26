@@ -118,13 +118,13 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     var track = sequencerService.trackByID(trackID);
     var trackIndex = trackIndexByID(trackID);
 
+    var removedTrack = tracks.splice(trackIndex, 1);
+
     PatternService.patternsByTrackID(trackID).forEach(function(pattern) {
       PatternService.removePattern(pattern.id);
     });
 
-    InstrumentService.removeInstrument(track.instrumentID);
-
-    tracks.splice(trackIndex, 1);
+    InstrumentService.removeInstrument(removedTrack.instrumentID);
 
     if (tracks.length === 0) {
       sequencerService.addTrack();
