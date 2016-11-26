@@ -1,6 +1,10 @@
 "use strict";
 
 app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'InstrumentService', 'PatternService', function($rootScope, IdGeneratorService, InstrumentService, PatternService) {
+  var TOTAL_MEASURES = 8;
+  var STEPS_PER_MEASURE = 16;
+  var TOTAL_STEPS = TOTAL_MEASURES * STEPS_PER_MEASURE;
+
   var idGenerator = IdGeneratorService.buildGenerator();
 
   var tracks = [
@@ -68,6 +72,8 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
   };
 
   var sequencerService = {};
+
+  sequencerService.totalSteps = function() { return TOTAL_STEPS; };
 
   sequencerService.tracks = function() { return tracks; };
 

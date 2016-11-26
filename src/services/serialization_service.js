@@ -81,13 +81,11 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatterns;
     var serializedNotes = [];
 
-    var sequencerTracks = SequencerService.tracks();
-    var totalMeasures = sequencerTracks[0].patterns.length;
-
-    for (i = 0; i < totalMeasures * 16; i++) {
+    for (i = 0; i < SequencerService.totalSteps(); i++) {
       serializedNotes[i] = [];
     }
 
+    var sequencerTracks = SequencerService.tracks();
     sequencerTracks.forEach(function(sequencerTrack) {
       if (sequencerTrack.muted) {
         return;
@@ -96,7 +94,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       serializedInstrument = serializeInstrument(InstrumentService.instrumentByID(sequencerTrack.instrumentID));
       serializedPatterns = serializePatterns(PatternService.patternsByTrackID(sequencerTrack.id));
 
-      for (i = 0; i < totalMeasures; i++) {
+      for (i = 0; i < sequencerTrack.patterns.length; i++) {
         if (sequencerTrack.patterns[i].patternID !== -1) {
           var tracks = serializedPatterns[sequencerTrack.patterns[i].patternID];
 
