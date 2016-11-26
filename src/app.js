@@ -239,6 +239,9 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.$on('PatternService.update', function(event) {
     TransportService.setPatterns(SerializationService.serialize());
   });
+  $scope.$on('SequencerService.removeTrack', function(event) {
+    TransportService.setPatterns(SerializationService.serialize());
+  });
   $scope.$on('SequencerService.update', function(event) {
     TransportService.setPatterns(SerializationService.serialize());
   });

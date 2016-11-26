@@ -110,7 +110,6 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     var newPattern = PatternService.addPattern(newTrack.id);
 
     $rootScope.$broadcast('SequencerService.addTrack');
-    $rootScope.$broadcast('SequencerService.update');
 
     return newTrack;
   };
@@ -132,7 +131,6 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     }
 
     $rootScope.$broadcast('SequencerService.removeTrack', { trackID: trackID });
-    $rootScope.$broadcast('SequencerService.update');
   };
 
   sequencerService.toggleTrackMute = function(trackID) {
