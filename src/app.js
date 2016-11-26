@@ -229,21 +229,21 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.tempo = 100;
   $scope.loop = true;
 
-  TransportService.setPatterns(SerializationService.serialize());
+  TransportService.setNotes(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
-    TransportService.setPatterns(SerializationService.serialize());
+    TransportService.setNotes(SerializationService.serialize());
   });
   $scope.$on('PatternService.remove', function(event) {
-    TransportService.setPatterns(SerializationService.serialize());
+    TransportService.setNotes(SerializationService.serialize());
   });
   $scope.$on('PatternService.update', function(event) {
-    TransportService.setPatterns(SerializationService.serialize());
+    TransportService.setNotes(SerializationService.serialize());
   });
   $scope.$on('SequencerService.removeTrack', function(event) {
-    TransportService.setPatterns(SerializationService.serialize());
+    TransportService.setNotes(SerializationService.serialize());
   });
   $scope.$on('SequencerService.update', function(event) {
-    TransportService.setPatterns(SerializationService.serialize());
+    TransportService.setNotes(SerializationService.serialize());
   });
 
   $scope.updateTempo = function() {

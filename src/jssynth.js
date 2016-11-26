@@ -136,42 +136,6 @@ JSSynth.EnvelopeCalculator = {
 };
 
 
-JSSynth.Pattern = function() {
-  var pattern = {};
-
-  var tracks = [];
-  var stepCount = 0;
-
-  pattern.tracks = function() { return tracks; };
-  pattern.stepCount = function() { return stepCount; };
-
-  pattern.replaceTracks = function(newTracks) {
-    tracks = newTracks;
-
-    var maxLength = 0;
-    tracks.forEach(function(track) {
-      if (track.sequence().length > maxLength) {
-        maxLength = track.sequence().length;
-      }
-    });
-    stepCount = maxLength;
-  };
-
-  return pattern;
-};
-
-
-JSSynth.Track = function(instrument, sequence, amplitude) {
-  var track = {};
-
-  track.instrument = function() { return instrument; };
-  track.sequence   = function() { return sequence; };
-  track.amplitude  = function() { return amplitude; };
-
-  return track;
-};
-
-
 JSSynth.SequenceParser = {
   parse: function(rawNotes) {
     var sequence = [];
@@ -294,47 +258,26 @@ JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
 };
 
 
-JSSynth.PatternPlayer = function(pattern) {
-  var isComplete = false;
+JSSynth.InstrumentNote = function(note, instrument, amplitude) {
+  var instrumentNote = {};
 
-  var stepIndex = 0;
-  var stepCount = 16;
+  instrumentNote.note = function() { return note; };
+  instrumentNote.instrument = function() { return instrument; };
+  instrumentNote.amplitude = function() { return amplitude; };
 
-  var patternPlayer = {};
-
-  patternPlayer.isComplete = function() { return isComplete; };
-
-  patternPlayer.step = function(audioContext, audioDestination, stepDuration, currentTime) {
-    var note, noteTimeDuration;
-
-    var notes = pattern.tracks().forEach(function(track) {
-      note = track.sequence()[stepIndex];
-      if (note) {
-        noteTimeDuration = stepDuration * note.stepDuration();
-
-        track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-      }
-    });
-
-    stepIndex += 1;
-    isComplete = (stepIndex >= stepCount);
-
-    return notes;
-  };
-
-  return patternPlayer;
+  return instrumentNote;
 };
 
-
-JSSynth.SongPlayer = function(patterns) {
+JSSynth.SongPlayer = function() {
   var MEASURES = 8;
   var STEPS_PER_MEASURE = 16;
   var STEP_COUNT = MEASURES * STEPS_PER_MEASURE;
 
+  var notes = [];
+
   var stepIndex;
   var isFinishedPlaying;
   var currentTime;
-  var patternPlayers;
 
   var songPlayer = {};
 
@@ -342,7 +285,6 @@ JSSynth.SongPlayer = function(patterns) {
     stepIndex = 0;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
-    patternPlayers = [];
   };
 
   songPlayer.stepCount = function() {
@@ -351,28 +293,22 @@ JSSynth.SongPlayer = function(patterns) {
 
   songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
 
-  songPlayer.replacePatterns = function(newPatterns) {
-    patterns = newPatterns;
+  songPlayer.replaceNotes = function(newNotes) {
+    notes = newNotes;
   };
 
   songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
     var scheduledSteps = [];
-    
+    var noteTimeDuration;
+
     while (currentTime < endTime) {
-      var incomingPatterns = patterns[stepIndex];
-      if (incomingPatterns) {
-        incomingPatterns.forEach(function(incomingPattern) {
-          patternPlayers.push(new JSSynth.PatternPlayer(incomingPattern));
+      var incomingNotes = notes[stepIndex];
+      if (incomingNotes) {
+        incomingNotes.forEach(function(note) {
+          noteTimeDuration = stepDuration * note.note().stepDuration();
+          note.instrument().playNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
         });
       }
-
-      patternPlayers.forEach(function(patternPlayer) {
-        patternPlayer.step(audioContext, audioDestination, stepDuration, currentTime);
-      });
-
-      patternPlayers = patternPlayers.filter(function(patternPlayer) {
-        return !patternPlayer.isComplete();
-      });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
 

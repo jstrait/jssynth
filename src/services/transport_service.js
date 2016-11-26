@@ -10,8 +10,8 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     playing = false;
   };
 
-  var songPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
-  var offlineSongPlayer = new JSSynth.SongPlayer([[new JSSynth.Pattern()]]);
+  var songPlayer = new JSSynth.SongPlayer();
+  var offlineSongPlayer = new JSSynth.SongPlayer();
   var transport = new JSSynth.Transport(songPlayer, stopCallback);
   var enabled = (transport !== false);
 
@@ -39,9 +39,9 @@ app.factory('TransportService', ['$rootScope', function($rootScope) {
     transport.setAmplitude(newAmplitude);
   };
 
-  transportService.setPatterns = function(newPatterns) {
-    songPlayer.replacePatterns(newPatterns);
-    offlineSongPlayer.replacePatterns(newPatterns);
+  transportService.setNotes = function(newNotes) {
+    songPlayer.replaceNotes(newNotes);
+    offlineSongPlayer.replaceNotes(newNotes);
   };
 
   transportService.loop = function(newLoop) {
