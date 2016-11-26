@@ -77,23 +77,23 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       serializedNotes[i] = [];
     }
 
-    var sequencerTracks = SequencerService.tracks();
-    sequencerTracks.forEach(function(sequencerTrack) {
-      if (sequencerTrack.muted) {
+    var tracks = SequencerService.tracks();
+    tracks.forEach(function(track) {
+      if (track.muted) {
         return;
       }
 
-      serializedInstrument = serializeInstrument(InstrumentService.instrumentByID(sequencerTrack.instrumentID));
-      serializedPatterns = serializePatterns(PatternService.patternsByTrackID(sequencerTrack.id));
+      serializedInstrument = serializeInstrument(InstrumentService.instrumentByID(track.instrumentID));
+      serializedPatterns = serializePatterns(PatternService.patternsByTrackID(track.id));
 
-      for (i = 0; i < sequencerTrack.patterns.length; i++) {
-        if (sequencerTrack.patterns[i].patternID !== -1) {
-          var tracks = serializedPatterns[sequencerTrack.patterns[i].patternID];
+      for (i = 0; i < track.patterns.length; i++) {
+        if (track.patterns[i].patternID !== -1) {
+          var tracks = serializedPatterns[track.patterns[i].patternID];
 
           tracks.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j]) {
-                serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, sequencerTrack.volume));
+                serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume));
               }
             }
           });
