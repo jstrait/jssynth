@@ -50,9 +50,11 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
       pattern.rows.forEach(function(row) {
         var sequence;
+        var rawSequenceString;
 
         if (!row.muted) {
-          sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
+          rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
+          sequence = JSSynth.SequenceParser.parse(rawSequenceString);
           serializedRows.push(sequence);
         }
       });
@@ -61,16 +63,6 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     });
 
     return serializedPatterns;
-  };
-
-  var serializeTrackNotesIntoSequence = function(track) {
-    var rawNotes = [];
-
-    track.notes.forEach(function(note, index) {
-      rawNotes[index] = note.name;
-    });
-
-    return rawNotes.join(' ');
   };
 
   var serializationService = {};
