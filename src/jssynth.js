@@ -161,13 +161,12 @@ JSSynth.Pattern = function() {
 };
 
 
-JSSynth.Track = function(instrument, sequence, isMuted, amplitude) {
+JSSynth.Track = function(instrument, sequence, amplitude) {
   var track = {};
 
   track.instrument = function() { return instrument; };
-  track.amplitude  = function() { return amplitude; };
   track.sequence   = function() { return sequence; };
-  track.isMuted    = function() { return isMuted; };
+  track.amplitude  = function() { return amplitude; };
 
   return track;
 };
@@ -309,13 +308,11 @@ JSSynth.PatternPlayer = function(pattern) {
     var note, noteTimeDuration;
 
     var notes = pattern.tracks().forEach(function(track) {
-      if (!track.isMuted()) {
-        note = track.sequence()[stepIndex];
-        if (note) {
-          noteTimeDuration = stepDuration * note.stepDuration();
+      note = track.sequence()[stepIndex];
+      if (note) {
+        noteTimeDuration = stepDuration * note.stepDuration();
 
-          track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
-        }
+        track.instrument().playNote(audioContext, audioDestination, note, track.amplitude(), currentTime, currentTime + noteTimeDuration);
       }
     });
 

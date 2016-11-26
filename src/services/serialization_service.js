@@ -49,8 +49,10 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       var serializedTracks = [];
 
       pattern.rows.forEach(function(row) {
-        var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
-        serializedTracks.push(new JSSynth.Track(instrument, sequence, row.muted, trackVolume));
+        if (!row.muted) {
+          var sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
+          serializedTracks.push(new JSSynth.Track(instrument, sequence, trackVolume));
+        }
       });
 
       var serializedPattern = new JSSynth.Pattern();
