@@ -88,9 +88,9 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
 
       for (i = 0; i < track.patterns.length; i++) {
         if (track.patterns[i].patternID !== -1) {
-          var tracks = serializedPatterns[track.patterns[i].patternID];
+          var sequences = serializedPatterns[track.patterns[i].patternID];
 
-          tracks.forEach(function(sequence) {
+          sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j]) {
                 serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume));
