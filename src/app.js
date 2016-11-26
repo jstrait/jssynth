@@ -69,6 +69,9 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   });
 
   $scope.patternOptions = buildPatternOptions();
+  $scope.$on('PatternService.add', function(event) {
+    $scope.patternOptions = buildPatternOptions();
+  });
   $scope.$on('PatternService.update', function(event) {
     $scope.patternOptions = buildPatternOptions();
   });
