@@ -72,6 +72,9 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   $scope.$on('PatternService.add', function(event) {
     $scope.patternOptions = buildPatternOptions();
   });
+  $scope.$on('PatternService.remove', function(event) {
+    $scope.patternOptions = buildPatternOptions();
+  });
   $scope.$on('PatternService.update', function(event) {
     $scope.patternOptions = buildPatternOptions();
   });
@@ -228,6 +231,9 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
 
   TransportService.setPatterns(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
+    TransportService.setPatterns(SerializationService.serialize());
+  });
+  $scope.$on('PatternService.remove', function(event) {
     TransportService.setPatterns(SerializationService.serialize());
   });
   $scope.$on('PatternService.update', function(event) {

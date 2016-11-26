@@ -659,7 +659,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
     patterns.splice(patternIndex, 1);
 
     $rootScope.$broadcast('PatternService.remove');
-    $rootScope.$broadcast('PatternService.update');
   };
 
   var patternIndexByID = function(targetID) {
