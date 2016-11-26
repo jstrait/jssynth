@@ -46,18 +46,18 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     var serializedPatterns = {};
 
     patterns.forEach(function(pattern) {
-      var serializedTracks = [];
+      var serializedRows = [];
 
       pattern.rows.forEach(function(row) {
         var sequence;
 
         if (!row.muted) {
           sequence = JSSynth.SequenceParser.parse(serializeTrackNotesIntoSequence(row));
-          serializedTracks.push(sequence);
+          serializedRows.push(sequence);
         }
       });
 
-      serializedPatterns[pattern.id] = serializedTracks;
+      serializedPatterns[pattern.id] = serializedRows;
     });
 
     return serializedPatterns;
