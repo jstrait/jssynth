@@ -245,6 +245,11 @@ input.note:focus {
     justify-content: space-between;
   }
 
+  .transport-inner {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
   .transport-controls {
     width: 100%;
   }
