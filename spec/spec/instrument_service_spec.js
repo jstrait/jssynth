@@ -6,42 +6,63 @@ describe("InstrumentService", function() {
   var DEFAULT_INSTRUMENTS = [
     {
       id:                 1,
-      name:               'Instrument 1',
-      waveform1:          'square',
+      name:               'Melody',
+      waveform1:          'sawtooth',
+      waveform1Octave:    0,
+      waveform2:          'sawtooth',
+      waveform2Detune:    6,
+      waveform2Octave:    0,
+      lfoWaveform:        'sine',
+      lfoFrequency:       5,
+      lfoAmplitude:       6,
+      filterCutoff:       2200,
+      filterResonance:    0,
+      filterLFOWaveform:  'sine',
+      filterLFOFrequency: 5,
+      filterLFOAmplitude: 0.46,
+      envelopeAttack:     0.04,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.2,
+    },
+    {
+      id:                 2,
+      name:               'Chords',
+      waveform1:          'triangle',
+      waveform1Octave:    0,
+      waveform2:          'sine',
+      waveform2Detune:    6,
+      waveform2Octave:    0,
+      lfoWaveform:        'sine',
+      lfoFrequency:       5,
+      lfoAmplitude:       0,
+      filterCutoff:       1400,
+      filterResonance:    0,
+      filterLFOWaveform:  'sine',
+      filterLFOFrequency: 2.4,
+      filterLFOAmplitude: 0.78,
+      envelopeAttack:     0.05,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.0,
+    },
+    {
+      id:                 3,
+      name:               'Bass',
+      waveform1:          'sawtooth',
       waveform1Octave:    0,
       waveform2:          'sawtooth',
       waveform2Detune:    0,
       waveform2Octave:    0,
       lfoWaveform:        'sine',
       lfoFrequency:       5,
-      lfoAmplitude:       10,
-      filterCutoff:       1000,
-      filterResonance:    0,
-      filterLFOWaveform:  'sine',
-      filterLFOFrequency: 5,
-      filterLFOAmplitude: 0,
-      envelopeAttack:     0.0,
-      envelopeDecay:      0.0,
-      envelopeSustain:    1.0,
-      envelopeRelease:    0.0,
-    },
-    {
-      id:                 2,
-      name:               'Instrument 2',
-      waveform1:          'sawtooth',
-      waveform1Octave:    0,
-      waveform2:          'sine',
-      waveform2Detune:    0,
-      waveform2Octave:    0,
-      lfoWaveform:        'sine',
-      lfoFrequency:       5,
       lfoAmplitude:       0,
-      filterCutoff:       1000,
+      filterCutoff:       1200,
       filterResonance:    0,
       filterLFOWaveform:  'sine',
       filterLFOFrequency: 5,
       filterLFOAmplitude: 0,
-      envelopeAttack:     0.0,
+      envelopeAttack:     0.02,
       envelopeDecay:      0.0,
       envelopeSustain:    1.0,
       envelopeRelease:    0.0,
@@ -64,8 +85,8 @@ describe("InstrumentService", function() {
 
     var expectedResult = DEFAULT_INSTRUMENTS.concat(
       {
-        id:                 3,
-        name:               'Instrument 3',
+        id:                 4,
+        name:               'Instrument 4',
         waveform1:          'sawtooth',
         waveform1Octave:    0,
         waveform2:          'square',
@@ -87,15 +108,13 @@ describe("InstrumentService", function() {
     );
 
     expect(instrumentService.instruments()).toEqual(expectedResult);
-    expect(rootScope.$broadcast).toHaveBeenCalledWith('InstrumentService.update');
   });
 
   describe("removeInstrument", function() {
     it("should remove an existing instrument correctly", function() {
-      instrumentService.removeInstrument(1);
+      instrumentService.removeInstrument(2);
 
-      expect(instrumentService.instruments()).toEqual([ DEFAULT_INSTRUMENTS[1] ]);
-      expect(rootScope.$broadcast).toHaveBeenCalledWith('InstrumentService.update');
+      expect(instrumentService.instruments()).toEqual([ DEFAULT_INSTRUMENTS[0], DEFAULT_INSTRUMENTS[2] ]);
     });
 
     it("should do nothing when removing a non-existent Instrument", function() {
