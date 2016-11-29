@@ -41,12 +41,12 @@
     </div>
   </div>
   <div id="download-container" ng-controller="ExportController">
-    <div style="position: relative;">
+    <div class="relative">
       <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
         <span class="h3" style="line-height: 1.0rem;">&darr;</span>&nbsp; *.wav
       </button>
       <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
-      <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}" style="right: 0; width: 20.0rem;">
+      <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
         <span class="control mt">
           <label class="control-label">File Name:</label>
           <span class="annotated-input">
@@ -63,7 +63,7 @@
 <div sequencer expanded="true" class="pt2 pb1 border-box bt-thick"></div>
 <div track-editor class="mt2 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick"></div>
 
-<div class="flex flex-column mt2" style="flex: 1; justify-content: flex-end;">
+<div class="flex flex-column flex-uniform-size mt2" style="justify-content: flex-end;">
   <p class="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-16</p>
 </div>
 </body>
