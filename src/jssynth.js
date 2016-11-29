@@ -352,7 +352,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
     // The reason is that in iOS, there is a bug in which an AudioContext
     // can be created with a sample rate of 48,000Hz, which for reasons
     // causes audio playback to be distorted. If you re-load the page,
-    // the sample rate will be set to 41,000Hz instead, and playback
+    // the sample rate will be set to 44,100Hz instead, and playback
     // will sound normal.
     //
     // Creating an AudioContext, closing it, and recreating another
