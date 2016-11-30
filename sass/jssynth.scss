@@ -6,6 +6,7 @@ $black: #130f30;
 $white: #fff;
 $border-color: #ddd;
 
+$size-half: 0.75rem;
 $size-1: 1.5rem;
 $size-2: 3.0rem;
 $size-3: 4.5rem;
@@ -41,7 +42,7 @@ body {
 }
 
 label.radioLabel {
-  margin-right: 0.75em;
+  margin-right: $size-half;
 }
 
 .indented {
