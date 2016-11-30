@@ -46,12 +46,10 @@
     </button>
     <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
     <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
-      <span class="control mt">
-        <label class="control-label">File Name:</label>
-        <span class="annotated-input">
-          <input ng-model="downloadFileName" class="underlinedInput" type="text" />
-          <span>.wav</span>
-        </span>
+      <label class="block">File Name:</label>
+      <span class="flex">
+        <input ng-model="downloadFileName" class="underlinedInput flex-uniform-size" type="text" />
+        <span>.wav</span>
       </span>
       <button class="button-full button-hollow mt1 right" ng-click="export();">Download</button>
     </div>
