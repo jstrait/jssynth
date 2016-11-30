@@ -40,22 +40,20 @@
       </span>
     </div>
   </div>
-  <div id="download-container" ng-controller="ExportController">
-    <div class="relative">
-      <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
-        <span class="h3" style="line-height: 1.0rem;">&darr;</span>&nbsp; *.wav
-      </button>
-      <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
-      <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
-        <span class="control mt">
-          <label class="control-label">File Name:</label>
-          <span class="annotated-input">
-            <input ng-model="downloadFileName" class="underlinedInput" type="text" />
-            <span>.wav</span>
-          </span>
+  <div id="download-container" class="relative" ng-controller="ExportController">
+    <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
+      <span class="h3" style="line-height: 1.0rem;">&darr;</span>&nbsp; *.wav
+    </button>
+    <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
+    <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
+      <span class="control mt">
+        <label class="control-label">File Name:</label>
+        <span class="annotated-input">
+          <input ng-model="downloadFileName" class="underlinedInput" type="text" />
+          <span>.wav</span>
         </span>
-        <button class="button-full button-hollow mt1 right" ng-click="export();">Download</button>
-      </div>
+      </span>
+      <button class="button-full button-hollow mt1 right" ng-click="export();">Download</button>
     </div>
   </div>
 </div>
