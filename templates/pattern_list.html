@@ -1,5 +1,5 @@
 <div class="mb2">
-  <ul class="flex pl0 mt0 mb1">
+  <ul class="flex flex-wrap pl0 mt0 mb1">
     <li class="flex flex-align-center list-style-none pointer border-box mr1" style="justify-content: space-between; width: 9.0rem;" ng-repeat="patternOption in ctrl.patternOptions" ng-click="ctrl.onChangeSelectedPattern({patternID: patternOption.id})"  ng-class="{paneTabSelected: (patternOption.id === ctrl.selectedPatternId), paneTabUnselected: (patternOption.id !== ctrl.selectedPatternId)}">
       <span >{{patternOption.name}}</span>
       <button class="button-small button-hollow round pt0 pb0 pl0 pr0" ng-click="ctrl.onRemovePattern({patternID: patternOption.id})" ng-class="{'display-none': (ctrl.patternOptions.length <= 1)}">&nbsp;X&nbsp;</button>
