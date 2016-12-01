@@ -276,15 +276,15 @@ app.controller('ExportController', ['$scope', 'TransportService', function($scop
   $scope.downloadBoxVisible = false;
 
   $scope.toggleDownloadBox = function() {
-    $scope.downloadBoxVisible = !$scope.downloadBoxVisible;
-  };
-
-  $scope.export = function() {
     if (!downloadEnabled) {
       alert("Downloading to Wave file is not supported in your browser.");
       return;
     }
 
+    $scope.downloadBoxVisible = !$scope.downloadBoxVisible;
+  };
+
+  $scope.export = function() {
     var exportCompleteCallback = function(blob) {      
       var url  = window.URL.createObjectURL(blob);
 
