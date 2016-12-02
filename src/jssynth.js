@@ -341,7 +341,6 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var audioContext;
   var masterGain;
   var startTime;
-  var stopTime;
   var currentStep;
   var scheduledSteps;
 
@@ -391,7 +390,6 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
     currentStep = 0;
     scheduledSteps = [];
     startTime = audioContext.currentTime;
-    stopTime = null;
     songPlayer.reset(startTime);
 
     // Fix for Safari 9.1 (and maybe 9?)
@@ -414,7 +412,6 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   };
 
   var stop = function() {
-    stopTime = audioContext.currentTime;
     window.clearInterval(timeoutId);
     playing = false;
   };
