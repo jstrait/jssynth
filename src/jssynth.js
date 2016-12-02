@@ -170,17 +170,17 @@ JSSynth.SequenceParser = {
 JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
   var NOTE_RATIOS = {
     "A"  : 1.0,
-    "A#" : 16.0 / 15.0,
-    "B"  : 9.0 / 8.0,
-    "C"  : 6.0 / 5.0,
-    "C#" : 5.0 / 4.0,
-    "D"  : 4.0 / 3.0,
-    "D#" : 45.0 / 32.0,
-    "E"  : 3.0 / 2.0,
-    "F"  : 8.0 / 5.0,
-    "F#" : 5.0 / 3.0,
-    "G"  : 9.0 / 5.0,
-    "G#" : 15.0 / 8.0,
+    "A#" : Math.pow(2,  1 / 12),
+    "B"  : Math.pow(2,  2 / 12),
+    "C"  : Math.pow(2,  3 / 12),
+    "C#" : Math.pow(2,  4 / 12),
+    "D"  : Math.pow(2,  5 / 12),
+    "D#" : Math.pow(2,  6 / 12),
+    "E"  : Math.pow(2,  7 / 12),
+    "F"  : Math.pow(2,  8 / 12),
+    "F#" : Math.pow(2,  9 / 12),
+    "G"  : Math.pow(2, 10 / 12),
+    "G#" : Math.pow(2, 11 / 12),
   };
 
   var ENHARMONIC_EQUIVALENTS = {
