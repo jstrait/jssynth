@@ -340,7 +340,6 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var TICK_INTERVAL = 50;         // in milliseconds
   var audioContext;
   var masterGain;
-  var startTime;
   var currentStep;
   var scheduledSteps;
 
@@ -389,8 +388,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var start = function() {
     currentStep = 0;
     scheduledSteps = [];
-    startTime = audioContext.currentTime;
-    songPlayer.reset(startTime);
+    songPlayer.reset(audioContext.currentTime);
 
     // Fix for Safari 9.1 (and maybe 9?)
     // For some reason, the AudioContext on a new page load is in suspended state
