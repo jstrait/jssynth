@@ -68,6 +68,73 @@ body {
     border-color: transparent transparent $white transparent;
 }
 
+@media (max-width: 768px) {
+  #header {
+    flex-flow: row wrap;
+  }
+
+  #logo-container {
+    order: 1;
+    flex: 1 50%;
+  }
+
+  .logo {
+    font-size: 2.0rem;
+  }
+
+  #transport {
+    order: 3;
+    flex: 1 100%;
+    padding-top: 1.5rem;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+  }
+
+  .transport-inner {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  .transport-error {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .transport-controls {
+    width: 100%;
+  }
+
+  .transport-controls .control {
+    display: inline-block;
+    width: 50%;
+  }
+
+  #download-container {
+    order: 2;
+    flex: 1 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  #transport .control {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .transport-controls {
+    width: auto;
+  }
+
+  .transport-controls .control {
+    width: auto;
+    display: flex;
+  }
+}
+
 
 /* Sequencer */
 
@@ -114,6 +181,31 @@ body {
 
 .instrument-panel {
   min-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .instrument-panel-container {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .instrument-panel {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .instrument-panel:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
 }
 
 
@@ -189,56 +281,7 @@ input.note:focus {
 }
 
 
-@media (max-width: 1024px) {
-
-}
-
 @media (max-width: 768px) {
-  #header {
-    flex-flow: row wrap;
-  }
-
-  #logo-container {
-    order: 1;
-    flex: 1 50%;
-  }
-
-  .logo {
-    font-size: 2.0rem;
-  }
-
-  #transport {
-    order: 3;
-    flex: 1 100%;
-    padding-top: 1.5rem;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
-  }
-
-  .transport-inner {
-    -webkit-flex: 1;
-    flex: 1;
-  }
-
-  .transport-error {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .transport-controls {
-    width: 100%;
-  }
-
-  .transport-controls .control {
-    display: inline-block;
-    width: 50%;
-  }
-
-  #download-container {
-    order: 2;
-    flex: 1 50%;
-  }
-
   .control {
     -webkit-align-items: flex-start;
     align-items: flex-start;
@@ -257,50 +300,9 @@ input.note:focus {
     -webkit-flex: 0 0 50%;
     flex: 0 0 50%;
   }
-
-  .instrument-panel-container {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-  }
-
-  .instrument-panel {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 1.5rem;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid $border-color;
-  }
-
-  .instrument-panel:last-child {
-    border-bottom: 0;
-    padding-bottom: 0;
-  }
 }
 
 @media (max-width: 480px) {
-  .logo {
-    font-size: 1.5rem;
-  }
-
-  #transport .control {
-    -webkit-flex-direction: row;
-    flex-direction: row;
-  }
-
-  .transport-controls {
-    width: auto;
-  }
-
-  .transport-controls .control {
-    width: auto;
-    display: flex;
-  }
-
   .control {
     -webkit-flex-direction: column;
     flex-direction: column;
