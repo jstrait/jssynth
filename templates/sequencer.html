@@ -19,13 +19,13 @@
     <li class="inline-block list-style-none full-width border-box">
       <ul class="flex ml0 pl0 no-whitespace-wrap">
         <li class="flex-uniform-size list-style-none border-box bb" style="min-width: 9.0rem;" ng-model="currentStep" ng-repeat="n in [1,2,3,4,5,6,7,8,]">
-          <span class="inline-block center full-width" ng-class="{enabled: currentStep === n}">{{n}}</span>
+          <span class="inline-block center full-width" ng-class="{'sequencer-currentStep': currentStep === n}">{{n}}</span>
         </li>
       </ul>
     </li>
     <li ng-repeat="track in tracks" class="list-style-none full-width border-box" style="height: 6.0rem;">
       <ul class="flex full-height ml0 pl0 no-whitespace-wrap">
-        <li class="sequencer-pattern flex-uniform-size full-height list-style-none center border-box bb br" style="min-width: 9.0rem;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{enabledlight: currentStep === ($index + 1)}">
+        <li class="sequencer-pattern flex-uniform-size full-height list-style-none center border-box bb br" style="min-width: 9.0rem;" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{'sequencer-currentStep-light': currentStep === ($index + 1)}">
           <span class="flex flex-align-center full-height pl-half pr-half border-box">
             <select class="full-width" ng-model="pattern.patternID" ng-change="changeSequencer();" convert-to-number>
               <option ng-repeat="patternOption in patternOptions[$parent.$index]" value="{{patternOption.id}}">{{patternOption.name}}</option>
