@@ -148,7 +148,11 @@ body {
   color: $white;
 }
 
-.sequencer-pattern:last-child {
+.sequencer-cell {
+  min-width: 9.0rem;
+}
+
+.sequencer-cell:last-child {
   border-right: none;
 }
 
