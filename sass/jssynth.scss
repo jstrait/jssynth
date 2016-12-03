@@ -27,6 +27,8 @@ body {
   font-weight: 300;
 }
 
+/* Header */
+
 .logo {
   color: $red;
   line-height: 1.0em;
@@ -35,59 +37,6 @@ body {
 #transport {
   -webkit-justify-content: center;
   justify-content: center;
-}
-
-.section-header {
-  line-height: 1.5rem;
-}
-
-label.radioLabel {
-  margin-right: $size-half;
-}
-
-.indented {
-  padding-left: 1.0rem;
-}
-
-.underlinedInput {
-  outline: none;
-  border: solid $black;
-  border-width: 0 0 1px 0;
-  border-radius: 0;  /* For iOS */
-}
-
-.control {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-.control-label {
-  width: 30%;
-  box-sizing: border-box;
-}
-
-.control .annotated-input {
-  -webkit-flex: 1;
-  flex: 1;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-.control .annotated-input input {
-  -webkit-flex: 1;
-  flex: 1;
-}
-
-.control .annotated-input span {
-  width: 5.0rem;
-  padding-left: 0.5rem;
-  box-sizing: border-box;
 }
 
 .popup-box {
@@ -119,13 +68,74 @@ label.radioLabel {
     border-color: transparent transparent $white transparent;
 }
 
-.helperToggle {
-  color: #0af;
-  cursor: pointer;
+
+/* Sequencer */
+
+.enabled {
+  background: $orange;
+  color: $white;
+}
+
+.enabledlight {
+  background: $light-orange;
+  color: $white;
 }
 
 .sequencer-pattern:last-child {
   border-right: none;
+}
+
+.expanded {
+  width: 200px;
+}
+
+.expanded > li > .short-name {
+  display: none;
+}
+
+.contracted {
+  width: 64px;
+}
+
+.contracted > li {
+  padding-right: 0;
+}
+
+.contracted > li > input {
+  display: none;
+}
+
+.contracted > li > .sequencer-volume-container {
+  display: none;
+}
+
+
+/* Instrument editor */
+
+.instrument-panel {
+  min-width: 600px;
+}
+
+
+/* Pattern editor */
+
+.paneTab {
+  color: $black;
+  text-decoration: none;
+}
+
+.paneTabUnselected {
+  padding-bottom: 2px;
+  border-bottom: 2px solid $border-color;
+}
+
+.paneTabSelected {
+  border-bottom: 4px solid $orange;
+}
+
+.helperToggle {
+  color: #0af;
+  cursor: pointer;
 }
 
 .note-container {
@@ -158,65 +168,24 @@ input.note:focus {
   background: #f3f3f3;
 }
 
+
+/* Other */
+
+.section-header {
+  line-height: 1.5rem;
+}
+
+.indented {
+  padding-left: 1.0rem;
+}
+
 .lightText { color: #aaa; }
 
 .full-width { width: 100%; }
 
-.enabled {
-  background: $orange;
-  color: $white;
-}
-
-.enabledlight {
-  background: $light-orange;
-  color: $white;
-}
-
 .selectedOption {
   border: $border-color 2px solid;
   background: #ddd;
-}
-
-.paneTab {
-  color: $black;
-  text-decoration: none;
-}
-
-.paneTabUnselected {
-  padding-bottom: 2px;
-  border-bottom: 2px solid $border-color;
-}
-
-.paneTabSelected {
-  border-bottom: 4px solid $orange;
-}
-
-.expanded {
-  width: 200px;
-}
-
-.expanded > li > .short-name {
-  display: none;
-}
-
-.contracted {
-  width: 64px;
-}
-
-.contracted > li {
-  padding-right: 0;
-}
-
-.contracted > li > input {
-  display: none;
-}
-
-.contracted > li > .sequencer-volume-container {
-  display: none;
-}
-
-.instrument-panel {
-  min-width: 600px;
 }
 
 

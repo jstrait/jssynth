@@ -137,6 +137,51 @@ button {
   color: $white;
 }
 
+label.radioLabel {
+  margin-right: $size-half;
+}
+
+.underlinedInput {
+  outline: none;
+  border: solid $black;
+  border-width: 0 0 1px 0;
+  border-radius: 0;  /* For iOS */
+}
+
+.control {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.control-label {
+  width: 30%;
+  box-sizing: border-box;
+}
+
+.control .annotated-input {
+  -webkit-flex: 1;
+  flex: 1;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.control .annotated-input input {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.control .annotated-input span {
+  width: 5.0rem;
+  padding-left: 0.5rem;
+  box-sizing: border-box;
+}
+
 @media (hover) {
   .button-hollow:hover {
     background: $light-orange;
