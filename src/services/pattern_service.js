@@ -10,7 +10,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G2'},
                                  {name: '-'},
                                  {name: '-'},
@@ -36,7 +35,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'Ab2'},
                                  {name: 'Bb3'},
                                  {name: 'C3'},
@@ -62,7 +60,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G2'},
                                  {name: '-'},
                                  {name: '-'},
@@ -88,7 +85,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -114,7 +110,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -140,7 +135,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 1,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: ''},
                                  {name: 'Bb3'},
@@ -167,7 +161,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 2,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -186,7 +179,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'Eb3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -205,7 +197,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -231,7 +222,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 2,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'Ab3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -250,7 +240,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'F3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -269,7 +258,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -295,7 +283,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 2,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -314,7 +301,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'Eb3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -333,7 +319,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -359,7 +344,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 2,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -378,7 +362,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: 'Ab3'},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'Eb3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -397,7 +380,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: 'F3'},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'C3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -423,7 +405,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 2,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -442,7 +423,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'Eb3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -461,7 +441,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                                  {name: ''},],
                        },
                        {
-                         muted: false,
                          notes: [{name: 'Bb3'},
                                  {name: '-'},
                                  {name: '-'},
@@ -489,7 +468,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 3,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C1'},
                                  {name: ''},
                                  {name: ''},
@@ -515,7 +493,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 3,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C1'},
                                  {name: ''},
                                  {name: ''},
@@ -541,7 +518,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 3,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'C1'},
                                  {name: ''},
                                  {name: ''},
@@ -567,7 +543,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 3,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'Eb1'},
                                  {name: ''},
                                  {name: ''},
@@ -593,7 +568,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
                      trackID: 3,
                      rows: [
                        {
-                         muted: false,
                          notes: [{name: 'G0'},
                                  {name: ''},
                                  {name: ''},
@@ -626,7 +600,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
       trackID: trackID,
       rows: [
         {
-          muted: false,
           notes: [{name: ''},
                   {name: ''},
                   {name: ''},
@@ -673,7 +646,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
 
   patternService.addRow = function(patternID) {
     var newRow = {
-                   muted: false,
                    notes: [{name: ''},
                            {name: ''},
                            {name: ''},
@@ -705,12 +677,6 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
       patternService.addRow(patternID);
     }
 
-    $rootScope.$broadcast('PatternService.update');
-  };
-
-  patternService.toggleRowMute = function(patternID, rowIndex) {
-    var pattern = patternService.patternByID(patternID);
-    pattern.rows[rowIndex].muted = !pattern.rows[rowIndex].muted;
     $rootScope.$broadcast('PatternService.update');
   };
 

@@ -52,11 +52,9 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
         var sequence;
         var rawSequenceString;
 
-        if (!row.muted) {
-          rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
-          sequence = JSSynth.SequenceParser.parse(rawSequenceString);
-          serializedRows.push(sequence);
-        }
+        rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
+        sequence = JSSynth.SequenceParser.parse(rawSequenceString);
+        serializedRows.push(sequence);
       });
 
       serializedPatterns[pattern.id] = serializedRows;

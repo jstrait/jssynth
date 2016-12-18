@@ -7,12 +7,6 @@
   <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows</li>
 </ul>
 <div class="flex">
-  <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-    <li class="flex-uniform-size list-style-none inline-block note-container"><span class="h4 note-column-header">&nbsp;</span></li>
-    <li class="flex-uniform-size list-style-none" ng-repeat="row in ctrl.pattern.rows">
-      <button class="button-small button-hollow {{ctrl.pattern.rows[$index].muted ? 'button-enabled' : ''}}" ng-click="ctrl.toggleRowMute($index);">Mute</button>
-    </li>
-  </ul>
   <ul class="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
     <li class="inline-block list-style-none full-width">
       <ul class="ml0 pl0 center no-whitespace-wrap">
