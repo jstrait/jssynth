@@ -3,7 +3,7 @@
   <ul class="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" ng-class="{expanded: (expanded === true), contracted: (expanded === false)}">
     <li class="list-style-none pl1 border-box bb">
       <span>
-        <button class="button-small button-hollow pt0 pb0" style="border-radius: 6px; width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button>
+        <button class="button-tiny button-hollow" style="width: 40px;" ng-click="toggleExpansion();">{{expansionToggleLabel}}</button>
       </span>
     </li>
     <li class="flex flex-column flex-uniform-size flex-justify-center list-style-none pl1 pr1 border-box bb br" ng-repeat="track in tracks">
