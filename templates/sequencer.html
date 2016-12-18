@@ -23,7 +23,7 @@
         </li>
       </ul>
     </li>
-    <li ng-repeat="track in tracks" class="list-style-none full-width border-box" style="height: 6.0rem;">
+    <li ng-repeat="track in tracks" class="list-style-none full-width height-4 border-box">
       <ul class="flex full-height ml0 pl0 no-whitespace-wrap">
         <li class="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" ng-repeat="pattern in track.patterns" ng-init="sequencerIndex = $index" ng-class="{'sequencer-currentStep-light': currentStep === ($index + 1)}">
           <span class="flex flex-align-center full-height pl-half pr-half border-box">
