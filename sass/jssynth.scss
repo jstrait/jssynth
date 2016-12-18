@@ -71,11 +71,14 @@ body {
 
 @media (max-width: 768px) {
   #header {
+    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
   }
 
   #logo-container {
+    -webkit-order: 1;
     order: 1;
+    -webkit-flex: 1 50%;
     flex: 1 50%;
   }
 
@@ -84,7 +87,9 @@ body {
   }
 
   #transport {
+    -webkit-order: 3;
     order: 3;
+    -webkit-flex: 1 100%;
     flex: 1 100%;
     padding-top: 1.5rem;
     -webkit-justify-content: space-between;
@@ -111,7 +116,9 @@ body {
   }
 
   #download-container {
+    -webkit-order: 2;
     order: 2;
+    -webkit-flex: 1 50%;
     flex: 1 50%;
   }
 }
@@ -132,6 +139,7 @@ body {
 
   .transport-controls .control {
     width: auto;
+    display: -webkit-flex;
     display: flex;
   }
 }
@@ -190,12 +198,14 @@ body {
 
 @media (max-width: 768px) {
   .instrument-panel-container {
+    -webkit-flex-direction: column;
     flex-direction: column;
     align-items: stretch;
     width: 100%;
   }
 
   .instrument-panel {
+    -webkit-flex: 1;
     flex: 1;
     min-width: 0;
     margin: 0;
