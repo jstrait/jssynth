@@ -106,13 +106,11 @@ input[type='range']::-moz-range-track {
 }
 
 button {
-  border: 3px solid #ddd;
+  border: solid #ddd;
   background: #ddd;
   outline: none;
   font-size: 1.0rem;
-  padding: $size-half;
   font-family: $font-family;
-  border-radius: 10px;
   color: $black;
   cursor: pointer;
   margin: 0;
@@ -120,16 +118,20 @@ button {
 
 .button-tiny {
   border-radius: 6px;
-  padding: 0.0rem 0.5rem;
   border-width: 2px;
+  padding: 0.0rem 0.5rem;
 }
 
 .button-small {
-  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
   border-width: 2px;
+  padding: 0.25rem 0.5rem;
 }
 
 .button-full {
+  border-radius: 10px;
+  border-width: 3px;
+  padding: $size-half;
 }
 
 .button-hollow {
