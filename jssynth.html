@@ -18,7 +18,7 @@
   </div>
   <div id="transport" class="flex flex-uniform-size flex-align-center" ng-controller="TransportController">
     <div class="transport-error ml2 mr2" ng-class="{'display-none': (isEnabled() === true)}">
-      <span class="block bold red"><span class="round white bg-red inline-block center mr-half width-1" style="line-height: 1.5rem;">!</span>Playback not support in your browser</span>
+      <span class="block bold red"><span class="round white bg-red inline-block center mr-half width-1 lh3">!</span>Playback not support in your browser</span>
       <span class="block">Try a recent version of Chrome, Safari, or Firefox.</span>
     </div>
     <div class="transport-inner flex flex-align-center" ng-class="{'display-none': (isEnabled() === false)}">
@@ -42,7 +42,7 @@
   </div>
   <div id="download-container" class="relative" ng-controller="ExportController">
     <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
-      <span class="h3" style="line-height: 1.0rem;">&darr;</span>&nbsp; *.wav
+      <span class="h3 lh-flush">&darr;</span>&nbsp; *.wav
     </button>
     <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
     <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
