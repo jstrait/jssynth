@@ -33,9 +33,9 @@ JSSynth.Instrument = function(config) {
     if (note.frequency() > 0.0) {
       // Base sound generator
       var oscillator = buildOscillator(audioContext,
-                                           config.oscillators[0].waveform,
-                                           note.frequency() * Math.pow(2, config.oscillators[0].octave),
-                                           config.oscillators[0].detune);
+                                       config.oscillators[0].waveform,
+                                       note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                       config.oscillators[0].detune);
 
       // Secondary sound generator
       var oscillator2 = buildOscillator(audioContext,
