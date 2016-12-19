@@ -30,68 +30,66 @@ JSSynth.Instrument = function(config) {
   var instrument = {};
 
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    if (note.frequency() > 0.0) {
-      // Base sound generator
-      var oscillator = buildOscillator(audioContext,
-                                       config.oscillators[0].waveform,
-                                       note.frequency() * Math.pow(2, config.oscillators[0].octave),
-                                       config.oscillators[0].detune);
+    // Base sound generator
+    var oscillator = buildOscillator(audioContext,
+                                     config.oscillators[0].waveform,
+                                     note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                     config.oscillators[0].detune);
 
-      // Secondary sound generator
-      var oscillator2 = buildOscillator(audioContext,
-                                        config.oscillators[1].waveform,
-                                        note.frequency() * Math.pow(2, config.oscillators[1].octave),
-                                        config.oscillators[1].detune);
+    // Secondary sound generator
+    var oscillator2 = buildOscillator(audioContext,
+                                      config.oscillators[1].waveform,
+                                      note.frequency() * Math.pow(2, config.oscillators[1].octave),
+                                      config.oscillators[1].detune);
 
-      // LFO for base sound
-      var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
-      var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
-      pitchLfoOscillator.connect(pitchLfoGain);
-      pitchLfoGain.connect(oscillator.frequency);
-      pitchLfoGain.connect(oscillator2.frequency);
+    // LFO for base sound
+    var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
+    var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
+    pitchLfoOscillator.connect(pitchLfoGain);
+    pitchLfoGain.connect(oscillator.frequency);
+    pitchLfoGain.connect(oscillator2.frequency);
 
-      // Filter
-      var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
-      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
-      // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
-      // pops/clicks.
-      var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
-      filterLfoOscillator.connect(filterLfoGain);
-      filterLfoGain.connect(filter.frequency);
+    // Filter
+    var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+    var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+    // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
+    // pops/clicks.
+    var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+    filterLfoOscillator.connect(filterLfoGain);
+    filterLfoGain.connect(filter.frequency);
 
-      // Master Gain
-      var masterGain = audioContext.createGain();
+    // Master Gain
+    var masterGain = audioContext.createGain();
 
-      oscillator.connect(filter);
-      oscillator2.connect(filter);
-      filter.connect(masterGain);
-      masterGain.connect(audioDestination);
+    oscillator.connect(filter);
+    oscillator2.connect(filter);
+    filter.connect(masterGain);
+    masterGain.connect(audioDestination);
 
-      oscillator.start(gateOnTime);
-      oscillator2.start(gateOnTime);
-      pitchLfoOscillator.start(gateOnTime);
-      filterLfoOscillator.start(gateOnTime);
+    oscillator.start(gateOnTime);
+    oscillator2.start(gateOnTime);
+    pitchLfoOscillator.start(gateOnTime);
+    filterLfoOscillator.start(gateOnTime);
 
-      var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
-      // Envelope Attack
-      masterGain.gain.setValueAtTime(0.0, 0.0);
-      masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
+    // Envelope Attack
+    masterGain.gain.setValueAtTime(0.0, 0.0);
+    masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
 
-      // Envelope Decay/Sustain
-      if (calculatedEnvelope.attackEndTime < gateOffTime) {
-        masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
-      }
-
-      // Envelope Release
-      var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelope.release);
-      masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
-
-      oscillator.stop(releaseEndTime);
-      oscillator2.stop(releaseEndTime);
-      pitchLfoOscillator.stop(releaseEndTime);
-      filterLfoOscillator.stop(releaseEndTime);
+    // Envelope Decay/Sustain
+    if (calculatedEnvelope.attackEndTime < gateOffTime) {
+      masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
     }
+
+    // Envelope Release
+    var releaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelope.release);
+    masterGain.gain.linearRampToValueAtTime(0.0, releaseEndTime);
+
+    oscillator.stop(releaseEndTime);
+    oscillator2.stop(releaseEndTime);
+    pitchLfoOscillator.stop(releaseEndTime);
+    filterLfoOscillator.stop(releaseEndTime);
   };
 
   return instrument;
