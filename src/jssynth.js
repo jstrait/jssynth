@@ -74,7 +74,7 @@ JSSynth.Instrument = function(config) {
     var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Envelope Attack
-    masterGain.gain.setValueAtTime(0.0, 0.0);
+    masterGain.gain.setValueAtTime(0.0, gateOnTime - 0.001);
     masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
 
     // Envelope Decay/Sustain
