@@ -120,45 +120,91 @@
     <span>{{ctrl.instrument.filterResonance}}</span>
   </span>
 </span>
-<span class="block mt1 lightText">Cutoff Wobble:</span>
 <span class="control">
-  <label class="control-label indented">Amount:</label>
-  <span class="annotated-input">
-    <input ng-model="ctrl.instrument.filterLFOAmplitude" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
-    <span>{{(ctrl.instrument.filterLFOAmplitude * 100) | number:0}}%</span>
-  </span>
-</span>
-<span class="control">
-  <label class="control-label indented">Rate:</label>
-  <span class="annotated-input">
-    <input ng-model="ctrl.instrument.filterLFOFrequency" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
-    <span>{{ctrl.instrument.filterLFOFrequency}}Hz</span>
-  </span>
-</span>
-<span class="control">
-  <label class="control-label indented">Waveform:</label>
+  <label class="control-label">Modulation:</label>
   <span class="flex waveformOptionsContainer">
     <span class="radioContainer">
-      <input id="filterLFOWaveformSine" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="sine" type="radio">
-      <label for="filterLFOWaveformSine" class="radioLabel">Sine</label>
+      <input id="filterModulatorLFO" ng-model="ctrl.instrument.filterModulator" ng-change="ctrl.updateInstrument();" value="lfo" type="radio">
+      <label for="filterModulatorLFO" class="radioLabel">Wobble</label>
     </span>
     <span class="radioContainer">
-      <input id="filterLFOWaveformSquare" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="square" type="radio">
-      <label for="filterLFOWaveformSquare" class="radioLabel">Square</label>
-    </span>
-    <span class="radioContainer">
-      <input id="filterLFOWaveformSaw" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="sawtooth" type="radio">
-      <label for="filterLFOWaveformSaw" class="radioLabel">Saw</label>
-    </span>
-    <span class="radioContainer">
-      <input id="filterLFOWaveformTriangle" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="triangle" type="radio">
-      <label for="filterLFOWaveformTriangle" class="radioLabel">Triangle</label>
+      <input id="filterModulatorEnvelope" ng-model="ctrl.instrument.filterModulator" ng-change="ctrl.updateInstrument();" value="envelope" type="radio">
+      <label for="filterModulatorEnvelope" class="radioLabel">Envelope</label>
     </span>
   </span>
 </span>
+<div ng-class="{'display-none':(ctrl.instrument.filterModulator !== 'lfo')}">
+  <span class="block mt1 lightText">Cutoff Wobble:</span>
+  <span class="control">
+    <label class="control-label indented">Amount:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterLFOAmplitude" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
+      <span>{{(ctrl.instrument.filterLFOAmplitude * 100) | number:0}}%</span>
+    </span>
+  </span>
+  <span class="control">
+    <label class="control-label indented">Rate:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterLFOFrequency" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="20.0" step="0.1" />
+      <span>{{ctrl.instrument.filterLFOFrequency}}Hz</span>
+    </span>
+  </span>
+  <span class="control">
+    <label class="control-label indented">Waveform:</label>
+    <span class="flex waveformOptionsContainer">
+      <span class="radioContainer">
+        <input id="filterLFOWaveformSine" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="sine" type="radio">
+        <label for="filterLFOWaveformSine" class="radioLabel">Sine</label>
+      </span>
+      <span class="radioContainer">
+        <input id="filterLFOWaveformSquare" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="square" type="radio">
+        <label for="filterLFOWaveformSquare" class="radioLabel">Square</label>
+      </span>
+      <span class="radioContainer">
+        <input id="filterLFOWaveformSaw" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="sawtooth" type="radio">
+        <label for="filterLFOWaveformSaw" class="radioLabel">Saw</label>
+      </span>
+      <span class="radioContainer">
+        <input id="filterLFOWaveformTriangle" ng-model="ctrl.instrument.filterLFOWaveform" ng-change="ctrl.updateInstrument();" value="triangle" type="radio">
+        <label for="filterLFOWaveformTriangle" class="radioLabel">Triangle</label>
+      </span>
+    </span>
+  </span>
+</div>
+<div ng-class="{'display-none':(ctrl.instrument.filterModulator !== 'envelope')}">
+  <span class="block mt1 lightText">Cutoff Envelope:</span>
+  <span class="control">
+    <label class="control-label indented">Attack Speed:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterEnvelopeAttack" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+      <span>{{ctrl.instrument.filterEnvelopeAttack * 1000}} ms</span>
+    </span>
+  </span>
+  <span class="control">
+    <label class="control-label indented">Decay Speed:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterEnvelopeDecay" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+      <span>{{ctrl.instrument.filterEnvelopeDecay * 1000}} ms</span>
+    </span>
+  </span>
+  <span class="control">
+    <label class="control-label indented">Sustain Volume:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterEnvelopeSustain" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="1.0" step="0.01" />
+      <span>{{(ctrl.instrument.filterEnvelopeSustain * 100) | number:0}}%</span>
+    </span>
+  </span>
+  <span class="control">
+    <label class="control-label indented">Release Speed:</label>
+    <span class="annotated-input">
+      <input ng-model="ctrl.instrument.filterEnvelopeRelease" ng-change="ctrl.updateInstrument();" type="range" min="0.0" max="0.3" step="0.01" />
+      <span>{{ctrl.instrument.filterEnvelopeRelease * 1000}} ms</span>
+    </span>
+  </span>
+</div>
 </div>
 <div class="pl1 border-box instrument-panel">
-<h2 class="h3 section-header">Envelope</h2>
+<h2 class="h3 section-header">Loudness Envelope</h2>
 <span class="control">
   <label class="control-label">Attack Speed:</label>
   <span class="annotated-input">

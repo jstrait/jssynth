@@ -25,10 +25,17 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
       filter: {
         cutoff:    filterCutoff,
         resonance: parseInt(instrument.filterResonance, 10),
+        mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
           frequency: parseFloat(instrument.filterLFOFrequency),
           amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+        },
+        envelope: {
+          attack:  parseFloat(instrument.filterEnvelopeAttack),
+          decay:   parseFloat(instrument.filterEnvelopeDecay),
+          sustain: parseFloat(instrument.filterEnvelopeSustain),
+          release: parseFloat(instrument.filterEnvelopeRelease),
         },
       },
       envelope: {
