@@ -366,6 +366,19 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
   var currentStep;
   var scheduledSteps;
 
+  var detectClipping = function(e) {
+    var i;
+    var samples = e.inputBuffer.getChannelData(0);
+    var numSamples = samples.length;
+
+    for (i = 0; i < numSamples; i++) {
+      if (Math.abs(samples[i]) > 1.0) {
+        console.log("Clipping! " + samples[i]);
+        break;
+      }
+    }
+  };
+
   if (window.AudioContext) {
     // Why do we create an AudioContext, immediately close it, and then
     // recreate another one? Good question.
@@ -389,8 +402,12 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
       audioContext = new AudioContext();
     }
 
+    var clipDetector = audioContext.createScriptProcessor(512);
+    clipDetector.onaudioprocess = detectClipping;
+
     masterGain = audioContext.createGain();
     masterGain.connect(audioContext.destination);
+    masterGain.connect(clipDetector);
   }
   else {
     return false;
@@ -427,6 +444,8 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
       }
     }
 
+    clipDetector.connect(audioContext.destination);
+
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
     playing = true;
@@ -434,6 +453,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
 
   var stop = function() {
     window.clearInterval(timeoutId);
+    clipDetector.disconnect(audioContext.destination);
     playing = false;
   };
 
