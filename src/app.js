@@ -185,7 +185,8 @@ app.controller('TrackEditorController',
   };
 
   $scope.addPattern = function() {
-    var newPattern = PatternService.addPattern($scope.trackID);
+    var newPatternName = $scope.instrument.name + ' ' + ($scope.patternOptions.length + 1);
+    var newPattern = PatternService.addPattern($scope.trackID, newPatternName);
 
     $scope.patternOptions = buildPatternOptions();
     $scope.pattern = newPattern;

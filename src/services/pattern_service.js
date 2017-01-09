@@ -591,12 +591,12 @@ app.factory('PatternService', ['$rootScope', 'IdGeneratorService', 'InstrumentSe
   
   var patternService = {};
 
-  patternService.addPattern = function(trackID) {
+  patternService.addPattern = function(trackID, newPatternName) {
     var id = idGenerator.next();
 
     var newPattern = {
       id: id,
-      name: 'Pattern ' + id,
+      name: newPatternName,
       trackID: trackID,
       rows: [
         {
