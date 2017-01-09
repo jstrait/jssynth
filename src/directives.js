@@ -74,16 +74,7 @@ app.directive('patternEditor', function() {
 app.directive('sequencer', function() {
   return {
     restrict: 'A',
-    scope: {
-      expanded: '=',
-      addTrack: '&',
-      removeTrack: '&',
-      changeTrackName: '&',
-      toggleTrackMute: '&',
-      changeSelectedTrack: '&',
-      toggleExpansion: '&',
-      updateSequencer: '&',
-    },
+    scope: {},
     controller: 'SequencerController',
     templateUrl: 'templates/sequencer.html',
   };
