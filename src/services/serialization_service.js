@@ -83,6 +83,8 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
     }
 
     var tracks = SequencerService.tracks();
+    var trackVolumeMultiplier = 1 / tracks.length;
+
     tracks.forEach(function(track) {
       if (track.muted) {
         return;
@@ -98,7 +100,7 @@ app.factory('SerializationService', ['InstrumentService', 'PatternService', 'Seq
           sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume));
+                serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume * trackVolumeMultiplier));
               }
             }
           });
