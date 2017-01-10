@@ -30,10 +30,9 @@ JSSynth.Instrument = function(config) {
   var instrument = {};
 
   instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var NUM_OSCILLATORS = 2;
     var calculatedEnvelope;
 
-    amplitude = amplitude / NUM_OSCILLATORS;
+    amplitude = amplitude / config.oscillators.length;
 
     // Base sound generator
     var oscillator = buildOscillator(audioContext,
