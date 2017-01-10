@@ -33,6 +33,7 @@ JSSynth.Instrument = function(config) {
     var calculatedEnvelope;
 
     amplitude = amplitude / config.oscillators.length;
+    var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
 
     // Base sound generator
     var oscillator = buildOscillator(audioContext,
@@ -68,7 +69,7 @@ JSSynth.Instrument = function(config) {
       calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
-      filter.frequency.setValueAtTime(0.0, gateOnTime - 0.001);
+      filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
       filter.frequency.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
@@ -99,7 +100,7 @@ JSSynth.Instrument = function(config) {
     calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Envelope Attack
-    masterGain.gain.setValueAtTime(0.0, gateOnTime - 0.001);
+    masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
     masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
 
     // Envelope Decay/Sustain
