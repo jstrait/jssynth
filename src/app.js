@@ -226,7 +226,7 @@ app.controller('TrackEditorController',
 
 app.controller('TransportController', ['$scope', 'SerializationService', 'TransportService', function($scope, SerializationService, TransportService) {
   $scope.playing = false;
-  $scope.amplitude = 0.25;
+  $scope.amplitude = 0.8;
   $scope.tempo = 100;
   $scope.loop = true;
 
