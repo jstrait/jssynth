@@ -185,7 +185,7 @@ app.controller('TrackEditorController',
   };
 
   $scope.addPattern = function() {
-    var newPatternName = $scope.instrument.name + ' ' + ($scope.patternOptions.length + 1);
+    var newPatternName = SequencerService.trackByID($scope.trackID).name + ' ' + ($scope.patternOptions.length + 1);
     var newPattern = PatternService.addPattern($scope.trackID, newPatternName);
 
     $scope.patternOptions = buildPatternOptions();
