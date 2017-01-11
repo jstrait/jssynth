@@ -230,7 +230,6 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.tempo = 100;
   $scope.loop = true;
 
-  TransportService.setNotes(SerializationService.serialize());
   $scope.$on('InstrumentService.update', function(event) {
     TransportService.setNotes(SerializationService.serialize());
   });
@@ -267,6 +266,10 @@ app.controller('TransportController', ['$scope', 'SerializationService', 'Transp
   $scope.isEnabled = function() {
     return TransportService.isEnabled();
   };
+
+  TransportService.setNotes(SerializationService.serialize());
+  $scope.updateAmplitude();
+  $scope.updateTempo();
 }]);
 
 
