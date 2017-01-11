@@ -113,7 +113,7 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
     };
     tracks.push(newTrack);
 
-    var newPattern = PatternService.addPattern(newTrack.id);
+    var newPattern = PatternService.addPattern(newTrack.id, "New Track 1");
 
     $rootScope.$broadcast('SequencerService.addTrack');
 
