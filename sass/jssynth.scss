@@ -320,6 +320,10 @@ input.note:focus {
 }
 
 @media (max-width: 480px) {
+  .helperToggle {
+    display: inline-block;
+  }
+
   .control {
     -webkit-flex-direction: column;
     flex-direction: column;
