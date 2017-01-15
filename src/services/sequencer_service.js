@@ -121,7 +121,6 @@ app.factory('SequencerService', ['$rootScope', 'IdGeneratorService', 'Instrument
   };
 
   sequencerService.removeTrack = function(trackID) {
-    var track = sequencerService.trackByID(trackID);
     var trackIndex = trackIndexByID(trackID);
 
     var removedTrack = tracks.splice(trackIndex, 1);
