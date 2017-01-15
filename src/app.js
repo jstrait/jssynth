@@ -95,7 +95,7 @@ app.controller('SequencerController', ['$rootScope', '$scope', '$interval', 'Ins
   };
 
   $scope.addTrack = function() {
-    var newTrack = SequencerService.addTrack();
+    SequencerService.addTrack();
   };
 
   $scope.removeTrack = function(trackID) {
