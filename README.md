@@ -4,7 +4,9 @@ A synthesizer and sequencer that runs in your browser, using the WebAudio API.
 
 Try it out here: [http://www.joelstrait.com/js-120](http://www.joelstrait.com/js-120)
 
-![JS-120](js-120.png)
+![JS-120 Sequencer](js-120-sequencer.png)
+![JS-120 Instrument Editor](js-120-instrument-editor.png)
+![JS-120 Pattern Editor](js-120-pattern-editor.png)
 
 ## Features
 
