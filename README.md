@@ -4,6 +4,12 @@ A synthesizer and sequencer that runs in your browser, using the WebAudio API.
 
 Try it out here: [http://www.joelstrait.com/js-120/](http://www.joelstrait.com/js-120/)
 
+## Example Song
+
+The song below is an example of what you can create with the JS-120, along with [Beats Drum Machine](http://beatsdrummachine.com) and GarageBand.
+
+[JS-120 Example Song](http://www.joelstrait.com/js-120/js-120-demo.m4a)
+
 ## Features
 
 * Sound generator
