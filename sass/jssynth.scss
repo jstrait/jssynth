@@ -204,6 +204,7 @@ body {
   .instrument-panel-container {
     -webkit-flex-direction: column;
     flex-direction: column;
+    -webkit-align-items: stretch;
     align-items: stretch;
     width: 100%;
   }
