@@ -4,15 +4,6 @@ A synthesizer and sequencer that runs in your browser, using the WebAudio API.
 
 Try it out here: [http://www.joelstrait.com/js-120/](http://www.joelstrait.com/js-120/)
 
-### Transport and Sequencer
-![JS-120 Sequencer](js-120-sequencer.png)
-
-### Instrument Editor
-![JS-120 Instrument Editor](js-120-instrument-editor.png)
-
-### Pattern Editor
-![JS-120 Pattern Editor](js-120-pattern-editor.png)
-
 ## Features
 
 * Sound generator
@@ -31,3 +22,8 @@ Try it out here: [http://www.joelstrait.com/js-120/](http://www.joelstrait.com/j
 * Tempo control
 * Master volume control
 * Download sequencer output to a *.wav file
+
+## Screenshots
+![JS-120 Sequencer](js-120-sequencer.png)
+![JS-120 Instrument Editor](js-120-instrument-editor.png)
+![JS-120 Pattern Editor](js-120-pattern-editor.png)
