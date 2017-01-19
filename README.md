@@ -17,8 +17,8 @@ The song below is an example of what you can create with the JS-120, along with 
   * Secondary oscillator with same wave types, and optional detune from primary oscillator
   * LFO to control oscillator pitch (i.e. "pitch wobble")
   * Filter
-  * Choice of LFO or envelope to control filter cutoff frequency
-  * Envelope for oscillators loudness
+  * Choice of LFO or ADSR envelope to control filter cutoff frequency
+  * ADSR Envelope for oscillator's loudness
 * Sequencer
   * Multiple tracks
   * Different instrument patch for each track
