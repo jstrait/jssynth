@@ -1,0 +1,23 @@
+{
+  "name": "jssynth",
+  "version": "1.2.0",
+  "description": "A synthesizer and sequencer for your browser",
+  "main": "jssynth-react-packed.js",
+  "repository": "https://github.com/jstrait/jssynth.git",
+  "author": "Joel Strait <joel.strait@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build-babel": "babel src/react.js --out-file jssynth-react.js",
+    "build-webpack": "webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.11.0"
+  }
+}
