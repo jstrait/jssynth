@@ -1,66 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="js120">
-<head>
-  <title>JS-120</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
-  <link rel="stylesheet" type="text/css" media="all" href="jssynth.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-  <script src="lib/AudioContextMonkeyPatch.js"></script>
-  <script src="lib/analytics.js"></script>
-  <script src="jssynth.js"></script>
-</head>
-<body class="flex flex-column">
-<div id="header" class="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width">
-  <div id="logo-container">
-    <h1 class="logo h2 bold mt0 mb0">JS-120</h1>
-    <span class="lightText">Web Synthesizer</span>
-  </div>
-  <div id="transport" class="flex flex-uniform-size flex-align-center" ng-controller="TransportController">
-    <div class="transport-error ml2 mr2" ng-class="{'display-none': (isEnabled() === true)}">
-      <span class="block bold red"><span class="round white bg-red inline-block center mr-half width-1 lh3">!</span>Playback not support in your browser</span>
-      <span class="block">Try a recent version of Chrome, Safari, or Firefox.</span>
-    </div>
-    <div class="transport-inner flex flex-align-center" ng-class="{'display-none': (isEnabled() === false)}">
-      <button class="mr1 round button-full button-hollow {{playing ? 'button-enabled' : ''}}" ng-click="toggle();">►</button>
-      <span class="transport-controls inline-block">
-        <span class="control">
-          <label class="control-label align-right">Tempo&nbsp;&nbsp;</label>
-          <span class="annotated-input">
-            <input ng-model="tempo" ng-change="updateTempo();" type="range" min="30" max="255" />
-            <span>{{tempo}}</span>
-          </span>
-        </span><span class="control">
-          <label class="control-label align-right">Volume&nbsp;&nbsp;</label>
-          <span class="annotated-input">
-            <input ng-model="amplitude" ng-change="updateAmplitude();" type="range" min="0.0" max="1.0" step="0.01" />
-            <span>{{(amplitude * 100) | number:0}}%</span>
-          </span>
-        </span>
-      </span>
-    </div>
-  </div>
-  <div id="download-container" class="relative" ng-controller="ExportController">
-    <button class="button-full button-hollow right" ng-click="toggleDownloadBox();">
-      <span class="h3 lh-flush">&darr;</span>&nbsp; *.wav
-    </button>
-    <a id="hidden-download-link" class="display-none" download="output.wav" href=""></a>
-    <div class="mt3 pl1 pr1 pt1 pb1 popup-box" ng-class="{'display-none': downloadBoxVisible === false}">
-      <label class="block">File Name:</label>
-      <span class="flex">
-        <input ng-model="downloadFileName" class="underlinedInput flex-uniform-size" type="text" />
-        <span>.wav</span>
-      </span>
-      <button class="button-full button-hollow mt1 right" ng-click="export();">Download</button>
-    </div>
-  </div>
-</div>
-
-<div sequencer expanded="true" class="pt1 pb1 border-box bt-thick"></div>
-<div track-editor class="mt1 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick"></div>
-
-<div class="flex flex-column flex-uniform-size flex-justify-end mt2">
-  <p class="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-17</p>
-</div>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <title>JS-120</title>
+    <link rel="stylesheet" type="text/css" media="all" href="jssynth.css" />
+    <script src="src/jssynth.js"></script>
+    <script src="lib/AudioContextMonkeyPatch.js"></script>
+  </head>
+  <body class="flex flex-column">
+    <div id="root"></div>
+    <script src="jssynth-react-packed.js"></script>
+  </body>
 </html>

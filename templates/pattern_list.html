@@ -1,9 +1,0 @@
-<div class="mb2">
-  <ul class="flex pl0 mt0 mb1 overflow-scroll-x full-width">
-    <li class="flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 width-5" ng-repeat="patternOption in ctrl.patternOptions" ng-click="ctrl.onChangeSelectedPattern({patternID: patternOption.id})"  ng-class="{paneTabSelected: (patternOption.id === ctrl.selectedPatternId), paneTabUnselected: (patternOption.id !== ctrl.selectedPatternId)}">
-      <span class="no-whitespace-wrap overflow-hidden-x overflow-ellipsis">{{patternOption.name}}</span>
-      <button class="button-small button-hollow round ml1 pt0 pb0 pl0 pr0" ng-click="ctrl.onRemovePattern({patternID: patternOption.id})" ng-class="{'display-none': (ctrl.patternOptions.length <= 1)}">&nbsp;X&nbsp;</button>
-    </li>
-  </ul>
-  <button class="block button-full button-hollow" ng-click="ctrl.onAddPattern()">Add Pattern</button>
-</div>
