@@ -2,7 +2,7 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-  entry: './jssynth-react.js',
+  entry: './build/react.js',
   plugins: [
     new UglifyJsPlugin({
       uglifyOptions: {

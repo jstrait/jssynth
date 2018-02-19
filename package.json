@@ -7,7 +7,7 @@
   "author": "Joel Strait <joel.strait@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-babel": "babel src/react.js --out-file jssynth-react.js",
+    "build-babel": "babel src/ --out-dir build",
     "build-webpack": "webpack --config webpack.config.js"
   },
   "dependencies": {
