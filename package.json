@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "build-babel": "babel src/ --out-dir build",
-    "build-webpack": "webpack --config webpack.config.js"
+    "build-webpack": "webpack --config webpack.config.js",
+    "build": "yarn run build-babel && yarn run build-webpack"
   },
   "dependencies": {
     "react": "^16.2.0",
