@@ -12,7 +12,7 @@ module.exports = {
     })
   ],
   output: {
-    filename: 'jssynth-react-packed.js',
+    filename: 'jssynth.js',
     path: path.resolve(__dirname, '.')
   }
 };
