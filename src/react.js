@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Serializer from "./serializer";
+import * as JSSynth from "./jssynth";
 
 class IDGenerator {
   constructor(initialNextID) {

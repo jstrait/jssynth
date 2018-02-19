@@ -1,14 +1,12 @@
 "use strict";
 
-var JSSynth = JSSynth || {};
-
-JSSynth.Instrument = function(config) {
+function Instrument(config) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
     oscillator.frequency.value = frequency;
     oscillator.detune.value = detune;
- 
+
     return oscillator;
   };
 
@@ -66,7 +64,7 @@ JSSynth.Instrument = function(config) {
       filterLfoGain.connect(filter.frequency);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -97,7 +95,7 @@ JSSynth.Instrument = function(config) {
       filterLfoOscillator.start(gateOnTime);
     }
 
-    calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -123,7 +121,7 @@ JSSynth.Instrument = function(config) {
   return instrument;
 };
 
-JSSynth.EnvelopeCalculator = {
+var EnvelopeCalculator = {
   calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
     var attackEndTime = gateOnTime + envelope.attack;
     var attackEndAmplitude;
@@ -134,7 +132,7 @@ JSSynth.EnvelopeCalculator = {
     }
     else {
       var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
-      attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage; 
+      attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
       attackEndTime = gateOffTime;
     }
 
@@ -161,8 +159,7 @@ JSSynth.EnvelopeCalculator = {
   },
 };
 
-
-JSSynth.SequenceParser = {
+var SequenceParser = {
   parse: function(rawNotes) {
     var sequence = [];
     var splitNotes = rawNotes.split(" ");
@@ -184,7 +181,7 @@ JSSynth.SequenceParser = {
       else {
         noteName = noteString.slice(0, -1);
         octave = noteString.slice(-1);
-        sequence[i] = new JSSynth.Note(noteName, octave, noteDuration);
+        sequence[i] = new Note(noteName, octave, noteDuration);
         noteDuration = 1;
       }
     }
@@ -193,7 +190,7 @@ JSSynth.SequenceParser = {
   },
 };
 
-JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
+function Note(newNoteName, newOctave, newStepDuration) {
   var NOTE_RATIOS = {
     "A"  : 1.0,
     "A#" : Math.pow(2,  1 / 12),
@@ -283,8 +280,7 @@ JSSynth.Note = function(newNoteName, newOctave, newStepDuration) {
   return note;
 };
 
-
-JSSynth.InstrumentNote = function(note, instrument, amplitude) {
+function InstrumentNote(note, instrument, amplitude) {
   var instrumentNote = {};
 
   instrumentNote.note = function() { return note; };
@@ -294,7 +290,7 @@ JSSynth.InstrumentNote = function(note, instrument, amplitude) {
   return instrumentNote;
 };
 
-JSSynth.SongPlayer = function() {
+function SongPlayer() {
   var MEASURES = 8;
   var STEPS_PER_MEASURE = 16;
   var STEP_COUNT = MEASURES * STEPS_PER_MEASURE;
@@ -360,8 +356,7 @@ JSSynth.SongPlayer = function() {
   return songPlayer;
 };
 
-
-JSSynth.Transport = function(songPlayer, stopCallback) {
+function Transport(songPlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
   var audioContext;
@@ -497,7 +492,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
     while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
       currentStep = scheduledSteps[i].step;
       scheduledSteps.splice(0, 1);
-      
+
       i++;
     }
 
@@ -512,7 +507,7 @@ JSSynth.Transport = function(songPlayer, stopCallback) {
 };
 
 
-JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallback) {
+function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
   var transport = {};
 
   var buildOfflineAudioContext = function() {
@@ -535,7 +530,7 @@ JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallba
     }
 
     audioContext.oncomplete = function(e) {
-      var waveWriter = new JSSynth.WaveWriter();
+      var waveWriter = new WaveWriter();
 
       var sampleData = e.renderedBuffer.getChannelData(0);
 
@@ -582,7 +577,7 @@ JSSynth.OfflineTransport = function(songPlayer, tempo, amplitude, completeCallba
 };
 
 
-JSSynth.WaveWriter = function() {
+function WaveWriter() {
   var waveWriter = {};
 
   var LITTLE_ENDIAN = true;
@@ -641,3 +636,5 @@ JSSynth.WaveWriter = function() {
 
   return waveWriter;
 };
+
+export { Instrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };

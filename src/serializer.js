@@ -1,5 +1,7 @@
 "use strict";
 
+import * as JSSynth from "./jssynth";
+
 export default class Serializer {
   constructor() {};
 
