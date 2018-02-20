@@ -3,13 +3,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { DownloadButton } from "./download_button";
-import { IDGenerator } from "./id_generator";
-import { Sequencer } from "./sequencer";
-import { Serializer } from "./serializer";
-import { TrackEditor } from "./track_editor";
-import { Transport } from "./transport";
 import * as JSSynth from "./jssynth";
+import { IDGenerator } from "./id_generator";
+import { Serializer } from "./serializer";
+
+import { DownloadButton } from "./components/download_button";
+import { Sequencer } from "./components/sequencer";
+import { TrackEditor } from "./components/track_editor";
+import { Transport } from "./components/transport";
 
 class App extends React.Component {
   constructor(props) {
