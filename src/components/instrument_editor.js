@@ -2,6 +2,42 @@
 
 import React from 'react';
 
+class WaveFormSelector extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setWaveFormValue = this.setWaveFormValue.bind(this);
+  };
+
+  setWaveFormValue(e) {
+    this.props.setWaveFormValue(e.target.value);
+  };
+
+  render() {
+    return <span className="control">
+      <label className="control-label indented">Waveform:</label>
+      <span className="flex waveformOptionsContainer">
+        <span className="radioContainer">
+          <input id={this.props.idPrefix + "Sine"} value="sine" type="radio" checked={this.props.waveFormValue === "sine"} onChange={this.setWaveFormValue} />
+          &nbsp;<label htmlFor={this.props.idPrefix + "Sine"} className="radioLabel">Sine</label>
+        </span>
+        <span className="radioContainer">
+          <input id={this.props.idPrefix + "Square"} value="square" type="radio" checked={this.props.waveFormValue === "square"} onChange={this.setWaveFormValue} />
+          &nbsp;<label htmlFor={this.props.idPrefix + "Square"} className="radioLabel">Square</label>
+        </span>
+        <span className="radioContainer">
+          <input id={this.props.idPrefix + "Sawtooth"} value="sawtooth" type="radio" checked={this.props.waveFormValue === "sawtooth"} onChange={this.setWaveFormValue} />
+          &nbsp;<label htmlFor={this.props.idPrefix + "Sawtooth"} className="radioLabel">Saw</label>
+        </span>
+        <span className="radioContainer">
+          <input id={this.props.idPrefix + "Triangle"} value="triangle" type="radio" checked={this.props.waveFormValue === "triangle"} onChange={this.setWaveFormValue} />
+          &nbsp;<label htmlFor={this.props.idPrefix + "Triangle"} className="radioLabel">Triangle</label>
+        </span>
+      </span>
+    </span>;
+  };
+};
+
 class InstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -30,12 +66,12 @@ class InstrumentEditor extends React.Component {
     this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
   };
 
-  setWaveForm1(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform1", e.target.value);
+  setWaveForm1(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform1", newValue);
   };
 
-  setWaveForm2(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2", e.target.value);
+  setWaveForm2(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform2", newValue);
   };
 
   setWaveForm1Octave(e) {
@@ -66,8 +102,8 @@ class InstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "lfoFrequency", parseFloat(e.target.value));
   };
 
-  setLFOWaveForm(e) {
-    this.props.updateInstrument(this.props.instrument.id, "lfoWaveform", e.target.value);
+  setLFOWaveForm(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "lfoWaveform", newValue);
   };
 
   setFilterModulator(e) {
@@ -82,8 +118,8 @@ class InstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterLFOFrequency", parseFloat(e.target.value));
   };
 
-  setFilterLFOWaveForm(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterLFOWaveform", e.target.value);
+  setFilterLFOWaveForm(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterLFOWaveform", newValue);
   };
 
   setFilterEnvelopeAttack(e) {
@@ -136,27 +172,7 @@ class InstrumentEditor extends React.Component {
           <span>{this.props.instrument.filterLFOFrequency}Hz</span>
         </span>
       </span>
-      <span className="control">
-        <label className="control-label indented">Waveform:</label>
-        <span className="flex waveformOptionsContainer">
-          <span className="radioContainer">
-            <input id="filterLFOWaveformSine" value="sine" type="radio" checked={this.props.instrument.filterLFOWaveform === "sine"} onChange={this.setFilterLFOWaveForm} />
-            &nbsp;<label htmlFor="filterLFOWaveformSine" className="radioLabel">Sine</label>
-          </span>
-          <span className="radioContainer">
-            <input id="filterLFOWaveformSquare" value="square" type="radio" checked={this.props.instrument.filterLFOWaveform === "square"} onChange={this.setFilterLFOWaveForm} />
-            &nbsp;<label htmlFor="filterLFOWaveformSquare" className="radioLabel">Square</label>
-          </span>
-          <span className="radioContainer">
-            <input id="filterLFOWaveformSaw" value="sawtooth" type="radio" checked={this.props.instrument.filterLFOWaveform === "sawtooth"} onChange={this.setFilterLFOWaveForm} />
-            &nbsp;<label htmlFor="filterLFOWaveformSaw" className="radioLabel">Saw</label>
-          </span>
-          <span className="radioContainer">
-            <input id="filterLFOWaveformTriangle" value="triangle" type="radio" checked={this.props.instrument.filterLFOWaveform === "triangle"} onChange={this.setFilterLFOWaveForm} />
-            &nbsp;<label htmlFor="filterLFOWaveformTriangle" className="radioLabel">Triangle</label>
-          </span>
-        </span>
-      </span>
+      <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
     </span>;
 
     let cutoffEnvelopeModulation = <span>
@@ -198,27 +214,7 @@ class InstrumentEditor extends React.Component {
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound Generator</h2>
         <span className="block mt1 lightText">Base:</span>
-        <span className="control">
-          <label className="control-label indented">Waveform:</label>
-          <span className="flex waveformOptionsContainer">
-            <span className="radioContainer">
-              <input id="waveformSine" value="sine" type="radio" checked={this.props.instrument.waveform1 === "sine"} onChange={this.setWaveForm1} />
-              &nbsp;<label htmlFor="waveformSine" className="radioLabel">Sine</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformSquare" value="square" type="radio" checked={this.props.instrument.waveform1 === "square"} onChange={this.setWaveForm1} />
-              &nbsp;<label htmlFor="waveformSquare" className="radioLabel">Square</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformSaw" value="sawtooth" type="radio" checked={this.props.instrument.waveform1 === "sawtooth"} onChange={this.setWaveForm1} />
-              &nbsp;<label htmlFor="waveformSaw" className="radioLabel">Saw</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformTriangle" value="triangle" type="radio" checked={this.props.instrument.waveform1 === "triangle"} onChange={this.setWaveForm1} />
-              &nbsp;<label htmlFor="waveformTriangle" className="radioLabel">Triangle</label>
-            </span>
-          </span>
-        </span>
+        <WaveFormSelector waveFormValue={this.props.instrument.waveform1} idPrefix="waveform" setWaveFormValue={this.setWaveForm1} />
         <span className="control">
           <label className="control-label indented">Octave:</label>
           <span className="annotated-input">
@@ -227,27 +223,7 @@ class InstrumentEditor extends React.Component {
           </span>
         </span>
         <span className="block mt1 lightText">Secondary:</span>
-        <span className="control">
-          <label className="control-label indented">Waveform:</label>
-          <span className="flex waveformOptionsContainer">
-            <span className="radioContainer">
-              <input id="waveformSine2" value="sine" type="radio" checked={this.props.instrument.waveform2 === "sine"} onChange={this.setWaveForm2} />
-              &nbsp;<label htmlFor="waveformSine2" className="radioLabel">Sine</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformSquare2" value="square" type="radio" checked={this.props.instrument.waveform2 === "square"} onChange={this.setWaveForm2} />
-              &nbsp;<label htmlFor="waveformSquare2" className="radioLabel">Square</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformSaw2" value="sawtooth" type="radio" checked={this.props.instrument.waveform2 === "sawtooth"} onChange={this.setWaveForm2} />
-              &nbsp;<label htmlFor="waveformSaw2" className="radioLabel">Saw</label>
-            </span>
-            <span className="radioContainer">
-              <input id="waveformTriangle2" value="triangle" type="radio" checked={this.props.instrument.waveform2 === "triangle"} onChange={this.setWaveForm2} />
-              &nbsp;<label htmlFor="waveformTriangle2" className="radioLabel">Triangle</label>
-            </span>
-          </span>
-        </span>
+        <WaveFormSelector waveFormValue={this.props.instrument.waveform2} idPrefix="waveform2" setWaveFormValue={this.setWaveForm2} />
         <span className="control">
           <label className="control-label indented">Octave:</label>
           <span className="annotated-input">
@@ -311,27 +287,7 @@ class InstrumentEditor extends React.Component {
             <span>{this.props.instrument.lfoFrequency}Hz</span>
           </span>
         </span>
-        <span className="control">
-          <label className="control-label">Waveform:</label>
-          <span className="flex waveformOptionsContainer">
-            <span className="radioContainer">
-              <input id="lfoWaveformSine" value="sine" type="radio" checked={this.props.instrument.lfoWaveform === "sine"} onChange={this.setLFOWaveForm} />
-              &nbsp;<label htmlFor="lfoWaveformSine" className="radioLabel">Sine</label>
-            </span>
-            <span className="radioContainer">
-              <input id="lfoWaveformSquare" value="square" type="radio" checked={this.props.instrument.lfoWaveform === "square"} onChange={this.setLFOWaveForm} />
-              &nbsp;<label htmlFor="lfoWaveformSquare" className="radioLabel">Square</label>
-            </span>
-            <span className="radioContainer">
-              <input id="lfoWaveformSaw" value="sawtooth" type="radio" checked={this.props.instrument.lfoWaveform === "sawtooth"} onChange={this.setLFOWaveForm} />
-              &nbsp;<label htmlFor="lfoWaveformSaw" className="radioLabel">Saw</label>
-            </span>
-            <span className="radioContainer">
-              <input id="lfoWaveformTriangle" value="triangle" type="radio" checked={this.props.instrument.lfoWaveform === "triangle"} onChange={this.setLFOWaveForm} />
-              &nbsp;<label htmlFor="lfoWaveformTriangle" className="radioLabel">Triangle</label>
-            </span>
-          </span>
-        </span>
+        <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} idPrefix="lfoWaveform" setWaveFormValue={this.setLFOWaveForm} />
 
         <h2 className="h3 section-header">Loudness Envelope</h2>
         <span className="control">
