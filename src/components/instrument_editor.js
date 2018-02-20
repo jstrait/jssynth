@@ -158,7 +158,7 @@ class InstrumentEditor extends React.Component {
   render() {
     let cutoffLFOModulation = <span>
       <span className="block mt1 lightText">Cutoff Wobble:</span>
-        <span className="control">
+      <span className="control">
         <label className="control-label indented">Amount:</label>
         <span className="annotated-input">
           <input onChange={this.setFilterLFOAmplitude} type="range" min="0.0" max="1.0" step="0.01" />
