@@ -156,60 +156,6 @@ class InstrumentEditor extends React.Component {
 
 
   render() {
-    let cutoffLFOModulation = <span>
-      <span className="block mt1 lightText">Cutoff Wobble:</span>
-      <span className="control">
-        <label className="control-label indented">Amount:</label>
-        <span className="annotated-input">
-          <input onChange={this.setFilterLFOAmplitude} type="range" min="0.0" max="1.0" step="0.01" />
-          <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
-        </span>
-      </span>
-      <span className="control">
-        <label className="control-label indented">Rate:</label>
-        <span className="annotated-input">
-          <input onChange={this.setFilterLFOFrequency} type="range" min="0.0" max="20.0" step="0.1" />
-          <span>{this.props.instrument.filterLFOFrequency}Hz</span>
-        </span>
-      </span>
-      <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
-    </span>;
-
-    let cutoffEnvelopeModulation = <span>
-      <span className="block mt1 lightText">Cutoff Envelope:</span>
-      <span className="control">
-        <label className="control-label indented">Attack Speed:</label>
-        <span className="annotated-input">
-          <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
-          <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
-        </span>
-      </span>
-      <span className="control">
-        <label className="control-label indented">Decay Speed:</label>
-        <span className="annotated-input">
-          <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
-          <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
-        </span>
-      </span>
-      <span className="control">
-        <label className="control-label indented">Sustain:</label>
-        <span className="annotated-input">
-          <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
-          <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
-        </span>
-      </span>
-      <span className="control">
-        <label className="control-label indented">Release Speed:</label>
-        <span className="annotated-input">
-          <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
-          <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
-        </span>
-      </span>
-    </span>;
-
-    let cutoffModulation = (this.props.instrument.filterModulator === "lfo") ? cutoffLFOModulation : cutoffEnvelopeModulation;
-
-
     return <div className="flex overflow-scroll-x pb1 instrument-panel-container">
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound Generator</h2>
@@ -268,7 +214,55 @@ class InstrumentEditor extends React.Component {
             </span>
           </span>
         </span>
-        {cutoffModulation}
+        <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
+          <span className="block mt1 lightText">Cutoff Wobble:</span>
+          <span className="control">
+            <label className="control-label indented">Amount:</label>
+            <span className="annotated-input">
+              <input onChange={this.setFilterLFOAmplitude} type="range" min="0.0" max="1.0" step="0.01" />
+              <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Rate:</label>
+            <span className="annotated-input">
+              <input onChange={this.setFilterLFOFrequency} type="range" min="0.0" max="20.0" step="0.1" />
+              <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+            </span>
+          </span>
+          <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+        </span>
+        <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
+          <span className="block mt1 lightText">Cutoff Envelope:</span>
+          <span className="control">
+            <label className="control-label indented">Attack Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+              <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Decay Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+              <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Sustain:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
+              <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Release Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+              <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+            </span>
+          </span>
+        </span>
       </div>
 
       <div className="pl1 border-box instrument-panel">
