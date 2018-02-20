@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import { DownloadButton } from "./download_button";
 import { IDGenerator } from "./id_generator";
 import { Sequencer } from "./sequencer";
-import Serializer from "./serializer";
+import { Serializer } from "./serializer";
 import { TrackEditor } from "./track_editor";
 import { Transport } from "./transport";
 import * as JSSynth from "./jssynth";
