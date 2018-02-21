@@ -219,14 +219,14 @@ class InstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Amount:</label>
             <span className="annotated-input">
-              <input onChange={this.setFilterLFOAmplitude} type="range" min="0.0" max="1.0" step="0.01" />
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
               <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label indented">Rate:</label>
             <span className="annotated-input">
-              <input onChange={this.setFilterLFOFrequency} type="range" min="0.0" max="20.0" step="0.1" />
+              <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
               <span>{this.props.instrument.filterLFOFrequency}Hz</span>
             </span>
           </span>
