@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class Keyboard extends React.Component {
+class Key extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,71 +19,92 @@ class Keyboard extends React.Component {
   };
 
   render() {
+    let noteParts = this.props.noteName.split("-");
+    let noteLabel = noteParts[0] + noteParts[1];
+    let cssClass = noteParts[0].toLowerCase();
+    let isWhiteKey = ["a", "b", "c", "d", "e", "f", "g"].includes(cssClass);
+    let isBlackKey = ["a#", "c#", "d#", "f#", "g#"].includes(cssClass);
+    let keyColorClass = (isWhiteKey) ? "keyboard-white-key" : "keyboard-black-key";
+
+    return <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className={"inline-block keyboard-key " + keyColorClass + " " + cssClass} data-note={this.props.noteName}><span className="keyboard-key-label">{noteLabel}</span></span>
+  };
+};
+
+class Keyboard extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
     return <div className="keyboard-outer-container flex">
       <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height">&larr;</div>
       <div className="keyboard-container center">
         <div className="keyboard block border-box">
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-1"><span className="keyboard-key-label">F1</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key f-sharp" data-note="F#-1"><span className="keyboard-key-label">F&#9839;1</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key g" data-note="G-1"><span className="keyboard-key-label">G1</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key g-sharp" data-note="G#-1"><span className="keyboard-key-label">G&#9839;1</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key a" data-note="A-2"><span className="keyboard-key-label">A2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key a-sharp" data-note="A#-2"><span className="keyboard-key-label">A&#9839;2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key b" data-note="B-2"><span className="keyboard-key-label">B2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key c" data-note="C-2"><span className="keyboard-key-label">C2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key c-sharp" data-note="C#-2"><span className="keyboard-key-label">C&#9839;2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key d" data-note="D-2"><span className="keyboard-key-label">D2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key d-sharp" data-note="D#-2"><span className="keyboard-key-label">D&#9839;2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key e" data-note="E-2"><span className="keyboard-key-label">E2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-2"><span className="keyboard-key-label">F2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key f-sharp" data-note="F#-2"><span className="keyboard-key-label">F&#9839;2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key g" data-note="G-2"><span className="keyboard-key-label">G2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key g-sharp" data-note="G#-2"><span className="keyboard-key-label">G&#9839;2</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key a" data-note="A-3"><span className="keyboard-key-label">A3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key a-sharp" data-note="A#-3"><span className="keyboard-key-label">A&#9839;3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key b" data-note="B-3"><span className="keyboard-key-label">B3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key c" data-note="C-3"><span className="keyboard-key-label">C3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key c-sharp" data-note="C#-3"><span className="keyboard-key-label">C&#9839;3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key d" data-note="D-3"><span className="keyboard-key-label">D3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key d-sharp" data-note="D#-3"><span className="keyboard-key-label">D&#9839;3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key e" data-note="E-3"><span className="keyboard-key-label">E3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-3"><span className="keyboard-key-label">F3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key f-sharp" data-note="F#-3"><span className="keyboard-key-label">F&#9839;3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key g" data-note="G-3"><span className="keyboard-key-label">G3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key g-sharp" data-note="G#-3"><span className="keyboard-key-label">G&#9839;3</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key a" data-note="A-4"><span className="keyboard-key-label">A4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key a-sharp" data-note="A#-4"><span className="keyboard-key-label">A&#9839;4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key b" data-note="B-4"><span className="keyboard-key-label">B4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key c" data-note="C-4"><span className="keyboard-key-label">C4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key c-sharp" data-note="C#-4"><span className="keyboard-key-label">C&#9839;4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key d" data-note="D-4"><span className="keyboard-key-label">D4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key d-sharp" data-note="D#-4"><span className="keyboard-key-label">D&#9839;4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key e" data-note="E-4"><span className="keyboard-key-label">E4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-4"><span className="keyboard-key-label">F4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key f-sharp" data-note="F#-4"><span className="keyboard-key-label">F&#9839;4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key g" data-note="G-4"><span className="keyboard-key-label">G4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key g-sharp" data-note="G#-4"><span className="keyboard-key-label">G&#9839;4</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key a" data-note="A-5"><span className="keyboard-key-label">A5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key a-sharp" data-note="A#-5"><span className="keyboard-key-label">A&#9839;5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key b" data-note="B-5"><span className="keyboard-key-label">B5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key c" data-note="C-5"><span className="keyboard-key-label">C5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key c-sharp" data-note="C#-5"><span className="keyboard-key-label">C&#9839;5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key d" data-note="D-5"><span className="keyboard-key-label">D5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key d-sharp" data-note="D#-5"><span className="keyboard-key-label">D&#9839;5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key e" data-note="E-5"><span className="keyboard-key-label">E5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-5"><span className="keyboard-key-label">F5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key f-sharp" data-note="F#-5"><span className="keyboard-key-label">F&#9839;5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key g" data-note="G-5"><span className="keyboard-key-label">G5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key g-sharp" data-note="G#-5"><span className="keyboard-key-label">G&#9839;5</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key a" data-note="A-6"><span className="keyboard-key-label">A6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key a-sharp" data-note="A#-6"><span className="keyboard-key-label">A&#9839;6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key b" data-note="B-6"><span className="keyboard-key-label">B6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key c" data-note="C-6"><span className="keyboard-key-label">C6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key c-sharp" data-note="C#-6"><span className="keyboard-key-label">C&#9839;6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key d" data-note="D-6"><span className="keyboard-key-label">D6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-black-key d-sharp" data-note="D#-6"><span className="keyboard-key-label">D&#9839;6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key e" data-note="E-6"><span className="keyboard-key-label">E6</span></span>
-          <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} className="inline-block keyboard-key keyboard-white-key f" data-note="F-6"><span className="keyboard-key-label">F6</span></span>
+          <Key noteName={"F-1"} />
+          <Key noteName={"F#-1"} />
+          <Key noteName={"G-1"} />
+          <Key noteName={"G#-1"} />
+          <Key noteName={"A-2"} />
+          <Key noteName={"A#-2"} />
+          <Key noteName={"B-2"} />
+          <Key noteName={"C-2"} />
+          <Key noteName={"C#-2"} />
+          <Key noteName={"D-2"} />
+          <Key noteName={"D#-2"} />
+          <Key noteName={"E-2"} />
+
+          <Key noteName={"F-2"} />
+          <Key noteName={"F#-2"} />
+          <Key noteName={"G-2"} />
+          <Key noteName={"G#-2"} />
+          <Key noteName={"A-3"} />
+          <Key noteName={"A#-3"} />
+          <Key noteName={"B-3"} />
+          <Key noteName={"C-3"} />
+          <Key noteName={"C#-3"} />
+          <Key noteName={"D-3"} />
+          <Key noteName={"D#-3"} />
+          <Key noteName={"E-3"} />
+
+          <Key noteName={"F-3"} />
+          <Key noteName={"F#-3"} />
+          <Key noteName={"G-3"} />
+          <Key noteName={"G#-3"} />
+          <Key noteName={"A-4"} />
+          <Key noteName={"A#-4"} />
+          <Key noteName={"B-4"} />
+          <Key noteName={"C-4"} />
+          <Key noteName={"C#-4"} />
+          <Key noteName={"D-4"} />
+          <Key noteName={"D#-4"} />
+          <Key noteName={"E-4"} />
+
+          <Key noteName={"F-4"} />
+          <Key noteName={"F#-4"} />
+          <Key noteName={"G-4"} />
+          <Key noteName={"G#-4"} />
+          <Key noteName={"A-5"} />
+          <Key noteName={"A#-5"} />
+          <Key noteName={"B-5"} />
+          <Key noteName={"C-5"} />
+          <Key noteName={"C#-5"} />
+          <Key noteName={"D-5"} />
+          <Key noteName={"D#-5"} />
+          <Key noteName={"E-5"} />
+
+          <Key noteName={"F-5"} />
+          <Key noteName={"F#-5"} />
+          <Key noteName={"G-5"} />
+          <Key noteName={"G#-5"} />
+          <Key noteName={"A-6"} />
+          <Key noteName={"A#-6"} />
+          <Key noteName={"B-6"} />
+          <Key noteName={"C-6"} />
+          <Key noteName={"C#-6"} />
+          <Key noteName={"D-6"} />
+          <Key noteName={"D#-6"} />
+          <Key noteName={"E-6"} />
+          <Key noteName={"F-6"} />
         </div>
       </div>
       <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height">&rarr;</div>
