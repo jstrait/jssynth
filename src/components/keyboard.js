@@ -34,7 +34,6 @@ class Key extends React.Component {
     let noteLabel = this.props.noteName + this.props.octave;
     let cssClass = this.props.noteName.toLowerCase();
     let isWhiteKey = ["A", "B", "C", "D", "E", "F", "G"].includes(this.props.noteName);
-    let isBlackKey = ["A#", "C#", "D#", "F#", "G#"].includes(this.props.noteName);
     let keyColorClass = (isWhiteKey) ? "keyboard-white-key" : "keyboard-black-key";
     let pressedClass = this.props.activeNotes.includes(noteLabel) ? "pressed" : "";
 
