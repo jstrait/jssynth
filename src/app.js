@@ -745,6 +745,7 @@ class App extends React.Component {
       selectedTrackID: 1,
       selectedPatternID: 1,
       downloadFileName: "js-120",
+      activeKeyboardNotes: [],
     };
 
     this.itemByID = this.itemByID.bind(this);
@@ -1339,9 +1340,21 @@ class App extends React.Component {
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
 
     this.transport.playImmediateNote(instrument, note);
+
+    this.setState((prevState, props) => ({
+      activeKeyboardNotes: prevState.activeKeyboardNotes.concat(noteName + octave)
+    }));
   };
 
-  releaseNote(noteName, octave) {};
+  releaseNote(noteName, octave) {
+    let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
+    let indexToRemove = newActiveKeyboardNotes.indexOf(noteName + octave);
+    newActiveKeyboardNotes.splice(indexToRemove, 1);
+
+    this.setState({
+      activeKeyboardNotes: newActiveKeyboardNotes
+    });
+  };
 
   export(e) {
     let exportCompleteCallback = function(blob) {
@@ -1407,7 +1420,7 @@ class App extends React.Component {
                    addPatternRow={this.addPatternRow}
                    removePatternRow={this.removePatternRow}
                    setNoteValue={this.setNoteValue} />
-      <Keyboard pressNote={this.pressNote} releaseNote={this.releaseNote} />
+      <Keyboard activeNotes={this.state.activeKeyboardNotes} pressNote={this.pressNote} releaseNote={this.releaseNote} />
       <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
         <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
       </div>
