@@ -36,7 +36,7 @@ class TrackEditor extends React.Component {
 
     let panel = (this.state.selectedTab === "instrument") ? instrumentEditor : patternEditor;
 
-    return <div className="mt1 pl1 pr1 pt1 pb1 border-box bt-thick bb-thick">
+    return <div className="mt1 pl1 pr1 pt1 pb1 border-box bt-thick">
       <div className="mb2">
         <h2 className="mt0 mb1">Track Editor</h2>
         <select className="mr2 inline-block width-5" style={{verticalAlign: "middle"}} value={this.props.selectedTrackID} onChange={this.setSelectedTrack}>

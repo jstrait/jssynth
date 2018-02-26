@@ -233,7 +233,7 @@ class PatternEditor extends React.Component {
           )}
         </ul>
       </div>
-      <div className="mb1 overflow-auto">
+      <div className="overflow-auto">
         <button className="block button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
       </div>
     </div>;

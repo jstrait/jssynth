@@ -156,7 +156,7 @@ class InstrumentEditor extends React.Component {
 
 
   render() {
-    return <div className="flex overflow-scroll-x pb1 instrument-panel-container">
+    return <div className="flex overflow-scroll-x instrument-panel-container">
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound Generator</h2>
         <span className="block mt1 lightText">Base:</span>

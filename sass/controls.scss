@@ -198,3 +198,143 @@ label.radioLabel {
     color: $orange;
   }
 }
+
+
+
+
+/* Keyboard */
+.keyboard-outer-container {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  height: 9.0rem;
+  overflow: hidden;
+}
+
+.keyboard-scroll-button {
+  background: #c1c1c1;
+  flex: 0 0 40px;
+}
+
+.keyboard-scroll-button:hover {
+  background: #a1a1a1;
+}
+
+.keyboard-container {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background: $white;
+}
+
+.keyboard {
+  height: 9.0rem;
+  white-space: nowrap;
+  font-size: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.keyboard-key {
+  position: relative;
+}
+
+.keyboard-white-key {
+  box-sizing: border-box;
+  height: 100%;
+  width: 3.0rem;
+  border-style: solid;
+  border-color: $black;
+  border-width: 1px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  background: $white;
+  color: $black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.keyboard-white-key:first-child {
+  border-left-width: 2px;
+}
+
+.keyboard-white-key:last-child {
+  border-right-width: 2px;
+}
+
+.keyboard-key-label {
+  line-height: 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 1.0rem;
+}
+
+.keyboard span.g,
+.keyboard span.a,
+.keyboard span.b,
+.keyboard span.d,
+.keyboard span.e {
+  margin-left: -1.0rem;
+}
+
+.keyboard-black-key {
+  background: $black;
+  height: 60%;
+  width: 2.0rem;
+  margin-left: -1.0rem;
+  vertical-align: top;
+  z-index: 2;
+  border-top: 2px solid $black;
+  color: $white;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.keyboard-white-key.keyboard-hover { background: #f1f1f1; }
+.keyboard-black-key.keyboard-hover { background: #777; }
+.keyboard-key.pressed {
+  background: #ff7070;
+}
+.keyboard-scroll-button.pressed {
+  background: #ff7070;
+}
+
+@media (min-width: 768px) {
+  .keyboard-outer-container {
+    height: 15.0rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .keyboard-container {
+    background: none;
+  }
+
+  .keyboard {
+    height: 15.0rem;
+  }
+
+  .keyboard-white-key {
+    width: 4.0rem;
+  }
+
+  .keyboard-black-key {
+    width: 3.0rem;
+    margin-left: -1.5rem;
+  }
+
+  .keyboard span.g,
+  .keyboard span.a,
+  .keyboard span.b,
+  .keyboard span.d,
+  .keyboard span.e {
+    margin-left: -1.5rem;
+  }
+}

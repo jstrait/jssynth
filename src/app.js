@@ -8,6 +8,7 @@ import { IDGenerator } from "./id_generator";
 import { Serializer } from "./serializer";
 
 import { DownloadButton } from "./components/download_button";
+import { Keyboard } from "./components/keyboard";
 import { Sequencer } from "./components/sequencer";
 import { TrackEditor } from "./components/track_editor";
 import { Transport } from "./components/transport";
@@ -1392,6 +1393,7 @@ class App extends React.Component {
                    addPatternRow={this.addPatternRow}
                    removePatternRow={this.removePatternRow}
                    setNoteValue={this.setNoteValue} />
+      <Keyboard />
       <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
         <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
       </div>
