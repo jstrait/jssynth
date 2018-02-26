@@ -786,6 +786,10 @@ class App extends React.Component {
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
+
+    // Keyboard
+    this.pressNote = this.pressNote.bind(this);
+    this.releaseNote = this.releaseNote.bind(this);
   };
 
   itemByID(array, targetID) {
@@ -1329,6 +1333,16 @@ class App extends React.Component {
     this.setState({ downloadFileName: e.target.value });
   };
 
+  pressNote(noteName, octave) {
+    let note = JSSynth.Note(noteName, octave, 1);
+    let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
+    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
+
+    this.transport.playImmediateNote(instrument, note);
+  };
+
+  releaseNote(noteName, octave) {};
+
   export(e) {
     let exportCompleteCallback = function(blob) {
       let url = window.URL.createObjectURL(blob);
@@ -1393,7 +1407,7 @@ class App extends React.Component {
                    addPatternRow={this.addPatternRow}
                    removePatternRow={this.removePatternRow}
                    setNoteValue={this.setNoteValue} />
-      <Keyboard />
+      <Keyboard pressNote={this.pressNote} releaseNote={this.releaseNote} />
       <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
         <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
       </div>

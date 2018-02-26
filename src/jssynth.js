@@ -499,6 +499,10 @@ function Transport(songPlayer, stopCallback) {
     return currentStep;
   };
 
+  transport.playImmediateNote = function(instrument, note) {
+    instrument.playNote(audioContext, masterGain, note, 1.0, audioContext.currentTime, audioContext.currentTime + 1);
+  };
+
   transport.loop = true;
   transport.setTempo(100);
   transport.setAmplitude(0.25);
