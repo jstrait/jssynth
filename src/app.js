@@ -745,6 +745,7 @@ class App extends React.Component {
       selectedTrackID: 1,
       selectedPatternID: 1,
       downloadFileName: "js-120",
+      keyboardActive: false,
       activeKeyboardNotes: [],
     };
 
@@ -789,6 +790,8 @@ class App extends React.Component {
     this.setNoteValue = this.setNoteValue.bind(this);
 
     // Keyboard
+    this.activateKeyboard = this.activateKeyboard.bind(this);
+    this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
     this.pressNote = this.pressNote.bind(this);
     this.releaseNote = this.releaseNote.bind(this);
   };
@@ -1334,6 +1337,18 @@ class App extends React.Component {
     this.setState({ downloadFileName: e.target.value });
   };
 
+  activateKeyboard() {
+    this.setState({
+      keyboardActive: true
+    });
+  };
+
+  deactivateKeyboard() {
+    this.setState({
+      keyboardActive: false
+    });
+  };
+
   pressNote(noteName, octave) {
     let note = JSSynth.Note(noteName, octave, 1);
     let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
@@ -1420,7 +1435,12 @@ class App extends React.Component {
                    addPatternRow={this.addPatternRow}
                    removePatternRow={this.removePatternRow}
                    setNoteValue={this.setNoteValue} />
-      <Keyboard activeNotes={this.state.activeKeyboardNotes} pressNote={this.pressNote} releaseNote={this.releaseNote} />
+      <Keyboard active={this.state.keyboardActive}
+                activeNotes={this.state.activeKeyboardNotes}
+                activate={this.activateKeyboard}
+                deactivate={this.deactivateKeyboard}
+                pressNote={this.pressNote}
+                releaseNote={this.releaseNote} />
       <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
         <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
       </div>
