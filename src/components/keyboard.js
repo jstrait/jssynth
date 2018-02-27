@@ -47,8 +47,16 @@ class Keyboard extends React.Component {
   constructor(props) {
     super(props);
 
+    this.scrollLeftTimeoutID = undefined;
+    this.scrollRightTimeoutID = undefined;
+
     this.mouseDown = this.mouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
+    this.scroll = this.scroll.bind(this);
+    this.activateScrollLeft = this.activateScrollLeft.bind(this);
+    this.activateScrollRight = this.activateScrollRight.bind(this);
+    this.deactivateLeftScroll = this.deactivateLeftScroll.bind(this);
+    this.deactivateRightScroll = this.deactivateRightScroll.bind(this);
   };
 
   mouseDown(e) {
@@ -59,10 +67,30 @@ class Keyboard extends React.Component {
     this.props.deactivate();
   };
 
+  scroll(delta) {
+    this.keyboardContainer.scrollLeft += delta;
+  };
+
+  activateScrollLeft(e) {
+    this.scrollLeftTimeoutID = setInterval(() => this.scroll(-10), 15);
+  };
+
+  activateScrollRight(e) {
+    this.scrollRightTimeoutID = setInterval(() => this.scroll(10), 15);
+  };
+
+  deactivateLeftScroll(e) {
+    clearInterval(this.scrollLeftTimeoutID);
+  };
+
+  deactivateRightScroll(e) {
+    clearInterval(this.scrollRightTimeoutID);
+  };
+
   render() {
     return <div className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp}>
-      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height">&larr;</div>
-      <div className="keyboard-container center">
+      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height" onMouseDown={this.activateScrollLeft} onMouseUp={this.deactivateLeftScroll} onMouseOut={this.deactivateLeftScroll}>&larr;</div>
+      <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
           <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="1" />
           <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="1" />
@@ -131,7 +159,7 @@ class Keyboard extends React.Component {
           <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="6" />
         </div>
       </div>
-      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height">&rarr;</div>
+      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height" onMouseDown={this.activateScrollRight} onMouseUp={this.deactivateRightScroll} onMouseOut={this.deactivateRightScroll}>&rarr;</div>
     </div>;
   };
 };
