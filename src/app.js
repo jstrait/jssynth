@@ -747,6 +747,7 @@ class App extends React.Component {
       downloadFileName: "js-120",
       keyboardActive: false,
       activeKeyboardNotes: [],
+      activeNoteContexts: [],
     };
 
     this.itemByID = this.itemByID.bind(this);
@@ -1354,20 +1355,30 @@ class App extends React.Component {
     let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
 
-    this.transport.playImmediateNote(instrument, note);
+    let noteContext = this.transport.playImmediateNote(instrument, note);
 
     this.setState((prevState, props) => ({
-      activeKeyboardNotes: prevState.activeKeyboardNotes.concat(noteName + octave)
+      activeKeyboardNotes: prevState.activeKeyboardNotes.concat(noteName + octave),
+      activeNoteContexts: prevState.activeKeyboardNotes.concat(noteContext),
     }));
   };
 
   releaseNote(noteName, octave) {
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
+    let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
     let indexToRemove = newActiveKeyboardNotes.indexOf(noteName + octave);
+
     newActiveKeyboardNotes.splice(indexToRemove, 1);
+    let noteContext = newActiveNoteContexts.splice(indexToRemove, 1)[0];
+
+    let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
+    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
+
+    this.transport.stopNote(instrument, noteContext);
 
     this.setState({
-      activeKeyboardNotes: newActiveKeyboardNotes
+      activeKeyboardNotes: newActiveKeyboardNotes,
+      activeNoteContexts: newActiveNoteContexts,
     });
   };
 

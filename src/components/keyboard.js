@@ -21,7 +21,9 @@ class Key extends React.Component {
   };
 
   mouseOut(e) {
-    this.props.releaseNote(this.props.noteName, this.props.octave);
+    if (this.props.activeNotes.includes(this.props.noteName + this.props.octave)) {
+      this.props.releaseNote(this.props.noteName, this.props.octave);
+    }
   };
 
   mouseMove(e) {
