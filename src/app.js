@@ -1359,7 +1359,7 @@ class App extends React.Component {
 
     this.setState((prevState, props) => ({
       activeKeyboardNotes: prevState.activeKeyboardNotes.concat(noteName + octave),
-      activeNoteContexts: prevState.activeKeyboardNotes.concat(noteContext),
+      activeNoteContexts: prevState.activeNoteContexts.concat(noteContext),
     }));
   };
 
