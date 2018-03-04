@@ -793,8 +793,7 @@ class App extends React.Component {
     // Keyboard
     this.activateKeyboard = this.activateKeyboard.bind(this);
     this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
-    this.pressNote = this.pressNote.bind(this);
-    this.releaseNote = this.releaseNote.bind(this);
+    this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
   };
 
   itemByID(array, targetID) {
@@ -1350,36 +1349,48 @@ class App extends React.Component {
     });
   };
 
-  pressNote(noteName, octave) {
-    let note = JSSynth.Note(noteName, octave, 1);
+  setKeyboardNotes(notes) {
+    let i;
+    let noteContext;
+    let note;
+    let newNotes = [];
+    let newNoteContexts = [];
+    let indicesToRemove = [];
     let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
-    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
+    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID))
 
-    let noteContext = this.transport.playImmediateNote(instrument, note);
-
-    this.setState((prevState, props) => ({
-      activeKeyboardNotes: prevState.activeKeyboardNotes.concat(noteName + octave),
-      activeNoteContexts: prevState.activeNoteContexts.concat(noteContext),
-    }));
-  };
-
-  releaseNote(noteName, octave) {
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
-    let indexToRemove = newActiveKeyboardNotes.indexOf(noteName + octave);
 
-    newActiveKeyboardNotes.splice(indexToRemove, 1);
-    let noteContext = newActiveNoteContexts.splice(indexToRemove, 1)[0];
+    // First, stop notes no longer in the active set
+    for (i = 0; i < this.state.activeKeyboardNotes.length; i++) {
+      if (!notes.includes(this.state.activeKeyboardNotes[i])) {
+        noteContext = this.state.activeNoteContexts[i];
+        this.transport.stopNote(instrument, noteContext);
+        indicesToRemove.push(i);
+      }
+    }
+    for (i = 0; i < indicesToRemove.length; i++) {
+      newActiveKeyboardNotes.splice(indicesToRemove[i], 1);
+      newActiveNoteContexts.splice(indicesToRemove[i], 1);
+    }
 
-    let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
-    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID));
+    // Next, start notes newly added to the active set
+    for (i = 0; i < notes.length; i++) {
+      if (!this.state.activeKeyboardNotes.includes(notes[i])) {
+        note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
+        noteContext = this.transport.playImmediateNote(instrument, note);
 
-    this.transport.stopNote(instrument, noteContext);
+        newActiveKeyboardNotes.push(notes[i]);
+        newActiveNoteContexts.push(noteContext);
+      }
+    }
 
-    this.setState({
+    // Finally, update state
+    this.setState((prevState, props) => ({
       activeKeyboardNotes: newActiveKeyboardNotes,
       activeNoteContexts: newActiveNoteContexts,
-    });
+    }));
   };
 
   export(e) {
@@ -1450,8 +1461,7 @@ class App extends React.Component {
                 activeNotes={this.state.activeKeyboardNotes}
                 activate={this.activateKeyboard}
                 deactivate={this.deactivateKeyboard}
-                pressNote={this.pressNote}
-                releaseNote={this.releaseNote} />
+                setNotes={this.setKeyboardNotes} />
       <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
         <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
       </div>

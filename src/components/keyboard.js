@@ -5,31 +5,6 @@ import React from 'react';
 class Key extends React.Component {
   constructor(props) {
     super(props);
-
-    this.pressNote = this.pressNote.bind(this);
-    this.releaseNote = this.releaseNote.bind(this);
-    this.mouseOut = this.mouseOut.bind(this);
-    this.mouseMove = this.mouseMove.bind(this);
-  };
-
-  pressNote(e) {
-    this.props.pressNote(this.props.noteName, this.props.octave);
-  };
-
-  releaseNote(e) {
-    this.props.releaseNote(this.props.noteName, this.props.octave);
-  };
-
-  mouseOut(e) {
-    if (this.props.activeNotes.includes(this.props.noteName + this.props.octave)) {
-      this.props.releaseNote(this.props.noteName, this.props.octave);
-    }
-  };
-
-  mouseMove(e) {
-    if (this.props.active && !this.props.activeNotes.includes(this.props.noteName + this.props.octave)) {
-      this.props.pressNote(this.props.noteName, this.props.octave);
-    }
   };
 
   render() {
@@ -37,9 +12,9 @@ class Key extends React.Component {
     let cssClass = this.props.noteName.toLowerCase();
     let isWhiteKey = ["A", "B", "C", "D", "E", "F", "G"].includes(this.props.noteName);
     let keyColorClass = (isWhiteKey) ? "keyboard-white-key" : "keyboard-black-key";
-    let pressedClass = this.props.activeNotes.includes(noteLabel) ? "pressed" : "";
+    let pressedClass = this.props.activeNotes.includes(this.props.noteName + "-" + this.props.octave) ? "pressed" : "";
 
-    return <span onMouseDown={this.pressNote} onMouseUp={this.releaseNote} onMouseOut={this.mouseOut} onMouseMove={this.mouseMove} onTouchStart={this.pressNote} onTouchEnd={this.releaseNote} className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={this.props.noteName + "-" + this.props.octave}><span className="keyboard-key-label">{noteLabel}</span></span>
+    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={this.props.noteName + "-" + this.props.octave}><span className="keyboard-key-label">{noteLabel}</span></span>
   };
 };
 
@@ -50,46 +25,166 @@ class Keyboard extends React.Component {
     this.scrollLeftTimeoutID = undefined;
     this.scrollRightTimeoutID = undefined;
 
+    this.touchHandler = this.touchHandler.bind(this);
     this.mouseDown = this.mouseDown.bind(this);
     this.mouseUp = this.mouseUp.bind(this);
+    this.mouseMove = this.mouseMove.bind(this);
+    this.mouseOut = this.mouseOut.bind(this);
+    this.mouseOver = this.mouseOver.bind(this);
+    this.touchStart = this.touchStart.bind(this);
+    this.touchEnd = this.touchEnd.bind(this);
+    this.touchMove = this.touchMove.bind(this);
     this.scroll = this.scroll.bind(this);
-    this.activateScrollLeft = this.activateScrollLeft.bind(this);
-    this.activateScrollRight = this.activateScrollRight.bind(this);
-    this.deactivateLeftScroll = this.deactivateLeftScroll.bind(this);
-    this.deactivateRightScroll = this.deactivateRightScroll.bind(this);
+
+    this.touches = {};
+  };
+
+  touchHandler(touches) {
+    let key;
+    let isScrollActive = false;
+    let activeNotes = [];
+
+    for (key in touches) {
+      let elementUnderCursor = this.getElementUnderCursor(touches[key].x, touches[key].y);
+
+      if (elementUnderCursor !== undefined) {
+        if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
+          isScrollActive = true;
+          if (this.scrollLeftTimeoutID === undefined) {
+            this.scrollLeftTimeoutID = setInterval(() => this.scroll(-10), 15);
+          }
+        }
+        else if (elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
+          isScrollActive = true;
+          if (this.scrollRightTimeoutID === undefined) {
+            this.scrollRightTimeoutID = setInterval(() => this.scroll(10), 15);
+          }
+        }
+        else {
+          activeNotes.push(elementUnderCursor.dataset.note);
+        }
+      }
+    }
+
+    if (!isScrollActive && this.scrollLeftTimeoutID !== undefined) {
+      clearInterval(this.scrollLeftTimeoutID);
+      this.scrollLeftTimeoutID = undefined;
+    }
+    if (!isScrollActive && this.scrollRightTimeoutID !== undefined) {
+      clearInterval(this.scrollRightTimeoutID);
+      this.scrollRightTimeoutID = undefined;
+    }
+
+    this.props.setNotes(activeNotes);
+  };
+
+  getElementUnderCursor(x, y) {
+    let elementUnderCursor = document.elementFromPoint(x, y);
+
+    if (elementUnderCursor === null) {
+      elementUnderCursor = undefined;
+    }
+    else if (elementUnderCursor.classList.contains("keyboard-key-label")) {
+      elementUnderCursor = elementUnderCursor.parentElement;
+    }
+    else if (!elementUnderCursor.classList.contains("keyboard-key") &&
+             !elementUnderCursor.classList.contains("js-keyboard-scroll-left") &&
+             !elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
+      elementUnderCursor = undefined;
+    }
+
+    return elementUnderCursor;
   };
 
   mouseDown(e) {
     this.props.activate();
+    this.touches[-1] = { x: e.clientX, y: e.clientY };
+    this.touchHandler(this.touches);
   };
 
   mouseUp(e) {
     this.props.deactivate();
+    delete this.touches[-1];
+    this.touchHandler(this.touches);
+  };
+
+  mouseMove(e) {
+    if (this.props.active) {
+      this.touches[-1] = { x: e.clientX, y: e.clientY };
+      this.touchHandler(this.touches);
+    }
+  };
+
+  mouseOut(e) {
+    if (this.props.active) {
+      this.touches[-1] = { x: e.clientX, y: e.clientY };
+      this.touchHandler(this.touches);
+    }
+  };
+
+  mouseOver(e) {
+    if (e.buttons !== undefined && e.buttons === 0) {
+      this.props.deactivate();
+    }
+    // Safari, as of v11, doesn't support `buttons`, but it does support the non-standard `which`
+    else if (e.nativeEvent.which !== undefined && e.nativeEvent.which === 0) {
+      this.props.deactivate();
+    }
+  };
+
+  touchStart(e) {
+    let i;
+    let touch;
+    let newTouches = e.changedTouches;
+
+    this.props.activate();
+
+    for (i = 0; i < newTouches.length; i++) {
+      touch = newTouches.item(i);
+      this.touches[touch.identifier] = { x: touch.clientX, y: touch.clientY };
+    }
+
+    this.touchHandler(this.touches);
+  };
+
+  touchEnd(e) {
+    let i;
+    let removedTouches = e.changedTouches;
+
+    for (i = 0; i < removedTouches.length; i++) {
+      delete this.touches[removedTouches.item(i).identifier];
+    }
+
+    this.touchHandler(this.touches);
+    if (this.touches.length === 0) {
+      alert("Deactivate!");
+      this.props.deactivate();
+    }
+  };
+
+  touchMove(e) {
+    let i;
+    let touch;
+    let newTouches = e.changedTouches;
+
+    for (i = 0; i < newTouches.length; i++) {
+      touch = newTouches.item(i);
+      this.touches[touch.identifier] = { x: touch.clientX, y: touch.clientY };
+    }
+
+    this.touchHandler(this.touches);
+
+    // Prevent page from scrolling vertically while dragging on keyboard
+    e.preventDefault();
   };
 
   scroll(delta) {
     this.keyboardContainer.scrollLeft += delta;
   };
 
-  activateScrollLeft(e) {
-    this.scrollLeftTimeoutID = setInterval(() => this.scroll(-10), 15);
-  };
-
-  activateScrollRight(e) {
-    this.scrollRightTimeoutID = setInterval(() => this.scroll(10), 15);
-  };
-
-  deactivateLeftScroll(e) {
-    clearInterval(this.scrollLeftTimeoutID);
-  };
-
-  deactivateRightScroll(e) {
-    clearInterval(this.scrollRightTimeoutID);
-  };
-
   render() {
-    return <div className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp}>
-      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height" onMouseDown={this.activateScrollLeft} onMouseUp={this.deactivateLeftScroll} onMouseOut={this.deactivateLeftScroll} onTouchStart={this.activateScrollLeft} onTouchEnd={this.deactivateLeftScroll}>&larr;</div>
+    return <div className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd} onTouchMove={this.touchMove}>
+      <div className="keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height">&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
           <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="0" />
@@ -198,7 +293,7 @@ class Keyboard extends React.Component {
           <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="7" />
         </div>
       </div>
-      <div className="keyboard-scroll-button flex flex-align-center flex-justify-center full-height" onMouseDown={this.activateScrollRight} onMouseUp={this.deactivateRightScroll} onMouseOut={this.deactivateRightScroll} onTouchStart={this.activateScrollRight} onTouchEnd={this.deactivateRightScroll}>&rarr;</div>
+      <div className="keyboard-scroll-button js-keyboard-scroll-right flex flex-align-center flex-justify-center full-height">&rarr;</div>
     </div>;
   };
 };
