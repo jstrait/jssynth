@@ -110,12 +110,16 @@ class Serializer {
   };
 
   static serialize(tracks, instruments, patterns) {
+    const MEASURES = 8;
+    const STEPS_PER_MEASURE = 16;
+    const TOTAL_STEPS = MEASURES * STEPS_PER_MEASURE;
+
     let i, j;
     let serializedInstrument;
     let serializedPatterns;
     let serializedNotes = [];
 
-    for (i = 0; i < (8 * 16); i++) {
+    for (i = 0; i < TOTAL_STEPS; i++) {
       serializedNotes[i] = [];
     }
 
@@ -136,7 +140,7 @@ class Serializer {
           sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * 16) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume * trackVolumeMultiplier));
+                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume * trackVolumeMultiplier));
               }
             }
           });
