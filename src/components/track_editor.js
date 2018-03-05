@@ -31,7 +31,15 @@ class TrackEditor extends React.Component {
   };
 
   render() {
-    let instrumentEditor = <InstrumentEditor instrument={this.props.instrument} updateInstrument={this.props.updateInstrument} />;
+    let instrumentEditor;
+
+    if (this.props.instrument.type === "synth") {
+      instrumentEditor = <InstrumentEditor instrument={this.props.instrument} updateInstrument={this.props.updateInstrument} />;
+    }
+    else {
+      instrumentEditor = <div>Placeholder for sample instrument options!</div>;
+    }
+
     let patternEditor = <PatternEditor patterns={this.props.patterns} selectedPattern={this.props.selectedPattern} setSelectedPattern={this.props.setSelectedPattern} setPatternName={this.props.setPatternName} addPattern={this.props.addPattern} removePattern={this.props.removePattern} addPatternRow={this.props.addPatternRow} removePatternRow={this.props.removePatternRow} setNoteValue={this.props.setNoteValue} />;
 
     let panel = (this.state.selectedTab === "instrument") ? instrumentEditor : patternEditor;

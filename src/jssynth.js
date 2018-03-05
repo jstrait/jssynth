@@ -1,5 +1,57 @@
 "use strict";
 
+function BufferCollection(audioContext) {
+  var buffers = {};
+  var bufferCollection = {};
+
+  bufferCollection.addBuffer = function(label, url) {
+    var onDecodeSuccess = function(buffer) {
+      buffers[label] = buffer;
+    };
+
+    var onDecodeError = function(e) {
+      console.log("Error decoding audio data: " + e.message);
+    };
+
+    var request = new XMLHttpRequest();
+
+    request.open("GET", url, true);
+    request.responseType = "arraybuffer";
+
+    request.onload = function() {
+      audioContext.decodeAudioData(request.response, onDecodeSuccess, onDecodeError);
+    };
+
+    request.send();
+  };
+
+  bufferCollection.getBuffer = function(label) {
+    return buffers[label];
+  };
+
+  return bufferCollection;
+};
+
+function SampleInstrument(config, bufferCollection) {
+  var audioBuffer = bufferCollection.getBuffer(config.sample);
+  var sampleInstrument = {};
+
+  sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var masterGain = audioContext.createGain();
+    masterGain.gain.value = amplitude;
+
+    var audioBufferSourceNode = audioContext.createBufferSource();
+    audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.connect(masterGain);
+
+    audioBufferSourceNode.start(gateOnTime);
+
+    masterGain.connect(audioDestination);
+  };
+
+  return sampleInstrument;
+};
+
 function Instrument(config) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
@@ -624,6 +676,8 @@ function Transport(songPlayer, stopCallback) {
   transport.setTempo(100);
   transport.setAmplitude(0.25);
 
+  transport.bufferCollection = BufferCollection(audioContext);
+
   return transport;
 };
 
@@ -758,4 +812,4 @@ function WaveWriter() {
   return waveWriter;
 };
 
-export { Instrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export { Instrument, SampleInstrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };

@@ -30,6 +30,7 @@ class App extends React.Component {
       instruments: [
         {
           id:                 1,
+          type:               'synth',
           name:               'Melody',
           waveform1:          'sawtooth',
           waveform1Octave:    0,
@@ -56,6 +57,7 @@ class App extends React.Component {
         },
         {
           id:                 2,
+          type:               'synth',
           name:               'Chords',
           waveform1:          'triangle',
           waveform1Octave:    0,
@@ -82,6 +84,7 @@ class App extends React.Component {
         },
         {
           id:                 3,
+          type:               'synth',
           name:               'Bass',
           waveform1:          'sawtooth',
           waveform1Octave:    0,
@@ -105,6 +108,24 @@ class App extends React.Component {
           envelopeDecay:      0.0,
           envelopeSustain:    1.0,
           envelopeRelease:    0.0,
+        },
+        {
+          id: 4,
+          type: 'sample',
+          name: 'Bass',
+          sample: 'bass',
+        },
+        {
+          id: 5,
+          type: 'sample',
+          name: 'Snare',
+          sample: 'snare',
+        },
+        {
+          id: 6,
+          type: 'sample',
+          name: 'Hi-Hat Closed',
+          sample: 'hh_closed',
         },
       ],
       patterns: [
@@ -688,6 +709,131 @@ class App extends React.Component {
             },
           ],
         },
+        {
+          id: 17,
+          name: 'Bass Drum 1',
+          trackID: 4,
+          rows: [
+            {
+              notes: [{name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},],
+            },
+          ],
+        },
+        {
+          id: 18,
+          name: 'Bass Drum 2',
+          trackID: 4,
+          rows: [
+            {
+              notes: [{name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},],
+            },
+          ],
+        },
+        {
+          id: 19,
+          name: 'Snare Drum 1',
+          trackID: 5,
+          rows: [
+            {
+              notes: [{name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},],
+            },
+          ],
+        },
+        {
+          id: 20,
+          name: 'Snare Drum 2',
+          trackID: 5,
+          rows: [
+            {
+              notes: [{name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: 'A4'},],
+            },
+          ],
+        },
+        {
+          id: 21,
+          name: 'Hi-Hat 1',
+          trackID: 6,
+          rows: [
+            {
+              notes: [{name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: ''},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: 'A4'},
+                      {name: 'A4'},
+                      {name: ''},
+                      {name: 'A4'},
+                      {name: 'A4'},],
+            },
+          ],
+        },
       ],
       tracks: [
         {
@@ -741,6 +887,57 @@ class App extends React.Component {
             { patternID: 12, },
           ],
         },
+        {
+          id: 4,
+          name: "Bass Drum",
+          instrumentID: 4,
+          muted: false,
+          volume: 0.8,
+          patterns: [
+            { patternID: 17, },
+            { patternID: 18, },
+            { patternID: 17, },
+            { patternID: 18, },
+            { patternID: 17, },
+            { patternID: 18, },
+            { patternID: 17, },
+            { patternID: 18, },
+          ],
+        },
+        {
+          id: 5,
+          name: "Snare Drum",
+          instrumentID: 5,
+          muted: false,
+          volume: 0.8,
+          patterns: [
+            { patternID: 19, },
+            { patternID: 20, },
+            { patternID: 19, },
+            { patternID: 20, },
+            { patternID: 19, },
+            { patternID: 20, },
+            { patternID: 19, },
+            { patternID: 20, },
+          ],
+        },
+        {
+          id: 6,
+          name: "Hi-Hat",
+          instrumentID: 6,
+          muted: false,
+          volume: 0.8,
+          patterns: [
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+            { patternID: 21, },
+          ],
+        },
       ],
       selectedTrackID: 1,
       selectedPatternID: 1,
@@ -765,6 +962,10 @@ class App extends React.Component {
     this.setDownloadFileName = this.setDownloadFileName.bind(this);
     this.export = this.export.bind(this);
     this.syncTransportNotes();
+
+    this.transport.bufferCollection.addBuffer("bass", "bass.wav");
+    this.transport.bufferCollection.addBuffer("snare", "snare.wav");
+    this.transport.bufferCollection.addBuffer("hh_closed", "hh_closed.wav");
 
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
@@ -957,7 +1158,7 @@ class App extends React.Component {
   };
 
   syncTransportNotes() {
-    let serializedNotes = Serializer.serialize(this.state.tracks, this.state.instruments, this.state.patterns);
+    let serializedNotes = Serializer.serialize(this.state.tracks, this.state.instruments, this.state.patterns, this.transport.bufferCollection);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
   };
@@ -1020,6 +1221,7 @@ class App extends React.Component {
     let newInstrumentID = this.idGenerator.next();
     let newInstrument = {
       id:                    newInstrumentID,
+      type:                  'synth',
       name:                  'Instrument ' + newInstrumentID,
       waveform1:             'sawtooth',
       waveform1Octave:       0,

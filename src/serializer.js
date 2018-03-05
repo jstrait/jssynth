@@ -5,7 +5,7 @@ import * as JSSynth from "./jssynth";
 class Serializer {
   constructor() {};
 
-  static serializeInstrument(instrument) {
+  static serializeSynthInstrument(instrument) {
     let filterCutoff = parseInt(instrument.filterCutoff, 10);
 
     let serializedConfig = {
@@ -51,6 +51,26 @@ class Serializer {
     };
 
     return new JSSynth.Instrument(serializedConfig);
+  };
+
+  static serializeSampleInstrument(instrument, bufferCollection) {
+    let serializedConfig = {
+      sample: instrument.sample,
+    };
+
+    return new JSSynth.SampleInstrument(serializedConfig, bufferCollection);
+  };
+
+  static serializeInstrument(instrument, bufferCollection) {
+    if (instrument.type === "synth") {
+      return Serializer.serializeSynthInstrument(instrument);
+    }
+    else if (instrument.type === "sample") {
+      return Serializer.serializeSampleInstrument(instrument, bufferCollection);
+    }
+    else {
+      return undefined;
+    }
   };
 
   static serializePatterns(patterns) {
@@ -109,7 +129,7 @@ class Serializer {
     return patterns;
   };
 
-  static serialize(tracks, instruments, patterns) {
+  static serialize(tracks, instruments, patterns, bufferCollection) {
     const MEASURES = 8;
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = MEASURES * STEPS_PER_MEASURE;
@@ -132,7 +152,7 @@ class Serializer {
         return;
       }
 
-      serializedInstrument = Serializer.serializeInstrument(Serializer.instrumentByID(instruments, track.instrumentID));
+      serializedInstrument = Serializer.serializeInstrument(Serializer.instrumentByID(instruments, track.instrumentID), bufferCollection);
       serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
 
       for (i = 0; i < track.patterns.length; i++) {
