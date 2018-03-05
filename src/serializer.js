@@ -126,6 +126,8 @@ class Serializer {
     let trackVolumeMultiplier = 1 / tracks.length;
 
     tracks.forEach(function(track) {
+      let trackVolume = track.volume * trackVolumeMultiplier;
+
       if (track.muted) {
         return;
       }
@@ -140,7 +142,7 @@ class Serializer {
           sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, track.volume * trackVolumeMultiplier));
+                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, trackVolume));
               }
             }
           });
