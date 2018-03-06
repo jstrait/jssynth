@@ -51,6 +51,7 @@ function BufferCollection(audioContext) {
 };
 
 function SampleInstrument(config, bufferCollection) {
+  var BASE_FREQUENCY = Note("A", 4, 1).frequency();
   var audioBuffer = bufferCollection.getBuffer(config.sample);
   var sampleInstrument = {};
 
@@ -60,6 +61,7 @@ function SampleInstrument(config, bufferCollection) {
 
     var audioBufferSourceNode = audioContext.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
     audioBufferSourceNode.connect(masterGain);
 
     audioBufferSourceNode.start(gateOnTime);
@@ -75,6 +77,7 @@ function SampleInstrument(config, bufferCollection) {
 
     var audioBufferSourceNode = audioContext.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
     audioBufferSourceNode.connect(masterGain);
 
     audioBufferSourceNode.start(gateOnTime);
