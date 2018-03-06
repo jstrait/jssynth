@@ -38,6 +38,31 @@ class WaveFormSelector extends React.Component {
   };
 };
 
+
+class SampleInstrumentEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  };
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.setBufferFromFile(this.props.instrument.sample, this.fileInput.files[0]);
+  };
+
+  render() {
+    return <div>
+      <form onSubmit={this.handleSubmit}>
+        <label>Change sound file:</label>
+        <input type="file" ref={input => {this.fileInput = input;}} />
+        <button type="submit">Upload</button>
+      </form>
+    </div>
+  };
+};
+
+
 class InstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -317,4 +342,4 @@ class InstrumentEditor extends React.Component {
   };
 };
 
-export { InstrumentEditor };
+export { InstrumentEditor, SampleInstrumentEditor };

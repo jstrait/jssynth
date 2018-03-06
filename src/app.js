@@ -963,9 +963,9 @@ class App extends React.Component {
     this.export = this.export.bind(this);
     this.syncTransportNotes();
 
-    this.transport.bufferCollection.addBuffer("bass", "bass.wav");
-    this.transport.bufferCollection.addBuffer("snare", "snare.wav");
-    this.transport.bufferCollection.addBuffer("hh_closed", "hh_closed.wav");
+    this.transport.bufferCollection.addBufferFromURL("bass", "bass.wav");
+    this.transport.bufferCollection.addBufferFromURL("snare", "snare.wav");
+    this.transport.bufferCollection.addBufferFromURL("hh_closed", "hh_closed.wav");
 
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
@@ -985,6 +985,7 @@ class App extends React.Component {
     this.setPatternName = this.setPatternName.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
+    this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
@@ -1535,6 +1536,11 @@ class App extends React.Component {
     this.syncTransportNotes();
   };
 
+  setBufferFromFile(label, file) {
+    this.transport.bufferCollection.addBufferFromFile(label, file);
+    this.syncTransportNotes();
+  };
+
   setDownloadFileName(e) {
     this.setState({ downloadFileName: e.target.value });
   };
@@ -1652,6 +1658,7 @@ class App extends React.Component {
                    patterns={patterns}
                    setSelectedTrack={this.setSelectedTrack}
                    updateInstrument={this.updateInstrument}
+                   setBufferFromFile={this.setBufferFromFile}
                    setSelectedPattern={this.setSelectedPattern}
                    setPatternName={this.setPatternName}
                    addPattern={this.addPattern}

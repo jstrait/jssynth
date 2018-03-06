@@ -4,7 +4,7 @@ function BufferCollection(audioContext) {
   var buffers = {};
   var bufferCollection = {};
 
-  bufferCollection.addBuffer = function(label, url) {
+  bufferCollection.addBufferFromURL = function(label, url) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
     };
@@ -23,6 +23,24 @@ function BufferCollection(audioContext) {
     };
 
     request.send();
+  };
+
+  bufferCollection.addBufferFromFile = function(label, file) {
+    var onDecodeSuccess = function(buffer) {
+      buffers[label] = buffer;
+    };
+
+    var onDecodeError = function(e) {
+      console.log("Error decoding audio data: " + e.message);
+    };
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      audioContext.decodeAudioData(e.target.result, onDecodeSuccess, onDecodeError);
+    };
+
+    reader.readAsArrayBuffer(file);
   };
 
   bufferCollection.getBuffer = function(label) {
