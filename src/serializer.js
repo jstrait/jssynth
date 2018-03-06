@@ -50,7 +50,7 @@ class Serializer {
       },
     };
 
-    return new JSSynth.Instrument(serializedConfig);
+    return new JSSynth.SynthInstrument(serializedConfig);
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {

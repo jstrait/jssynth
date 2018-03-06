@@ -98,7 +98,7 @@ function SampleInstrument(config, bufferCollection) {
   return sampleInstrument;
 };
 
-function Instrument(config) {
+function SynthInstrument(config) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
@@ -123,9 +123,9 @@ function Instrument(config) {
     return filter;
   };
 
-  var instrument = {};
+  var synthInstrument = {};
 
-  instrument.gateOn = function(audioContext, audioDestination, note, amplitude) {
+  synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude) {
     var gateOnTime = audioContext.currentTime;
     var gateOffTime = Number.POSITIVE_INFINITY;
     var calculatedEnvelope;
@@ -213,7 +213,7 @@ function Instrument(config) {
     };
   };
 
-  instrument.gateOff = function(noteContext) {
+  synthInstrument.gateOff = function(noteContext) {
     var gateOffTime = noteContext.audioContext.currentTime;
     var releaseEndTime;
 
@@ -238,7 +238,7 @@ function Instrument(config) {
     }
   };
 
-  instrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+  synthInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var calculatedEnvelope;
 
     amplitude = amplitude / config.oscillators.length;
@@ -329,7 +329,7 @@ function Instrument(config) {
     }
   };
 
-  return instrument;
+  return synthInstrument;
 };
 
 var EnvelopeCalculator = {
@@ -858,4 +858,4 @@ function WaveWriter() {
   return waveWriter;
 };
 
-export { Instrument, SampleInstrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export { SynthInstrument, SampleInstrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
