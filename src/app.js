@@ -1565,7 +1565,7 @@ class App extends React.Component {
     let newNoteContexts = [];
     let indicesToRemove = [];
     let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
-    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID))
+    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.transport.bufferCollection)
 
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);

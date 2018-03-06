@@ -67,6 +67,31 @@ function SampleInstrument(config, bufferCollection) {
     masterGain.connect(audioDestination);
   };
 
+  sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude) {
+    var gateOnTime = audioContext.currentTime;
+
+    var masterGain = audioContext.createGain();
+    masterGain.gain.value = amplitude;
+
+    var audioBufferSourceNode = audioContext.createBufferSource();
+    audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.connect(masterGain);
+
+    audioBufferSourceNode.start(gateOnTime);
+
+    masterGain.connect(audioDestination);
+
+    return {
+      audioContext: audioContext,
+      audioBufferSourceNode: audioBufferSourceNode,
+    };
+  };
+
+  sampleInstrument.gateOff = function(noteContext) {
+    var gateOffTime = noteContext.audioContext.currentTime;
+    noteContext.audioBufferSourceNode.stop(gateOffTime);
+  };
+
   return sampleInstrument;
 };
 
