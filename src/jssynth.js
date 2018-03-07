@@ -55,14 +55,20 @@ function SampleInstrument(config, bufferCollection) {
   var audioBuffer = bufferCollection.getBuffer(config.sample);
   var sampleInstrument = {};
 
-  sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var masterGain = audioContext.createGain();
-    masterGain.gain.value = amplitude;
-
+  var buildBufferSourceNode = function(audioContext, masterGain, note) {
     var audioBufferSourceNode = audioContext.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
     audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
     audioBufferSourceNode.connect(masterGain);
+
+    return audioBufferSourceNode;
+  };
+
+  sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var masterGain = audioContext.createGain();
+    masterGain.gain.value = amplitude;
+
+    var audioBufferSourceNode = buildBufferSourceNode(audioContext, masterGain, note);
 
     audioBufferSourceNode.start(gateOnTime);
 
@@ -77,10 +83,7 @@ function SampleInstrument(config, bufferCollection) {
     var masterGain = audioContext.createGain();
     masterGain.gain.value = amplitude;
 
-    var audioBufferSourceNode = audioContext.createBufferSource();
-    audioBufferSourceNode.buffer = audioBuffer;
-    audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
-    audioBufferSourceNode.connect(masterGain);
+    var audioBufferSourceNode = buildBufferSourceNode(audioContext, masterGain, note);
 
     audioBufferSourceNode.start(gateOnTime);
 
