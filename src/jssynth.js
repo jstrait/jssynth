@@ -135,7 +135,7 @@ function SynthInstrument(config) {
 
     // Master Gain Envelope Decay/Sustain
     if (calculatedMasterGainEnvelope.attackEndTime < gateOffTime) {
-      masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.delayEndAmplitude, calculatedMasterGainEnvelope.delayEndTime);
+      masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.decayEndAmplitude, calculatedMasterGainEnvelope.decayEndTime);
     }
 
 
@@ -160,7 +160,7 @@ function SynthInstrument(config) {
 
       // Envelope Decay/Sustain
       if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.delayEndAmplitude, calculatedFilterEnvelope.delayEndTime);
+        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
       }
     }
 
@@ -250,7 +250,7 @@ var EnvelopeCalculator = {
   calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
     var attackEndTime = gateOnTime + envelope.attack;
     var attackEndAmplitude;
-    var delayEndAmplitudePercentage;
+    var decayEndAmplitudePercentage;
 
     if (attackEndTime < gateOffTime) {
       attackEndAmplitude = baseAmplitude;
@@ -261,25 +261,25 @@ var EnvelopeCalculator = {
       attackEndTime = gateOffTime;
     }
 
-    var delayEndTime = attackEndTime + envelope.decay;
+    var decayEndTime = attackEndTime + envelope.decay;
     var targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
     var decayEndAmplitude;
-    if (gateOffTime > delayEndTime) {
+    if (gateOffTime > decayEndTime) {
       decayEndAmplitude = targetAmplitudeAfterDecayEnds;
     }
     else {
-      delayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (delayEndTime - attackEndTime));
-      delayEndTime = gateOffTime;
+      decayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (decayEndTime - attackEndTime));
+      decayEndTime = gateOffTime;
 
       var delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
-      decayEndAmplitude = attackEndAmplitude - (delta * delayEndAmplitudePercentage);
+      decayEndAmplitude = attackEndAmplitude - (delta * decayEndAmplitudePercentage);
     }
 
     return {
       attackEndTime: attackEndTime,
       attackEndAmplitude: attackEndAmplitude,
-      delayEndTime: delayEndTime,
-      delayEndAmplitude: decayEndAmplitude,
+      decayEndTime: decayEndTime,
+      decayEndAmplitude: decayEndAmplitude,
     };
   },
 };

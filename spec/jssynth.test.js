@@ -159,8 +159,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(1.0);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.0);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
   it("should calculate correctly when attack time is longer than note duration", function() {
@@ -175,8 +175,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.25);
-    expect(calculatedEnvelope.delayEndTime).toEqual(1.1);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(NaN);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.1);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(NaN);
   });
 
   it("should calculate correctly attack time is shorter than note duration ", function() {
@@ -191,8 +191,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(1.5);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
   it("should calculate correctly when decay ends before note ends", function() {
@@ -207,8 +207,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(1.75);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.25);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.75);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.25);
   });
 
   it("should calculate correctly when decay is a no-op because sustain is 100%", function() {
@@ -223,8 +223,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(2.0);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(2.0);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
   it("should calculate correctly when decay ends before gate off, but is a no-op due to sustain volume", function() {
@@ -239,8 +239,8 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(1.5);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
   it("should calculate correctly when decay ends after gate off, but is a no-op due to sustain volume", function() {
@@ -255,7 +255,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
-    expect(calculatedEnvelope.delayEndTime).toEqual(2.0);
-    expect(calculatedEnvelope.delayEndAmplitude).toEqual(0.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(2.0);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 });
