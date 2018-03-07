@@ -208,6 +208,7 @@ function SynthInstrument(config) {
   };
 
   synthInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
+    var MINIMUM_RELEASE_TIME = 0.005;
     var releaseEndTime;
 
     // Filter Envelope Release
@@ -218,12 +219,14 @@ function SynthInstrument(config) {
     }
 
     // Gain Envelope Release
-    var gainReleaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.envelope.release);
+    var safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    var gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
     }
-    noteContext.masterGain.gain.linearRampToValueAtTime(0.0, gainReleaseEndTime);
+
+    noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
 
     noteContext.oscillator.stop(gainReleaseEndTime);
     noteContext.oscillator2.stop(gainReleaseEndTime);
