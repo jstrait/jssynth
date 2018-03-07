@@ -67,6 +67,8 @@ function SampleInstrument(config, bufferCollection) {
     audioBufferSourceNode.start(gateOnTime);
 
     masterGain.connect(audioDestination);
+
+    audioBufferSourceNode.stop(gateOffTime);
   };
 
   sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude) {
