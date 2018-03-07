@@ -133,7 +133,8 @@ function SynthInstrument(config) {
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude) {
     var gateOnTime = audioContext.currentTime;
     var gateOffTime = Number.POSITIVE_INFINITY;
-    var calculatedEnvelope;
+    var calculatedMasterGainEnvelope;
+    var calculatedFilterEnvelope;
 
     amplitude = amplitude / config.oscillators.length;
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
@@ -169,15 +170,15 @@ function SynthInstrument(config) {
       filterLfoGain.connect(filter.frequency);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
+      filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
-      if (calculatedEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
+      if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
+        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.delayEndAmplitude, calculatedFilterEnvelope.delayEndTime);
       }
     }
 
@@ -196,15 +197,15 @@ function SynthInstrument(config) {
       filterLfoOscillator.start(gateOnTime);
     }
 
-    calculatedEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
-    masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
+    masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.attackEndAmplitude, calculatedMasterGainEnvelope.attackEndTime);
 
     // Envelope Decay/Sustain
-    if (calculatedEnvelope.attackEndTime < gateOffTime) {
-      masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
+    if (calculatedMasterGainEnvelope.attackEndTime < gateOffTime) {
+      masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.delayEndAmplitude, calculatedMasterGainEnvelope.delayEndTime);
     }
 
     return {
@@ -244,7 +245,8 @@ function SynthInstrument(config) {
   };
 
   synthInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var calculatedEnvelope;
+    var calculatedMasterGainEnvelope;
+    var calculatedFilterEnvelope;
 
     amplitude = amplitude / config.oscillators.length;
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
@@ -280,15 +282,15 @@ function SynthInstrument(config) {
       filterLfoGain.connect(filter.frequency);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
+      filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
-      if (calculatedEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
+      if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
+        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.delayEndAmplitude, calculatedFilterEnvelope.delayEndTime);
       }
 
       // Envelope Release
@@ -311,15 +313,15 @@ function SynthInstrument(config) {
       filterLfoOscillator.start(gateOnTime);
     }
 
-    calculatedEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
-    masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.attackEndAmplitude, calculatedEnvelope.attackEndTime);
+    masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.attackEndAmplitude, calculatedMasterGainEnvelope.attackEndTime);
 
     // Envelope Decay/Sustain
-    if (calculatedEnvelope.attackEndTime < gateOffTime) {
-      masterGain.gain.linearRampToValueAtTime(calculatedEnvelope.delayEndAmplitude, calculatedEnvelope.delayEndTime);
+    if (calculatedMasterGainEnvelope.attackEndTime < gateOffTime) {
+      masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.delayEndAmplitude, calculatedMasterGainEnvelope.delayEndTime);
     }
 
     // Envelope Release
