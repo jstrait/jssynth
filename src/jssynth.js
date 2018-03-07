@@ -213,9 +213,11 @@ function SynthInstrument(config) {
 
     // Filter Envelope Release
     if (config.filter.mode === "envelope") {
-      var filterReleaseEndTime = Math.max(gateOffTime + 0.001, gateOffTime + config.filter.envelope.release);
-      noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
-      noteContext.filter.frequency.linearRampToValueAtTime(0.0, filterReleaseEndTime);
+      var safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      if (isInteractive) {
+        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
+      }
+      noteContext.filter.frequency.setTargetAtTime(0.0, gateOffTime, safeFilterRelease / 5);
     }
 
     // Gain Envelope Release
