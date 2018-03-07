@@ -680,7 +680,6 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     };
 
     return audioContext;
-
   };
 
   var sixteenthsPerMinute = tempo * 4;
