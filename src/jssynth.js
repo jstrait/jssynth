@@ -238,7 +238,7 @@ function SynthInstrument(config) {
 
     noteContext.oscillator.stop(gainReleaseEndTime);
     noteContext.oscillator2.stop(gainReleaseEndTime);
-    noteContext.pitchLfoOscillator.stop(filterReleaseEndTime);
+    noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
     if (config.filter.mode === "lfo") {
       noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
     }
