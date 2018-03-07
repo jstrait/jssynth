@@ -972,7 +972,9 @@ class App extends React.Component {
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
     this.setTrackPattern = this.setTrackPattern.bind(this);
-    this.addTrack = this.addTrack.bind(this);
+    this.addGenericTrack = this.addGenericTrack.bind(this);
+    this.addSynthTrack = this.addSynthTrack.bind(this);
+    this.addSamplerTrack = this.addSamplerTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
 
     // Track Editor
@@ -1218,36 +1220,7 @@ class App extends React.Component {
     this.syncTransportNotes();
   };
 
-  addTrack() {
-    let newInstrumentID = this.idGenerator.next();
-    let newInstrument = {
-      id:                    newInstrumentID,
-      type:                  'synth',
-      name:                  'Instrument ' + newInstrumentID,
-      waveform1:             'sawtooth',
-      waveform1Octave:       0,
-      waveform2:             'square',
-      waveform2Detune:       0,
-      waveform2Octave:       0,
-      lfoWaveform:           'sine',
-      lfoFrequency:          5,
-      lfoAmplitude:          0,
-      filterCutoff:          9950,
-      filterResonance:       0,
-      filterModulator:       'lfo',
-      filterLFOWaveform:     'sine',
-      filterLFOFrequency:    5,
-      filterLFOAmplitude:    0,
-      filterEnvelopeAttack:  0.0,
-      filterEnvelopeDecay:   0.0,
-      filterEnvelopeSustain: 1.0,
-      filterEnvelopeRelease: 0.0,
-      envelopeAttack:        0.0,
-      envelopeDecay:         0.0,
-      envelopeSustain:       1.0,
-      envelopeRelease:       0.0,
-    };
-
+  addGenericTrack(newInstrument) {
     let newTrack = {
       id: this.idGenerator.next(),
       name: 'New Track',
@@ -1292,12 +1265,56 @@ class App extends React.Component {
       ]
     };
 
-
     this.setState((prevState, props) => ({
       instruments: prevState.instruments.concat([newInstrument]),
       patterns: prevState.patterns.concat([newPattern]),
       tracks: prevState.tracks.concat([newTrack])
     }));
+  };
+
+  addSynthTrack() {
+    let newInstrumentID = this.idGenerator.next();
+    let newInstrument = {
+      id:                    newInstrumentID,
+      type:                  'synth',
+      name:                  'Instrument ' + newInstrumentID,
+      waveform1:             'sawtooth',
+      waveform1Octave:       0,
+      waveform2:             'square',
+      waveform2Detune:       0,
+      waveform2Octave:       0,
+      lfoWaveform:           'sine',
+      lfoFrequency:          5,
+      lfoAmplitude:          0,
+      filterCutoff:          9950,
+      filterResonance:       0,
+      filterModulator:       'lfo',
+      filterLFOWaveform:     'sine',
+      filterLFOFrequency:    5,
+      filterLFOAmplitude:    0,
+      filterEnvelopeAttack:  0.0,
+      filterEnvelopeDecay:   0.0,
+      filterEnvelopeSustain: 1.0,
+      filterEnvelopeRelease: 0.0,
+      envelopeAttack:        0.0,
+      envelopeDecay:         0.0,
+      envelopeSustain:       1.0,
+      envelopeRelease:       0.0,
+    };
+
+    this.addGenericTrack(newInstrument);
+  };
+
+  addSamplerTrack() {
+    let newInstrumentID = this.idGenerator.next();
+    let newInstrument = {
+      id:                    newInstrumentID,
+      type:                  'sample',
+      name:                  'Instrument ' + newInstrumentID,
+      sample:                'Instrument ' + newInstrumentID,
+    };
+
+    this.addGenericTrack(newInstrument);
   };
 
   removeTrackInner(id) {
@@ -1338,7 +1355,7 @@ class App extends React.Component {
 
   removeTrack(id) {
     if (this.state.tracks.length === 1) {
-      this.addTrack();
+      this.addSynthTrack();
 
       let newSelectedTrackID = this.state.tracks[this.state.tracks.length - 1].id;
 
@@ -1649,7 +1666,8 @@ class App extends React.Component {
                  setTrackVolume={this.setTrackVolume}
                  toggleTrackMute={this.toggleTrackMute}
                  setTrackPattern={this.setTrackPattern}
-                 addTrack={this.addTrack}
+                 addSynthTrack={this.addSynthTrack}
+                 addSamplerTrack={this.addSamplerTrack}
                  removeTrack={this.removeTrack} />
       <TrackEditor tracks={this.state.tracks}
                    selectedTrackID={this.state.selectedTrackID}

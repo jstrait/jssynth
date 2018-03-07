@@ -165,7 +165,8 @@ class Sequencer extends React.Component {
         </ul>
       </div>
       <div className="pl1">
-        <button className="block button-full button-hollow" onClick={this.props.addTrack}>Add Track</button>
+        <button className="button-full button-hollow" onClick={this.props.addSynthTrack}>Add Synth Track</button>
+        <button className="ml1 button-full button-hollow" onClick={this.props.addSamplerTrack}>Add Sampler Track</button>
       </div>
     </div>;
   };
