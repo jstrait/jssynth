@@ -255,11 +255,11 @@ class InstrumentEditor extends React.Component {
     this.setWaveForm1Octave = this.setWaveForm1Octave.bind(this);
     this.setWaveForm2Octave = this.setWaveForm2Octave.bind(this);
     this.setWaveForm2Detune = this.setWaveForm2Detune.bind(this);
-    this.setFilterCutoff = this.setFilterCutoff.bind(this);
-    this.setFilterResonance = this.setFilterResonance.bind(this);
     this.setLFOAmplitude = this.setLFOAmplitude.bind(this);
     this.setLFOFrequency = this.setLFOFrequency.bind(this);
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
+    this.setFilterCutoff = this.setFilterCutoff.bind(this);
+    this.setFilterResonance = this.setFilterResonance.bind(this);
     this.setFilterModulator = this.setFilterModulator.bind(this);
     this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
@@ -294,14 +294,6 @@ class InstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "waveform2Detune", parseInt(e.target.value, 10));
   };
 
-  setFilterCutoff(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterCutoff", parseInt(e.target.value, 10));
-  };
-
-  setFilterResonance(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
-  };
-
   setLFOAmplitude(e) {
     this.props.updateInstrument(this.props.instrument.id, "lfoAmplitude", parseInt(e.target.value, 10));
   };
@@ -312,6 +304,14 @@ class InstrumentEditor extends React.Component {
 
   setLFOWaveForm(newValue) {
     this.props.updateInstrument(this.props.instrument.id, "lfoWaveform", newValue);
+  };
+
+  setFilterCutoff(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterCutoff", parseInt(e.target.value, 10));
+  };
+
+  setFilterResonance(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
   };
 
   setFilterModulator(e) {
