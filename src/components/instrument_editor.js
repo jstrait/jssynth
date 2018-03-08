@@ -44,6 +44,16 @@ class SampleInstrumentEditor extends React.Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setFilterCutoff = this.setFilterCutoff.bind(this);
+    this.setFilterResonance = this.setFilterResonance.bind(this);
+    this.setFilterModulator = this.setFilterModulator.bind(this);
+    this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
+    this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
+    this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
+    this.setFilterEnvelopeAttack = this.setFilterEnvelopeAttack.bind(this);
+    this.setFilterEnvelopeDecay = this.setFilterEnvelopeDecay.bind(this);
+    this.setFilterEnvelopeSustain = this.setFilterEnvelopeSustain.bind(this);
+    this.setFilterEnvelopeRelease = this.setFilterEnvelopeRelease.bind(this);
     this.setEnvelopeAttack = this.setEnvelopeAttack.bind(this);
     this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
     this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
@@ -53,6 +63,46 @@ class SampleInstrumentEditor extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.setBufferFromFile(this.props.instrument.sample, this.fileInput.files[0]);
+  };
+
+  setFilterCutoff(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterCutoff", parseInt(e.target.value, 10));
+  };
+
+  setFilterResonance(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
+  };
+
+  setFilterModulator(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterModulator", e.target.value);
+  };
+
+  setFilterLFOAmplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterLFOAmplitude", parseFloat(e.target.value));
+  };
+
+  setFilterLFOFrequency(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterLFOFrequency", parseFloat(e.target.value));
+  };
+
+  setFilterLFOWaveForm(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterLFOWaveform", newValue);
+  };
+
+  setFilterEnvelopeAttack(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttack", parseFloat(e.target.value));
+  };
+
+  setFilterEnvelopeDecay(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecay", parseFloat(e.target.value));
+  };
+
+  setFilterEnvelopeSustain(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustain", parseFloat(e.target.value));
+  };
+
+  setFilterEnvelopeRelease(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeRelease", parseFloat(e.target.value));
   };
 
   setEnvelopeAttack(e) {
@@ -80,6 +130,85 @@ class SampleInstrumentEditor extends React.Component {
           <input type="file" ref={input => {this.fileInput = input;}} />
           <button type="submit">Upload</button>
         </form>
+      </div>
+      <div className="pl1 pr1 br border-box instrument-panel">
+        <h2 className="h3 section-header">Filter</h2>
+        <span className="control">
+          <label className="control-label">Cutoff:</label>
+          <span className="annotated-input">
+            <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
+            <span>{this.props.instrument.filterCutoff}Hz</span>
+          </span>
+        </span>
+        <span className="control">
+          <label className="control-label">Resonance:</label>
+          <span className="annotated-input">
+            <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
+            <span>{this.props.instrument.filterResonance}</span>
+          </span>
+        </span>
+        <span className="control">
+          <label className="control-label">Modulation:</label>
+          <span className="flex waveformOptionsContainer">
+            <span className="radioContainer">
+              <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
+              &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
+            </span>
+            <span className="radioContainer">
+              <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
+              &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
+            </span>
+          </span>
+        </span>
+        <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
+          <span className="block mt1 lightText">Cutoff Wobble:</span>
+          <span className="control">
+            <label className="control-label indented">Amount:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+              <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Rate:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
+              <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+            </span>
+          </span>
+          <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+        </span>
+        <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
+          <span className="block mt1 lightText">Cutoff Envelope:</span>
+          <span className="control">
+            <label className="control-label indented">Attack Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+              <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Decay Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+              <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Sustain:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
+              <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Release Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+              <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+            </span>
+          </span>
+        </span>
       </div>
       <div className="pl1 border-box instrument-panel">
         <h2 className="h3 section-header">Loudness Envelope</h2>

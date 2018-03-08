@@ -55,13 +55,37 @@ function SampleInstrument(config, bufferCollection) {
   var audioBuffer = bufferCollection.getBuffer(config.sample);
   var sampleInstrument = {};
 
-  var buildBufferSourceNode = function(audioContext, masterGain, note) {
+  var buildBufferSourceNode = function(audioContext, target, note) {
     var audioBufferSourceNode = audioContext.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
     audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
-    audioBufferSourceNode.connect(masterGain);
+    audioBufferSourceNode.connect(target);
 
     return audioBufferSourceNode;
+  };
+
+  var buildOscillator = function(audioContext, waveform, frequency, detune) {
+    var oscillator = audioContext.createOscillator();
+    oscillator.type = waveform;
+    oscillator.frequency.value = frequency;
+    oscillator.detune.value = detune;
+
+    return oscillator;
+  };
+
+  var buildGain = function(audioContext, amplitude) {
+    var gain = audioContext.createGain();
+    gain.gain.value = amplitude;
+
+    return gain;
+  };
+
+  var buildFilter = function(audioContext, frequency, resonance) {
+    var filter = audioContext.createBiquadFilter();
+    filter.frequency.value = frequency;
+    filter.Q.value = resonance;
+
+    return filter;
   };
 
   sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
@@ -82,22 +106,64 @@ function SampleInstrument(config, bufferCollection) {
       masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.decayEndAmplitude, calculatedMasterGainEnvelope.decayEndTime);
     }
 
-    var audioBufferSourceNode = buildBufferSourceNode(audioContext, masterGain, note);
-
-    audioBufferSourceNode.start(gateOnTime);
-
     masterGain.connect(audioDestination);
+
+    // Filter
+    var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+
+    if (config.filter.mode === "lfo") {
+      // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
+      // pops/clicks.
+      var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      filterLfoGain.connect(filter.frequency);
+
+      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+      filterLfoOscillator.connect(filterLfoGain);
+    }
+    else if (config.filter.mode === "envelope") {
+      var calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+
+      // Envelope Attack
+      filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
+      filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+
+      // Envelope Decay/Sustain
+      if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
+        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
+      }
+    }
+
+    filter.connect(masterGain);
+
+    if (config.filter.mode === "lfo") {
+      filterLfoOscillator.start(gateOnTime);
+    }
+
+    // Audio Buffer
+    var audioBufferSourceNode = buildBufferSourceNode(audioContext, filter, note);
+    audioBufferSourceNode.start(gateOnTime);
 
     return {
       audioContext: audioContext,
       audioBufferSourceNode: audioBufferSourceNode,
       masterGain: masterGain,
+      filter: filter,
+      filterLfoOscillator: filterLfoOscillator,
     };
   };
 
   sampleInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
     var releaseEndTime;
+
+    // Filter Envelope Release
+    if (config.filter.mode === "envelope") {
+      var safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      if (isInteractive) {
+        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
+      }
+      noteContext.filter.frequency.setTargetAtTime(0.0, gateOffTime, safeFilterRelease / 5);
+    }
 
     // Gain Envelope Release
     var safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
@@ -110,6 +176,9 @@ function SampleInstrument(config, bufferCollection) {
     noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
 
     noteContext.audioBufferSourceNode.stop(gainReleaseEndTime);
+    if (config.filter.mode === "lfo") {
+      noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
+    }
   };
 
   sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
