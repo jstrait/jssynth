@@ -114,18 +114,30 @@ class App extends React.Component {
           type: 'sample',
           name: 'Bass',
           sample: 'bass',
+          envelopeAttack:     0.00,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
         },
         {
           id: 5,
           type: 'sample',
           name: 'Snare',
           sample: 'snare',
+          envelopeAttack:     0.00,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
         },
         {
           id: 6,
           type: 'sample',
           name: 'Hi-Hat Closed',
           sample: 'hh_closed',
+          envelopeAttack:     0.00,
+          envelopeDecay:      0.0,
+          envelopeSustain:    1.0,
+          envelopeRelease:    0.0,
         },
       ],
       patterns: [
@@ -1312,6 +1324,10 @@ class App extends React.Component {
       type:                  'sample',
       name:                  'Instrument ' + newInstrumentID,
       sample:                'Instrument ' + newInstrumentID,
+      envelopeAttack:     0.00,
+      envelopeDecay:      0.0,
+      envelopeSustain:    1.0,
+      envelopeRelease:    0.0,
     };
 
     this.addGenericTrack(newInstrument);

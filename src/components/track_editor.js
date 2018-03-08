@@ -37,7 +37,7 @@ class TrackEditor extends React.Component {
       instrumentEditor = <InstrumentEditor instrument={this.props.instrument} updateInstrument={this.props.updateInstrument} />;
     }
     else {
-      instrumentEditor = <SampleInstrumentEditor instrument={this.props.instrument} setBufferFromFile={this.props.setBufferFromFile} />;
+      instrumentEditor = <SampleInstrumentEditor instrument={this.props.instrument} setBufferFromFile={this.props.setBufferFromFile} updateInstrument={this.props.updateInstrument} />;
     }
 
     let patternEditor = <PatternEditor patterns={this.props.patterns} selectedPattern={this.props.selectedPattern} setSelectedPattern={this.props.setSelectedPattern} setPatternName={this.props.setPatternName} addPattern={this.props.addPattern} removePattern={this.props.removePattern} addPatternRow={this.props.addPatternRow} removePatternRow={this.props.removePatternRow} setNoteValue={this.props.setNoteValue} />;

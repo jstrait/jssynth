@@ -56,6 +56,12 @@ class Serializer {
   static serializeSampleInstrument(instrument, bufferCollection) {
     let serializedConfig = {
       sample: instrument.sample,
+      envelope: {
+        attack:  parseFloat(instrument.envelopeAttack),
+        decay:   parseFloat(instrument.envelopeDecay),
+        sustain: parseFloat(instrument.envelopeSustain),
+        release: parseFloat(instrument.envelopeRelease),
+      },
     };
 
     return new JSSynth.SampleInstrument(serializedConfig, bufferCollection);

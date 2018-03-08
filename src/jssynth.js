@@ -65,8 +65,22 @@ function SampleInstrument(config, bufferCollection) {
   };
 
   sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
+
+    // Master Gain
     var masterGain = audioContext.createGain();
-    masterGain.gain.value = amplitude;
+    masterGain.connect(audioDestination);
+
+    var calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+
+    // Master Gain Envelope Attack
+    masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
+    masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.attackEndAmplitude, calculatedMasterGainEnvelope.attackEndTime);
+
+    // Master Gain Envelope Decay/Sustain
+    if (calculatedMasterGainEnvelope.attackEndTime < gateOffTime) {
+      masterGain.gain.linearRampToValueAtTime(calculatedMasterGainEnvelope.decayEndAmplitude, calculatedMasterGainEnvelope.decayEndTime);
+    }
 
     var audioBufferSourceNode = buildBufferSourceNode(audioContext, masterGain, note);
 
@@ -77,11 +91,25 @@ function SampleInstrument(config, bufferCollection) {
     return {
       audioContext: audioContext,
       audioBufferSourceNode: audioBufferSourceNode,
+      masterGain: masterGain,
     };
   };
 
   sampleInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
-    noteContext.audioBufferSourceNode.stop(gateOffTime);
+    var MINIMUM_RELEASE_TIME = 0.005;
+    var releaseEndTime;
+
+    // Gain Envelope Release
+    var safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    var gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
+
+    if (isInteractive) {
+      noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
+    }
+
+    noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
+
+    noteContext.audioBufferSourceNode.stop(gainReleaseEndTime);
   };
 
   sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {

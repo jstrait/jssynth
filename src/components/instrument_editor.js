@@ -44,6 +44,10 @@ class SampleInstrumentEditor extends React.Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setEnvelopeAttack = this.setEnvelopeAttack.bind(this);
+    this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
+    this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
+    this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
   };
 
   handleSubmit(e) {
@@ -51,13 +55,63 @@ class SampleInstrumentEditor extends React.Component {
     this.props.setBufferFromFile(this.props.instrument.sample, this.fileInput.files[0]);
   };
 
+  setEnvelopeAttack(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeAttack", parseFloat(e.target.value));
+  };
+
+  setEnvelopeDecay(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeDecay", parseFloat(e.target.value));
+  };
+
+  setEnvelopeSustain(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeSustain", parseFloat(e.target.value));
+  };
+
+  setEnvelopeRelease(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeRelease", parseFloat(e.target.value));
+  };
+
   render() {
-    return <div>
-      <form onSubmit={this.handleSubmit}>
-        <label>Change sound file:</label>
-        <input type="file" ref={input => {this.fileInput = input;}} />
-        <button type="submit">Upload</button>
-      </form>
+    return <div className="flex overflow-scroll-x instrument-panel-container">
+      <div className="pr1 br instrument-panel">
+        <h2 className="h3 section-header">Sound File</h2>
+        <form onSubmit={this.handleSubmit}>
+          <label>Change sound file:</label>
+          <input type="file" ref={input => {this.fileInput = input;}} />
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+      <div className="pl1 border-box instrument-panel">
+        <h2 className="h3 section-header">Loudness Envelope</h2>
+        <span className="control">
+          <label className="control-label">Attack Speed:</label>
+          <span className="annotated-input">
+            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
+            <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
+          </span>
+        </span>
+        <span className="control">
+          <label className="control-label">Decay Speed:</label>
+          <span className="annotated-input">
+            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
+            <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
+          </span>
+        </span>
+        <span className="control">
+          <label className="control-label">Sustain Volume:</label>
+          <span className="annotated-input">
+            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
+            <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
+          </span>
+        </span>
+        <span className="control">
+          <label className="control-label">Release Speed:</label>
+          <span className="annotated-input">
+            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
+            <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
+          </span>
+        </span>
+      </div>
     </div>
   };
 };
