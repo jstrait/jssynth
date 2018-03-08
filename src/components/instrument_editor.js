@@ -128,7 +128,7 @@ class SampleInstrumentEditor extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>Change sound file:</label>
           <input type="file" ref={input => {this.fileInput = input;}} />
-          <button type="submit">Upload</button>
+          <button className="button-full button-hollow" type="submit">Upload</button>
         </form>
       </div>
       <div className="pl1 pr1 br border-box instrument-panel">
