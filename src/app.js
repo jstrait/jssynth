@@ -1311,7 +1311,10 @@ class App extends React.Component {
       instruments: prevState.instruments.concat([newInstrument]),
       patterns: prevState.patterns.concat([newPattern]),
       tracks: prevState.tracks.concat([newTrack])
-    }));
+    }),
+    function() {
+      this.setSelectedTrack(newTrack.id);
+    });
   };
 
   addSynthTrack() {
