@@ -73,6 +73,11 @@ class SampleInstrumentEditor extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    if (this.fileInput.value === "") {
+      return;
+    }
+
     this.props.setBufferFromFile(this.props.instrument.id, this.fileInput.files[0]);
 
     this.setState({
