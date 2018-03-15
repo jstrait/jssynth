@@ -26,9 +26,10 @@ function BufferCollection(audioContext) {
     request.send();
   };
 
-  bufferCollection.addBufferFromFile = function(label, file) {
+  bufferCollection.addBufferFromFile = function(label, file, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
+      onSuccess();
     };
 
     var onDecodeError = function(e) {
