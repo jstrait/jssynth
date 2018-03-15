@@ -63,6 +63,7 @@ class SampleInstrumentEditor extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.setBufferFromFile(this.props.instrument.id, this.fileInput.files[0]);
+    this.fileInput.value = "";
   };
 
   setFilterCutoff(e) {
