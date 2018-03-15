@@ -208,8 +208,6 @@ label.radioLabel {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
   height: 9.0rem;
   overflow: hidden;
 }
@@ -282,6 +280,10 @@ label.radioLabel {
 .keyboard span.d,
 .keyboard span.e {
   margin-left: -1.0rem;
+}
+
+.keyboard span.a:first-child {
+  margin-left: 0;
 }
 
 .keyboard-black-key {
