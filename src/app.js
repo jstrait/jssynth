@@ -1616,8 +1616,13 @@ class App extends React.Component {
     this.syncTransportNotes();
   };
 
-  setBufferFromFile(label, file) {
+  setBufferFromFile(instrumentID, file) {
+    let instrument = this.instrumentByID(instrumentID);
+    let label = instrument.sample;
     this.transport.bufferCollection.addBufferFromFile(label, file);
+
+    this.updateInstrument(instrumentID, "filename", file.name);
+
     this.syncTransportNotes();
   };
 
