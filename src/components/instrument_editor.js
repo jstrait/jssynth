@@ -43,7 +43,12 @@ class SampleInstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      uploadFormVisible: false,
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleUploadForm = this.toggleUploadForm.bind(this);
     this.setFilterCutoff = this.setFilterCutoff.bind(this);
     this.setFilterResonance = this.setFilterResonance.bind(this);
     this.setFilterModulator = this.setFilterModulator.bind(this);
@@ -60,10 +65,19 @@ class SampleInstrumentEditor extends React.Component {
     this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
   };
 
+  toggleUploadForm(e) {
+    this.setState((prevState, props) => ({
+      uploadFormVisible: !prevState.uploadFormVisible,
+    }));
+  };
+
   handleSubmit(e) {
     e.preventDefault();
     this.props.setBufferFromFile(this.props.instrument.id, this.fileInput.files[0]);
-    this.fileInput.value = "";
+
+    this.setState({
+      uploadFormVisible: false,
+    });
   };
 
   setFilterCutoff(e) {
@@ -123,20 +137,24 @@ class SampleInstrumentEditor extends React.Component {
   };
 
   render() {
+    let fileUploadForm;
+
+    if (this.state.uploadFormVisible) {
+      fileUploadForm = <form onSubmit={this.handleSubmit}>
+        <input type="file" ref={input => {this.fileInput = input;}} />
+        <button className="button-full button-hollow" type="submit">Upload</button>
+      </form>;
+    }
+
     return <div className="flex overflow-scroll-x instrument-panel-container">
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound File</h2>
-
         <span className="control">
           <label className="control-label">Sound file:</label>
-          <span>{this.props.instrument.filename}</span>
+          <span>{this.props.instrument.filename}</span>&nbsp;
+          <a href="javascript:void(0);" onClick={this.toggleUploadForm}>change</a>
         </span>
-
-        <form onSubmit={this.handleSubmit}>
-          <label>Change sound file:</label>
-          <input type="file" ref={input => {this.fileInput = input;}} />
-          <button className="button-full button-hollow" type="submit">Upload</button>
-        </form>
+        {fileUploadForm}
       </div>
       <div className="pl1 pr1 br border-box instrument-panel">
         <h2 className="h3 section-header">Filter</h2>
