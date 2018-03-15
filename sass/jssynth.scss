@@ -16,6 +16,10 @@ $size-5: 9.0rem;
 @import "controls.scss";
 @import "base.scss";
 
+html {
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   padding: 0;
