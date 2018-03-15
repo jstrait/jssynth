@@ -182,6 +182,10 @@ class Keyboard extends React.Component {
     this.keyboardContainer.scrollLeft += delta;
   };
 
+  componentDidMount() {
+    this.keyboardContainer.scrollLeft = (this.keyboardContainer.scrollWidth / 2) - (this.keyboardContainer.clientWidth / 2);
+  };
+
   render() {
     return <div className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd} onTouchMove={this.touchMove}>
       <div className="keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height">&larr;</div>
