@@ -125,6 +125,12 @@ class SampleInstrumentEditor extends React.Component {
     return <div className="flex overflow-scroll-x instrument-panel-container">
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound File</h2>
+
+        <span className="control">
+          <label className="control-label">Sound file:</label>
+          <span>{this.props.instrument.filename}</span>
+        </span>
+
         <form onSubmit={this.handleSubmit}>
           <label>Change sound file:</label>
           <input type="file" ref={input => {this.fileInput = input;}} />
