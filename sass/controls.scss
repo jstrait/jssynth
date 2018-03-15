@@ -208,7 +208,7 @@ label.radioLabel {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  height: 9.0rem;
+  height: 11.0rem;
   overflow: hidden;
 }
 
@@ -229,7 +229,7 @@ label.radioLabel {
 }
 
 .keyboard {
-  height: 9.0rem;
+  height: 11.0rem;
   white-space: nowrap;
   font-size: 0;
   -moz-user-select: none;
@@ -245,7 +245,7 @@ label.radioLabel {
 .keyboard-white-key {
   box-sizing: border-box;
   height: 100%;
-  width: 3.0rem;
+  width: 3.5rem;
   border-style: solid;
   border-color: $black;
   border-width: 1px;
@@ -279,7 +279,7 @@ label.radioLabel {
 .keyboard span.b,
 .keyboard span.d,
 .keyboard span.e {
-  margin-left: -1.0rem;
+  margin-left: -1.25rem;
 }
 
 .keyboard span.a:first-child {
@@ -289,8 +289,8 @@ label.radioLabel {
 .keyboard-black-key {
   background: $black;
   height: 60%;
-  width: 2.0rem;
-  margin-left: -1.0rem;
+  width: 2.5rem;
+  margin-left: -1.25rem;
   vertical-align: top;
   z-index: 2;
   border-top: 2px solid $black;
