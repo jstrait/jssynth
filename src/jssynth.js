@@ -4,9 +4,10 @@ function BufferCollection(audioContext) {
   var buffers = {};
   var bufferCollection = {};
 
-  bufferCollection.addBufferFromURL = function(label, url) {
+  bufferCollection.addBufferFromURL = function(label, url, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
+      onSuccess();
     };
 
     var onDecodeError = function(e) {

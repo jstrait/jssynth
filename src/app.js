@@ -1005,9 +1005,9 @@ class App extends React.Component {
     this.export = this.export.bind(this);
     this.syncTransportNotes();
 
-    this.transport.bufferCollection.addBufferFromURL("bass", "bass.wav");
-    this.transport.bufferCollection.addBufferFromURL("snare", "snare.wav");
-    this.transport.bufferCollection.addBufferFromURL("hh_closed", "hh_closed.wav");
+    this.transport.bufferCollection.addBufferFromURL("bass", "bass.wav", () => { this.syncTransportNotes(); });
+    this.transport.bufferCollection.addBufferFromURL("snare", "snare.wav", () => { this.syncTransportNotes(); });
+    this.transport.bufferCollection.addBufferFromURL("hh_closed", "hh_closed.wav", () => { this.syncTransportNotes(); });
 
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
