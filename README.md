@@ -1,4 +1,4 @@
-# JS-120
+# JS-130
 
 A synthesizer and sequencer that runs in your browser, using the WebAudio API.
 
@@ -6,9 +6,9 @@ Try it out here: [http://www.joelstrait.com/js-120/](http://www.joelstrait.com/j
 
 ## Example Song
 
-The song below is an example of what you can create with the JS-120, along with [Beats Drum Machine](http://beatsdrummachine.com) and GarageBand.
+The song below is an example of what you can create with the JS-130, along with [Beats Drum Machine](http://beatsdrummachine.com) and GarageBand.
 
-[JS-120 Example Song](http://www.joelstrait.com/js-120/js-120-demo.m4a)
+[JS-130 Example Song](http://www.joelstrait.com/js-120/js-120-demo.m4a)
 
 ## Features
 

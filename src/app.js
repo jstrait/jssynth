@@ -983,7 +983,7 @@ class App extends React.Component {
       ],
       selectedTrackID: 1,
       selectedPatternID: 1,
-      downloadFileName: "js-120",
+      downloadFileName: "js-130",
       keyboardActive: false,
       activeKeyboardNotes: [],
       activeNoteContexts: [],
@@ -1706,7 +1706,7 @@ class App extends React.Component {
     return <div>
       <div id="header" className="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width">
         <div id="logo-container">
-          <h1 className="logo h2 bold mt0 mb0">JS-120</h1>
+          <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
           <span className="lightText">Web Synthesizer</span>
         </div>
         <Transport enabled={this.state.transport.enabled}
