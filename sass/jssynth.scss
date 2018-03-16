@@ -303,15 +303,6 @@ input.note:focus {
 
 
 @media (max-width: 768px) {
-  .control {
-    -webkit-align-items: flex-start;
-    align-items: flex-start;
-  }
-
-  .control-label {
-    width: 35%;
-  }
-
   .waveformOptionsContainer {
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -330,20 +321,7 @@ input.note:focus {
     display: inline-block;
   }
 
-  .control {
-    -webkit-flex-direction: column;
-    flex-direction: column;
-  }
-
-  .control-label {
-    width: 100%;
-  }
-
   .waveformOptionsContainer {
-    width: 100%;
-  }
-
-  .annotated-input {
     width: 100%;
   }
 

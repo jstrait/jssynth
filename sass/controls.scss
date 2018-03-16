@@ -191,6 +191,32 @@ label.radioLabel {
   box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  .control {
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+  }
+
+  .control-label {
+    width: 35%;
+  }
+}
+
+@media (max-width: 480px) {
+  .control {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .control-label {
+    width: 100%;
+  }
+
+  .annotated-input {
+    width: 100%;
+  }
+}
+
 @media (hover) {
   .button-hollow:hover {
     background: $light-orange;
