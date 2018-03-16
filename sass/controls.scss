@@ -303,10 +303,10 @@ label.radioLabel {
 .keyboard-white-key.keyboard-hover { background: #f1f1f1; }
 .keyboard-black-key.keyboard-hover { background: #777; }
 .keyboard-key.pressed {
-  background: #ff7070;
+  background: $orange;
 }
 .keyboard-scroll-button.pressed {
-  background: #ff7070;
+  background: $orange;
 }
 
 @media (min-width: 768px) {
