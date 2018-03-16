@@ -45,6 +45,7 @@ class SampleInstrumentEditor extends React.Component {
 
     this.state = {
       uploadFormVisible: false,
+      errorMessage: undefined,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -68,6 +69,7 @@ class SampleInstrumentEditor extends React.Component {
   toggleUploadForm(e) {
     this.setState((prevState, props) => ({
       uploadFormVisible: !prevState.uploadFormVisible,
+      errorMessage: undefined,
     }));
   };
 
@@ -75,6 +77,10 @@ class SampleInstrumentEditor extends React.Component {
     e.preventDefault();
 
     if (this.fileInput.value === "") {
+      this.setState({
+        errorMessage: "Please choose a sound file to upload",
+      });
+
       return;
     }
 
@@ -82,6 +88,7 @@ class SampleInstrumentEditor extends React.Component {
 
     this.setState({
       uploadFormVisible: false,
+      errorMessage: undefined,
     });
   };
 
@@ -143,12 +150,17 @@ class SampleInstrumentEditor extends React.Component {
 
   render() {
     let fileUploadForm;
+    let uploadError;
 
     if (this.state.uploadFormVisible) {
       fileUploadForm = <form onSubmit={this.handleSubmit}>
         <input type="file" ref={input => {this.fileInput = input;}} />
         <button className="button-full button-hollow" type="submit">Upload</button>
       </form>;
+
+      if (this.state.errorMessage !== undefined) {
+        uploadError = <span>{this.state.errorMessage}</span>;
+      }
     }
 
     return <div className="flex overflow-scroll-x instrument-panel-container">
@@ -160,6 +172,7 @@ class SampleInstrumentEditor extends React.Component {
           <a href="javascript:void(0);" onClick={this.toggleUploadForm}>change</a>
         </span>
         {fileUploadForm}
+        {uploadError}
       </div>
       <div className="pl1 pr1 br border-box instrument-panel">
         <h2 className="h3 section-header">Filter</h2>
