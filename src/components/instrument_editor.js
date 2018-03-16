@@ -133,11 +133,9 @@ class SampleInstrumentEditor extends React.Component {
     return <div className="flex overflow-scroll-x instrument-panel-container">
       <div className="pr1 br instrument-panel">
         <h2 className="h3 section-header">Sound File</h2>
-        <span className="control">
-          <label className="control-label">Sound file:</label>
-          <span>{this.props.instrument.filename}</span>&nbsp;
-          <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
-        </span>
+        <label className="inline-block control-label">Sound file:</label>
+        <span>{this.props.instrument.filename}</span>&nbsp;
+        <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
       <div className="pl1 pr1 br border-box instrument-panel">
