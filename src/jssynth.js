@@ -33,7 +33,7 @@ function BufferCollection(audioContext) {
     };
 
     var onDecodeError = function(e) {
-      console.log("Error decoding audio data: " + e.message);
+      alert(`${file.name} is not a valid sound file`);
     };
 
     var reader = new FileReader();
