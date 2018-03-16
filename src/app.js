@@ -1353,31 +1353,35 @@ class App extends React.Component {
     this.addGenericTrack(newInstrument);
   };
 
-  addSamplerTrack() {
+  addSamplerTrack(file) {
     let newInstrumentID = this.idGenerator.next();
-    let newInstrument = {
-      id:                    newInstrumentID,
-      type:                  'sample',
-      name:                  'Instrument ' + newInstrumentID,
-      sample:                'Instrument ' + newInstrumentID,
-      filename:              'default.wav',
-      filterCutoff:          9950,
-      filterResonance:       0,
-      filterModulator:       'lfo',
-      filterLFOWaveform:     'sine',
-      filterLFOFrequency:    5,
-      filterLFOAmplitude:    0,
-      filterEnvelopeAttack:  0.0,
-      filterEnvelopeDecay:   0.0,
-      filterEnvelopeSustain: 1.0,
-      filterEnvelopeRelease: 0.0,
-      envelopeAttack:     0.00,
-      envelopeDecay:      0.0,
-      envelopeSustain:    1.0,
-      envelopeRelease:    0.0,
-    };
+    let label = 'Instrument ' + newInstrumentID;
 
-    this.addGenericTrack(newInstrument);
+    this.transport.bufferCollection.addBufferFromFile(label, file, () => {
+      let newInstrument = {
+        id:                    newInstrumentID,
+        type:                  'sample',
+        name:                  label,
+        sample:                label,
+        filename:              file.name,
+        filterCutoff:          9950,
+        filterResonance:       0,
+        filterModulator:       'lfo',
+        filterLFOWaveform:     'sine',
+        filterLFOFrequency:    5,
+        filterLFOAmplitude:    0,
+        filterEnvelopeAttack:  0.0,
+        filterEnvelopeDecay:   0.0,
+        filterEnvelopeSustain: 1.0,
+        filterEnvelopeRelease: 0.0,
+        envelopeAttack:     0.00,
+        envelopeDecay:      0.0,
+        envelopeSustain:    1.0,
+        envelopeRelease:    0.0,
+      };
+
+      this.addGenericTrack(newInstrument);
+    });
   };
 
   removeTrackInner(id) {

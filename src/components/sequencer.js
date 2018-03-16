@@ -119,12 +119,26 @@ class Sequencer extends React.Component {
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
+    this.showFileChooser = this.showFileChooser.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
   };
 
   toggleExpansion() {
     this.setState((prevState, props) => ({
       expanded: !prevState.expanded,
     }));
+  };
+
+  showFileChooser(e) {
+    this.fileInput.click();
+  };
+
+  uploadFile(e) {
+    if (this.fileInput.value === "") {
+      return;
+    }
+
+    this.props.addSamplerTrack(this.fileInput.files[0]);
   };
 
   render() {
@@ -166,7 +180,8 @@ class Sequencer extends React.Component {
       </div>
       <div className="pl1">
         <button className="button-full button-hollow" onClick={this.props.addSynthTrack}>Add Synth Track</button>
-        <button className="ml1 button-full button-hollow" onClick={this.props.addSamplerTrack}>Add Sampler Track</button>
+        <button className="ml1 button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
+        <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
     </div>;
   };
