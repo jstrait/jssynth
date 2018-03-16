@@ -58,6 +58,7 @@ class Serializer {
 
     let serializedConfig = {
       sample: instrument.sample,
+      loop: instrument.loop,
       filter: {
         cutoff:    filterCutoff,
         resonance: parseInt(instrument.filterResonance, 10),

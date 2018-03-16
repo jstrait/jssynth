@@ -45,6 +45,7 @@ class SampleInstrumentEditor extends React.Component {
 
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
+    this.setLoop = this.setLoop.bind(this);
     this.setFilterCutoff = this.setFilterCutoff.bind(this);
     this.setFilterResonance = this.setFilterResonance.bind(this);
     this.setFilterModulator = this.setFilterModulator.bind(this);
@@ -71,6 +72,10 @@ class SampleInstrumentEditor extends React.Component {
     }
 
     this.props.setBufferFromFile(this.props.instrument.id, this.fileInput.files[0]);
+  };
+
+  setLoop(e) {
+    this.props.updateInstrument(this.props.instrument.id, "loop", e.target.checked);
   };
 
   setFilterCutoff(e) {
@@ -137,6 +142,10 @@ class SampleInstrumentEditor extends React.Component {
         <span>{this.props.instrument.filename}</span>&nbsp;
         <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
+        <span className="control">
+          <label className="control-label">Loop:</label>
+          <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
+        </span>
       </div>
       <div className="pl1 pr1 br border-box instrument-panel">
         <h2 className="h3 section-header">Filter</h2>

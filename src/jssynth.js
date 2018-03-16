@@ -61,6 +61,7 @@ function SampleInstrument(config, bufferCollection) {
     var audioBufferSourceNode = audioContext.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
     audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
+    audioBufferSourceNode.loop = config.loop;
     audioBufferSourceNode.connect(target);
 
     return audioBufferSourceNode;
