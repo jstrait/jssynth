@@ -159,7 +159,7 @@ class SampleInstrumentEditor extends React.Component {
       </form>;
 
       if (this.state.errorMessage !== undefined) {
-        uploadError = <span>{this.state.errorMessage}</span>;
+        uploadError = <span className="red">{this.state.errorMessage}</span>;
       }
     }
 
