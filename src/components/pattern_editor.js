@@ -199,7 +199,7 @@ class PatternEditor extends React.Component {
         <button className="block button-full button-hollow" onClick={this.addPattern}>Add Pattern</button>
       </div>
 
-      <label>Name:</label> <input className="underlinedInput" value={this.props.selectedPattern.name} onChange={this.setPatternName} type="text" /> <span className="h4"><a className="helperToggle underline" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a></span>
+      <label>Name:</label> <input className="underlinedInput" value={this.props.selectedPattern.name} onChange={this.setPatternName} type="text" /> <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
       {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">

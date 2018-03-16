@@ -136,7 +136,7 @@ class SampleInstrumentEditor extends React.Component {
         <span className="control">
           <label className="control-label">Sound file:</label>
           <span>{this.props.instrument.filename}</span>&nbsp;
-          <a href="javascript:void(0);" onClick={this.showFileChooser}>change</a>
+          <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
         </span>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>

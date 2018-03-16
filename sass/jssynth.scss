@@ -32,6 +32,10 @@ body {
   font-weight: 300;
 }
 
+a {
+  color: #0af;
+}
+
 /* Header */
 
 .logo {
@@ -247,11 +251,6 @@ body {
 
 .paneTabSelected {
   border-bottom: 4px solid $orange;
-}
-
-.helperToggle {
-  color: #0af;
-  cursor: pointer;
 }
 
 .note-container {
