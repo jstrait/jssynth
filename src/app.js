@@ -20,6 +20,7 @@ class App extends React.Component {
     this.idGenerator = new IDGenerator(100);
 
     this.state = {
+      isLoaded: false,
       transport: {
         enabled: true,
         playing: false,
@@ -1011,10 +1012,6 @@ class App extends React.Component {
     this.export = this.export.bind(this);
     this.syncTransportNotes();
 
-    this.transport.bufferCollection.addBufferFromURL("bass", "bass.wav", () => { this.syncTransportNotes(); });
-    this.transport.bufferCollection.addBufferFromURL("snare", "snare.wav", () => { this.syncTransportNotes(); });
-    this.transport.bufferCollection.addBufferFromURL("hh_closed", "hh_closed.wav", () => { this.syncTransportNotes(); });
-
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
@@ -1046,6 +1043,16 @@ class App extends React.Component {
     this.activateKeyboard = this.activateKeyboard.bind(this);
     this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
+
+    let bufferConfigs = [
+      { label: "bass", url: "bass.wav", },
+      { label: "snare", url: "snare.wav", },
+      { label: "hh_closed", url: "hh_closed.wav", },
+    ];
+    this.transport.bufferCollection.addBuffersFromURLs(bufferConfigs, () => {
+      this.setState({isLoaded: true});
+      this.syncTransportNotes();
+    });
   };
 
   itemByID(array, targetID) {
@@ -1720,54 +1727,67 @@ class App extends React.Component {
       trackPatternOptions[this.state.tracks[i].id] = this.patternsByTrackID(this.state.tracks[i].id);
     }
 
+    let isLoaded = this.state.isLoaded;
+
     return <div>
-      <div id="header" className="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width">
-        <div id="logo-container">
-          <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
-          <span className="lightText">Web Synthesizer</span>
+      {isLoaded !== true &&
+      <div className="full-width flex flex-column flex-align-center flex-justify-center" style={{"minHeight": "100vh"}}>
+        <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
+        <span className="lightText">Web Synthesizer</span>
+        <span className="mt1">Loading...</span>
+      </div>
+      }
+      {isLoaded === true &&
+      <div>
+        <div id="header" className="flex flex-align-center pl1 pr1 pt1 pb1 border-box full-width">
+          <div id="logo-container">
+            <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
+            <span className="lightText">Web Synthesizer</span>
+          </div>
+          <Transport enabled={this.state.transport.enabled}
+                     playing={this.state.transport.playing}
+                     amplitude={this.state.transport.amplitude}
+                     tempo={this.state.transport.tempo}
+                     togglePlaying={this.togglePlaying}
+                     updateAmplitude={this.updateAmplitude}
+                     updateTempo={this.updateTempo} />
+          <DownloadButton downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
-        <Transport enabled={this.state.transport.enabled}
-                   playing={this.state.transport.playing}
-                   amplitude={this.state.transport.amplitude}
-                   tempo={this.state.transport.tempo}
-                   togglePlaying={this.togglePlaying}
-                   updateAmplitude={this.updateAmplitude}
-                   updateTempo={this.updateTempo} />
-        <DownloadButton downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
+        <Sequencer tracks={this.state.tracks}
+                   trackPatternOptions={trackPatternOptions}
+                   currentStep={this.state.transport.step}
+                   setTrackName={this.setTrackName}
+                   setTrackVolume={this.setTrackVolume}
+                   toggleTrackMute={this.toggleTrackMute}
+                   setTrackPattern={this.setTrackPattern}
+                   addSynthTrack={this.addSynthTrack}
+                   addSamplerTrack={this.addSamplerTrack}
+                   removeTrack={this.removeTrack} />
+        <TrackEditor tracks={this.state.tracks}
+                     selectedTrackID={this.state.selectedTrackID}
+                     selectedPattern={this.patternByID(this.state.selectedPatternID)}
+                     instrument={instrument}
+                     patterns={patterns}
+                     setSelectedTrack={this.setSelectedTrack}
+                     updateInstrument={this.updateInstrument}
+                     setBufferFromFile={this.setBufferFromFile}
+                     setSelectedPattern={this.setSelectedPattern}
+                     setPatternName={this.setPatternName}
+                     addPattern={this.addPattern}
+                     removePattern={this.removePattern}
+                     addPatternRow={this.addPatternRow}
+                     removePatternRow={this.removePatternRow}
+                     setNoteValue={this.setNoteValue} />
+        <Keyboard active={this.state.keyboardActive}
+                  activeNotes={this.state.activeKeyboardNotes}
+                  activate={this.activateKeyboard}
+                  deactivate={this.deactivateKeyboard}
+                  setNotes={this.setKeyboardNotes} />
+        <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
+          <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
+        </div>
       </div>
-      <Sequencer tracks={this.state.tracks}
-                 trackPatternOptions={trackPatternOptions}
-                 currentStep={this.state.transport.step}
-                 setTrackName={this.setTrackName}
-                 setTrackVolume={this.setTrackVolume}
-                 toggleTrackMute={this.toggleTrackMute}
-                 setTrackPattern={this.setTrackPattern}
-                 addSynthTrack={this.addSynthTrack}
-                 addSamplerTrack={this.addSamplerTrack}
-                 removeTrack={this.removeTrack} />
-      <TrackEditor tracks={this.state.tracks}
-                   selectedTrackID={this.state.selectedTrackID}
-                   selectedPattern={this.patternByID(this.state.selectedPatternID)}
-                   instrument={instrument}
-                   patterns={patterns}
-                   setSelectedTrack={this.setSelectedTrack}
-                   updateInstrument={this.updateInstrument}
-                   setBufferFromFile={this.setBufferFromFile}
-                   setSelectedPattern={this.setSelectedPattern}
-                   setPatternName={this.setPatternName}
-                   addPattern={this.addPattern}
-                   removePattern={this.removePattern}
-                   addPatternRow={this.addPatternRow}
-                   removePatternRow={this.removePatternRow}
-                   setNoteValue={this.setNoteValue} />
-      <Keyboard active={this.state.keyboardActive}
-                activeNotes={this.state.activeKeyboardNotes}
-                activate={this.activateKeyboard}
-                deactivate={this.deactivateKeyboard}
-                setNotes={this.setKeyboardNotes} />
-      <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
-        <p className="center mt0 mb1">Made by <a href="http://www.joelstrait.com">Joel Strait</a>, &copy; 2014-18</p>
-      </div>
+      }
     </div>;
   };
 };

@@ -4,6 +4,24 @@ function BufferCollection(audioContext) {
   var buffers = {};
   var bufferCollection = {};
 
+  bufferCollection.addBuffersFromURLs = function(bufferConfig, onAllBuffersLoaded) {
+    var loadedBufferCount = 0;
+    var allBuffersCount = bufferConfig.length;
+    var i;
+
+    var onBufferLoaded = function() {
+      loadedBufferCount += 1;
+
+      if (loadedBufferCount === allBuffersCount) {
+        onAllBuffersLoaded();
+      }
+    };
+
+    for (i = 0; i < bufferConfig.length; i++) {
+      bufferCollection.addBufferFromURL(bufferConfig[i].label, bufferConfig[i].url, onBufferLoaded);
+    }
+  };
+
   bufferCollection.addBufferFromURL = function(label, url, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
