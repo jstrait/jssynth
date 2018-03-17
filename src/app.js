@@ -158,8 +158,8 @@ class App extends React.Component {
           id: 6,
           type: 'sample',
           name: 'Hi-Hat Closed',
-          sample: 'hh_closed',
-          filename: 'hh_closed.wav',
+          sample: 'hihat',
+          filename: 'hihat.wav',
           loop: false,
           filterCutoff:          9950,
           filterResonance:       0,
@@ -1047,7 +1047,7 @@ class App extends React.Component {
     let bufferConfigs = [
       { label: "bass", url: "bass.wav", },
       { label: "snare", url: "snare.wav", },
-      { label: "hh_closed", url: "hh_closed.wav", },
+      { label: "hihat", url: "hihat.wav", },
     ];
     this.transport.bufferCollection.addBuffersFromURLs(bufferConfigs, () => {
       this.setState({isLoaded: true});
