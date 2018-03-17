@@ -154,10 +154,17 @@ class Serializer {
     return patterns;
   };
 
+  static unmutedTrackCounter(count, currentTrack) {
+    return (currentTrack.muted) ? count : (count + 1);
+  };
+
   static serialize(tracks, instruments, patterns, bufferCollection) {
     const MEASURES = 8;
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = MEASURES * STEPS_PER_MEASURE;
+
+    const unmutedTrackCount = tracks.reduce(Serializer.unmutedTrackCounter, 0);
+    const trackVolumeMultiplier = 1 / unmutedTrackCount;
 
     let i, j;
     let serializedInstrument;
@@ -167,8 +174,6 @@ class Serializer {
     for (i = 0; i < TOTAL_STEPS; i++) {
       serializedNotes[i] = [];
     }
-
-    let trackVolumeMultiplier = 1 / tracks.length;
 
     tracks.forEach(function(track) {
       let trackVolume = track.volume * trackVolumeMultiplier;
