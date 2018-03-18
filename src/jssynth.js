@@ -67,6 +67,10 @@ function BufferCollection(audioContext) {
     return buffers[label];
   };
 
+  bufferCollection.removeBuffer = function(label) {
+    delete buffers[label];
+  };
+
   return bufferCollection;
 };
 

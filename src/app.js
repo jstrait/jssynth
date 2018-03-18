@@ -114,7 +114,7 @@ class App extends React.Component {
           id: 4,
           type: 'sample',
           name: 'Bass',
-          sample: 'bass',
+          sample: 'Instrument 4',
           filename: 'bass.wav',
           loop: false,
           filterCutoff:          9950,
@@ -136,7 +136,7 @@ class App extends React.Component {
           id: 5,
           type: 'sample',
           name: 'Snare',
-          sample: 'snare',
+          sample: 'Instrument 5',
           filename: 'snare.wav',
           loop: false,
           filterCutoff:          9950,
@@ -158,7 +158,7 @@ class App extends React.Component {
           id: 6,
           type: 'sample',
           name: 'Hi-Hat Closed',
-          sample: 'hihat',
+          sample: 'Instrument 6',
           filename: 'hihat.wav',
           loop: false,
           filterCutoff:          9950,
@@ -1045,9 +1045,9 @@ class App extends React.Component {
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
 
     let bufferConfigs = [
-      { label: "bass", url: "bass.wav", },
-      { label: "snare", url: "snare.wav", },
-      { label: "hihat", url: "hihat.wav", },
+      { label: "Instrument 4", url: "bass.wav", },
+      { label: "Instrument 5", url: "snare.wav", },
+      { label: "Instrument 6", url: "hihat.wav", },
     ];
     this.transport.bufferCollection.addBuffersFromURLs(bufferConfigs, () => {
       this.setState({isLoaded: true});
@@ -1418,6 +1418,11 @@ class App extends React.Component {
         newSelectedTrackID = this.state.tracks[trackIndex + 1].id;
       }
       newSelectedPatternID = this.patternsByTrackID(newSelectedTrackID)[0].id;
+    }
+
+    let removedInstrument = this.instrumentByID(track.instrumentID);
+    if (removedInstrument.type === "sample") {
+      this.transport.bufferCollection.removeBuffer(removedInstrument.sample);
     }
 
     this.setState({
