@@ -262,7 +262,7 @@ class SampleInstrumentEditor extends React.Component {
 };
 
 
-class InstrumentEditor extends React.Component {
+class SynthInstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
 
@@ -541,4 +541,4 @@ class InstrumentEditor extends React.Component {
   };
 };
 
-export { InstrumentEditor, SampleInstrumentEditor };
+export { SynthInstrumentEditor, SampleInstrumentEditor };

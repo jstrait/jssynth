@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { InstrumentEditor, SampleInstrumentEditor } from "./instrument_editor";
+import { SynthInstrumentEditor, SampleInstrumentEditor } from "./instrument_editor";
 import { PatternEditor } from "./pattern_editor";
 
 class TrackEditor extends React.Component {
@@ -34,7 +34,7 @@ class TrackEditor extends React.Component {
     let instrumentEditor;
 
     if (this.props.instrument.type === "synth") {
-      instrumentEditor = <InstrumentEditor instrument={this.props.instrument} updateInstrument={this.props.updateInstrument} />;
+      instrumentEditor = <SynthInstrumentEditor instrument={this.props.instrument} updateInstrument={this.props.updateInstrument} />;
     }
     else {
       instrumentEditor = <SampleInstrumentEditor instrument={this.props.instrument} setBufferFromFile={this.props.setBufferFromFile} updateInstrument={this.props.updateInstrument} />;
