@@ -14,13 +14,13 @@ input[type='radio'] {
   width: auto;
   -webkit-appearance: none;
   -moz-appearance: none;
-  border-radius: 10px;
-  width: 1.0rem;
-  height: 1.0rem;
+  border-radius: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   outline: none;
   border: 2px solid $black;
   box-sizing: border-box;
-  vertical-align: text-top;
+  vertical-align: middle;
 }
 
 input[type='radio']:unchecked { }
@@ -41,8 +41,8 @@ input[type='range'] {
 
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 1.5em;
-  width: 1.5em;
+  height: 1.5rem;
+  width: 1.5rem;
   border-radius: 0.75rem;
   background: $black;
 }
@@ -72,8 +72,8 @@ input[type=range]::-moz-focus-outer {
 }
 
 input[type='range']::-moz-range-thumb {
-  height: 1.5em;
-  width: 1.5em;
+  height: 1.5rem;
+  width: 1.5rem;
   border-radius: 0.75rem;
   background: $black;
   border: 0;
@@ -104,6 +104,11 @@ input[type='range']::-moz-range-track {
   background: #ccc;
   border: 0;
   outline: none;
+}
+
+.radioLabel {
+  margin-right: $size-half;
+  vertical-align: middle;
 }
 
 button {
@@ -144,10 +149,6 @@ button {
   background: $orange;
   border-color: $orange;
   color: $white;
-}
-
-label.radioLabel {
-  margin-right: $size-half;
 }
 
 .underlinedInput {
