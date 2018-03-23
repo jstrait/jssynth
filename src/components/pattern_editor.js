@@ -189,7 +189,7 @@ class PatternEditor extends React.Component {
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows</li>
     </ul>;
 
-    return <div className={(this.state.selectedTab === "instrument" ? " display-none" : "")}>
+    return <div>
       <div className="mb2">
         <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width">
           {this.props.patterns.map((pattern) =>
