@@ -38,11 +38,32 @@ class WaveFormSelector extends React.Component {
   };
 };
 
+class InstrumentPaneTab extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setSelectedTab = this.setSelectedTab.bind(this);
+  };
+
+  setSelectedTab(e) {
+    this.props.setSelectedTab(this.props.tabName);
+  };
+
+  render() {
+    return <li style={{"flexShrink": 0}} className={"list-style-none pointer mr1 border-box " + (this.props.isSelected ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedTab}>{this.props.label}</li>;
+  };
+};
+
 
 class SampleInstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedTab: "base_sound",
+    };
+
+    this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
     this.setLoop = this.setLoop.bind(this);
@@ -60,6 +81,12 @@ class SampleInstrumentEditor extends React.Component {
     this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
     this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
     this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
+  };
+
+  setSelectedTab(newSelectedTab) {
+    this.setState({
+      selectedTab: newSelectedTab,
+    });
   };
 
   showFileChooser(e) {
@@ -135,129 +162,136 @@ class SampleInstrumentEditor extends React.Component {
   };
 
   render() {
-    return <div className="flex overflow-scroll-x instrument-panel-container">
-      <div className="pr1 br instrument-panel">
-        <h2 className="h3 section-header">Sound File</h2>
-        <label className="inline-block control-label">Sound file:</label>
-        <span>{this.props.instrument.filename}</span>&nbsp;
-        <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
-        <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
-        <span className="control">
-          <label className="control-label">Loop:</label>
-          <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
-        </span>
+    return <div>
+      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-m">
+        <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+      </ul>
+      <div className="flex overflow-scroll-x instrument-panel-container">
+        <div className={"pr1 br instrument-panel block-m " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-m">Sound File</h2>
+          <label className="inline-block control-label">Sound file:</label>
+          <span>{this.props.instrument.filename}</span>&nbsp;
+          <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
+          <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
+          <span className="control">
+            <label className="control-label">Loop:</label>
+            <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
+          </span>
+        </div>
+        <div className={"pl1 pr1 br border-box instrument-panel block-m " + (this.state.selectedTab === "filter" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-m">Filter</h2>
+          <span className="control">
+            <label className="control-label">Cutoff:</label>
+            <span className="annotated-input">
+              <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
+              <span>{this.props.instrument.filterCutoff}Hz</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Resonance:</label>
+            <span className="annotated-input">
+              <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
+              <span>{this.props.instrument.filterResonance}</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Modulation:</label>
+            <span className="flex waveformOptionsContainer">
+              <span className="radioContainer">
+                <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
+                &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
+              </span>
+              <span className="radioContainer">
+                <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
+                &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
+              </span>
+            </span>
+          </span>
+          <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
+            <span className="block mt1 lightText">Cutoff Wobble:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Rate:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
+                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+              </span>
+            </span>
+            <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+          </span>
+          <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
+            <span className="block mt1 lightText">Cutoff Envelope:</span>
+            <span className="control">
+              <label className="control-label indented">Attack Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+                <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Decay Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+                <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Sustain:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
+                <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Release Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+                <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+              </span>
+            </span>
+          </span>
+        </div>
+        <div className={"pl1 border-box instrument-panel block-m " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-m">Loudness Envelope</h2>
+          <span className="control">
+            <label className="control-label">Attack Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
+              <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Decay Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
+              <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Sustain Volume:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
+              <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Release Speed:</label>
+            <span className="annotated-input">
+              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
+              <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
+            </span>
+          </span>
+        </div>
       </div>
-      <div className="pl1 pr1 br border-box instrument-panel">
-        <h2 className="h3 section-header">Filter</h2>
-        <span className="control">
-          <label className="control-label">Cutoff:</label>
-          <span className="annotated-input">
-            <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
-            <span>{this.props.instrument.filterCutoff}Hz</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Resonance:</label>
-          <span className="annotated-input">
-            <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
-            <span>{this.props.instrument.filterResonance}</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Modulation:</label>
-          <span className="flex waveformOptionsContainer">
-            <span className="radioContainer">
-              <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
-              &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
-            </span>
-            <span className="radioContainer">
-              <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
-              &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
-            </span>
-          </span>
-        </span>
-        <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
-          <span className="block mt1 lightText">Cutoff Wobble:</span>
-          <span className="control">
-            <label className="control-label indented">Amount:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-              <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Rate:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-              <span>{this.props.instrument.filterLFOFrequency}Hz</span>
-            </span>
-          </span>
-          <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
-        </span>
-        <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
-          <span className="block mt1 lightText">Cutoff Envelope:</span>
-          <span className="control">
-            <label className="control-label indented">Attack Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
-              <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Decay Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
-              <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Sustain:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
-              <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Release Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
-              <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
-            </span>
-          </span>
-        </span>
-      </div>
-      <div className="pl1 border-box instrument-panel">
-        <h2 className="h3 section-header">Loudness Envelope</h2>
-        <span className="control">
-          <label className="control-label">Attack Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
-            <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Decay Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
-            <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Sustain Volume:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
-            <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Release Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
-            <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
-          </span>
-        </span>
-      </div>
-    </div>
+    </div>;
   };
 };
 
@@ -266,6 +300,11 @@ class SynthInstrumentEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedTab: "base_sound",
+    };
+
+    this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setWaveForm1 = this.setWaveForm1.bind(this);
     this.setWaveForm2 = this.setWaveForm2.bind(this);
     this.setWaveForm1Octave = this.setWaveForm1Octave.bind(this);
@@ -288,6 +327,12 @@ class SynthInstrumentEditor extends React.Component {
     this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
     this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
     this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
+  };
+
+  setSelectedTab(newSelectedTab) {
+    this.setState({
+      selectedTab: newSelectedTab,
+    });
   };
 
   setWaveForm1(newValue) {
@@ -380,162 +425,175 @@ class SynthInstrumentEditor extends React.Component {
 
 
   render() {
-    return <div className="flex overflow-scroll-x instrument-panel-container">
-      <div className="pr1 br instrument-panel">
-        <h2 className="h3 section-header">Sound Generator</h2>
-        <span className="block mt1 lightText">Base:</span>
-        <WaveFormSelector waveFormValue={this.props.instrument.waveform1} idPrefix="waveform" setWaveFormValue={this.setWaveForm1} />
-        <span className="control">
-          <label className="control-label indented">Octave:</label>
-          <span className="annotated-input">
-            <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform1Octave} onChange={this.setWaveForm1Octave} />
-            <span>{(this.props.instrument.waveform1Octave > 0) ? "+" : ""}{this.props.instrument.waveform1Octave}</span>
-          </span>
-        </span>
-        <span className="block mt1 lightText">Secondary:</span>
-        <WaveFormSelector waveFormValue={this.props.instrument.waveform2} idPrefix="waveform2" setWaveFormValue={this.setWaveForm2} />
-        <span className="control">
-          <label className="control-label indented">Octave:</label>
-          <span className="annotated-input">
-            <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform2Octave} onChange={this.setWaveForm2Octave} />
-            <span>{(this.props.instrument.waveform2Octave > 0) ? "+" : ""}{this.props.instrument.waveform2Octave}</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label indented">Detune:</label>
-          <span className="annotated-input">
-            <input type="range" min="-100" max="100" step="1" value={this.props.instrument.waveform2Detune} onChange={this.setWaveForm2Detune} />
-            <span>{this.props.instrument.waveform2Detune}c</span>
-          </span>
-        </span>
-      </div>
-      <div className="pl1 pr1 br border-box instrument-panel">
-        <h2 className="h3 section-header">Filter</h2>
-        <span className="control">
-          <label className="control-label">Cutoff:</label>
-          <span className="annotated-input">
-            <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
-            <span>{this.props.instrument.filterCutoff}Hz</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Resonance:</label>
-          <span className="annotated-input">
-            <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
-            <span>{this.props.instrument.filterResonance}</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Modulation:</label>
-          <span className="flex waveformOptionsContainer">
-            <span className="radioContainer">
-              <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
-              &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
-            </span>
-            <span className="radioContainer">
-              <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
-              &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
-            </span>
-          </span>
-        </span>
-        <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
-          <span className="block mt1 lightText">Cutoff Wobble:</span>
+    return <div>
+      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-m">
+        <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Pitch Wobble" tabName="pitch_wobble" isSelected={this.state.selectedTab === "pitch_wobble"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+      </ul>
+      <div className="flex overflow-scroll-x instrument-panel-container">
+        <div className={"pr1 br instrument-panel block-m" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-m">Sound Generator</h2>
+          <span className="block lightText">Base:</span>
+          <WaveFormSelector waveFormValue={this.props.instrument.waveform1} idPrefix="waveform" setWaveFormValue={this.setWaveForm1} />
           <span className="control">
-            <label className="control-label indented">Amount:</label>
+            <label className="control-label indented">Octave:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-              <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+              <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform1Octave} onChange={this.setWaveForm1Octave} />
+              <span>{(this.props.instrument.waveform1Octave > 0) ? "+" : ""}{this.props.instrument.waveform1Octave}</span>
+            </span>
+          </span>
+          <span className="block mt1 lightText">Secondary:</span>
+          <WaveFormSelector waveFormValue={this.props.instrument.waveform2} idPrefix="waveform2" setWaveFormValue={this.setWaveForm2} />
+          <span className="control">
+            <label className="control-label indented">Octave:</label>
+            <span className="annotated-input">
+              <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform2Octave} onChange={this.setWaveForm2Octave} />
+              <span>{(this.props.instrument.waveform2Octave > 0) ? "+" : ""}{this.props.instrument.waveform2Octave}</span>
             </span>
           </span>
           <span className="control">
-            <label className="control-label indented">Rate:</label>
+            <label className="control-label indented">Detune:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-              <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+              <input type="range" min="-100" max="100" step="1" value={this.props.instrument.waveform2Detune} onChange={this.setWaveForm2Detune} />
+              <span>{this.props.instrument.waveform2Detune}c</span>
             </span>
           </span>
-          <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
-        </span>
-        <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
-          <span className="block mt1 lightText">Cutoff Envelope:</span>
-          <span className="control">
-            <label className="control-label indented">Attack Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
-              <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Decay Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
-              <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Sustain:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
-              <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
-            </span>
-          </span>
-          <span className="control">
-            <label className="control-label indented">Release Speed:</label>
-            <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
-              <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
-            </span>
-          </span>
-        </span>
-      </div>
+        </div>
 
-      <div className="pl1 border-box instrument-panel">
-        <h2 className="h3 section-header">Pitch Wobble</h2>
-        <span className="control">
-          <label className="control-label">Amount:</label>
-          <span className="annotated-input">
-            <input type="range" min="0" max="100" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
-            <span>{this.props.instrument.lfoAmplitude}Hz</span>
+        <div className={"pl1 pr1 br border-box instrument-panel block-m" + (this.state.selectedTab === "filter" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-m">Filter</h2>
+          <span className="control">
+            <label className="control-label">Cutoff:</label>
+            <span className="annotated-input">
+              <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
+              <span>{this.props.instrument.filterCutoff}Hz</span>
+            </span>
           </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Rate:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.lfoFrequency} onChange={this.setLFOFrequency} />
-            <span>{this.props.instrument.lfoFrequency}Hz</span>
+          <span className="control">
+            <label className="control-label">Resonance:</label>
+            <span className="annotated-input">
+              <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
+              <span>{this.props.instrument.filterResonance}</span>
+            </span>
           </span>
-        </span>
-        <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} idPrefix="lfoWaveform" setWaveFormValue={this.setLFOWaveForm} />
+          <span className="control">
+            <label className="control-label">Modulation:</label>
+            <span className="flex waveformOptionsContainer">
+              <span className="radioContainer">
+                <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
+                &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
+              </span>
+              <span className="radioContainer">
+                <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
+                &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
+              </span>
+            </span>
+          </span>
+          <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
+            <span className="block mt1 lightText">Cutoff Wobble:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Rate:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
+                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+              </span>
+            </span>
+            <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+          </span>
+          <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
+            <span className="block mt1 lightText">Cutoff Envelope:</span>
+            <span className="control">
+              <label className="control-label indented">Attack Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+                <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Decay Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+                <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Sustain:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
+                <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Release Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+                <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+              </span>
+            </span>
+          </span>
+        </div>
 
-        <h2 className="h3 section-header">Loudness Envelope</h2>
-        <span className="control">
-          <label className="control-label">Attack Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
-            <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Decay Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
-            <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Sustain Volume:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
-            <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
-          </span>
-        </span>
-        <span className="control">
-          <label className="control-label">Release Speed:</label>
-          <span className="annotated-input">
-            <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
-            <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
-          </span>
-        </span>
+        <div>
+          <div className={"pl1 border-box instrument-panel block-m" + (this.state.selectedTab === "pitch_wobble" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-m">Pitch Wobble</h2>
+            <span className="control">
+              <label className="control-label">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0" max="100" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
+                <span>{this.props.instrument.lfoAmplitude}Hz</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label">Rate:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.lfoFrequency} onChange={this.setLFOFrequency} />
+                <span>{this.props.instrument.lfoFrequency}Hz</span>
+              </span>
+            </span>
+            <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} idPrefix="lfoWaveform" setWaveFormValue={this.setLFOWaveForm} />
+          </div>
+
+          <div className={"pl1 border-box instrument-panel block-m" + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-m">Loudness Envelope</h2>
+            <span className="control">
+              <label className="control-label">Attack Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
+                <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label">Decay Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
+                <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label">Sustain Volume:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
+                <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label">Release Speed:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
+                <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>;
   };
