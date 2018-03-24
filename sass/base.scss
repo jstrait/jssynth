@@ -91,7 +91,7 @@
 .bg-red { background: $red; }
 .white { color: $white; }
 
-@media (min-width: 481px) {
-  .block-m { display: block; }
-  .display-none-m { display: none; }
+@media (min-width: 769px) {
+  .block-l { display: block; }
+  .display-none-l { display: none; }
 }

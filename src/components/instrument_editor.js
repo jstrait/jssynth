@@ -163,14 +163,14 @@ class SampleInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-m">
+      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
-        <div className={"pr1 br instrument-panel block-m " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-m">Sound File</h2>
+        <div className={"pr1 br instrument-panel block-l " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-l">Sound File</h2>
           <label className="inline-block control-label">Sound file:</label>
           <span>{this.props.instrument.filename}</span>&nbsp;
           <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
@@ -180,8 +180,8 @@ class SampleInstrumentEditor extends React.Component {
             <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
           </span>
         </div>
-        <div className={"pl1 pr1 br border-box instrument-panel block-m " + (this.state.selectedTab === "filter" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-m">Filter</h2>
+        <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "filter" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-l">Filter</h2>
           <span className="control">
             <label className="control-label">Cutoff:</label>
             <span className="annotated-input">
@@ -259,8 +259,8 @@ class SampleInstrumentEditor extends React.Component {
             </span>
           </span>
         </div>
-        <div className={"pl1 border-box instrument-panel block-m " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-m">Loudness Envelope</h2>
+        <div className={"pl1 border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
           <span className="control">
             <label className="control-label">Attack Speed:</label>
             <span className="annotated-input">
@@ -426,15 +426,15 @@ class SynthInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-m">
+      <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Pitch Wobble" tabName="pitch_wobble" isSelected={this.state.selectedTab === "pitch_wobble"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
-        <div className={"pr1 br instrument-panel block-m" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-m">Sound Generator</h2>
+        <div className={"pr1 br instrument-panel block-l" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-l">Sound Generator</h2>
           <span className="block lightText">Base:</span>
           <WaveFormSelector waveFormValue={this.props.instrument.waveform1} idPrefix="waveform" setWaveFormValue={this.setWaveForm1} />
           <span className="control">
@@ -462,8 +462,8 @@ class SynthInstrumentEditor extends React.Component {
           </span>
         </div>
 
-        <div className={"pl1 pr1 br border-box instrument-panel block-m" + (this.state.selectedTab === "filter" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-m">Filter</h2>
+        <div className={"pl1 pr1 br border-box instrument-panel block-l" + (this.state.selectedTab === "filter" ? "" : " display-none")}>
+          <h2 className="h3 section-header display-none block-l">Filter</h2>
           <span className="control">
             <label className="control-label">Cutoff:</label>
             <span className="annotated-input">
@@ -543,8 +543,8 @@ class SynthInstrumentEditor extends React.Component {
         </div>
 
         <div>
-          <div className={"pl1 border-box instrument-panel block-m" + (this.state.selectedTab === "pitch_wobble" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-m">Pitch Wobble</h2>
+          <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "pitch_wobble" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Pitch Wobble</h2>
             <span className="control">
               <label className="control-label">Amount:</label>
               <span className="annotated-input">
@@ -562,8 +562,8 @@ class SynthInstrumentEditor extends React.Component {
             <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} idPrefix="lfoWaveform" setWaveFormValue={this.setLFOWaveForm} />
           </div>
 
-          <div className={"pl1 border-box instrument-panel block-m" + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-m">Loudness Envelope</h2>
+          <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <span className="annotated-input">
