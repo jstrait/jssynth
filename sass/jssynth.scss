@@ -283,28 +283,9 @@ input.note:focus {
   background: #ddd;
 }
 
-
-@media (max-width: 768px) {
-  .waveformOptionsContainer {
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-    flex: 1;
-    -webkit-flex: 1;
-  }
-
-  .radioContainer {
-    -webkit-flex: 0 0 50%;
-    flex: 0 0 50%;
-  }
-}
-
 @media (max-width: 480px) {
   .helperToggle {
     display: inline-block;
-  }
-
-  .waveformOptionsContainer {
-    width: 100%;
   }
 
   .indented {

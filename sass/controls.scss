@@ -10,25 +10,6 @@ input[type='text'] {
   padding: 0;
 }
 
-input[type='radio'] {
-  width: auto;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  border-radius: 0.75rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  outline: none;
-  border: 2px solid $black;
-  box-sizing: border-box;
-  vertical-align: middle;
-}
-
-input[type='radio']:unchecked { }
-
-input[type='radio']:checked {
-  background-color: $black;
-}
-
 input[type='range'] {
   background-color: #ccc;
   -webkit-appearance: none;
@@ -104,11 +85,6 @@ input[type='range']::-moz-range-track {
   background: #ccc;
   border: 0;
   outline: none;
-}
-
-.radioLabel {
-  margin-right: $size-half;
-  vertical-align: middle;
 }
 
 button {

@@ -64,6 +64,11 @@ class SampleInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
+    this.FILTER_MODULATION_OPTIONS = [
+      {label: "Wobble", value: "lfo"},
+      {label: "Envelope", value: "envelope"},
+    ];
+
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -114,8 +119,8 @@ class SampleInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
   };
 
-  setFilterModulator(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterModulator", e.target.value);
+  setFilterModulator(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterModulator", newValue);
   };
 
   setFilterLFOAmplitude(e) {
@@ -199,16 +204,7 @@ class SampleInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label">Modulation:</label>
-            <span className="flex waveformOptionsContainer">
-              <span className="radioContainer">
-                <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
-                &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
-              </span>
-              <span className="radioContainer">
-                <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
-                &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
-              </span>
-            </span>
+            <TabStrip items={this.FILTER_MODULATION_OPTIONS} selectedValue={this.props.instrument.filterModulator} setSelectedValue={this.setFilterModulator} />
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
             <span className="block mt1 lightText">Cutoff Wobble:</span>
@@ -315,6 +311,11 @@ class SynthInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
+    this.FILTER_MODULATION_OPTIONS = [
+      {label: "Wobble", value: "lfo"},
+      {label: "Envelope", value: "envelope"},
+    ];
+
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setWaveForm1 = this.setWaveForm1.bind(this);
     this.setWaveForm2 = this.setWaveForm2.bind(this);
@@ -386,8 +387,8 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
   };
 
-  setFilterModulator(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterModulator", e.target.value);
+  setFilterModulator(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterModulator", newValue);
   };
 
   setFilterLFOAmplitude(e) {
@@ -497,16 +498,7 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label">Modulation:</label>
-            <span className="flex waveformOptionsContainer">
-              <span className="radioContainer">
-                <input id="filterModulatorLFO" value="lfo" type="radio" checked={this.props.instrument.filterModulator === "lfo"} onChange={this.setFilterModulator} />
-                &nbsp;<label htmlFor="filterModulatorLFO" className="radioLabel">Wobble</label>
-              </span>
-              <span className="radioContainer">
-                <input id="filterModulatorEnvelope" value="envelope" type="radio" checked={this.props.instrument.filterModulator === "envelope"} onChange={this.setFilterModulator} />
-                &nbsp;<label htmlFor="filterModulatorEnvelope" className="radioLabel">Envelope</label>
-              </span>
-            </span>
+            <TabStrip items={this.FILTER_MODULATION_OPTIONS} selectedValue={this.props.instrument.filterModulator} setSelectedValue={this.setFilterModulator} />
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
             <span className="block mt1 lightText">Cutoff Wobble:</span>
