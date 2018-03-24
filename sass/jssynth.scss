@@ -114,15 +114,6 @@ a {
     margin-right: 0;
   }
 
-  .transport-controls {
-    width: 100%;
-  }
-
-  .transport-controls .control {
-    display: inline-block;
-    width: 50%;
-  }
-
   #download-container {
     -webkit-order: 2;
     order: 2;
@@ -134,21 +125,6 @@ a {
 @media (max-width: 480px) {
   .logo {
     font-size: 1.5rem;
-  }
-
-  #transport .control {
-    -webkit-flex-direction: row;
-    flex-direction: row;
-  }
-
-  .transport-controls {
-    width: auto;
-  }
-
-  .transport-controls .control {
-    width: auto;
-    display: -webkit-flex;
-    display: flex;
   }
 }
 

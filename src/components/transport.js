@@ -8,12 +8,10 @@ class TempoSlider extends React.Component {
   };
 
   render() {
-    return <span className="control">
-      <label className="control-label align-right">Tempo&nbsp;&nbsp;</label>
-      <span className="annotated-input">
-        <input type="range" min="30" max="255" value={this.props.tempo} onChange={this.props.onChange} />
-        <span>{this.props.tempo}</span>
-      </span>
+    return <span className="flex flex-align-center">
+      <label className="width-3">Tempo</label>
+      <input className="flex-uniform-size" type="range" min="30" max="255" value={this.props.tempo} onChange={this.props.onChange} />
+      <span className="width-2">&nbsp;{this.props.tempo}</span>
     </span>;
   };
 };
@@ -24,12 +22,10 @@ class AmplitudeSlider extends React.Component {
   };
 
   render() {
-    return <span className="control">
-      <label className="control-label align-right">Volume&nbsp;&nbsp;</label>
-      <span className="annotated-input">
-        <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.amplitude} onChange={this.props.onChange} />
-        <span>{(this.props.amplitude * 100).toFixed(0)}%</span>
-      </span>
+    return <span className="flex flex-align-center">
+      <label className="width-3">Volume</label>
+      <input className="flex-uniform-size" type="range" min="0.0" max="1.0" step="0.01" value={this.props.amplitude} onChange={this.props.onChange} />
+      <span className="width-2">&nbsp;{(this.props.amplitude * 100).toFixed(0)}%</span>
     </span>;
   };
 };
@@ -68,7 +64,7 @@ class Transport extends React.Component {
     if (this.props.enabled) {
       transportContent = <div className="transport-inner flex flex-align-center">
         <PlayButton playing={this.props.playing} onClick={this.props.togglePlaying} />
-        <span className="transport-controls inline-block">
+        <span className="transport-controls flex-uniform-size inline-block">
           <TempoSlider tempo={this.props.tempo} onChange={this.props.updateTempo} />
           <AmplitudeSlider amplitude={this.props.amplitude} onChange={this.props.updateAmplitude} />
         </span>
