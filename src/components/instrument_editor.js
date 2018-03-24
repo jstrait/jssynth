@@ -15,10 +15,10 @@ class WaveFormSelector extends React.Component {
 
   render() {
     return <ul className="tab-strip flex m0 pl0 full-width border-box b-all">
-      <WaveFormOption label="Sine" tabName="sine" isSelected={this.props.waveFormValue === "sine"} setSelectedOption={this.setWaveFormValue} />
-      <WaveFormOption label="Square" tabName="square" isSelected={this.props.waveFormValue === "square"} setSelectedOption={this.setWaveFormValue} />
-      <WaveFormOption label="Saw" tabName="sawtooth" isSelected={this.props.waveFormValue === "sawtooth"} setSelectedOption={this.setWaveFormValue} />
-      <WaveFormOption label="Triangle" tabName="triangle" isSelected={this.props.waveFormValue === "triangle"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Sine" value="sine" isSelected={this.props.waveFormValue === "sine"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Square" value="square" isSelected={this.props.waveFormValue === "square"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Saw" value="sawtooth" isSelected={this.props.waveFormValue === "sawtooth"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Triangle" value="triangle" isSelected={this.props.waveFormValue === "triangle"} setSelectedOption={this.setWaveFormValue} />
     </ul>;
   };
 };
@@ -31,7 +31,7 @@ class WaveFormOption extends React.Component {
   };
 
   setSelectedOption(e) {
-    this.props.setSelectedOption(this.props.tabName);
+    this.props.setSelectedOption(this.props.value);
   };
 
   render() {
@@ -48,7 +48,7 @@ class InstrumentPaneTab extends React.Component {
   };
 
   setSelectedTab(e) {
-    this.props.setSelectedTab(this.props.tabName);
+    this.props.setSelectedTab(this.props.value);
   };
 
   render() {
@@ -166,9 +166,9 @@ class SampleInstrumentEditor extends React.Component {
   render() {
     return <div>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
-        <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
-        <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
-        <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Loudness Envelope" value="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
@@ -432,10 +432,10 @@ class SynthInstrumentEditor extends React.Component {
   render() {
     return <div>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
-        <InstrumentPaneTab label="Base Sound" tabName="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
-        <InstrumentPaneTab label="Filter" tabName="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
-        <InstrumentPaneTab label="Pitch Wobble" tabName="pitch_wobble" isSelected={this.state.selectedTab === "pitch_wobble"} setSelectedTab={this.setSelectedTab} />
-        <InstrumentPaneTab label="Loudness Envelope" tabName="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Pitch Wobble" value="pitch_wobble" isSelected={this.state.selectedTab === "pitch_wobble"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Loudness Envelope" value="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
