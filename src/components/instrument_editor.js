@@ -311,6 +311,14 @@ class SynthInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
+    this.OCTAVE_OPTIONS = [
+      {label: "-2", value: -2},
+      {label: "-1", value: -1},
+      {label: "0", value: 0},
+      {label: "+1", value: 1},
+      {label: "+2", value: 2},
+    ];
+
     this.FILTER_MODULATION_OPTIONS = [
       {label: "Wobble", value: "lfo"},
       {label: "Envelope", value: "envelope"},
@@ -355,12 +363,12 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "waveform2", newValue);
   };
 
-  setWaveForm1Octave(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform1Octave", parseInt(e.target.value, 10));
+  setWaveForm1Octave(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform1Octave", newValue);
   };
 
-  setWaveForm2Octave(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2Octave", parseInt(e.target.value, 10));
+  setWaveForm2Octave(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform2Octave", newValue);
   };
 
   setWaveForm2Detune(e) {
@@ -454,10 +462,7 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
-            <span className="annotated-input">
-              <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform1Octave} onChange={this.setWaveForm1Octave} />
-              <span>{(this.props.instrument.waveform1Octave > 0) ? "+" : ""}{this.props.instrument.waveform1Octave}</span>
-            </span>
+            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.waveform1Octave} setSelectedValue={this.setWaveForm1Octave} />
           </span>
           <span className="block mt1 lightText">Secondary:</span>
           <span className="control">
@@ -466,10 +471,7 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
-            <span className="annotated-input">
-              <input type="range" min="-2" max="2" step="1" value={this.props.instrument.waveform2Octave} onChange={this.setWaveForm2Octave} />
-              <span>{(this.props.instrument.waveform2Octave > 0) ? "+" : ""}{this.props.instrument.waveform2Octave}</span>
-            </span>
+            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.waveform2Octave} setSelectedValue={this.setWaveForm2Octave} />
           </span>
           <span className="control">
             <label className="control-label indented">Detune:</label>
