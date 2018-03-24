@@ -77,6 +77,19 @@ a {
     border-color: transparent transparent $white transparent;
 }
 
+.tab-strip {
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.tab-strip-item {
+  border-right: 1px solid $border-color;
+}
+
+.tab-strip-item:last-child {
+  border-right: 0;
+}
+
 @media (max-width: 768px) {
   #header {
     -webkit-flex-flow: row wrap;

@@ -14,7 +14,7 @@ class WaveFormSelector extends React.Component {
   };
 
   render() {
-    return <ul className="flex m0 pl0 full-width border-box" style={{"border": "1px solid #ddd", "borderRadius": "5px"}}>
+    return <ul className="tab-strip flex m0 pl0 full-width border-box b-all">
       <WaveFormOption label="Sine" tabName="sine" isSelected={this.props.waveFormValue === "sine"} setSelectedOption={this.setWaveFormValue} />
       <WaveFormOption label="Square" tabName="square" isSelected={this.props.waveFormValue === "square"} setSelectedOption={this.setWaveFormValue} />
       <WaveFormOption label="Saw" tabName="sawtooth" isSelected={this.props.waveFormValue === "sawtooth"} setSelectedOption={this.setWaveFormValue} />
@@ -35,7 +35,7 @@ class WaveFormOption extends React.Component {
   };
 
   render() {
-    return <li className={"list-style-none flex-uniform-size pointer border-box center " + (this.props.isSelected ? "sequencer-currentStep" : "")} onClick={this.setSelectedOption}>{this.props.label}</li>;
+    return <li className={"tab-strip-item list-style-none flex-uniform-size pointer border-box center " + (this.props.isSelected ? "sequencer-currentStep" : "")} onClick={this.setSelectedOption}>{this.props.label}</li>;
   };
 };
 
