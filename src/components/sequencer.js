@@ -164,7 +164,7 @@ class Sequencer extends React.Component {
             <TrackPatternListHeader currentStep={this.props.currentStep} />
           </li>
           {this.props.tracks.map((track) =>
-          <li key={track.id} className="list-style-none full-width height-4 border-box">
+          <li key={track.id} className="list-style-none full-width height-3 border-box">
             <TrackPatternList currentStep={this.props.currentStep} track={track} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
           </li>
           )}
