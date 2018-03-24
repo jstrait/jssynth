@@ -9,31 +9,36 @@ class WaveFormSelector extends React.Component {
     this.setWaveFormValue = this.setWaveFormValue.bind(this);
   };
 
-  setWaveFormValue(e) {
-    this.props.setWaveFormValue(e.target.value);
+  setWaveFormValue(value) {
+    this.props.setWaveFormValue(value);
   };
 
   render() {
-    return <span className="flex waveformOptionsContainer">
-      <span className="radioContainer">
-        <input id={this.props.idPrefix + "Sine"} value="sine" type="radio" checked={this.props.waveFormValue === "sine"} onChange={this.setWaveFormValue} />
-        &nbsp;<label htmlFor={this.props.idPrefix + "Sine"} className="radioLabel">Sine</label>
-      </span>
-      <span className="radioContainer">
-        <input id={this.props.idPrefix + "Square"} value="square" type="radio" checked={this.props.waveFormValue === "square"} onChange={this.setWaveFormValue} />
-        &nbsp;<label htmlFor={this.props.idPrefix + "Square"} className="radioLabel">Square</label>
-      </span>
-      <span className="radioContainer">
-        <input id={this.props.idPrefix + "Sawtooth"} value="sawtooth" type="radio" checked={this.props.waveFormValue === "sawtooth"} onChange={this.setWaveFormValue} />
-        &nbsp;<label htmlFor={this.props.idPrefix + "Sawtooth"} className="radioLabel">Saw</label>
-      </span>
-      <span className="radioContainer">
-        <input id={this.props.idPrefix + "Triangle"} value="triangle" type="radio" checked={this.props.waveFormValue === "triangle"} onChange={this.setWaveFormValue} />
-        &nbsp;<label htmlFor={this.props.idPrefix + "Triangle"} className="radioLabel">Triangle</label>
-      </span>
-    </span>;
+    return <ul className="flex m0 pl0 full-width border-box" style={{"border": "1px solid #ddd", "borderRadius": "5px"}}>
+      <WaveFormOption label="Sine" tabName="sine" isSelected={this.props.waveFormValue === "sine"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Square" tabName="square" isSelected={this.props.waveFormValue === "square"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Saw" tabName="sawtooth" isSelected={this.props.waveFormValue === "sawtooth"} setSelectedOption={this.setWaveFormValue} />
+      <WaveFormOption label="Triangle" tabName="triangle" isSelected={this.props.waveFormValue === "triangle"} setSelectedOption={this.setWaveFormValue} />
+    </ul>;
   };
 };
+
+class WaveFormOption extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.setSelectedOption = this.setSelectedOption.bind(this);
+  };
+
+  setSelectedOption(e) {
+    this.props.setSelectedOption(this.props.tabName);
+  };
+
+  render() {
+    return <li className={"list-style-none flex-uniform-size pointer border-box center " + (this.props.isSelected ? "sequencer-currentStep" : "")} onClick={this.setSelectedOption}>{this.props.label}</li>;
+  };
+};
+
 
 class InstrumentPaneTab extends React.Component {
   constructor(props) {
@@ -224,7 +229,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Waveform:</label>
-              <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+              <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} setWaveFormValue={this.setFilterLFOWaveForm} />
             </span>
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
@@ -438,7 +443,7 @@ class SynthInstrumentEditor extends React.Component {
           <span className="block lightText">Base:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
-            <WaveFormSelector waveFormValue={this.props.instrument.waveform1} idPrefix="waveform" setWaveFormValue={this.setWaveForm1} />
+            <WaveFormSelector waveFormValue={this.props.instrument.waveform1} setWaveFormValue={this.setWaveForm1} />
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
@@ -450,7 +455,7 @@ class SynthInstrumentEditor extends React.Component {
           <span className="block mt1 lightText">Secondary:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
-            <WaveFormSelector waveFormValue={this.props.instrument.waveform2} idPrefix="waveform2" setWaveFormValue={this.setWaveForm2} />
+            <WaveFormSelector waveFormValue={this.props.instrument.waveform2} setWaveFormValue={this.setWaveForm2} />
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
@@ -515,7 +520,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Waveform:</label>
-              <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} idPrefix="filterLFOWaveform" setWaveFormValue={this.setFilterLFOWaveForm} />
+              <WaveFormSelector waveFormValue={this.props.instrument.filterLFOWaveform} setWaveFormValue={this.setFilterLFOWaveForm} />
             </span>
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
@@ -570,7 +575,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label">Waveform:</label>
-              <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} idPrefix="lfoWaveform" setWaveFormValue={this.setLFOWaveForm} />
+              <WaveFormSelector waveFormValue={this.props.instrument.lfoWaveform} setWaveFormValue={this.setLFOWaveForm} />
             </span>
           </div>
 
