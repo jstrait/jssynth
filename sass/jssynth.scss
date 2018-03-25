@@ -80,6 +80,8 @@ a {
 .tab-strip {
   overflow: hidden;
   border-radius: 5px;
+  -webkit-flex: 1;
+  flex: 1;
 }
 
 .tab-strip-item {
@@ -88,6 +90,12 @@ a {
 
 .tab-strip-item:last-child {
   border-right: 0;
+}
+
+@media (max-width: 480px) {
+ .tab-strip {
+    width: 100%;
+ }
 }
 
 @media (max-width: 768px) {

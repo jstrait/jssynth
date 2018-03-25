@@ -8,7 +8,7 @@ class TabStrip extends React.Component {
   };
 
   render() {
-    return <ul className="tab-strip flex m0 pl0 full-width border-box b-all">
+    return <ul className="tab-strip flex m0 pl0 border-box b-all">
       {this.props.items.map((item) =>
         <TabStripItem key={item.value} label={item.label} value={item.value} isSelected={this.props.selectedValue === item.value} setSelectedValue={this.props.setSelectedValue} />
       )}
