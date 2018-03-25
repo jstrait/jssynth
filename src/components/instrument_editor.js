@@ -28,7 +28,7 @@ class TabStripItem extends React.Component {
   };
 
   render() {
-    return <li className={"tab-strip-item list-style-none flex-uniform-size pointer border-box center " + (this.props.isSelected ? "sequencer-currentStep" : "")} onClick={this.setSelectedValue}>{this.props.label}</li>;
+    return <li className={"tab-strip-item list-style-none flex-uniform-size h4 lh-3 pointer border-box center " + (this.props.isSelected ? "sequencer-currentStep" : "")} onClick={this.setSelectedValue}>{this.props.label}</li>;
   };
 };
 
