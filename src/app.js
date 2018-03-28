@@ -1484,7 +1484,10 @@ class App extends React.Component {
       ]
     };
 
-    this.setState({patterns: this.state.patterns.concat(newPattern)});
+    this.setState({
+      patterns: this.state.patterns.concat(newPattern),
+      selectedPatternID: newPattern.id,
+    });
   };
 
   removePattern(id) {
