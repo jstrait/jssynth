@@ -153,6 +153,7 @@ class PatternEditor extends React.Component {
 
     this.setPatternName = this.setPatternName.bind(this);
     this.addPattern = this.addPattern.bind(this);
+    this.duplicatePattern = this.duplicatePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
@@ -164,6 +165,10 @@ class PatternEditor extends React.Component {
 
   addPattern(e) {
     this.props.addPattern(this.props.selectedPattern.trackID);
+  };
+
+  duplicatePattern(e) {
+    this.props.duplicatePattern(this.props.selectedPattern.id);
   };
 
   addPatternRow(e) {
@@ -196,7 +201,8 @@ class PatternEditor extends React.Component {
           <PatternListItem key={pattern.id} pattern={pattern} selectedPattern={this.props.selectedPattern} removable={this.props.patterns.length > 1} setSelectedPattern={this.props.setSelectedPattern} removePattern={this.props.removePattern} />
           )}
         </ul>
-        <button className="block button-full button-hollow" onClick={this.addPattern}>Add Pattern</button>
+        <button className="button-full button-hollow mr1" onClick={this.addPattern}>Add Pattern</button>
+        <button className="button-full button-hollow" onClick={this.duplicatePattern}>Duplicate Pattern</button>
       </div>
 
       <label>Name:</label> <input className="underlinedInput" value={this.props.selectedPattern.name} onChange={this.setPatternName} type="text" /> <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>

@@ -1034,6 +1034,7 @@ class App extends React.Component {
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
+    this.duplicatePattern = this.duplicatePattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
@@ -1490,6 +1491,33 @@ class App extends React.Component {
     });
   };
 
+  duplicatePattern(patternID) {
+    let originalPattern = this.patternByID(patternID);
+    let newPatternID = this.idGenerator.next();
+    let track = this.trackByID(originalPattern.trackID);
+    let duplicatedRows = [];
+    let i, j;
+
+    for (i = 0; i < originalPattern.rows.length; i++) {
+      duplicatedRows.push({ notes: [] });
+      for (j = 0; j < originalPattern.rows[i].notes.length; j++) {
+        duplicatedRows[i].notes.push({ name: originalPattern.rows[i].notes[j].name });
+      }
+    }
+
+    let newPattern = {
+      id: newPatternID,
+      name: track.name + " " + (this.patternsByTrackID(track.id).length + 1),
+      trackID: track.id,
+      rows: duplicatedRows,
+    };
+
+    this.setState({
+      patterns: this.state.patterns.concat(newPattern),
+      selectedPatternID: newPattern.id,
+    });
+  };
+
   removePattern(id) {
     let i;
     let pattern = this.patternByID(id);
@@ -1782,6 +1810,7 @@ class App extends React.Component {
                      setSelectedPattern={this.setSelectedPattern}
                      setPatternName={this.setPatternName}
                      addPattern={this.addPattern}
+                     duplicatePattern={this.duplicatePattern}
                      removePattern={this.removePattern}
                      addPatternRow={this.addPatternRow}
                      removePatternRow={this.removePatternRow}
