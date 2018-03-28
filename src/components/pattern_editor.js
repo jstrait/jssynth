@@ -201,7 +201,7 @@ class PatternEditor extends React.Component {
           <PatternListItem key={pattern.id} pattern={pattern} selectedPattern={this.props.selectedPattern} removable={this.props.patterns.length > 1} setSelectedPattern={this.props.setSelectedPattern} removePattern={this.props.removePattern} />
           )}
         </ul>
-        <button className="button-full button-hollow mr1" onClick={this.addPattern}>Add Pattern</button>
+        <button className="button-full button-hollow mr-half" onClick={this.addPattern}>Add Pattern</button>
         <button className="button-full button-hollow" onClick={this.duplicatePattern}>Duplicate Pattern</button>
       </div>
 

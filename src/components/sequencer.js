@@ -179,8 +179,8 @@ class Sequencer extends React.Component {
         </ul>
       </div>
       <div className="pl1">
-        <button className="button-full button-hollow" onClick={this.props.addSynthTrack}>Add Synth Track</button>
-        <button className="ml1 button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
+        <button className="button-full button-hollow mr-half" onClick={this.props.addSynthTrack}>Add Synth Track</button>
+        <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
     </div>;
