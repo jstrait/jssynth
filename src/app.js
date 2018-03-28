@@ -1460,7 +1460,7 @@ class App extends React.Component {
     let newPatternID = this.idGenerator.next();
 
     let newPattern = {
-      id: this.idGenerator.next(),
+      id: newPatternID,
       name: track.name + " " + (this.patternsByTrackID(trackID).length + 1),
       trackID: trackID,
       rows: [
