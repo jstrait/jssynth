@@ -25,7 +25,7 @@ class DownloadButton extends React.Component {
         <span className="h3 lh-flush">&darr;</span>&nbsp; *.wav
       </button>
       <a id="hidden-download-link" className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
-      <div className={"mt3 pl1 pr1 pt1 pb1 popup-box" + (this.state.enabled ? "" : " display-none")}>
+      <div className={"mt3 p1 popup-box" + (this.state.enabled ? "" : " display-none")}>
         <label className="block">File Name:</label>
         <span className="flex">
           <input className="underlinedInput flex-uniform-size" type="text" value={this.props.downloadFileName} onChange={this.props.setDownloadFileName} />
