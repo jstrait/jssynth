@@ -1706,7 +1706,7 @@ class App extends React.Component {
     }));
   };
 
-  export(e) {
+  export() {
     let exportCompleteCallback = function(blob) {
       let url = window.URL.createObjectURL(blob);
 

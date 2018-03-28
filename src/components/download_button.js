@@ -8,15 +8,27 @@ class DownloadButton extends React.Component {
 
     this.state = {
       enabled: false,
+      errorMessage: "",
     };
 
     this.toggleEnabled = this.toggleEnabled.bind(this);
+    this.beginExport = this.beginExport.bind(this);
   };
 
   toggleEnabled(e) {
     this.setState((prevState, props) => ({
       enabled: !prevState.enabled,
     }));
+  };
+
+  beginExport(e) {
+    if (this.props.downloadFileName === "") {
+      this.setState({ errorMessage: "Please give a file name", });
+      return;
+    }
+
+    this.setState({ errorMessage: "" });
+    this.props.export();
   };
 
   render() {
@@ -31,7 +43,8 @@ class DownloadButton extends React.Component {
           <input className="underlinedInput flex-uniform-size" type="text" value={this.props.downloadFileName} onChange={this.props.setDownloadFileName} />
           <span>.wav</span>
         </span>
-        <button className="button-full button-hollow mt1 right" onClick={this.props.export}>Download</button>
+        <span className="block red">{this.state.errorMessage}</span>
+        <button className="button-full button-hollow mt1 right" onClick={this.beginExport}>Download</button>
       </div>
     </div>;
   };
