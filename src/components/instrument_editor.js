@@ -232,14 +232,14 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
                 <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
                 <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
               </span>
             </span>
@@ -253,7 +253,7 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
                 <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
               </span>
             </span>
@@ -264,14 +264,14 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Attack Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
               <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label">Decay Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
               <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
             </span>
           </span>
@@ -285,7 +285,7 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Release Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
               <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
             </span>
           </span>
@@ -528,14 +528,14 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
                 <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
                 <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
               </span>
             </span>
@@ -549,7 +549,7 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
                 <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
               </span>
             </span>
@@ -584,14 +584,14 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
                 <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
                 <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
               </span>
             </span>
@@ -605,7 +605,7 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.3" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
                 <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
               </span>
             </span>
