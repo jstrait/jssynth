@@ -28,9 +28,9 @@ class TrackHeader extends React.Component {
       return fullTrackName.substring(0, 2);
     };
 
-    return <li className="flex flex-column flex-uniform-size flex-justify-center list-style-none pl1 pr1 border-box bb br">
+    return <li className="flex flex-column flex-uniform-size flex-justify-center bg-light-gray list-style-none pl1 pr1 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.track.name)}</span>
-      <input className="underlinedInput full-width" type="text" value={this.props.track.name} onChange={this.setTrackName} />
+      <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.track.name} onChange={this.setTrackName} />
       <span className="sequencer-volume-container flex flex-align-center">
         <button className={"button-hollow button-small" + (this.props.track.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
         <input className="flex-uniform-size" style={{marginLeft: "4px", width: "1px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.track.muted} value={this.props.track.volume} onChange={this.setTrackVolume} />
@@ -172,7 +172,7 @@ class Sequencer extends React.Component {
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb">&nbsp;</li>
           {this.props.tracks.map((track) =>
-          <li key={track.id} className="flex flex-align-center flex-uniform-size pl-half pr-half list-style-none border-box bb bl">
+          <li key={track.id} className="flex flex-align-center flex-uniform-size bg-light-gray pl-half pr-half list-style-none border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />
           </li>
           )}
