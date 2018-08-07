@@ -160,6 +160,9 @@ class Keyboard extends React.Component {
       alert("Deactivate!");
       this.props.deactivate();
     }
+
+    // Prevent page zoom from double tap
+    e.preventDefault();
   };
 
   touchMove(e) {
