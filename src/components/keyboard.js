@@ -40,6 +40,7 @@ class Keyboard extends React.Component {
   };
 
   touchHandler(touches) {
+    const SCROLL_AMOUNT = 10;
     let key;
     let isScrollActive = false;
     let activeNotes = [];
@@ -51,13 +52,13 @@ class Keyboard extends React.Component {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
           isScrollActive = true;
           if (this.scrollLeftTimeoutID === undefined) {
-            this.scrollLeftTimeoutID = setInterval(() => this.scroll(-10), 15);
+            this.scrollLeftTimeoutID = setInterval(() => this.scroll(-SCROLL_AMOUNT), 15);
           }
         }
         else if (elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
           isScrollActive = true;
           if (this.scrollRightTimeoutID === undefined) {
-            this.scrollRightTimeoutID = setInterval(() => this.scroll(10), 15);
+            this.scrollRightTimeoutID = setInterval(() => this.scroll(SCROLL_AMOUNT), 15);
           }
         }
         else {
