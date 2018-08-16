@@ -768,6 +768,16 @@ function Transport(songPlayer, stopCallback) {
 
 
 function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
+  var NUM_CHANNELS = 1;
+  var SAMPLE_RATE = 44100;
+  var SIXTEENTHS_PER_MINUTE = tempo * 4;
+  var STEP_INTERVAL = 60.0 / SIXTEENTHS_PER_MINUTE;
+
+  // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
+  //       calculate a real value for this.
+  var MAX_RELEASE_TIME = 0.3;
+
+
   var calculateMaxSampleValue = function(sampleData) {
     var maxSampleValue = 0;
     var i;
@@ -784,22 +794,15 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
   };
 
   var buildOfflineAudioContext = function() {
-    var numChannels = 1;
-    var sampleRate = 44100;
-
-    // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
-    //       calculate a real value for this.
-    var maximumReleaseTime = 0.3;
-    var playbackTime = (songPlayer.stepCount() * STEP_INTERVAL) + maximumReleaseTime;
-    var sampleCount = sampleRate * playbackTime;
-
+    var playbackTime = (songPlayer.stepCount() * STEP_INTERVAL) + MAX_RELEASE_TIME;
+    var sampleCount = SAMPLE_RATE * playbackTime;
     var audioContext;
 
     if (window.OfflineAudioContext) {
-      audioContext = new OfflineAudioContext(numChannels, sampleCount, sampleRate);
+      audioContext = new OfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
     }
     else if (window.webkitOfflineAudioContext) {
-      audioContext = new webkitOfflineAudioContext(numChannels, sampleCount, sampleRate);
+      audioContext = new webkitOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
     }
 
     audioContext.oncomplete = function(e) {
@@ -819,14 +822,6 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     return audioContext;
   };
 
-  var sixteenthsPerMinute = tempo * 4;
-  var STEP_INTERVAL = 60.0 / sixteenthsPerMinute;
-
-  var offlineAudioContext = buildOfflineAudioContext();
-  var masterGain = offlineAudioContext.createGain();
-  masterGain.gain.value = amplitude;
-  masterGain.connect(offlineAudioContext.destination);
-
   var tick = function() {
     var scheduleAheadTime = songPlayer.stepCount() * STEP_INTERVAL;
     var startTime = offlineAudioContext.currentTime;
@@ -837,6 +832,12 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
 
     offlineAudioContext.startRendering();
   };
+
+  var offlineAudioContext = buildOfflineAudioContext();
+  var masterGain = offlineAudioContext.createGain();
+
+  masterGain.gain.value = amplitude;
+  masterGain.connect(offlineAudioContext.destination);
 
 
   return {
