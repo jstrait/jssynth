@@ -779,14 +779,17 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
 
 
   var calculateMaxSampleValue = function(sampleData) {
+    var absoluteSampleValue;
     var maxSampleValue = 0;
     var i;
 
     // Using Math.max() can result in 'Maximum call stack size exceeded' errors,
     // and Float32Array doesn't appear to support forEach() in Safari 9
     for (i = 0; i < sampleData.length; i++) {
-      if (sampleData[i] > maxSampleValue) {
-        maxSampleValue = sampleData[i];
+      absoluteSampleValue = Math.abs(sampleData[i]);
+
+      if (absoluteSampleValue > maxSampleValue) {
+        maxSampleValue = absoluteSampleValue;
       }
     }
 
