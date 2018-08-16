@@ -24,7 +24,7 @@ class App extends React.Component {
       transport: {
         enabled: true,
         playing: false,
-        amplitude: 0.25,
+        amplitude: 0.75,
         tempo: 114,
         step: undefined,
       },
