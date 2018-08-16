@@ -768,6 +768,21 @@ function Transport(songPlayer, stopCallback) {
 
 
 function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
+  var calculateMaxSampleValue = function(sampleData) {
+    var maxSampleValue = 0;
+    var i;
+
+    // Using Math.max() can result in 'Maximum call stack size exceeded' errors,
+    // and Float32Array doesn't appear to support forEach() in Safari 9
+    for (i = 0; i < sampleData.length; i++) {
+      if (sampleData[i] > maxSampleValue) {
+        maxSampleValue = sampleData[i];
+      }
+    }
+
+    return maxSampleValue;
+  };
+
   var buildOfflineAudioContext = function() {
     var numChannels = 1;
     var sampleRate = 44100;
@@ -792,14 +807,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
 
       var sampleData = e.renderedBuffer.getChannelData(0);
 
-      // Using Math.max() can result in 'Maximum call stack size exceeded' errors,
-      // and Float32Array doesn't appear to support forEach() in Safari 9
-      var maxSampleValue = 0;
-      for (var i = 0; i < sampleData.length; i++) {
-        if (sampleData[i] > maxSampleValue) {
-          maxSampleValue = sampleData[i];
-        }
-      }
+      var maxSampleValue = calculateMaxSampleValue(sampleData);
       var scaleFactor = (1 / maxSampleValue) * amplitude;
 
       var outputView = waveWriter.write(sampleData, scaleFactor);
