@@ -157,7 +157,6 @@ class Keyboard extends React.Component {
 
     this.touchHandler(this.touches);
     if (this.touches.length === 0) {
-      alert("Deactivate!");
       this.props.deactivate();
     }
 
