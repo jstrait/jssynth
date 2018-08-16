@@ -97,6 +97,12 @@ class Keyboard extends React.Component {
   };
 
   mouseDown(e) {
+    const RIGHT_MOUSE_BUTTON = 2;
+
+    if (e.button === RIGHT_MOUSE_BUTTON) {
+      return;
+    }
+
     this.props.activate();
     this.touches[-1] = { x: e.clientX, y: e.clientY };
     this.touchHandler(this.touches);
