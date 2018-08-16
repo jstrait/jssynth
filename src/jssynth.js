@@ -2,27 +2,8 @@
 
 function BufferCollection(audioContext) {
   var buffers = {};
-  var bufferCollection = {};
 
-  bufferCollection.addBuffersFromURLs = function(bufferConfig, onAllBuffersLoaded) {
-    var loadedBufferCount = 0;
-    var allBuffersCount = bufferConfig.length;
-    var i;
-
-    var onBufferLoaded = function() {
-      loadedBufferCount += 1;
-
-      if (loadedBufferCount === allBuffersCount) {
-        onAllBuffersLoaded();
-      }
-    };
-
-    for (i = 0; i < bufferConfig.length; i++) {
-      bufferCollection.addBufferFromURL(bufferConfig[i].label, bufferConfig[i].url, onBufferLoaded);
-    }
-  };
-
-  bufferCollection.addBufferFromURL = function(label, url, onSuccess) {
+  var addBufferFromURL = function(label, url, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
       onSuccess();
@@ -44,7 +25,25 @@ function BufferCollection(audioContext) {
     request.send();
   };
 
-  bufferCollection.addBufferFromFile = function(label, file, onSuccess) {
+  var addBuffersFromURLs = function(bufferConfig, onAllBuffersLoaded) {
+    var loadedBufferCount = 0;
+    var allBuffersCount = bufferConfig.length;
+    var i;
+
+    var onBufferLoaded = function() {
+      loadedBufferCount += 1;
+
+      if (loadedBufferCount === allBuffersCount) {
+        onAllBuffersLoaded();
+      }
+    };
+
+    for (i = 0; i < bufferConfig.length; i++) {
+      addBufferFromURL(bufferConfig[i].label, bufferConfig[i].url, onBufferLoaded);
+    }
+  };
+
+  var addBufferFromFile = function(label, file, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
       onSuccess();
@@ -63,15 +62,21 @@ function BufferCollection(audioContext) {
     reader.readAsArrayBuffer(file);
   };
 
-  bufferCollection.getBuffer = function(label) {
+  var getBuffer = function(label) {
     return buffers[label];
   };
 
-  bufferCollection.removeBuffer = function(label) {
+  var removeBuffer = function(label) {
     delete buffers[label];
   };
 
-  return bufferCollection;
+
+  return {
+    addBuffersFromURLs: addBuffersFromURLs,
+    addBufferFromFile: addBufferFromFile,
+    getBuffer: getBuffer,
+    removeBuffer: removeBuffer,
+  };
 };
 
 function SampleInstrument(config, bufferCollection) {
@@ -517,24 +522,21 @@ function Note(newNoteName, newOctave, newStepDuration) {
   var stepDuration = parseInt(newStepDuration, 10);
   var frequency = calculateFrequency(noteName, octave);
 
-  var note = {};
 
-  note.name         = function() { return noteName; };
-  note.octave       = function() { return octave; };
-  note.stepDuration = function() { return stepDuration; };
-  note.frequency    = function() { return frequency; };
-
-  return note;
+  return {
+    name: function() { return noteName; },
+    octave: function() { return octave; },
+    stepDuration: function() { return stepDuration; },
+    frequency: function() { return frequency; },
+  };
 };
 
 function InstrumentNote(note, instrument, amplitude) {
-  var instrumentNote = {};
-
-  instrumentNote.note = function() { return note; };
-  instrumentNote.instrument = function() { return instrument; };
-  instrumentNote.amplitude = function() { return amplitude; };
-
-  return instrumentNote;
+  return {
+    note: function() { return note; },
+    instrument: function() { return instrument; },
+    amplitude: function() { return amplitude; },
+  };
 };
 
 function SongPlayer() {
@@ -548,25 +550,17 @@ function SongPlayer() {
   var isFinishedPlaying;
   var currentTime;
 
-  var songPlayer = {};
-
-  songPlayer.reset = function(newCurrentTime) {
+  var reset = function(newCurrentTime) {
     stepIndex = 0;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
   };
 
-  songPlayer.stepCount = function() {
-    return STEP_COUNT;
-  };
-
-  songPlayer.isFinishedPlaying = function() { return isFinishedPlaying; }
-
-  songPlayer.replaceNotes = function(newNotes) {
+  var replaceNotes = function(newNotes) {
     notes = newNotes;
   };
 
-  songPlayer.tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
+  var tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
 
@@ -598,9 +592,17 @@ function SongPlayer() {
     return scheduledSteps;
   };
 
-  songPlayer.reset();
 
-  return songPlayer;
+  reset();
+
+
+  return {
+    reset: reset,
+    stepCount: function() { return STEP_COUNT; },
+    isFinishedPlaying: function() { return isFinishedPlaying; },
+    replaceNotes: replaceNotes,
+    tick: tick,
+  };
 };
 
 function Transport(songPlayer, stopCallback) {
@@ -766,8 +768,6 @@ function Transport(songPlayer, stopCallback) {
 
 
 function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
-  var transport = {};
-
   var buildOfflineAudioContext = function() {
     var numChannels = 1;
     var sampleRate = 44100;
@@ -819,7 +819,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
   masterGain.gain.value = amplitude;
   masterGain.connect(offlineAudioContext.destination);
 
-  transport.tick = function() {
+  var tick = function() {
     var scheduleAheadTime = songPlayer.stepCount() * STEP_INTERVAL;
     var startTime = offlineAudioContext.currentTime;
     var finalTime = startTime + scheduleAheadTime;
@@ -830,13 +830,14 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     offlineAudioContext.startRendering();
   };
 
-  return transport;
+
+  return {
+    tick: tick,
+  };
 };
 
 
 function WaveWriter() {
-  var waveWriter = {};
-
   var LITTLE_ENDIAN = true;
   var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
   var NUM_CHANNELS = 1;
@@ -849,7 +850,7 @@ function WaveWriter() {
 
   var WAVEFILE_HEADER_BYTE_COUNT = 44;
 
-  waveWriter.write = function(rawFloat32SampleData, scaleFactor) {
+  var write = function(rawFloat32SampleData, scaleFactor) {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
@@ -891,7 +892,10 @@ function WaveWriter() {
     return outputView;
   };
 
-  return waveWriter;
+
+  return {
+    write: write,
+  };
 };
 
 export { SynthInstrument, SampleInstrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
