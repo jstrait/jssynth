@@ -600,6 +600,9 @@ class App extends React.Component {
     this.songPlayer = new JSSynth.SongPlayer();
     this.offlineSongPlayer = new JSSynth.SongPlayer();
     this.transport = new JSSynth.Transport(this.songPlayer, stopCallback);
+    this.transport.setTempo(this.state.transport.tempo);
+    this.transport.setAmplitude(this.state.transport.amplitude);
+
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateAmplitude = this.updateAmplitude.bind(this);
     this.updateTempo = this.updateTempo.bind(this);
