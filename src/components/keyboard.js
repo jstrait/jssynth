@@ -42,7 +42,8 @@ class Keyboard extends React.Component {
   touchHandler(touches) {
     const SCROLL_AMOUNT = 10;
     let key;
-    let isScrollActive = false;
+    let isLeftScrollActive = false;
+    let isRightScrollActive = false;
     let activeNotes = [];
 
     for (key in touches) {
@@ -50,13 +51,13 @@ class Keyboard extends React.Component {
 
       if (elementUnderCursor !== undefined) {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
-          isScrollActive = true;
+          isLeftScrollActive = true;
           if (this.scrollLeftTimeoutID === undefined) {
             this.scrollLeftTimeoutID = setInterval(() => this.scroll(-SCROLL_AMOUNT), 15);
           }
         }
         else if (elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
-          isScrollActive = true;
+          isRightScrollActive = true;
           if (this.scrollRightTimeoutID === undefined) {
             this.scrollRightTimeoutID = setInterval(() => this.scroll(SCROLL_AMOUNT), 15);
           }
@@ -67,11 +68,11 @@ class Keyboard extends React.Component {
       }
     }
 
-    if (!isScrollActive && this.scrollLeftTimeoutID !== undefined) {
+    if (!isLeftScrollActive && this.scrollLeftTimeoutID !== undefined) {
       clearInterval(this.scrollLeftTimeoutID);
       this.scrollLeftTimeoutID = undefined;
     }
-    if (!isScrollActive && this.scrollRightTimeoutID !== undefined) {
+    if (!isRightScrollActive && this.scrollRightTimeoutID !== undefined) {
       clearInterval(this.scrollRightTimeoutID);
       this.scrollRightTimeoutID = undefined;
     }
