@@ -2,13 +2,13 @@
 
 A synthesizer and sequencer that runs in your browser, using the WebAudio API.
 
-Try it out here: [http://www.joelstrait.com/jssynth/](http://www.joelstrait.com/jssynth/)
+Try it out here: [https://www.joelstrait.com/jssynth/](https://www.joelstrait.com/jssynth/)
 
 ## Example Song
 
-The song below is an example of what you can create with the JS-130, along with [Beats Drum Machine](http://beatsdrummachine.com) and GarageBand.
+The song below is an example of what you can create with the JS-130, along with [Beats Drum Machine](https://beatsdrummachine.com) and GarageBand.
 
-[JS-130 Example Song](http://www.joelstrait.com/jssynth/js-130-demo.m4a)
+[JS-130 Example Song](https://www.joelstrait.com/jssynth/js-130-demo.m4a)
 
 ## Features
 
