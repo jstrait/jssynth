@@ -1373,7 +1373,7 @@ class App extends React.Component {
       }
       {isLoaded === true &&
       <div>
-        <div id="header" className="flex flex-align-center p1 border-box full-width">
+        <div id="header" className="flex flex-align-center pt1 pb1 pl-half pl1-l pr-half pr1-l border-box full-width">
           <div id="logo-container">
             <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
             <span className="lightText">Web Synthesizer</span>

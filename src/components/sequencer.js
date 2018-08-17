@@ -25,10 +25,10 @@ class TrackHeader extends React.Component {
 
   render() {
     const shortTrackName = function(fullTrackName) {
-      return fullTrackName.substring(0, 2);
+      return fullTrackName.substring(0, 4);
     };
 
-    return <li className="flex flex-column flex-uniform-size flex-justify-center bg-light-gray list-style-none pl1 pr1 border-box bb br">
+    return <li className="flex flex-column flex-uniform-size flex-justify-center bg-light-gray list-style-none pl-half pl1-l pr-half pr1-l border-box bb br">
       <span className="short-name">{shortTrackName(this.props.track.name)}</span>
       <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.track.name} onChange={this.setTrackName} />
       <span className="sequencer-volume-container flex flex-align-center">
@@ -143,10 +143,10 @@ class Sequencer extends React.Component {
 
   render() {
     return <div className="pt1 pb1 border-box bt-thick">
-      <h2 className="mt0 mb1 pl1">Sequencer</h2>
+      <h2 className="mt0 mb1 pl-half pl1-l">Sequencer</h2>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl1 border-box bb">
+          <li className="list-style-none pl-half pl1-l border-box bb">
             <span>
               <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
             </span>
@@ -178,7 +178,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
       </div>
-      <div className="pl1">
+      <div className="pl-half pl1-l">
         <button className="button-full button-hollow mr-half" onClick={this.props.addSynthTrack}>Add Synth Track</button>
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
