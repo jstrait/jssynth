@@ -11,16 +11,16 @@ class Serializer {
     let serializedConfig = {
       oscillators: [
         {
-          waveform: instrument.waveform1,
-          octave: parseInt(instrument.waveform1Octave),
+          waveform: instrument.oscillator1Waveform,
+          octave: parseInt(instrument.oscillator1Octave),
           detune: 0,
-          amplitude: parseFloat(instrument.waveform1Amplitude),
+          amplitude: parseFloat(instrument.oscillator1Amplitude),
         },
         {
-          waveform: instrument.waveform2,
-          octave: parseInt(instrument.waveform2Octave),
-          detune: parseInt(instrument.waveform2Detune),
-          amplitude: parseFloat(instrument.waveform2Amplitude),
+          waveform: instrument.oscillator2Waveform,
+          octave: parseInt(instrument.oscillator2Octave),
+          detune: parseInt(instrument.oscillator2Detune),
+          amplitude: parseFloat(instrument.oscillator2Amplitude),
         }
       ],
       lfo: {

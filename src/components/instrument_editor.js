@@ -325,13 +325,13 @@ class SynthInstrumentEditor extends React.Component {
     ];
 
     this.setSelectedTab = this.setSelectedTab.bind(this);
-    this.setWaveForm1 = this.setWaveForm1.bind(this);
-    this.setWaveForm2 = this.setWaveForm2.bind(this);
-    this.setWaveForm1Octave = this.setWaveForm1Octave.bind(this);
-    this.setWaveForm1Amplitude = this.setWaveForm1Amplitude.bind(this);
-    this.setWaveForm2Octave = this.setWaveForm2Octave.bind(this);
-    this.setWaveForm2Detune = this.setWaveForm2Detune.bind(this);
-    this.setWaveForm2Amplitude = this.setWaveForm2Amplitude.bind(this);
+    this.setOscillator1Waveform = this.setOscillator1Waveform.bind(this);
+    this.setOscillator1Octave = this.setOscillator1Octave.bind(this);
+    this.setOscillator1Amplitude = this.setOscillator1Amplitude.bind(this);
+    this.setOscillator2Waveform = this.setOscillator2Waveform.bind(this);
+    this.setOscillator2Octave = this.setOscillator2Octave.bind(this);
+    this.setOscillator2Detune = this.setOscillator2Detune.bind(this);
+    this.setOscillator2Amplitude = this.setOscillator2Amplitude.bind(this);
     this.setLFOAmplitude = this.setLFOAmplitude.bind(this);
     this.setLFOFrequency = this.setLFOFrequency.bind(this);
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
@@ -357,32 +357,32 @@ class SynthInstrumentEditor extends React.Component {
     });
   };
 
-  setWaveForm1(newValue) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform1", newValue);
+  setOscillator1Waveform(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator1Waveform", newValue);
   };
 
-  setWaveForm2(newValue) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2", newValue);
+  setOscillator1Octave(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator1Octave", newValue);
   };
 
-  setWaveForm1Octave(newValue) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform1Octave", newValue);
+  setOscillator1Amplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator1Amplitude", parseFloat(e.target.value));
   };
 
-  setWaveForm1Amplitude(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform1Amplitude", parseFloat(e.target.value));
+  setOscillator2Waveform(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator2Waveform", newValue);
   };
 
-  setWaveForm2Octave(newValue) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2Octave", newValue);
+  setOscillator2Octave(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator2Octave", newValue);
   };
 
-  setWaveForm2Detune(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2Detune", parseInt(e.target.value, 10));
+  setOscillator2Detune(e) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator2Detune", parseInt(e.target.value, 10));
   };
 
-  setWaveForm2Amplitude(e) {
-    this.props.updateInstrument(this.props.instrument.id, "waveform2Amplitude", parseFloat(e.target.value));
+  setOscillator2Amplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator2Amplitude", parseFloat(e.target.value));
   };
 
   setLFOAmplitude(e) {
@@ -468,40 +468,40 @@ class SynthInstrumentEditor extends React.Component {
           <span className="block lightText">Base:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
-            <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.waveform1} setSelectedValue={this.setWaveForm1} />
+            <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.oscillator1Waveform} setSelectedValue={this.setOscillator1Waveform} />
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
-            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.waveform1Octave} setSelectedValue={this.setWaveForm1Octave} />
+            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.oscillator1Octave} setSelectedValue={this.setOscillator1Octave} />
           </span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <span className="annotated-input">
-              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.waveform1Amplitude} onChange={this.setWaveForm1Amplitude} />
-              <span>{(this.props.instrument.waveform1Amplitude * 100).toFixed(0)}%</span>
+              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator1Amplitude} onChange={this.setOscillator1Amplitude} />
+              <span>{(this.props.instrument.oscillator1Amplitude * 100).toFixed(0)}%</span>
             </span>
           </span>
           <span className="block lightText">Secondary:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
-            <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.waveform2} setSelectedValue={this.setWaveForm2} />
+            <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.oscillator2Waveform} setSelectedValue={this.setOscillator2Waveform} />
           </span>
           <span className="control">
             <label className="control-label indented">Octave:</label>
-            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.waveform2Octave} setSelectedValue={this.setWaveForm2Octave} />
+            <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.oscillator2Octave} setSelectedValue={this.setOscillator2Octave} />
           </span>
           <span className="control">
             <label className="control-label indented">Detune:</label>
             <span className="annotated-input">
-              <input type="range" min="-100" max="100" step="1" value={this.props.instrument.waveform2Detune} onChange={this.setWaveForm2Detune} />
-              <span>{this.props.instrument.waveform2Detune}c</span>
+              <input type="range" min="-100" max="100" step="1" value={this.props.instrument.oscillator2Detune} onChange={this.setOscillator2Detune} />
+              <span>{this.props.instrument.oscillator2Detune}c</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <span className="annotated-input">
-              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.waveform2Amplitude} onChange={this.setWaveForm2Amplitude} />
-              <span>{(this.props.instrument.waveform2Amplitude * 100).toFixed(0)}%</span>
+              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator2Amplitude} onChange={this.setOscillator2Amplitude} />
+              <span>{(this.props.instrument.oscillator2Amplitude * 100).toFixed(0)}%</span>
             </span>
           </span>
         </div>
