@@ -119,13 +119,16 @@ function SampleInstrument(config, bufferCollection) {
   };
 
   sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var masterGain, calculatedMasterGainEnvelope;
+    var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
+    var audioBufferSourceNode;
 
     // Master Gain
-    var masterGain = audioContext.createGain();
+    masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    var calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -139,19 +142,19 @@ function SampleInstrument(config, bufferCollection) {
     masterGain.connect(audioDestination);
 
     // Filter
-    var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+    filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
       // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
       // pops/clicks.
-      var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
       filterLfoGain.connect(filter.frequency);
 
-      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+      filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      var calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -170,7 +173,7 @@ function SampleInstrument(config, bufferCollection) {
     }
 
     // Audio Buffer
-    var audioBufferSourceNode = buildBufferSourceNode(audioContext, filter, note);
+    audioBufferSourceNode = buildBufferSourceNode(audioContext, filter, note);
     audioBufferSourceNode.start(gateOnTime);
 
     return {
@@ -184,11 +187,13 @@ function SampleInstrument(config, bufferCollection) {
 
   sampleInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
+    var safeMasterGainRelease, gainReleaseEndTime;
+    var safeFilterRelease;
     var releaseEndTime;
 
     // Filter Envelope Release
     if (config.filter.mode === "envelope") {
-      var safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
       if (isInteractive) {
         noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
       }
@@ -196,8 +201,8 @@ function SampleInstrument(config, bufferCollection) {
     }
 
     // Gain Envelope Release
-    var safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
-    var gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
+    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
@@ -248,13 +253,18 @@ function SynthInstrument(config) {
   var synthInstrument = {};
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var masterGain, calculatedMasterGainEnvelope;
+    var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
+    var oscillator1, oscillator1Gain, oscillator2, oscillator2Gain;
+    var pitchLfoOscillator, pitchLfoGain;
+
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
 
     // Master Gain
-    var masterGain = audioContext.createGain();
+    masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    var calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude / config.oscillators.length, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude / config.oscillators.length, config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -267,19 +277,19 @@ function SynthInstrument(config) {
 
 
     // Filter
-    var filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+    filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
       // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
       // pops/clicks.
-      var filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
       filterLfoGain.connect(filter.frequency);
 
-      var filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+      filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      var calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -295,8 +305,8 @@ function SynthInstrument(config) {
 
 
     // Base sound generator
-    var oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
-    var oscillator1 = buildOscillator(audioContext,
+    oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
+    oscillator1 = buildOscillator(audioContext,
                                       config.oscillators[0].waveform,
                                       note.frequency() * Math.pow(2, config.oscillators[0].octave),
                                       config.oscillators[0].detune);
@@ -304,8 +314,8 @@ function SynthInstrument(config) {
     oscillator1Gain.connect(filter);
 
     // Secondary sound generator
-    var oscillator2Gain = buildGain(audioContext, config.oscillators[1].amplitude);
-    var oscillator2 = buildOscillator(audioContext,
+    oscillator2Gain = buildGain(audioContext, config.oscillators[1].amplitude);
+    oscillator2 = buildOscillator(audioContext,
                                       config.oscillators[1].waveform,
                                       note.frequency() * Math.pow(2, config.oscillators[1].octave),
                                       config.oscillators[1].detune);
@@ -313,8 +323,8 @@ function SynthInstrument(config) {
     oscillator2Gain.connect(filter);
 
     // LFO for base sound
-    var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
-    var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
+    pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
+    pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
     pitchLfoOscillator.connect(pitchLfoGain);
     pitchLfoGain.connect(oscillator1.frequency);
     pitchLfoGain.connect(oscillator2.frequency);
@@ -339,7 +349,7 @@ function SynthInstrument(config) {
 
   synthInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
-    var releaseEndTime;
+    var safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
 
     // Filter Envelope Release
     if (config.filter.mode === "envelope") {
@@ -351,8 +361,8 @@ function SynthInstrument(config) {
     }
 
     // Gain Envelope Release
-    var safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
-    var gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
+    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
@@ -379,21 +389,22 @@ function SynthInstrument(config) {
 var EnvelopeCalculator = {
   calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
     var attackEndTime = gateOnTime + envelope.attack;
-    var attackEndAmplitude;
-    var decayEndAmplitudePercentage;
+    var attackEndAmplitude, attackEndAmplitudePercentage;
+    var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage, targetAmplitudeAfterDecayEnds;
+    var delta;
 
     if (attackEndTime < gateOffTime) {
       attackEndAmplitude = baseAmplitude;
     }
     else {
-      var attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
       attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
       attackEndTime = gateOffTime;
     }
 
-    var decayEndTime = attackEndTime + envelope.decay;
-    var targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
-    var decayEndAmplitude;
+    decayEndTime = attackEndTime + envelope.decay;
+    targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
+    decayEndAmplitude;
     if (gateOffTime > decayEndTime) {
       decayEndAmplitude = targetAmplitudeAfterDecayEnds;
     }
@@ -401,7 +412,7 @@ var EnvelopeCalculator = {
       decayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (decayEndTime - attackEndTime));
       decayEndTime = gateOffTime;
 
-      var delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
+      delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
       decayEndAmplitude = attackEndAmplitude - (delta * decayEndAmplitudePercentage);
     }
 
@@ -566,9 +577,10 @@ function SongPlayer() {
   var tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
+    var incomingNotes;
 
     while (currentTime < endTime) {
-      var incomingNotes = notes[stepIndex];
+      incomingNotes = notes[stepIndex];
       if (incomingNotes) {
         incomingNotes.forEach(function(note) {
           noteTimeDuration = stepDuration * note.note().stepDuration();
@@ -869,6 +881,7 @@ function WaveWriter() {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
+    var maxSampleValue;
     var i;
 
     outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
@@ -897,7 +910,7 @@ function WaveWriter() {
     outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
-    var maxSampleValue = scaleFactor * 32767.0;
+    maxSampleValue = scaleFactor * 32767.0;
     // Float32Array doesn't appear to support forEach() in Safari 9
     for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
