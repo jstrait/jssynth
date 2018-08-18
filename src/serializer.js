@@ -14,11 +14,13 @@ class Serializer {
           waveform: instrument.waveform1,
           octave: parseInt(instrument.waveform1Octave),
           detune: 0,
+          amplitude: parseFloat(instrument.waveform1Amplitude),
         },
         {
           waveform: instrument.waveform2,
           octave: parseInt(instrument.waveform2Octave),
           detune: parseInt(instrument.waveform2Detune),
+          amplitude: parseFloat(instrument.waveform2Amplitude),
         }
       ],
       lfo: {

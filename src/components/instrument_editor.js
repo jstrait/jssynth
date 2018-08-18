@@ -328,8 +328,10 @@ class SynthInstrumentEditor extends React.Component {
     this.setWaveForm1 = this.setWaveForm1.bind(this);
     this.setWaveForm2 = this.setWaveForm2.bind(this);
     this.setWaveForm1Octave = this.setWaveForm1Octave.bind(this);
+    this.setWaveForm1Amplitude = this.setWaveForm1Amplitude.bind(this);
     this.setWaveForm2Octave = this.setWaveForm2Octave.bind(this);
     this.setWaveForm2Detune = this.setWaveForm2Detune.bind(this);
+    this.setWaveForm2Amplitude = this.setWaveForm2Amplitude.bind(this);
     this.setLFOAmplitude = this.setLFOAmplitude.bind(this);
     this.setLFOFrequency = this.setLFOFrequency.bind(this);
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
@@ -367,12 +369,20 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "waveform1Octave", newValue);
   };
 
+  setWaveForm1Amplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform1Amplitude", parseFloat(e.target.value));
+  };
+
   setWaveForm2Octave(newValue) {
     this.props.updateInstrument(this.props.instrument.id, "waveform2Octave", newValue);
   };
 
   setWaveForm2Detune(e) {
     this.props.updateInstrument(this.props.instrument.id, "waveform2Detune", parseInt(e.target.value, 10));
+  };
+
+  setWaveForm2Amplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "waveform2Amplitude", parseFloat(e.target.value));
   };
 
   setLFOAmplitude(e) {
@@ -464,7 +474,14 @@ class SynthInstrumentEditor extends React.Component {
             <label className="control-label indented">Octave:</label>
             <TabStrip items={this.OCTAVE_OPTIONS} selectedValue={this.props.instrument.waveform1Octave} setSelectedValue={this.setWaveForm1Octave} />
           </span>
-          <span className="block mt1 lightText">Secondary:</span>
+          <span className="control">
+            <label className="control-label indented">Volume:</label>
+            <span className="annotated-input">
+              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.waveform1Amplitude} onChange={this.setWaveForm1Amplitude} />
+              <span>{(this.props.instrument.waveform1Amplitude * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="block lightText">Secondary:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
             <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.waveform2} setSelectedValue={this.setWaveForm2} />
@@ -478,6 +495,13 @@ class SynthInstrumentEditor extends React.Component {
             <span className="annotated-input">
               <input type="range" min="-100" max="100" step="1" value={this.props.instrument.waveform2Detune} onChange={this.setWaveForm2Detune} />
               <span>{this.props.instrument.waveform2Detune}c</span>
+            </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Volume:</label>
+            <span className="annotated-input">
+              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.waveform2Amplitude} onChange={this.setWaveForm2Amplitude} />
+              <span>{(this.props.instrument.waveform2Amplitude * 100).toFixed(0)}%</span>
             </span>
           </span>
         </div>

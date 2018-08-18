@@ -295,19 +295,22 @@ function SynthInstrument(config) {
 
 
     // Base sound generator
+    var oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
     var oscillator = buildOscillator(audioContext,
                                      config.oscillators[0].waveform,
                                      note.frequency() * Math.pow(2, config.oscillators[0].octave),
                                      config.oscillators[0].detune);
+    oscillator.connect(oscillator1Gain);
+    oscillator1Gain.connect(filter);
 
     // Secondary sound generator
+    var oscillator2Gain = buildGain(audioContext, config.oscillators[1].amplitude);
     var oscillator2 = buildOscillator(audioContext,
                                       config.oscillators[1].waveform,
                                       note.frequency() * Math.pow(2, config.oscillators[1].octave),
                                       config.oscillators[1].detune);
-
-    oscillator.connect(filter);
-    oscillator2.connect(filter);
+    oscillator2.connect(oscillator2Gain);
+    oscillator2Gain.connect(filter);
 
     // LFO for base sound
     var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
