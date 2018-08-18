@@ -13,8 +13,8 @@
     "build": "yarn run build-css && yarn run build-babel && yarn run build-webpack"
   },
   "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
