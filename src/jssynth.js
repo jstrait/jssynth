@@ -296,11 +296,11 @@ function SynthInstrument(config) {
 
     // Base sound generator
     var oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
-    var oscillator = buildOscillator(audioContext,
-                                     config.oscillators[0].waveform,
-                                     note.frequency() * Math.pow(2, config.oscillators[0].octave),
-                                     config.oscillators[0].detune);
-    oscillator.connect(oscillator1Gain);
+    var oscillator1 = buildOscillator(audioContext,
+                                      config.oscillators[0].waveform,
+                                      note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                      config.oscillators[0].detune);
+    oscillator1.connect(oscillator1Gain);
     oscillator1Gain.connect(filter);
 
     // Secondary sound generator
@@ -316,11 +316,11 @@ function SynthInstrument(config) {
     var pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
     var pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
     pitchLfoOscillator.connect(pitchLfoGain);
-    pitchLfoGain.connect(oscillator.frequency);
+    pitchLfoGain.connect(oscillator1.frequency);
     pitchLfoGain.connect(oscillator2.frequency);
 
 
-    oscillator.start(gateOnTime);
+    oscillator1.start(gateOnTime);
     oscillator2.start(gateOnTime);
     pitchLfoOscillator.start(gateOnTime);
     if (config.filter.mode === "lfo") {
@@ -328,7 +328,7 @@ function SynthInstrument(config) {
     }
 
     return {
-      oscillator: oscillator,
+      oscillator1: oscillator1,
       oscillator2: oscillator2,
       filter: filter,
       masterGain: masterGain,
@@ -360,7 +360,7 @@ function SynthInstrument(config) {
 
     noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
 
-    noteContext.oscillator.stop(gainReleaseEndTime);
+    noteContext.oscillator1.stop(gainReleaseEndTime);
     noteContext.oscillator2.stop(gainReleaseEndTime);
     noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
     if (config.filter.mode === "lfo") {
