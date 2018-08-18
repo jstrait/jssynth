@@ -307,18 +307,18 @@ function SynthInstrument(config) {
     // Base sound generator
     oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
     oscillator1 = buildOscillator(audioContext,
-                                      config.oscillators[0].waveform,
-                                      note.frequency() * Math.pow(2, config.oscillators[0].octave),
-                                      config.oscillators[0].detune);
+                                  config.oscillators[0].waveform,
+                                  note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                  config.oscillators[0].detune);
     oscillator1.connect(oscillator1Gain);
     oscillator1Gain.connect(filter);
 
     // Secondary sound generator
     oscillator2Gain = buildGain(audioContext, config.oscillators[1].amplitude);
     oscillator2 = buildOscillator(audioContext,
-                                      config.oscillators[1].waveform,
-                                      note.frequency() * Math.pow(2, config.oscillators[1].octave),
-                                      config.oscillators[1].detune);
+                                  config.oscillators[1].waveform,
+                                  note.frequency() * Math.pow(2, config.oscillators[1].octave),
+                                  config.oscillators[1].detune);
     oscillator2.connect(oscillator2Gain);
     oscillator2Gain.connect(filter);
 
