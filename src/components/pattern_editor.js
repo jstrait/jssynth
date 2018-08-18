@@ -20,8 +20,8 @@ class PatternListItem extends React.Component {
   };
 
   render() {
-    return <li className={"flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 width-5 " + (this.props.pattern.id === this.props.selectedPattern.id ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedPatternID}>
-      <span className="no-whitespace-wrap overflow-hidden-x overflow-ellipsis">{this.props.pattern.name}</span>
+    return <li className={"flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 " + (this.props.pattern.id === this.props.selectedPattern.id ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedPatternID}>
+      <span className="no-whitespace-wrap overflow-hidden-x">{this.props.pattern.name}</span>
       <button className={"button-small button-hollow round ml1 pt0 pb0 pl0 pr0" + (this.props.removable ? "" : " display-none")} onClick={this.removePattern}>&nbsp;X&nbsp;</button>
     </li>
   };
