@@ -3,6 +3,10 @@
 function BufferCollection(audioContext) {
   var buffers = {};
 
+  var addBuffer = function(label, buffer) {
+    buffers[label] = buffer;
+  };
+
   var addBufferFromURL = function(label, url, onSuccess) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
@@ -72,6 +76,7 @@ function BufferCollection(audioContext) {
 
 
   return {
+    addBuffer: addBuffer,
     addBuffersFromURLs: addBuffersFromURLs,
     addBufferFromFile: addBufferFromFile,
     getBuffer: getBuffer,
@@ -225,7 +230,7 @@ function SampleInstrument(config, bufferCollection) {
   return sampleInstrument;
 };
 
-function SynthInstrument(config) {
+function SynthInstrument(config, noiseBuffer) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
@@ -255,7 +260,7 @@ function SynthInstrument(config) {
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var masterGain, calculatedMasterGainEnvelope;
     var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
-    var oscillator1, oscillator1Gain, oscillator2, oscillator2Gain;
+    var oscillator1, oscillator1Gain, oscillator2, oscillator2Gain, noise, noiseGain;
     var pitchLfoOscillator, pitchLfoGain;
 
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
@@ -264,7 +269,7 @@ function SynthInstrument(config) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude / config.oscillators.length, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude / (config.oscillators.length + 1), config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -322,6 +327,15 @@ function SynthInstrument(config) {
     oscillator2.connect(oscillator2Gain);
     oscillator2Gain.connect(filter);
 
+    // Noise
+    noiseGain = buildGain(audioContext, config.noise.amplitude);
+    noise = audioContext.createBufferSource();
+    noise.buffer = noiseBuffer;
+    noise.loop = true;
+    noise.connect(noiseGain);
+    noiseGain.connect(filter);
+
+
     // LFO for base sound
     pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
     pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
@@ -332,6 +346,7 @@ function SynthInstrument(config) {
 
     oscillator1.start(gateOnTime);
     oscillator2.start(gateOnTime);
+    noise.start(gateOnTime);
     pitchLfoOscillator.start(gateOnTime);
     if (config.filter.mode === "lfo") {
       filterLfoOscillator.start(gateOnTime);
@@ -340,6 +355,7 @@ function SynthInstrument(config) {
     return {
       oscillator1: oscillator1,
       oscillator2: oscillator2,
+      noise: noise,
       filter: filter,
       masterGain: masterGain,
       pitchLfoOscillator: pitchLfoOscillator,
@@ -372,6 +388,7 @@ function SynthInstrument(config) {
 
     noteContext.oscillator1.stop(gainReleaseEndTime);
     noteContext.oscillator2.stop(gainReleaseEndTime);
+    noteContext.noise.stop(gainReleaseEndTime);
     noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
     if (config.filter.mode === "lfo") {
       noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
@@ -720,6 +737,18 @@ function Transport(songPlayer, stopCallback) {
     playing = false;
   };
 
+  var buildNoiseBuffer = function() {
+    var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
+    var noiseChannel = noiseBuffer.getChannelData(0);
+    var i;
+
+    for (i = 0; i < noiseChannel.length; i++) {
+      noiseChannel[i] = (Math.random() * 2.0) - 1.0;
+    }
+
+    return noiseBuffer;
+  };
+
   var timeoutId;
   var playing = false;
 
@@ -777,6 +806,7 @@ function Transport(songPlayer, stopCallback) {
   transport.setAmplitude(0.25);
 
   transport.bufferCollection = BufferCollection(audioContext);
+  transport.bufferCollection.addBuffer("noise", buildNoiseBuffer());
 
   return transport;
 };

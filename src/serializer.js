@@ -5,7 +5,7 @@ import * as JSSynth from "./jssynth";
 class Serializer {
   constructor() {};
 
-  static serializeSynthInstrument(instrument) {
+  static serializeSynthInstrument(instrument, bufferCollection) {
     let filterCutoff = parseInt(instrument.filterCutoff, 10);
 
     let serializedConfig = {
@@ -23,6 +23,9 @@ class Serializer {
           amplitude: parseFloat(instrument.oscillator2Amplitude),
         }
       ],
+      noise: {
+        amplitude: parseFloat(instrument.noiseAmplitude),
+      },
       lfo: {
         waveform:  instrument.lfoWaveform,
         frequency: parseFloat(instrument.lfoFrequency),
@@ -52,7 +55,7 @@ class Serializer {
       },
     };
 
-    return new JSSynth.SynthInstrument(serializedConfig);
+    return new JSSynth.SynthInstrument(serializedConfig, bufferCollection.getBuffer("noise"));
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
@@ -90,7 +93,7 @@ class Serializer {
 
   static serializeInstrument(instrument, bufferCollection) {
     if (instrument.type === "synth") {
-      return Serializer.serializeSynthInstrument(instrument);
+      return Serializer.serializeSynthInstrument(instrument, bufferCollection);
     }
     else if (instrument.type === "sample") {
       return Serializer.serializeSampleInstrument(instrument, bufferCollection);

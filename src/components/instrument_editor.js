@@ -332,6 +332,7 @@ class SynthInstrumentEditor extends React.Component {
     this.setOscillator2Octave = this.setOscillator2Octave.bind(this);
     this.setOscillator2Detune = this.setOscillator2Detune.bind(this);
     this.setOscillator2Amplitude = this.setOscillator2Amplitude.bind(this);
+    this.setNoiseAmplitude = this.setNoiseAmplitude.bind(this);
     this.setLFOAmplitude = this.setLFOAmplitude.bind(this);
     this.setLFOFrequency = this.setLFOFrequency.bind(this);
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
@@ -383,6 +384,10 @@ class SynthInstrumentEditor extends React.Component {
 
   setOscillator2Amplitude(e) {
     this.props.updateInstrument(this.props.instrument.id, "oscillator2Amplitude", parseFloat(e.target.value));
+  };
+
+  setNoiseAmplitude(e) {
+    this.props.updateInstrument(this.props.instrument.id, "noiseAmplitude", parseFloat(e.target.value));
   };
 
   setLFOAmplitude(e) {
@@ -502,6 +507,14 @@ class SynthInstrumentEditor extends React.Component {
             <span className="annotated-input">
               <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator2Amplitude} onChange={this.setOscillator2Amplitude} />
               <span>{(this.props.instrument.oscillator2Amplitude * 100).toFixed(0)}%</span>
+            </span>
+          </span>
+          <span className="block lightText">Noise:</span>
+          <span className="control">
+            <label className="control-label indented">Volume:</label>
+            <span className="annotated-input">
+              <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.noiseAmplitude} onChange={this.setNoiseAmplitude} />
+              <span>{(this.props.instrument.noiseAmplitude * 100).toFixed(0)}%</span>
             </span>
           </span>
         </div>
