@@ -47,7 +47,7 @@ class TrackPatternListHeader extends React.Component {
   render() {
     return <ul className="flex ml0 pl0 no-whitespace-wrap">
       {[1,2,3,4,5,6,7,8].map((measure, measureIndex) =>
-      <li key={measureIndex} className={"sequencer-cell flex-uniform-size list-style-none border-box bb" + (this.props.currentStep === measureIndex ? " sequencer-currentStep" : "")}>
+      <li key={measureIndex} className={"sequencer-cell flex-uniform-size list-style-none border-box bb" + (this.props.currentMeasure === measureIndex ? " sequencer-current-measure" : "")}>
         <span className="inline-block center full-width">{measure}</span>
       </li>
       )}
@@ -63,7 +63,7 @@ class TrackPatternList extends React.Component {
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
       {this.props.track.patterns.map((pattern, index) =>
-      <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentStep === index ? " sequencer-currentStep-light" : "")}>
+      <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure-light" : "")}>
         <TrackMeasure measure={index} trackID={this.props.track.id} pattern={pattern} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
@@ -161,11 +161,11 @@ class Sequencer extends React.Component {
         </ul>
         <ul className="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader currentStep={this.props.currentStep} />
+            <TrackPatternListHeader currentMeasure={this.props.currentMeasure} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList currentStep={this.props.currentStep} track={track} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
+            <TrackPatternList currentMeasure={this.props.currentMeasure} track={track} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
           </li>
           )}
         </ul>

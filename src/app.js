@@ -26,7 +26,7 @@ class App extends React.Component {
         playing: false,
         amplitude: 0.75,
         tempo: 114,
-        step: undefined,
+        measure: undefined,
       },
       instruments: [
         {
@@ -754,7 +754,7 @@ class App extends React.Component {
         playing: prevState.transport.playing,
         amplitude: prevState.transport.amplitude,
         tempo: newTempo,
-        step: prevState.transport.step,
+        measure: prevState.transport.measure,
       }
     }));
     this.transport.setTempo(newTempo);
@@ -769,14 +769,14 @@ class App extends React.Component {
         playing: prevState.transport.playing,
         amplitude: newAmplitude,
         tempo: prevState.transport.tempo,
-        step: prevState.transport.step,
+        measure: prevState.transport.measure,
       }
     }));
     this.transport.setAmplitude(newAmplitude);
   };
 
   syncCurrentStep() {
-    let newStep = Math.floor((this.transport.currentStep() / 16) % 8);
+    let newMeasure = Math.floor((this.transport.currentStep() / 16) % 8);
 
     this.setState((prevState, props) => ({
       transport: {
@@ -784,7 +784,7 @@ class App extends React.Component {
         playing: prevState.transport.playing,
         amplitude: prevState.transport.amplitude,
         tempo: prevState.transport.tempo,
-        step: newStep,
+        measure: newMeasure,
       }
     }));
   };
@@ -801,7 +801,7 @@ class App extends React.Component {
           playing: !(prevState.transport.playing),
           amplitude: prevState.transport.amplitude,
           tempo: prevState.transport.tempo,
-          step: prevState.transport.step,
+          measure: prevState.transport.measure,
         }
       }));
     }
@@ -814,7 +814,7 @@ class App extends React.Component {
           playing: !(prevState.transport.playing),
           amplitude: prevState.transport.amplitude,
           tempo: prevState.transport.tempo,
-          step: undefined,
+          measure: undefined,
         }
       }));
     }
@@ -1397,7 +1397,7 @@ class App extends React.Component {
         </div>
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
-                   currentStep={this.state.transport.step}
+                   currentMeasure={this.state.transport.measure}
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
