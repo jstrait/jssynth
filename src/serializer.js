@@ -6,52 +6,51 @@ class Serializer {
   constructor() {};
 
   static serializeSynthInstrument(instrument, bufferCollection) {
-    let filterCutoff = parseInt(instrument.filterCutoff, 10);
-
+    let filterCutoff = instrument.filterCutoff;
     let serializedConfig = {
       oscillators: [
         {
           waveform: instrument.oscillator1Waveform,
-          octave: parseInt(instrument.oscillator1Octave),
+          octave: instrument.oscillator1Octave,
           detune: 0,
-          amplitude: parseFloat(instrument.oscillator1Amplitude),
+          amplitude: instrument.oscillator1Amplitude,
         },
         {
           waveform: instrument.oscillator2Waveform,
-          octave: parseInt(instrument.oscillator2Octave),
-          detune: parseInt(instrument.oscillator2Detune),
-          amplitude: parseFloat(instrument.oscillator2Amplitude),
+          octave: instrument.oscillator2Octave,
+          detune: instrument.oscillator2Detune,
+          amplitude: instrument.oscillator2Amplitude,
         }
       ],
       noise: {
-        amplitude: parseFloat(instrument.noiseAmplitude),
+        amplitude: instrument.noiseAmplitude,
       },
       lfo: {
         waveform:  instrument.lfoWaveform,
-        frequency: parseFloat(instrument.lfoFrequency),
-        amplitude: parseInt(instrument.lfoAmplitude, 10),
+        frequency: instrument.lfoFrequency,
+        amplitude: instrument.lfoAmplitude,
       },
       filter: {
         cutoff:    filterCutoff,
-        resonance: parseInt(instrument.filterResonance, 10),
+        resonance: instrument.filterResonance,
         mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
-          frequency: parseFloat(instrument.filterLFOFrequency),
-          amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+          frequency: instrument.filterLFOFrequency,
+          amplitude: instrument.filterLFOAmplitude * filterCutoff,
         },
         envelope: {
-          attack:  parseFloat(instrument.filterEnvelopeAttack),
-          decay:   parseFloat(instrument.filterEnvelopeDecay),
-          sustain: parseFloat(instrument.filterEnvelopeSustain),
-          release: parseFloat(instrument.filterEnvelopeRelease),
+          attack:  instrument.filterEnvelopeAttack,
+          decay:   instrument.filterEnvelopeDecay,
+          sustain: instrument.filterEnvelopeSustain,
+          release: instrument.filterEnvelopeRelease,
         },
       },
       envelope: {
-        attack:  parseFloat(instrument.envelopeAttack),
-        decay:   parseFloat(instrument.envelopeDecay),
-        sustain: parseFloat(instrument.envelopeSustain),
-        release: parseFloat(instrument.envelopeRelease),
+        attack:  instrument.envelopeAttack,
+        decay:   instrument.envelopeDecay,
+        sustain: instrument.envelopeSustain,
+        release: instrument.envelopeRelease,
       },
     };
 
@@ -59,32 +58,32 @@ class Serializer {
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
-    let filterCutoff = parseInt(instrument.filterCutoff, 10);
+    let filterCutoff = instrument.filterCutoff;
 
     let serializedConfig = {
       sample: instrument.sample,
       loop: instrument.loop,
       filter: {
         cutoff:    filterCutoff,
-        resonance: parseInt(instrument.filterResonance, 10),
+        resonance: instrument.filterResonance,
         mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
-          frequency: parseFloat(instrument.filterLFOFrequency),
-          amplitude: parseFloat(instrument.filterLFOAmplitude) * filterCutoff,
+          frequency: instrument.filterLFOFrequency,
+          amplitude: instrument.filterLFOAmplitude * filterCutoff,
         },
         envelope: {
-          attack:  parseFloat(instrument.filterEnvelopeAttack),
-          decay:   parseFloat(instrument.filterEnvelopeDecay),
-          sustain: parseFloat(instrument.filterEnvelopeSustain),
-          release: parseFloat(instrument.filterEnvelopeRelease),
+          attack:  instrument.filterEnvelopeAttack,
+          decay:   instrument.filterEnvelopeDecay,
+          sustain: instrument.filterEnvelopeSustain,
+          release: instrument.filterEnvelopeRelease,
         },
       },
       envelope: {
-        attack:  parseFloat(instrument.envelopeAttack),
-        decay:   parseFloat(instrument.envelopeDecay),
-        sustain: parseFloat(instrument.envelopeSustain),
-        release: parseFloat(instrument.envelopeRelease),
+        attack:  instrument.envelopeAttack,
+        decay:   instrument.envelopeDecay,
+        sustain: instrument.envelopeSustain,
+        release: instrument.envelopeRelease,
       },
     };
 
