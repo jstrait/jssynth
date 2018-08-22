@@ -150,9 +150,7 @@ class Sequencer extends React.Component {
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
           <li className="list-style-none pl-half pl1-l border-box bb br" style={{height: "31px"}}>
-            <span>
-              <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
-            </span>
+            <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader key={track.id}
