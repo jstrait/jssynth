@@ -6,6 +6,7 @@ $black: #130f30;
 $white: #fff;
 $border-color: #ddd;
 $light-gray: #f1f1f1;
+$lighter-gray: #fafafa;
 
 $size-half: 0.75rem;
 $size-1: 1.5rem;
@@ -179,8 +180,7 @@ a {
 }
 
 .sequencer-cell {
-  min-width: 9.0rem;
-  max-width: 9.0rem;
+  flex: 0 0 9.0rem;
 }
 
 .expanded {
