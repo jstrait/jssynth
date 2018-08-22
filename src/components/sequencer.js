@@ -45,14 +45,14 @@ class TrackPatternListHeader extends React.Component {
   };
 
   render() {
-    return <div>
-      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "21px"}}>
+    return <div class="relative" style={{height: "31px"}}>
+      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "31px"}}>
         {[1,2,3,4,5,6,7,8].map((measure, measureIndex) =>
-        <li key={measureIndex} className="sequencer-cell flex-uniform-size list-style-none border-box br"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measure}</span></li>
+        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measure}</span></li>
         )}
-        <li class="flex-uniform-size list-style-none bb" style={{height: "30px"}}></li>
+        <li class="flex-uniform-size list-style-none bb"></li>
       </ul>
-      <div class="bb sequencer-step-timeline" style={{width: (9 * 16 * 8) + "px"}}>
+      <div class="sequencer-step-timeline">
         <span class="sequencer-step-timeline-playback-head" style={{marginLeft: (this.props.currentStep * 9) + "px"}}></span>
       </div>
     </div>;
