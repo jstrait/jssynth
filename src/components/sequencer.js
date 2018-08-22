@@ -45,13 +45,16 @@ class TrackPatternListHeader extends React.Component {
   };
 
   render() {
-    return <ul className="flex ml0 pl0 no-whitespace-wrap">
-      {[1,2,3,4,5,6,7,8].map((measure, measureIndex) =>
-      <li key={measureIndex} className={"sequencer-cell flex-uniform-size list-style-none border-box bb" + (this.props.currentMeasure === measureIndex ? " sequencer-current-measure" : "")}>
-        <span className="inline-block center full-width">{measure}</span>
-      </li>
-      )}
-    </ul>;
+    return <div>
+      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "21px"}}>
+        {[1,2,3,4,5,6,7,8].map((measure, measureIndex) =>
+        <li key={measureIndex} className="sequencer-cell flex-uniform-size list-style-none border-box br"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measure}</span></li>
+        )}
+      </ul>
+      <div class="bb sequencer-step-timeline" style={{width: (9 * 16 * 8) + "px"}}>
+        <span class="sequencer-step-timeline-playback-head" style={{marginLeft: (this.props.currentStep * 9) + "px"}}></span>
+      </div>
+    </div>;
   };
 };
 
@@ -63,7 +66,7 @@ class TrackPatternList extends React.Component {
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
       {this.props.track.patterns.map((pattern, index) =>
-      <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure-light" : "")}>
+      <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure" : "")}>
         <TrackMeasure measure={index} trackID={this.props.track.id} pattern={pattern} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
@@ -146,7 +149,7 @@ class Sequencer extends React.Component {
       <h2 className="mt0 mb1 pl-half pl1-l">Sequencer</h2>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl-half pl1-l border-box bb">
+          <li className="list-style-none pl-half pl1-l border-box bb br" style={{height: "31px"}}>
             <span>
               <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
             </span>
@@ -161,7 +164,7 @@ class Sequencer extends React.Component {
         </ul>
         <ul className="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader currentMeasure={this.props.currentMeasure} />
+            <TrackPatternListHeader currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
@@ -170,7 +173,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
-          <li className="list-style-none inline-block pr1 border-box bb">&nbsp;</li>
+          <li className="list-style-none inline-block pr1 border-box bb" style={{height: "31px"}}>&nbsp;</li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="flex flex-align-center flex-uniform-size bg-light-gray pl-half pr-half list-style-none border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />

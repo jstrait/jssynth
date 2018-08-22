@@ -157,22 +157,30 @@ a {
 
 /* Sequencer */
 
-.sequencer-current-measure {
-  background: $orange;
-  color: $white;
+.sequencer-step-timeline {
+  background-color: $white;
+  background-image: url(sequencer_step.png);
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: 9px 9px;
+  height: 9px;
 }
 
-.sequencer-current-measure-light {
+.sequencer-step-timeline-playback-head {
+  background: $orange;
+  display: block;
+  width: 9px;
+  height: 9px;
+}
+
+.sequencer-current-measure {
   background: $light-orange;
   color: $white;
 }
 
 .sequencer-cell {
   min-width: 9.0rem;
-}
-
-.sequencer-cell:last-child {
-  border-right: none;
+  max-width: 9.0rem;
 }
 
 .expanded {

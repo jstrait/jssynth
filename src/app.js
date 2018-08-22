@@ -27,6 +27,7 @@ class App extends React.Component {
         amplitude: 0.75,
         tempo: 114,
         measure: undefined,
+        step: undefined,
       },
       instruments: [
         {
@@ -758,6 +759,7 @@ class App extends React.Component {
         amplitude: prevState.transport.amplitude,
         tempo: newTempo,
         measure: prevState.transport.measure,
+        step: prevState.transport.step,
       }
     }));
     this.transport.setTempo(newTempo);
@@ -773,13 +775,15 @@ class App extends React.Component {
         amplitude: newAmplitude,
         tempo: prevState.transport.tempo,
         measure: prevState.transport.measure,
+        step: prevState.transport.step,
       }
     }));
     this.transport.setAmplitude(newAmplitude);
   };
 
   syncCurrentStep() {
-    let newMeasure = Math.floor((this.transport.currentStep() / 16) % 8);
+    let newStep = this.transport.currentStep();
+    let newMeasure = Math.floor((newStep / 16) % 8);
 
     this.setState((prevState, props) => ({
       transport: {
@@ -788,6 +792,7 @@ class App extends React.Component {
         amplitude: prevState.transport.amplitude,
         tempo: prevState.transport.tempo,
         measure: newMeasure,
+        step: newStep,
       }
     }));
   };
@@ -805,6 +810,7 @@ class App extends React.Component {
           amplitude: prevState.transport.amplitude,
           tempo: prevState.transport.tempo,
           measure: prevState.transport.measure,
+          step: prevState.transport.step,
         }
       }));
     }
@@ -818,6 +824,7 @@ class App extends React.Component {
           amplitude: prevState.transport.amplitude,
           tempo: prevState.transport.tempo,
           measure: undefined,
+          step: undefined,
         }
       }));
     }
@@ -1402,6 +1409,7 @@ class App extends React.Component {
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
                    currentMeasure={this.state.transport.measure}
+                   currentStep={this.state.transport.step}
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
