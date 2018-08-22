@@ -890,10 +890,10 @@ class App extends React.Component {
     this.syncTransportNotes();
   };
 
-  addGenericTrack(newInstrument) {
+  addGenericTrack(newInstrument, newTrackName) {
     let newTrack = {
       id: this.idGenerator.next(),
-      name: 'New Track',
+      name: newTrackName,
       instrumentID: newInstrument.id,
       muted: false,
       volume: 0.8,
@@ -978,7 +978,7 @@ class App extends React.Component {
       envelopeRelease:       0.0,
     };
 
-    this.addGenericTrack(newInstrument);
+    this.addGenericTrack(newInstrument, "Synth Track");
   };
 
   addSamplerTrack(file) {
@@ -1009,7 +1009,7 @@ class App extends React.Component {
         envelopeRelease:    0.0,
       };
 
-      this.addGenericTrack(newInstrument);
+      this.addGenericTrack(newInstrument, "Sampler Track");
     });
   };
 
