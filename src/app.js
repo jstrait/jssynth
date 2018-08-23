@@ -593,6 +593,7 @@ class App extends React.Component {
           ],
         },
       ],
+      measureCount: 8,
       selectedTrackID: 1,
       selectedPatternID: 1,
       downloadFileName: "js-130",
@@ -1408,6 +1409,7 @@ class App extends React.Component {
         </div>
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
+                   measureCount={this.state.measureCount}
                    currentMeasure={this.state.transport.measure}
                    currentStep={this.state.transport.step}
                    isPlaying={this.state.transport.playing}

@@ -47,8 +47,8 @@ class TrackPatternListHeader extends React.Component {
   render() {
     return <div class="relative" style={{height: "31px"}}>
       <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "31px"}}>
-        {[1,2,3,4,5,6,7,8].map((measure, measureIndex) =>
-        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measure}</span></li>
+        {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
+        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measureIndex + 1}</span></li>
         )}
         <li class="flex-uniform-size list-style-none bb"></li>
       </ul>
@@ -164,7 +164,7 @@ class Sequencer extends React.Component {
         </ul>
         <ul className="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader isPlaying={this.props.isPlaying} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
+            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
