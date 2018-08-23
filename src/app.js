@@ -608,8 +608,8 @@ class App extends React.Component {
     // Transport
     let stopCallback = function() { };
     this.timeoutID = undefined;
-    this.songPlayer = new JSSynth.SongPlayer();
-    this.offlineSongPlayer = new JSSynth.SongPlayer();
+    this.songPlayer = new JSSynth.SongPlayer(this.state.measureCount);
+    this.offlineSongPlayer = new JSSynth.SongPlayer(this.state.measureCount);
     this.transport = new JSSynth.Transport(this.songPlayer, stopCallback);
     this.transport.setTempo(this.state.transport.tempo);
     this.transport.setAmplitude(this.state.transport.amplitude);
@@ -832,7 +832,7 @@ class App extends React.Component {
   };
 
   syncTransportNotes() {
-    let serializedNotes = Serializer.serialize(this.state.tracks, this.state.instruments, this.state.patterns, this.transport.bufferCollection);
+    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.instruments, this.state.patterns, this.transport.bufferCollection);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
   };

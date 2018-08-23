@@ -162,10 +162,9 @@ class Serializer {
     return (currentTrack.muted) ? count : (count + 1);
   };
 
-  static serialize(tracks, instruments, patterns, bufferCollection) {
-    const MEASURES = 8;
+  static serialize(measureCount, tracks, instruments, patterns, bufferCollection) {
     const STEPS_PER_MEASURE = 16;
-    const TOTAL_STEPS = MEASURES * STEPS_PER_MEASURE;
+    const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
     const unmutedTrackCount = tracks.reduce(Serializer.unmutedTrackCounter, 0);
     const trackVolumeMultiplier = 1 / unmutedTrackCount;
@@ -189,7 +188,7 @@ class Serializer {
       serializedInstrument = Serializer.serializeInstrument(Serializer.instrumentByID(instruments, track.instrumentID), bufferCollection);
       serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
 
-      for (i = 0; i < track.patterns.length; i++) {
+      for (i = 0; i < measureCount; i++) {
         if (track.patterns[i].patternID !== -1) {
           let sequences = serializedPatterns[track.patterns[i].patternID];
 
