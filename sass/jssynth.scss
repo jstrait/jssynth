@@ -57,6 +57,7 @@ a {
   border: 2px solid $border-color;
   border-radius: 10px;
   width: 15.0rem;
+  z-index: 1000;
 }
 
 .popup-box::before {
