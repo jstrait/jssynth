@@ -898,16 +898,7 @@ class App extends React.Component {
       instrumentID: newInstrument.id,
       muted: false,
       volume: 0.8,
-      patterns: [
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-        { patternID: -1, },
-      ],
+      patterns: [],
     };
 
     let newPattern = {
@@ -935,6 +926,11 @@ class App extends React.Component {
         },
       ]
     };
+
+    let i = 0;
+    for (i = 0; i < this.state.measureCount; i++) {
+      newTrack.patterns[i] = { patternID: -1, };
+    }
 
     this.setState((prevState, props) => ({
       instruments: prevState.instruments.concat([newInstrument]),
