@@ -1410,6 +1410,7 @@ class App extends React.Component {
                    trackPatternOptions={trackPatternOptions}
                    currentMeasure={this.state.transport.measure}
                    currentStep={this.state.transport.step}
+                   isPlaying={this.state.transport.playing}
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}

@@ -53,7 +53,7 @@ class TrackPatternListHeader extends React.Component {
         <li class="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div class="sequencer-step-timeline">
-        <span class="sequencer-step-timeline-playback-head" style={{marginLeft: (this.props.currentStep * 9) + "px"}}></span>
+        <span class={"sequencer-step-timeline-playback-head" + (this.props.isPlaying ? " sequencer-step-timeline-playback-head-enabled" : "")} style={{marginLeft: this.props.isPlaying ? ((this.props.currentStep * 9) + "px") : "0"}}></span>
       </div>
     </div>;
   };
@@ -164,7 +164,7 @@ class Sequencer extends React.Component {
         </ul>
         <ul className="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
+            <TrackPatternListHeader isPlaying={this.props.isPlaying} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">

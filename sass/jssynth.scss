@@ -165,8 +165,11 @@ a {
   bottom: 1px;
 }
 
-.sequencer-step-timeline-playback-head {
+.sequencer-step-timeline-playback-head-enabled {
   background: $orange;
+}
+
+.sequencer-step-timeline-playback-head {
   display: block;
   width: 8px;
   height: 9px;
