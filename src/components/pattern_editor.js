@@ -123,7 +123,7 @@ class NoteInput extends React.Component {
     let formattedNoteName = this.formatNote(this.props.note.name);
     let noteIsValid = this.noteIsValid(this.props.note.name);
 
-    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (this.props.rowIndex === 0 ? " firstRow" : "") + (this.props.rowIndex === this.props.rowCount - 1 ? " lastRow" : "") + (this.props.noteIndex === 0 ? " firstNote" : "") + (this.props.noteIndex === this.props.noteCount - 1 ? " lastNote" : "") + (noteIsValid ? "" : " ng-invalid ng-dirty")} value={formattedNoteName} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} onKeyUp={this.onKeyUp} />;
+    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (this.props.rowIndex === 0 ? " firstRow" : "") + (this.props.rowIndex === this.props.rowCount - 1 ? " lastRow" : "") + (this.props.noteIndex === 0 ? " firstNote" : "") + (this.props.noteIndex === this.props.noteCount - 1 ? " lastNote" : "") + (noteIsValid ? "" : " invalid")} value={formattedNoteName} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} onKeyUp={this.onKeyUp} />;
   }
 };
 
