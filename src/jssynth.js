@@ -639,11 +639,16 @@ function SongPlayer(measureCount) {
 function Transport(songPlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
+  var LOOP = true;
+
   var audioContext;
   var masterGain;
   var currentStep;
   var scheduledSteps;
   var stepInterval;
+  var timeoutId;
+  var playing = false;
+  var bufferCollection;
 
   var detectClipping = function(e) {
     var i;
@@ -695,7 +700,7 @@ function Transport(songPlayer, stopCallback) {
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
 
-    var newScheduledSteps = songPlayer.tick(audioContext, masterGain, finalTime, stepInterval, transport.loop);
+    var newScheduledSteps = songPlayer.tick(audioContext, masterGain, finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
@@ -748,22 +753,16 @@ function Transport(songPlayer, stopCallback) {
     return noiseBuffer;
   };
 
-  var timeoutId;
-  var playing = false;
-
-
-  var transport = {};
-
-  transport.setTempo = function(newTempo) {
+  var setTempo = function(newTempo) {
     var sixteenthsPerMinute = newTempo * 4;
     stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
-  transport.setAmplitude = function(newAmplitude) {
+  var setAmplitude = function(newAmplitude) {
     masterGain.gain.value = newAmplitude;
   };
 
-  transport.toggle = function() {
+  var toggle = function() {
     if (playing) {
       stop();
     }
@@ -772,7 +771,7 @@ function Transport(songPlayer, stopCallback) {
     }
   };
 
-  transport.currentStep = function() {
+  var currentStep = function() {
     if (!playing) {
       return null;
     }
@@ -789,22 +788,29 @@ function Transport(songPlayer, stopCallback) {
     return currentStep;
   };
 
-  transport.playImmediateNote = function(instrument, note) {
+  var playImmediateNote = function(instrument, note) {
     return instrument.gateOn(audioContext, masterGain, note, 1.0, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 
-  transport.stopNote = function(instrument, noteContext) {
+  var stopNote = function(instrument, noteContext) {
     instrument.gateOff(noteContext, audioContext.currentTime, true);
   };
 
-  transport.loop = true;
-  transport.setTempo(100);
-  transport.setAmplitude(0.25);
+  setTempo(100);
+  setAmplitude(0.25);
+  bufferCollection = BufferCollection(audioContext);
+  bufferCollection.addBuffer("noise", buildNoiseBuffer());
 
-  transport.bufferCollection = BufferCollection(audioContext);
-  transport.bufferCollection.addBuffer("noise", buildNoiseBuffer());
 
-  return transport;
+  return {
+    playImmediateNote: playImmediateNote,
+    stopNote: stopNote,
+    setTempo: setTempo,
+    setAmplitude: setAmplitude,
+    toggle: toggle,
+    currentStep: currentStep,
+    bufferCollection: bufferCollection,
+  };
 };
 
 
