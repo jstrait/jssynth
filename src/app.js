@@ -801,21 +801,7 @@ class App extends React.Component {
   togglePlaying(e) {
     this.transport.toggle();
 
-    if (!this.state.transport.playing) {
-      this.timeoutID = setInterval(() => this.syncCurrentStep(), 15);
-
-      this.setState((prevState, props) => ({
-        transport: {
-          enabled: prevState.transport.enabled,
-          playing: !(prevState.transport.playing),
-          amplitude: prevState.transport.amplitude,
-          tempo: prevState.transport.tempo,
-          measure: prevState.transport.measure,
-          step: prevState.transport.step,
-        }
-      }));
-    }
-    else {
+    if (this.state.transport.playing) {
       clearInterval(this.timeoutID);
 
       this.setState((prevState, props) => ({
@@ -826,6 +812,20 @@ class App extends React.Component {
           tempo: prevState.transport.tempo,
           measure: undefined,
           step: undefined,
+        }
+      }));
+    }
+    else {
+      this.timeoutID = setInterval(() => this.syncCurrentStep(), 15);
+
+      this.setState((prevState, props) => ({
+        transport: {
+          enabled: prevState.transport.enabled,
+          playing: !(prevState.transport.playing),
+          amplitude: prevState.transport.amplitude,
+          tempo: prevState.transport.tempo,
+          measure: prevState.transport.measure,
+          step: prevState.transport.step,
         }
       }));
     }
