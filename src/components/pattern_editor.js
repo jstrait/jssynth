@@ -46,6 +46,23 @@ class NoteInput extends React.Component {
     document.getElementById(nextNoteId).focus();
   };
 
+  extractNoteParts(noteString) {
+    let noteNameMatches = noteString.match(/^[A-G]/);
+    let noteName = (noteNameMatches === null) ? "" : noteNameMatches[0];
+    let octaveMatches = noteString.match(/\d$/);
+    let octave = (octaveMatches === null) ? "" : octaveMatches[0];
+
+    let modifier = noteString;
+    if (noteName !== "") {
+      modifier = noteString.slice(1);
+    }
+    if (octave !== "") {
+      modifier = modifier.slice(0, modifier.length - 1);
+    }
+
+    return {noteName: noteName, modifier: modifier, octave: octave};
+  };
+
   onKeyDown(e) {
     const SPACE = 32;
     const ZERO = 48;
@@ -60,40 +77,26 @@ class NoteInput extends React.Component {
     const DOWN_ARROW = 40;
 
     let element = e.target;
+    let noteParts;
 
     if (e.keyCode === SPACE) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       e.preventDefault();
     }
     else if (e.keyCode === THREE && e.shiftKey) {
-      let noteName, octave;
-
-      if (/^[A-G]+/.test(element.value)) {
-        noteName = element.value.slice(0, 1);
-      }
-      else {
-        noteName = "";
-      }
-      if (/^.*\d$/.test(element.value)) {
-        octave = element.value.slice(element.value.length - 1);
-      }
-      else {
-        octave = "";
-      }
-
-      this.props.setNoteValue(this.unformatNote(noteName + "#" + octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      noteParts = this.extractNoteParts(element.value);
+      this.props.setNoteValue(this.unformatNote(noteParts.noteName + "#" + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       e.preventDefault();
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
-      if (/^.*\d$/.test(element.value)) {
-        this.props.setNoteValue(this.unformatNote(element.value.slice(0, element.value.length - 1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      }
+      noteParts = this.extractNoteParts(element.value);
+      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      e.preventDefault();
     }
     else if (e.keyCode >= A && e.keyCode <= G) {
-      if (/^[A-G]+/.test(element.value)) {
-        this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + element.value.slice(1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-        e.preventDefault();
-      }
+      noteParts = this.extractNoteParts(element.value);
+      this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      e.preventDefault();
     }
     else if (e.keyCode === DASH && !e.shiftKey) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
