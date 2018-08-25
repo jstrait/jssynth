@@ -50,6 +50,8 @@ class NoteInput extends React.Component {
     const SPACE = 32;
     const ZERO = 48;
     const NINE = 57;
+    const A = 65;
+    const G = 71;
     const DASH = 189;
     const LEFT_ARROW = 37;
     const RIGHT_ARROW = 39;
@@ -65,6 +67,12 @@ class NoteInput extends React.Component {
     else if (e.keyCode >= ZERO && e.keyCode <= NINE) {
       if (/^.*\d$/.test(element.value)) {
         this.props.setNoteValue(this.unformatNote(element.value.slice(0, element.value.length - 1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      }
+    }
+    else if (e.keyCode >= A && e.keyCode <= G) {
+      if (/^[A-G]+/.test(element.value)) {
+        this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + element.value.slice(1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+        e.preventDefault();
       }
     }
     else if (e.keyCode === DASH) {
