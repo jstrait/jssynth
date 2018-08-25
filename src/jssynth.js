@@ -755,15 +755,12 @@ function Transport(songPlayer, stopCallback) {
   var transport = {};
 
   transport.setTempo = function(newTempo) {
-    transport.tempo = newTempo;
-
-    var sixteenthsPerMinute = transport.tempo * 4;
+    var sixteenthsPerMinute = newTempo * 4;
     stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
   transport.setAmplitude = function(newAmplitude) {
-    transport.amplitude = newAmplitude;
-    masterGain.gain.value = transport.amplitude;
+    masterGain.gain.value = newAmplitude;
   };
 
   transport.toggle = function() {
