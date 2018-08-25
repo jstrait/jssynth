@@ -642,6 +642,7 @@ function Transport(songPlayer, stopCallback) {
   var LOOP = true;
 
   var audioContext;
+  var clipDetector;
   var masterGain;
   var currentStep;
   var scheduledSteps;
@@ -662,40 +663,6 @@ function Transport(songPlayer, stopCallback) {
       }
     }
   };
-
-  if (window.AudioContext) {
-    // Why do we create an AudioContext, immediately close it, and then
-    // recreate another one? Good question.
-    //
-    // The reason is that in iOS, there is a bug in which an AudioContext
-    // can be created with a sample rate of 48,000Hz, which for reasons
-    // causes audio playback to be distorted. If you re-load the page,
-    // the sample rate will be set to 44,100Hz instead, and playback
-    // will sound normal.
-    //
-    // Creating an AudioContext, closing it, and recreating another
-    // one works around this issue, I _think_ by basically simulating
-    // the page re-load behavior, causing the sample rate of the 2nd
-    // AudioContext to be 44,100Hz.
-    //
-    // This fix was figured out by searching Google, which returned
-    // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
-    audioContext = new AudioContext();
-    if (audioContext.close) {
-      audioContext.close();
-      audioContext = new AudioContext();
-    }
-
-    var clipDetector = audioContext.createScriptProcessor(512);
-    clipDetector.onaudioprocess = detectClipping;
-
-    masterGain = audioContext.createGain();
-    masterGain.connect(audioContext.destination);
-    masterGain.connect(clipDetector);
-  }
-  else {
-    return false;
-  }
 
   var tick = function() {
     var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
@@ -795,6 +762,44 @@ function Transport(songPlayer, stopCallback) {
   var stopNote = function(instrument, noteContext) {
     instrument.gateOff(noteContext, audioContext.currentTime, true);
   };
+
+  var initializeAudioContext = function() {
+    if (window.AudioContext) {
+      // Why do we create an AudioContext, immediately close it, and then
+      // recreate another one? Good question.
+      //
+      // The reason is that in iOS, there is a bug in which an AudioContext
+      // can be created with a sample rate of 48,000Hz, which for reasons
+      // causes audio playback to be distorted. If you re-load the page,
+      // the sample rate will be set to 44,100Hz instead, and playback
+      // will sound normal.
+      //
+      // Creating an AudioContext, closing it, and recreating another
+      // one works around this issue, I _think_ by basically simulating
+      // the page re-load behavior, causing the sample rate of the 2nd
+      // AudioContext to be 44,100Hz.
+      //
+      // This fix was figured out by searching Google, which returned
+      // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
+      audioContext = new AudioContext();
+      if (audioContext.close) {
+        audioContext.close();
+        audioContext = new AudioContext();
+      }
+
+      clipDetector = audioContext.createScriptProcessor(512);
+      clipDetector.onaudioprocess = detectClipping;
+
+      masterGain = audioContext.createGain();
+      masterGain.connect(audioContext.destination);
+      masterGain.connect(clipDetector);
+    }
+  };
+
+  initializeAudioContext();
+  if (audioContext === undefined) {
+    return false;
+  }
 
   setTempo(100);
   setAmplitude(0.25);
