@@ -48,35 +48,44 @@ class NoteInput extends React.Component {
   };
 
   onKeyDown(e) {
+    const SPACE = 32;
+    const ZERO = 48;
+    const NINE = 57;
+    const DASH = 189;
+    const LEFT_ARROW = 37;
+    const RIGHT_ARROW = 39;
+    const UP_ARROW = 38;
+    const DOWN_ARROW = 40;
+
     let element = e.target;
 
-    if (e.keyCode === 32) {  // Space bar
+    if (e.keyCode === SPACE) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
-    else if (e.keyCode >= 48 && e.keyCode <= 57) {  // Numbers 0 through 9
+    else if (e.keyCode >= ZERO && e.keyCode <= NINE) {
       if (/^.*\d$/.test(element.value)) {
         this.props.setNoteValue(this.unformatNote(element.value.slice(0, element.value.length - 1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       }
     }
-    else if (e.keyCode === 189) {  // Dash
+    else if (e.keyCode === DASH) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
-    else if (e.keyCode === 37) {  // Left arrow key
+    else if (e.keyCode === LEFT_ARROW) {
       if (element.selectionStart === 0 && !(element.classList.contains('firstNote'))) {
         this.changeCurrentlySelectedNote(0, -1);
       }
     }
-    else if (e.keyCode === 39) {  // Right arrow key
+    else if (e.keyCode === RIGHT_ARROW) {
       if (element.selectionEnd === element.value.length && !(element.classList.contains('lastNote'))) {
         this.changeCurrentlySelectedNote(0, 1);
       }
     }
-    else if (e.keyCode === 38) {  // Up arrow key
+    else if (e.keyCode === UP_ARROW) {
       if (!(element.classList.contains('firstRow'))) {
         this.changeCurrentlySelectedNote(-1, 0);
       }
     }
-    else if (e.keyCode === 40) {  // Down arrow key
+    else if (e.keyCode === DOWN_ARROW) {
       if (!(element.classList.contains('lastRow'))) {
         this.changeCurrentlySelectedNote(1, 0);
       }
