@@ -49,6 +49,7 @@ class NoteInput extends React.Component {
   onKeyDown(e) {
     const SPACE = 32;
     const ZERO = 48;
+    const THREE = 51;
     const NINE = 57;
     const A = 65;
     const G = 71;
@@ -64,7 +65,10 @@ class NoteInput extends React.Component {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       e.preventDefault();
     }
-    else if (e.keyCode >= ZERO && e.keyCode <= NINE) {
+    else if (e.keyCode === THREE && e.shiftKey) {
+      // Do nothing, but allow '#' character to be entered
+    }
+    else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       if (/^.*\d$/.test(element.value)) {
         this.props.setNoteValue(this.unformatNote(element.value.slice(0, element.value.length - 1)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       }
@@ -75,7 +79,7 @@ class NoteInput extends React.Component {
         e.preventDefault();
       }
     }
-    else if (e.keyCode === DASH) {
+    else if (e.keyCode === DASH && !e.shiftKey) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === LEFT_ARROW) {
@@ -97,6 +101,9 @@ class NoteInput extends React.Component {
       if (!(element.classList.contains('lastRow'))) {
         this.changeCurrentlySelectedNote(1, 0);
       }
+    }
+    else {
+      e.preventDefault();
     }
   };
 
