@@ -66,7 +66,23 @@ class NoteInput extends React.Component {
       e.preventDefault();
     }
     else if (e.keyCode === THREE && e.shiftKey) {
-      // Do nothing, but allow '#' character to be entered
+      let noteName, octave;
+
+      if (/^[A-G]+/.test(element.value)) {
+        noteName = element.value.slice(0, 1);
+      }
+      else {
+        noteName = "";
+      }
+      if (/^.*\d$/.test(element.value)) {
+        octave = element.value.slice(element.value.length - 1);
+      }
+      else {
+        octave = "";
+      }
+
+      this.props.setNoteValue(this.unformatNote(noteName + "#" + octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      e.preventDefault();
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       if (/^.*\d$/.test(element.value)) {
