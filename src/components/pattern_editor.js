@@ -82,7 +82,6 @@ class NoteInput extends React.Component {
 
     if (e.keyCode === SPACE) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      e.preventDefault();
     }
     else if (e.keyCode === TWO && e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
@@ -98,7 +97,6 @@ class NoteInput extends React.Component {
       }
 
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      e.preventDefault();
     }
     else if (e.keyCode === THREE && e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
@@ -114,17 +112,14 @@ class NoteInput extends React.Component {
       }
 
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      e.preventDefault();
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      e.preventDefault();
     }
     else if (e.keyCode >= A && e.keyCode <= G) {
       noteParts = this.extractNoteParts(element.value);
       this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
-      e.preventDefault();
     }
     else if (e.keyCode === DASH && !e.shiftKey) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
@@ -149,9 +144,8 @@ class NoteInput extends React.Component {
         this.changeCurrentlySelectedNote(1, 0);
       }
     }
-    else {
-      e.preventDefault();
-    }
+
+    e.preventDefault();
   };
 
   noteIsValid(rawNoteString) {
