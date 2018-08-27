@@ -125,22 +125,22 @@ class NoteInput extends React.Component {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === LEFT_ARROW) {
-      if (!(element.classList.contains('firstNote'))) {
+      if (this.props.noteIndex > 0) {
         this.changeCurrentlySelectedNote(0, -1);
       }
     }
     else if (e.keyCode === RIGHT_ARROW) {
-      if (!(element.classList.contains('lastNote'))) {
+      if (this.props.noteIndex < this.props.noteCount - 1) {
         this.changeCurrentlySelectedNote(0, 1);
       }
     }
     else if (e.keyCode === UP_ARROW) {
-      if (!(element.classList.contains('firstRow'))) {
+      if (this.props.rowIndex > 0) {
         this.changeCurrentlySelectedNote(-1, 0);
       }
     }
     else if (e.keyCode === DOWN_ARROW) {
-      if (!(element.classList.contains('lastRow'))) {
+      if (this.props.rowIndex < this.props.rowCount - 1) {
         this.changeCurrentlySelectedNote(1, 0);
       }
     }
@@ -182,7 +182,7 @@ class NoteInput extends React.Component {
     let formattedNoteName = this.formatNote(this.props.note.name);
     let noteIsValid = this.noteIsValid(this.props.note.name);
 
-    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (this.props.rowIndex === 0 ? " firstRow" : "") + (this.props.rowIndex === this.props.rowCount - 1 ? " lastRow" : "") + (this.props.noteIndex === 0 ? " firstNote" : "") + (this.props.noteIndex === this.props.noteCount - 1 ? " lastNote" : "") + (noteIsValid ? "" : " invalid")} value={formattedNoteName} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
+    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (noteIsValid ? "" : " invalid")} value={formattedNoteName} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
   }
 };
 
