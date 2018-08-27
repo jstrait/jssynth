@@ -135,7 +135,7 @@ class NoteInput extends React.Component {
       this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === DASH && !e.shiftKey) {
-      this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.props.setNoteValue("-", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === LEFT_ARROW) {
       if (this.props.noteIndex > 0) {
