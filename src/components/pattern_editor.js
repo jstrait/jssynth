@@ -193,9 +193,9 @@ class NoteInput extends React.Component {
 
   render() {
     let formattedNoteName = this.formatNote(this.props.note.name);
-    let noteIsValid = this.noteIsValid(this.props.note.name);
     let noteIsSelected = this.props.selectedPatternRowIndex === this.props.rowIndex &&
                          this.props.selectedPatternNoteIndex === this.props.noteIndex;
+    let noteIsValid = noteIsSelected || this.noteIsValid(this.props.note.name);
 
     return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (noteIsValid ? "" : " invalid") + (noteIsSelected ? " note-focused" : "")} value={formattedNoteName} onFocus={this.onFocus} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
   }
