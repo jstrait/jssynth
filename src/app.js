@@ -1046,6 +1046,8 @@ class App extends React.Component {
     this.setState({
       selectedTrackID: newSelectedTrackID,
       selectedPatternID: newSelectedPatternID,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
       instruments: newInstruments,
       patterns: newPatterns,
       tracks: newTracks,
@@ -1105,6 +1107,8 @@ class App extends React.Component {
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
       selectedPatternID: newPattern.id,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
     });
   };
 
@@ -1132,6 +1136,8 @@ class App extends React.Component {
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
       selectedPatternID: newPattern.id,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
     });
   };
 
@@ -1168,6 +1174,8 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
       selectedPatternID: newSelectedPatternID,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
     }, function() {
       this.syncTransportNotes();
     });
@@ -1240,11 +1248,17 @@ class App extends React.Component {
     this.setState({
       selectedTrackID: newSelectedTrackID,
       selectedPatternID: newSelectedPatternID,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
     });
   };
 
   setSelectedPattern(newSelectedPatternID) {
-    this.setState({ selectedPatternID: newSelectedPatternID });
+    this.setState({
+      selectedPatternID: newSelectedPatternID,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
+    });
   };
 
   setPatternName(patternID, newName) {
