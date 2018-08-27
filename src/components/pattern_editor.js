@@ -40,8 +40,8 @@ class NoteInput extends React.Component {
     this.props.setNoteValue(rawNoteValue, this.props.patternID, this.props.rowIndex, this.props.noteIndex);
   };
 
-  changeCurrentlySelectedNote(rowIndexDelta, noteIndexDelta) {
-    let nextNoteId = `pattern-${this.props.patternID}-row-${this.props.rowIndex + rowIndexDelta}-note-${this.props.noteIndex + noteIndexDelta}`;
+  setCurrentlySelectedNote(newRowIndex, newNoteIndex) {
+    let nextNoteId = `pattern-${this.props.patternID}-row-${newRowIndex}-note-${newNoteIndex}`;
 
     document.getElementById(nextNoteId).focus();
   };
@@ -68,6 +68,8 @@ class NoteInput extends React.Component {
     const ZERO = 48;
     const TWO = 50;
     const THREE = 51;
+    const FOUR = 52;
+    const SIX = 54;
     const NINE = 57;
     const A = 65;
     const G = 71;
@@ -113,6 +115,12 @@ class NoteInput extends React.Component {
 
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
+    else if (e.keyCode === FOUR && e.shiftKey) {
+      this.setCurrentlySelectedNote(this.props.rowIndex, this.props.noteCount - 1);
+    }
+     else if (e.keyCode === SIX && e.shiftKey) {
+      this.setCurrentlySelectedNote(this.props.rowIndex, 0);
+    }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
@@ -126,22 +134,22 @@ class NoteInput extends React.Component {
     }
     else if (e.keyCode === LEFT_ARROW) {
       if (this.props.noteIndex > 0) {
-        this.changeCurrentlySelectedNote(0, -1);
+        this.setCurrentlySelectedNote(this.props.rowIndex, this.props.noteIndex - 1);
       }
     }
     else if (e.keyCode === RIGHT_ARROW) {
       if (this.props.noteIndex < this.props.noteCount - 1) {
-        this.changeCurrentlySelectedNote(0, 1);
+        this.setCurrentlySelectedNote(this.props.rowIndex, this.props.noteIndex + 1);
       }
     }
     else if (e.keyCode === UP_ARROW) {
       if (this.props.rowIndex > 0) {
-        this.changeCurrentlySelectedNote(-1, 0);
+        this.setCurrentlySelectedNote(this.props.rowIndex - 1, this.props.noteIndex);
       }
     }
     else if (e.keyCode === DOWN_ARROW) {
       if (this.props.rowIndex < this.props.rowCount - 1) {
-        this.changeCurrentlySelectedNote(1, 0);
+        this.setCurrentlySelectedNote(this.props.rowIndex + 1, this.props.noteIndex);
       }
     }
 
