@@ -247,7 +247,7 @@ class PatternEditor extends React.Component {
   render() {
     const tipsAndTricks = <ul className="toggleable">
       <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
-      <li>Use &lsquo;#&rsquo; to enter a sharp, and a lowercase &lsquo;b&rsquo; to enter a flat</li>
+      <li>Use &lsquo;#&rsquo; to enter a sharp, and &lsquo;@&rsquo; to enter a flat.</li>
       <li>Use &mdash; to lengthen a note. For example, &lsquo;A4&mdash;&mdash;&mdash;&rsquo; will last for 4 steps, while &lsquo;A4&mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
       <li>Press <code>SPACE</code> to clear the current note</li>
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows</li>
