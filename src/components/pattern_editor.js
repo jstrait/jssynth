@@ -66,6 +66,7 @@ class NoteInput extends React.Component {
   onKeyDown(e) {
     const SPACE = 32;
     const ZERO = 48;
+    const TWO = 50;
     const THREE = 51;
     const NINE = 57;
     const A = 65;
@@ -83,6 +84,22 @@ class NoteInput extends React.Component {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       e.preventDefault();
     }
+    else if (e.keyCode === TWO && e.shiftKey) {
+      noteParts = this.extractNoteParts(element.value);
+
+      if (noteParts.modifier === "" || noteParts.modifier === "b") {
+        noteParts.modifier += "b";
+      }
+      else if (noteParts.modifier === "bb") {
+        noteParts.modifier = "";
+      }
+      else {
+        noteParts.modifier = "b";
+      }
+
+      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      e.preventDefault();
+    }
     else if (e.keyCode === THREE && e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
 
@@ -91,6 +108,9 @@ class NoteInput extends React.Component {
       }
       else if (noteParts.modifier === "##") {
         noteParts.modifier = "";
+      }
+      else {
+        noteParts.modifier = "#";
       }
 
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
