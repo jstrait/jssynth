@@ -596,6 +596,8 @@ class App extends React.Component {
       measureCount: 8,
       selectedTrackID: 1,
       selectedPatternID: 1,
+      selectedPatternRowIndex: 0,
+      selectedPatternNoteIndex: 0,
       downloadFileName: "js-130",
       keyboardActive: false,
       activeKeyboardNotes: [],
@@ -647,6 +649,7 @@ class App extends React.Component {
     this.removePattern = this.removePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
+    this.setSelectedPatternNoteIndex = this.setSelectedPatternNoteIndex.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
 
     // Keyboard
@@ -1249,6 +1252,10 @@ class App extends React.Component {
     this.forceUpdate();
   };
 
+  setSelectedPatternNoteIndex(rowIndex, noteIndex) {
+    this.setState({ selectedPatternRowIndex: rowIndex, selectedPatternNoteIndex: noteIndex });
+  };
+
   setNoteValue(noteValue, patternID, rowIndex, noteIndex) {
     let i;
     let pattern = this.patternByID(patternID);
@@ -1419,6 +1426,8 @@ class App extends React.Component {
         <TrackEditor tracks={this.state.tracks}
                      selectedTrackID={this.state.selectedTrackID}
                      selectedPattern={this.patternByID(this.state.selectedPatternID)}
+                     selectedPatternRowIndex={this.state.selectedPatternRowIndex}
+                     selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
                      instrument={instrument}
                      patterns={patterns}
                      setSelectedTrack={this.setSelectedTrack}
@@ -1431,6 +1440,7 @@ class App extends React.Component {
                      removePattern={this.removePattern}
                      addPatternRow={this.addPatternRow}
                      removePatternRow={this.removePatternRow}
+                     setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
                      setNoteValue={this.setNoteValue} />
         <Keyboard active={this.state.keyboardActive}
                   activeNotes={this.state.activeKeyboardNotes}

@@ -45,6 +45,8 @@ class TrackEditor extends React.Component {
 
     let patternEditor = <PatternEditor patterns={this.props.patterns}
                                        selectedPattern={this.props.selectedPattern}
+                                       selectedPatternRowIndex={this.props.selectedPatternRowIndex}
+                                       selectedPatternNoteIndex={this.props.selectedPatternNoteIndex}
                                        setSelectedPattern={this.props.setSelectedPattern}
                                        setPatternName={this.props.setPatternName}
                                        addPattern={this.props.addPattern}
@@ -52,6 +54,7 @@ class TrackEditor extends React.Component {
                                        removePattern={this.props.removePattern}
                                        addPatternRow={this.props.addPatternRow}
                                        removePatternRow={this.props.removePatternRow}
+                                       setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex}
                                        setNoteValue={this.props.setNoteValue} />;
 
     let panel = (this.state.selectedTab === "instrument") ? instrumentEditor : patternEditor;

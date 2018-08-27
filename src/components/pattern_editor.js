@@ -32,6 +32,7 @@ class NoteInput extends React.Component {
     super(props);
 
     this.setNoteValue = this.setNoteValue.bind(this);
+    this.onFocus = this.onFocus.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
   };
 
@@ -61,6 +62,10 @@ class NoteInput extends React.Component {
     }
 
     return {noteName: noteName, modifier: this.unformatNote(modifier), octave: octave};
+  };
+
+  onFocus(e) {
+    this.props.setSelectedPatternNoteIndex(this.props.rowIndex, this.props.noteIndex);
   };
 
   onKeyDown(e) {
@@ -189,8 +194,10 @@ class NoteInput extends React.Component {
   render() {
     let formattedNoteName = this.formatNote(this.props.note.name);
     let noteIsValid = this.noteIsValid(this.props.note.name);
+    let noteIsSelected = this.props.selectedPatternRowIndex === this.props.rowIndex &&
+                         this.props.selectedPatternNoteIndex === this.props.noteIndex;
 
-    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (noteIsValid ? "" : " invalid")} value={formattedNoteName} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
+    return <input id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" maxLength="4" className={"note" + (noteIsValid ? "" : " invalid") + (noteIsSelected ? " note-focused" : "")} value={formattedNoteName} onFocus={this.onFocus} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
   }
 };
 
@@ -290,7 +297,7 @@ class PatternEditor extends React.Component {
             <ul className="ml0 pl0 no-whitespace-wrap">
               {patternRow.notes.map((note, noteIndex) =>
               <li key={noteIndex} className="list-style-none inline-block note-container">
-                <NoteInput note={note} patternID={this.props.selectedPattern.id} rowIndex={rowIndex} rowCount={this.props.selectedPattern.rows.length} noteIndex={noteIndex} noteCount={patternRow.notes.length} setNoteValue={this.props.setNoteValue} />
+                <NoteInput note={note} patternID={this.props.selectedPattern.id} rowIndex={rowIndex} rowCount={this.props.selectedPattern.rows.length} noteIndex={noteIndex} noteCount={patternRow.notes.length} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} />
               </li>
               )}
             </ul>
