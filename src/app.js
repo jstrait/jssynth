@@ -1343,6 +1343,8 @@ class App extends React.Component {
     // Next, start notes newly added to the active set
     for (i = 0; i < notes.length; i++) {
       if (!this.state.activeKeyboardNotes.includes(notes[i])) {
+        this.setNoteValue(notes[i].replace("-", ""), this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
         noteContext = this.transport.playImmediateNote(instrument, note);
 
