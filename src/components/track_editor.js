@@ -55,7 +55,8 @@ class TrackEditor extends React.Component {
                                        addPatternRow={this.props.addPatternRow}
                                        removePatternRow={this.props.removePatternRow}
                                        setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex}
-                                       setNoteValue={this.props.setNoteValue} />;
+                                       setNoteValue={this.props.setNoteValue}
+                                       keyboardActive={this.props.keyboardActive} />;
 
     let panel = (this.state.selectedTab === "instrument") ? instrumentEditor : patternEditor;
 

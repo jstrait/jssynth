@@ -596,8 +596,8 @@ class App extends React.Component {
       measureCount: 8,
       selectedTrackID: 1,
       selectedPatternID: 1,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
+      selectedPatternRowIndex: undefined,
+      selectedPatternNoteIndex: undefined,
       downloadFileName: "js-130",
       keyboardActive: false,
       activeKeyboardNotes: [],
@@ -1046,8 +1046,6 @@ class App extends React.Component {
     this.setState({
       selectedTrackID: newSelectedTrackID,
       selectedPatternID: newSelectedPatternID,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
       instruments: newInstruments,
       patterns: newPatterns,
       tracks: newTracks,
@@ -1107,8 +1105,6 @@ class App extends React.Component {
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
       selectedPatternID: newPattern.id,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
     });
   };
 
@@ -1136,8 +1132,6 @@ class App extends React.Component {
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
       selectedPatternID: newPattern.id,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
     });
   };
 
@@ -1174,8 +1168,6 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
       selectedPatternID: newSelectedPatternID,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
     }, function() {
       this.syncTransportNotes();
     });
@@ -1248,16 +1240,12 @@ class App extends React.Component {
     this.setState({
       selectedTrackID: newSelectedTrackID,
       selectedPatternID: newSelectedPatternID,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
     });
   };
 
   setSelectedPattern(newSelectedPatternID) {
     this.setState({
       selectedPatternID: newSelectedPatternID,
-      selectedPatternRowIndex: 0,
-      selectedPatternNoteIndex: 0,
     });
   };
 
@@ -1357,7 +1345,9 @@ class App extends React.Component {
     // Next, start notes newly added to the active set
     for (i = 0; i < notes.length; i++) {
       if (!this.state.activeKeyboardNotes.includes(notes[i])) {
-        this.setNoteValue(notes[i].replace("-", ""), this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+        if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternNoteIndex !== undefined) {
+          this.setNoteValue(notes[i].replace("-", ""), this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+        }
 
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
         noteContext = this.transport.playImmediateNote(instrument, note);
@@ -1457,7 +1447,8 @@ class App extends React.Component {
                      addPatternRow={this.addPatternRow}
                      removePatternRow={this.removePatternRow}
                      setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
-                     setNoteValue={this.setNoteValue} />
+                     setNoteValue={this.setNoteValue}
+                     keyboardActive={this.state.keyboardActive} />
         <Keyboard active={this.state.keyboardActive}
                   activeNotes={this.state.activeKeyboardNotes}
                   activate={this.activateKeyboard}
