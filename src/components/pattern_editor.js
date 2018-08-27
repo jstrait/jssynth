@@ -60,7 +60,7 @@ class NoteInput extends React.Component {
       modifier = modifier.slice(0, modifier.length - 1);
     }
 
-    return {noteName: noteName, modifier: modifier, octave: octave};
+    return {noteName: noteName, modifier: this.unformatNote(modifier), octave: octave};
   };
 
   onKeyDown(e) {
@@ -85,7 +85,15 @@ class NoteInput extends React.Component {
     }
     else if (e.keyCode === THREE && e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
-      this.props.setNoteValue(this.unformatNote(noteParts.noteName + "#" + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+
+      if (noteParts.modifier === "" || noteParts.modifier === "#") {
+        noteParts.modifier += "#";
+      }
+      else if (noteParts.modifier === "##") {
+        noteParts.modifier = "";
+      }
+
+      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
       e.preventDefault();
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
