@@ -77,6 +77,8 @@ class NoteInput extends React.Component {
 
   onKeyDown(e) {
     const SPACE = 32;
+    const DELETE = 46;
+    const BACKSPACE = 8;
     const ZERO = 48;
     const TWO = 50;
     const THREE = 51;
@@ -94,7 +96,7 @@ class NoteInput extends React.Component {
     let element = e.target;
     let noteParts;
 
-    if (e.keyCode === SPACE) {
+    if (e.keyCode === SPACE || e.keyCode === DELETE || e.keyCode === BACKSPACE) {
       this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === TWO && e.shiftKey) {
