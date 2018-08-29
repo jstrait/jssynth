@@ -37,9 +37,8 @@ class NoteInput extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   };
 
-  setNoteValue(e) {
-    let rawNoteValue = this.unformatNote(e.target.value);
-    this.props.setNoteValue(rawNoteValue, this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+  setNoteValue(newNoteValue) {
+    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.rowIndex, this.props.noteIndex);
   };
 
   setCurrentlySelectedNote(newRowIndex, newNoteIndex) {
@@ -60,7 +59,7 @@ class NoteInput extends React.Component {
       modifier = modifier.slice(0, modifier.length - 1);
     }
 
-    return {noteName: noteName, modifier: this.unformatNote(modifier), octave: octave};
+    return {noteName: noteName, modifier: modifier, octave: octave};
   };
 
   onBlur(e) {
@@ -95,10 +94,10 @@ class NoteInput extends React.Component {
     let noteParts;
 
     if (e.keyCode === SPACE || e.keyCode === DELETE || e.keyCode === BACKSPACE) {
-      this.props.setNoteValue("", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue("");
     }
     else if (e.keyCode === TWO && e.shiftKey) {
-      noteParts = this.extractNoteParts(element.value);
+      noteParts = this.extractNoteParts(this.props.note.name);
 
       if (noteParts.modifier === "" || noteParts.modifier === "b") {
         noteParts.modifier += "b";
@@ -110,10 +109,10 @@ class NoteInput extends React.Component {
         noteParts.modifier = "b";
       }
 
-      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === THREE && e.shiftKey) {
-      noteParts = this.extractNoteParts(element.value);
+      noteParts = this.extractNoteParts(this.props.note.name);
 
       if (noteParts.modifier === "" || noteParts.modifier === "#") {
         noteParts.modifier += "#";
@@ -125,7 +124,7 @@ class NoteInput extends React.Component {
         noteParts.modifier = "#";
       }
 
-      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === FOUR && e.shiftKey) {
       this.setCurrentlySelectedNote(this.props.rowIndex, this.props.noteCount - 1);
@@ -134,25 +133,25 @@ class NoteInput extends React.Component {
       this.setCurrentlySelectedNote(this.props.rowIndex, 0);
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
-      noteParts = this.extractNoteParts(element.value);
+      noteParts = this.extractNoteParts(this.props.note.name);
 
-      if (this.unformatNote(noteParts.modifier) === "—") {
+      if (noteParts.modifier === "-") {
         noteParts.modifier = "";
       }
 
-      this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode));
     }
     else if (e.keyCode >= A && e.keyCode <= G) {
-      noteParts = this.extractNoteParts(element.value);
+      noteParts = this.extractNoteParts(this.props.note.name);
 
-      if (this.unformatNote(noteParts.modifier) === "—") {
+      if (noteParts.modifier === "-") {
         noteParts.modifier = "";
       }
 
-      this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === DASH && !e.shiftKey) {
-      this.props.setNoteValue("-", this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+      this.setNoteValue("-");
     }
     else if (e.keyCode === LEFT_ARROW) {
       if (this.props.noteIndex > 0) {
@@ -197,15 +196,6 @@ class NoteInput extends React.Component {
     formattedNoteName = formattedNoteName.replace("-", "—");
 
     return formattedNoteName;
-  };
-
-  unformatNote(rawNoteString) {
-    rawNoteString = rawNoteString.replace("♯", "#");
-    rawNoteString = rawNoteString.replace("𝄪", "##");
-    rawNoteString = rawNoteString.replace("♭", "b");
-    rawNoteString = rawNoteString.replace("𝄫", "bb");
-
-    return rawNoteString;
   };
 
   componentDidUpdate() {
