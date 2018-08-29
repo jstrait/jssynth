@@ -366,10 +366,11 @@ function SynthInstrument(config, noiseBuffer) {
   synthInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
     var safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
+    var safeFilterRelease;
 
     // Filter Envelope Release
     if (config.filter.mode === "envelope") {
-      var safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
       if (isInteractive) {
         noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
       }
