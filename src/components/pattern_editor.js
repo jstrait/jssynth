@@ -291,6 +291,8 @@ class PatternEditor extends React.Component {
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows.</li>
     </ul>;
 
+    const PATTERN_LENGTH = 16;
+
     return <div>
       <div className="mb2">
         <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width">
@@ -308,9 +310,9 @@ class PatternEditor extends React.Component {
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
             <ul className="ml0 pl0 center no-whitespace-wrap">
-              {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map((noteIndex) =>
-              <li key={noteIndex} className="list-style-none inline-block note-container">
-                <span className="h4 note-column-header">{noteIndex}</span>
+              {Array(PATTERN_LENGTH).fill(undefined).map((_, noteIndex) =>
+              <li key={noteIndex + 1} className="list-style-none inline-block note-container">
+                <span className="h4 note-column-header">{noteIndex + 1}</span>
               </li>
               )}
             </ul>
