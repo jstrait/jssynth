@@ -43,9 +43,7 @@ class NoteInput extends React.Component {
   };
 
   setCurrentlySelectedNote(newRowIndex, newNoteIndex) {
-    let nextNoteId = `pattern-${this.props.patternID}-row-${newRowIndex}-note-${newNoteIndex}`;
-
-    document.getElementById(nextNoteId).focus();
+    this.props.setSelectedPatternNoteIndex(newRowIndex, newNoteIndex);
   };
 
   extractNoteParts(noteString) {
@@ -72,7 +70,7 @@ class NoteInput extends React.Component {
   };
 
   onFocus(e) {
-    this.props.setSelectedPatternNoteIndex(this.props.rowIndex, this.props.noteIndex);
+    this.setCurrentlySelectedNote(this.props.rowIndex, this.props.noteIndex);
   };
 
   onKeyDown(e) {
@@ -212,7 +210,7 @@ class NoteInput extends React.Component {
                          this.props.selectedPatternNoteIndex === this.props.noteIndex;
     let noteIsValid = noteIsSelected || this.noteIsValid(this.props.note.name);
 
-    return <input ref={(input) => { this.noteInput = input; }} id={`pattern-${this.props.patternID}-row-${this.props.rowIndex}-note-${this.props.noteIndex}`} type="text" readonly="true" className={"note" + (noteIsValid ? "" : " invalid") + (noteIsSelected ? " note-focused" : "")} value={formattedNoteName} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
+    return <input ref={(input) => { this.noteInput = input; }} type="text" readonly="true" className={"note" + (noteIsValid ? "" : " invalid") + (noteIsSelected ? " note-focused" : "")} value={formattedNoteName} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.setNoteValue} onKeyDown={this.onKeyDown} />;
   }
 };
 
