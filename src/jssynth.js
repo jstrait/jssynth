@@ -866,8 +866,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
       var sampleData = e.renderedBuffer.getChannelData(0);
 
       var maxSampleValue = calculateMaxSampleValue(sampleData);
-      var scaleFactor = (1 / maxSampleValue) * amplitude;
-
+      var scaleFactor = (maxSampleValue > 1.0) ? (1.0 / maxSampleValue) : 1.0;
       var outputView = waveWriter.write(sampleData, scaleFactor);
       var blob = new Blob([outputView], { type: "audio/wav" });
 
