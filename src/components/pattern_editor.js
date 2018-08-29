@@ -135,10 +135,20 @@ class NoteInput extends React.Component {
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(element.value);
+
+      if (this.unformatNote(noteParts.modifier) === "—") {
+        noteParts.modifier = "";
+      }
+
       this.props.setNoteValue(this.unformatNote(noteParts.noteName + noteParts.modifier + String.fromCharCode(e.keyCode)), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode >= A && e.keyCode <= G) {
       noteParts = this.extractNoteParts(element.value);
+
+      if (this.unformatNote(noteParts.modifier) === "—") {
+        noteParts.modifier = "";
+      }
+
       this.props.setNoteValue(this.unformatNote(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave), this.props.patternID, this.props.rowIndex, this.props.noteIndex);
     }
     else if (e.keyCode === DASH && !e.shiftKey) {
