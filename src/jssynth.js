@@ -221,7 +221,7 @@ function SampleInstrument(config, bufferCollection) {
     }
   };
 
-  sampleInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+  sampleInstrument.scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var noteContext = sampleInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
     sampleInstrument.gateOff(noteContext, gateOffTime, false);
   };
@@ -395,7 +395,7 @@ function SynthInstrument(config, noiseBuffer) {
     }
   };
 
-  synthInstrument.playNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+  synthInstrument.scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var noteContext = synthInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
     synthInstrument.gateOff(noteContext, gateOffTime, false);
   };
@@ -600,7 +600,7 @@ function SongPlayer(measureCount) {
       if (incomingNotes) {
         incomingNotes.forEach(function(note) {
           noteTimeDuration = stepDuration * note.note().stepDuration();
-          note.instrument().playNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+          note.instrument().scheduleNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
         });
       }
 
