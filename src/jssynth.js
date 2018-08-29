@@ -210,7 +210,15 @@ function SampleInstrument(config, bufferCollection) {
     gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
+      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
+      // The gain value is manually set to the current gain value because `cancelScheduledValues()`
+      // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the
+      // release portion of the envelope will have no effect, and cause notes that are played
+      // for a shorter amount of time than the attack+decay time to be suddenly cut off, instead
+      // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
+      // another way to solve this problem.
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
+      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
     }
 
     noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
@@ -382,7 +390,15 @@ function SynthInstrument(config, noiseBuffer) {
     gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
+      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
+      // The gain value is manually set to the current gain value because `cancelScheduledValues()`
+      // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the
+      // release portion of the envelope will have no effect, and cause notes that are played
+      // for a shorter amount of time than the attack+decay time to be suddenly cut off, instead
+      // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
+      // another way to solve this problem.
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
+      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
     }
 
     noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
