@@ -244,6 +244,8 @@ class PatternEditor extends React.Component {
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
+    this.eraseNote = this.eraseNote.bind(this);
+    this.setNoteAsDash = this.setNoteAsDash.bind(this);
   };
 
   setPatternName(e) {
@@ -270,6 +272,26 @@ class PatternEditor extends React.Component {
     this.setState((prevState, props) => ({
       tipsAndTricksVisible: !prevState.tipsAndTricksVisible,
     }));
+  };
+
+  eraseNote(e) {
+    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
+      this.props.setNoteValue("", this.props.selectedPattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+
+      // Prevent the currently selected note input from losing focus,
+      // which will prevent the note from being set properly.
+      e.preventDefault();
+    }
+  };
+
+  setNoteAsDash(e) {
+    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
+      this.props.setNoteValue("-", this.props.selectedPattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+
+      // Prevent the currently selected note input from losing focus,
+      // which will prevent the note from being set properly.
+      e.preventDefault();
+    }
   };
 
   render() {
@@ -328,8 +350,12 @@ class PatternEditor extends React.Component {
           )}
         </ul>
       </div>
-      <div className="overflow-auto">
-        <button className="block button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
+      <div className="flex flex-justify-space-between">
+        <button className="button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
+        <span>
+          <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedPatternRowIndex === undefined || this.props.selectedPatternNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
+          <button className="inline-block button-full button-hollow" disabled={this.props.selectedPatternRowIndex === undefined || this.props.selectedPatternNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
+        </span>
       </div>
     </div>;
   };

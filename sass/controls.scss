@@ -98,6 +98,12 @@ button {
   margin: 0;
 }
 
+button:disabled {
+  border-color: $border-color;
+  color: $border-color;
+  cursor: default;
+}
+
 .button-tiny {
   border-radius: 6px;
   border-width: 2px;
@@ -195,7 +201,7 @@ button {
 }
 
 @media (hover) {
-  .button-hollow:hover {
+  .button-hollow:enabled:hover {
     background: $light-orange;
     border-color: $orange;
     color: $orange;
