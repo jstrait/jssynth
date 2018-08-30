@@ -150,9 +150,7 @@ function SampleInstrument(config, bufferCollection) {
     filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
-      // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
-      // pops/clicks.
-      filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      filterLfoGain = buildGain(audioContext, config.filter.lfo.amplitude);
       filterLfoGain.connect(filter.frequency);
 
       filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
@@ -298,9 +296,7 @@ function SynthInstrument(config, noiseBuffer) {
     filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
-      // The amplitude is constrained to be at most the same as the cutoff frequency, to prevent
-      // pops/clicks.
-      filterLfoGain = buildGain(audioContext, Math.min(config.filter.cutoff, config.filter.lfo.amplitude));
+      filterLfoGain = buildGain(audioContext, config.filter.lfo.amplitude);
       filterLfoGain.connect(filter.frequency);
 
       filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
