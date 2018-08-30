@@ -515,7 +515,7 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Detune:</label>
             <span className="annotated-input">
-              <input type="range" min="-100" max="100" step="1" value={this.props.instrument.oscillator2Detune} onChange={this.setOscillator2Detune} />
+              <input type="range" min="-700" max="700" step="1" value={this.props.instrument.oscillator2Detune} onChange={this.setOscillator2Detune} />
               <span>{this.props.instrument.oscillator2Detune}c</span>
             </span>
           </span>
