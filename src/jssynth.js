@@ -162,6 +162,11 @@ function SampleInstrument(config, bufferCollection) {
       calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
+      // The combo of directly setting the value, as well as setting the value at a given time
+      // is needed for this to work in the combo of Safari, Firefox, and Chrome. Otherwise,
+      // in Chrome is works if you set the value directly (but not Safari and Firefox), and
+      // it works in Safari and Firefox is you set the value at a given time (but not Chrome).
+      filter.frequency.value = 0.0;
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
       filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
@@ -305,6 +310,11 @@ function SynthInstrument(config, noiseBuffer) {
       calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
+      // The combo of directly setting the value, as well as setting the value at a given time
+      // is needed for this to work in the combo of Safari, Firefox, and Chrome. Otherwise,
+      // in Chrome is works if you set the value directly (but not Safari and Firefox), and
+      // it works in Safari and Firefox is you set the value at a given time (but not Chrome).
+      filter.frequency.value = 0.0;
       filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
       filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
