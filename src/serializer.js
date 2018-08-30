@@ -40,6 +40,7 @@ class Serializer {
           amplitude: instrument.filterLFOAmplitude * filterCutoff,
         },
         envelope: {
+          amount:  instrument.filterEnvelopeAmount,
           attack:  instrument.filterEnvelopeAttack,
           decay:   instrument.filterEnvelopeDecay,
           sustain: instrument.filterEnvelopeSustain,
@@ -73,6 +74,7 @@ class Serializer {
           amplitude: instrument.filterLFOAmplitude * filterCutoff,
         },
         envelope: {
+          amount:  instrument.filterEnvelopeAmount,
           attack:  instrument.filterEnvelopeAttack,
           decay:   instrument.filterEnvelopeDecay,
           sustain: instrument.filterEnvelopeSustain,

@@ -79,6 +79,7 @@ class SampleInstrumentEditor extends React.Component {
     this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
+    this.setFilterEnvelopeAmount = this.setFilterEnvelopeAmount.bind(this);
     this.setFilterEnvelopeAttack = this.setFilterEnvelopeAttack.bind(this);
     this.setFilterEnvelopeDecay = this.setFilterEnvelopeDecay.bind(this);
     this.setFilterEnvelopeSustain = this.setFilterEnvelopeSustain.bind(this);
@@ -133,6 +134,10 @@ class SampleInstrumentEditor extends React.Component {
 
   setFilterLFOWaveForm(newValue) {
     this.props.updateInstrument(this.props.instrument.id, "filterLFOWaveform", newValue);
+  };
+
+  setFilterEnvelopeAmount(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
   setFilterEnvelopeAttack(e) {
@@ -229,6 +234,13 @@ class SampleInstrumentEditor extends React.Component {
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
             <span className="block mt1 lightText">Cutoff Envelope:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0" max="9950" step="50" value={this.props.instrument.filterEnvelopeAmount} onChange={this.setFilterEnvelopeAmount} />
+                <span>{this.props.instrument.filterEnvelopeAmount}Hz</span>
+              </span>
+            </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">
@@ -342,6 +354,7 @@ class SynthInstrumentEditor extends React.Component {
     this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
+    this.setFilterEnvelopeAmount = this.setFilterEnvelopeAmount.bind(this);
     this.setFilterEnvelopeAttack = this.setFilterEnvelopeAttack.bind(this);
     this.setFilterEnvelopeDecay = this.setFilterEnvelopeDecay.bind(this);
     this.setFilterEnvelopeSustain = this.setFilterEnvelopeSustain.bind(this);
@@ -424,6 +437,10 @@ class SynthInstrumentEditor extends React.Component {
 
   setFilterLFOWaveForm(newValue) {
     this.props.updateInstrument(this.props.instrument.id, "filterLFOWaveform", newValue);
+  };
+
+  setFilterEnvelopeAmount(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
   setFilterEnvelopeAttack(e) {
@@ -562,6 +579,13 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
             <span className="block mt1 lightText">Cutoff Envelope:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0" max="9950" step="50" value={this.props.instrument.filterEnvelopeAmount} onChange={this.setFilterEnvelopeAmount} />
+                <span>{this.props.instrument.filterEnvelopeAmount}Hz</span>
+              </span>
+            </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">

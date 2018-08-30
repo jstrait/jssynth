@@ -157,20 +157,15 @@ function SampleInstrument(config, bufferCollection) {
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
-      // The combo of directly setting the value, as well as setting the value at a given time
-      // is needed for this to work in the combo of Safari, Firefox, and Chrome. Otherwise,
-      // in Chrome is works if you set the value directly (but not Safari and Firefox), and
-      // it works in Safari and Firefox is you set the value at a given time (but not Chrome).
-      filter.frequency.value = 0.0;
-      filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+      filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
+      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
       if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
+        filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
       }
     }
 
@@ -205,7 +200,7 @@ function SampleInstrument(config, bufferCollection) {
       if (isInteractive) {
         noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
       }
-      noteContext.filter.frequency.setTargetAtTime(0.0, gateOffTime, safeFilterRelease / 5);
+      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
     }
 
     // Gain Envelope Release
@@ -303,20 +298,15 @@ function SynthInstrument(config, noiseBuffer) {
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.cutoff, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
-      // The combo of directly setting the value, as well as setting the value at a given time
-      // is needed for this to work in the combo of Safari, Firefox, and Chrome. Otherwise,
-      // in Chrome is works if you set the value directly (but not Safari and Firefox), and
-      // it works in Safari and Firefox is you set the value at a given time (but not Chrome).
-      filter.frequency.value = 0.0;
-      filter.frequency.setValueAtTime(0.0, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+      filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
+      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
 
       // Envelope Decay/Sustain
       if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
+        filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
       }
     }
 
@@ -388,7 +378,7 @@ function SynthInstrument(config, noiseBuffer) {
       if (isInteractive) {
         noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
       }
-      noteContext.filter.frequency.setTargetAtTime(0.0, gateOffTime, safeFilterRelease / 5);
+      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
     }
 
     // Gain Envelope Release
