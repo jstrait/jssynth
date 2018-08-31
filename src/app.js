@@ -45,7 +45,7 @@ class App extends React.Component {
           lfoWaveform: "sine",
           lfoFrequency: 7.1,
           lfoAmplitude: 2,
-          filterCutoff: 1500,
+          filterCutoff: 200,
           filterResonance: 0,
           filterModulator: "envelope",
           filterLFOWaveform: "sine",
