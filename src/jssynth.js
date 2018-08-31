@@ -432,7 +432,7 @@ var EnvelopeCalculator = {
       attackEndTime = gateOffTime;
     }
 
-    decayEndTime = attackEndTime + envelope.decay;
+    decayEndTime = attackEndTime + Math.max(envelope.decay, 0.001);
     targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
     decayEndAmplitude;
     if (gateOffTime > decayEndTime) {
