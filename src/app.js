@@ -664,9 +664,9 @@ class App extends React.Component {
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
 
     let bufferConfigs = [
-      { label: "Instrument 4", url: "bass.wav", },
-      { label: "Instrument 5", url: "snare.wav", },
-      { label: "Instrument 6", url: "hihat.wav", },
+      { label: "Instrument 4", url: "sounds/bass.wav", },
+      { label: "Instrument 5", url: "sounds/snare.wav", },
+      { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
     this.transport.bufferCollection.addBuffersFromURLs(bufferConfigs, () => {
       this.setState({isLoaded: true});
