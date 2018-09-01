@@ -148,14 +148,14 @@ describe("JSSynth.SequenceParser", function() {
 
 describe("JSSynth.Envelope", function() {
   it("should calculate correctly when envelope is effectively a no-op", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.0,
       decay:   0.0,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 1.1);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -164,14 +164,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly when attack time is longer than note duration", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.2,
       decay:   0.0,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 1.1);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.25);
@@ -180,14 +180,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly attack time is shorter than note duration ", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.5,
       decay:   0.0,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -196,14 +196,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly when decay ends before note ends", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.5,
       decay:   0.25,
       sustain: 0.5,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -212,14 +212,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly when decay is a no-op because sustain is 100%", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.5,
       decay:   1.0,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -228,14 +228,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly when decay ends before gate off, but is a no-op due to sustain volume", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.0,
       decay:   0.5,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
@@ -244,14 +244,14 @@ describe("JSSynth.Envelope", function() {
   });
 
   it("should calculate correctly when decay ends after gate off, but is a no-op due to sustain volume", function() {
-    var envelope = {
+    var envelopeConfig = {
       attack:  0.0,
       decay:   1.5,
       sustain: 1.0,
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
