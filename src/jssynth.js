@@ -84,20 +84,9 @@ function BufferCollection(audioContext) {
   };
 };
 
-function SampleInstrument(config, bufferCollection) {
-  var BASE_FREQUENCY = Note("A", 4, 1).frequency();
-  var audioBuffer = bufferCollection.getBuffer(config.sample);
-  var sampleInstrument = {};
 
-  var buildBufferSourceNode = function(audioContext, target, note) {
-    var audioBufferSourceNode = audioContext.createBufferSource();
-    audioBufferSourceNode.buffer = audioBuffer;
-    audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
-    audioBufferSourceNode.loop = config.loop;
-    audioBufferSourceNode.connect(target);
-
-    return audioBufferSourceNode;
-  };
+var BaseInstrument = function() {
+  var noOp = function() {};
 
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
@@ -121,6 +110,40 @@ function SampleInstrument(config, bufferCollection) {
     filter.Q.value = resonance;
 
     return filter;
+  };
+
+  var scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+    var noteContext = baseInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
+    baseInstrument.gateOff(noteContext, gateOffTime, false);
+  };
+
+
+  var baseInstrument = {
+    gateOn: noOp,
+    gateOff: noOp,
+    buildOscillator: buildOscillator,
+    buildGain: buildGain,
+    buildFilter: buildFilter,
+    scheduleNote: scheduleNote,
+  };
+
+  return baseInstrument;
+};
+
+
+function SampleInstrument(config, bufferCollection) {
+  var BASE_FREQUENCY = Note("A", 4, 1).frequency();
+  var audioBuffer = bufferCollection.getBuffer(config.sample);
+  var sampleInstrument = BaseInstrument();
+
+  var buildBufferSourceNode = function(audioContext, target, note) {
+    var audioBufferSourceNode = audioContext.createBufferSource();
+    audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
+    audioBufferSourceNode.loop = config.loop;
+    audioBufferSourceNode.connect(target);
+
+    return audioBufferSourceNode;
   };
 
   sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
@@ -147,13 +170,13 @@ function SampleInstrument(config, bufferCollection) {
     masterGain.connect(audioDestination);
 
     // Filter
-    filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+    filter = sampleInstrument.buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
-      filterLfoGain = buildGain(audioContext, config.filter.lfo.amplitude);
+      filterLfoGain = sampleInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
       filterLfoGain.connect(filter.frequency);
 
-      filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+      filterLfoOscillator = sampleInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
@@ -227,41 +250,12 @@ function SampleInstrument(config, bufferCollection) {
     }
   };
 
-  sampleInstrument.scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var noteContext = sampleInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
-    sampleInstrument.gateOff(noteContext, gateOffTime, false);
-  };
-
 
   return sampleInstrument;
 };
 
 function SynthInstrument(config, noiseBuffer) {
-  var buildOscillator = function(audioContext, waveform, frequency, detune) {
-    var oscillator = audioContext.createOscillator();
-    oscillator.type = waveform;
-    oscillator.frequency.value = frequency;
-    oscillator.detune.value = detune;
-
-    return oscillator;
-  };
-
-  var buildGain = function(audioContext, amplitude) {
-    var gain = audioContext.createGain();
-    gain.gain.value = amplitude;
-
-    return gain;
-  };
-
-  var buildFilter = function(audioContext, frequency, resonance) {
-    var filter = audioContext.createBiquadFilter();
-    filter.frequency.value = frequency;
-    filter.Q.value = resonance;
-
-    return filter;
-  };
-
-  var synthInstrument = {};
+  var synthInstrument = BaseInstrument();
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var masterGain, calculatedMasterGainEnvelope;
@@ -288,13 +282,13 @@ function SynthInstrument(config, noiseBuffer) {
 
 
     // Filter
-    filter = buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
+    filter = synthInstrument.buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
     if (config.filter.mode === "lfo") {
-      filterLfoGain = buildGain(audioContext, config.filter.lfo.amplitude);
+      filterLfoGain = synthInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
       filterLfoGain.connect(filter.frequency);
 
-      filterLfoOscillator = buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+      filterLfoOscillator = synthInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
@@ -314,25 +308,25 @@ function SynthInstrument(config, noiseBuffer) {
 
 
     // Base sound generator
-    oscillator1Gain = buildGain(audioContext, config.oscillators[0].amplitude);
-    oscillator1 = buildOscillator(audioContext,
-                                  config.oscillators[0].waveform,
-                                  note.frequency() * Math.pow(2, config.oscillators[0].octave),
-                                  config.oscillators[0].detune);
+    oscillator1Gain = synthInstrument.buildGain(audioContext, config.oscillators[0].amplitude);
+    oscillator1 = synthInstrument.buildOscillator(audioContext,
+                                                  config.oscillators[0].waveform,
+                                                  note.frequency() * Math.pow(2, config.oscillators[0].octave),
+                                                  config.oscillators[0].detune);
     oscillator1.connect(oscillator1Gain);
     oscillator1Gain.connect(filter);
 
     // Secondary sound generator
-    oscillator2Gain = buildGain(audioContext, config.oscillators[1].amplitude);
-    oscillator2 = buildOscillator(audioContext,
-                                  config.oscillators[1].waveform,
-                                  note.frequency() * Math.pow(2, config.oscillators[1].octave),
-                                  config.oscillators[1].detune);
+    oscillator2Gain = synthInstrument.buildGain(audioContext, config.oscillators[1].amplitude);
+    oscillator2 = synthInstrument.buildOscillator(audioContext,
+                                                  config.oscillators[1].waveform,
+                                                  note.frequency() * Math.pow(2, config.oscillators[1].octave),
+                                                  config.oscillators[1].detune);
     oscillator2.connect(oscillator2Gain);
     oscillator2Gain.connect(filter);
 
     // Noise
-    noiseGain = buildGain(audioContext, config.noise.amplitude);
+    noiseGain = synthInstrument.buildGain(audioContext, config.noise.amplitude);
     noise = audioContext.createBufferSource();
     noise.buffer = noiseBuffer;
     noise.loop = true;
@@ -341,8 +335,8 @@ function SynthInstrument(config, noiseBuffer) {
 
 
     // LFO for base sound
-    pitchLfoOscillator = buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
-    pitchLfoGain = buildGain(audioContext, config.lfo.amplitude);
+    pitchLfoOscillator = synthInstrument.buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
+    pitchLfoGain = synthInstrument.buildGain(audioContext, config.lfo.amplitude);
     pitchLfoOscillator.connect(pitchLfoGain);
     pitchLfoGain.connect(oscillator1.frequency);
     pitchLfoGain.connect(oscillator2.frequency);
@@ -408,10 +402,6 @@ function SynthInstrument(config, noiseBuffer) {
     }
   };
 
-  synthInstrument.scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var noteContext = synthInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
-    synthInstrument.gateOff(noteContext, gateOffTime, false);
-  };
 
   return synthInstrument;
 };
