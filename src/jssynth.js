@@ -85,9 +85,7 @@ function BufferCollection(audioContext) {
 };
 
 
-var BaseInstrument = function() {
-  var noOp = function() {};
-
+var BaseInstrument = function(config) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {
     var oscillator = audioContext.createOscillator();
     oscillator.type = waveform;
@@ -117,10 +115,58 @@ var BaseInstrument = function() {
     baseInstrument.gateOff(noteContext, gateOffTime, false);
   };
 
+  var gateOff = function(noteContext, gateOffTime, isInteractive) {
+    var MINIMUM_RELEASE_TIME = 0.005;
+    var safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
+    var safeFilterRelease;
+
+    // Filter Envelope Release
+    if (config.filter.mode === "envelope") {
+      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      if (isInteractive) {
+        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
+      }
+      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
+    }
+
+    // Gain Envelope Release
+    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
+
+    if (isInteractive) {
+      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
+      // The gain value is manually set to the current gain value because `cancelScheduledValues()`
+      // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the
+      // release portion of the envelope will have no effect, and cause notes that are played
+      // for a shorter amount of time than the attack+decay time to be suddenly cut off, instead
+      // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
+      // another way to solve this problem.
+      noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
+      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
+    }
+
+    noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
+
+    if (noteContext.audioBufferSourceNode !== undefined) {
+      noteContext.audioBufferSourceNode.stop(gainReleaseEndTime);
+    }
+    if (noteContext.oscillator1 !== undefined) {
+      noteContext.oscillator1.stop(gainReleaseEndTime);
+      noteContext.oscillator2.stop(gainReleaseEndTime);
+      noteContext.noise.stop(gainReleaseEndTime);
+    }
+    if (noteContext.pitchLfoOscillator !== undefined) {
+      noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
+    }
+    if (config.filter.mode === "lfo") {
+      noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
+    }
+  };
+
 
   var baseInstrument = {
-    gateOn: noOp,
-    gateOff: noOp,
+    gateOn: function() {},
+    gateOff: gateOff,
     buildOscillator: buildOscillator,
     buildGain: buildGain,
     buildFilter: buildFilter,
@@ -134,7 +180,7 @@ var BaseInstrument = function() {
 function SampleInstrument(config, bufferCollection) {
   var BASE_FREQUENCY = Note("A", 4, 1).frequency();
   var audioBuffer = bufferCollection.getBuffer(config.sample);
-  var sampleInstrument = BaseInstrument();
+  var sampleInstrument = BaseInstrument(config);
 
   var buildBufferSourceNode = function(audioContext, target, note) {
     var audioBufferSourceNode = audioContext.createBufferSource();
@@ -211,51 +257,12 @@ function SampleInstrument(config, bufferCollection) {
     };
   };
 
-  sampleInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
-    var MINIMUM_RELEASE_TIME = 0.005;
-    var safeMasterGainRelease, gainReleaseEndTime;
-    var safeFilterRelease;
-    var releaseEndTime;
-
-    // Filter Envelope Release
-    if (config.filter.mode === "envelope") {
-      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
-      if (isInteractive) {
-        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
-      }
-      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
-    }
-
-    // Gain Envelope Release
-    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
-    gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
-
-    if (isInteractive) {
-      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
-      // The gain value is manually set to the current gain value because `cancelScheduledValues()`
-      // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the
-      // release portion of the envelope will have no effect, and cause notes that are played
-      // for a shorter amount of time than the attack+decay time to be suddenly cut off, instead
-      // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
-      // another way to solve this problem.
-      noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
-      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
-    }
-
-    noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
-
-    noteContext.audioBufferSourceNode.stop(gainReleaseEndTime);
-    if (config.filter.mode === "lfo") {
-      noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
-    }
-  };
-
 
   return sampleInstrument;
 };
 
 function SynthInstrument(config, noiseBuffer) {
-  var synthInstrument = BaseInstrument();
+  var synthInstrument = BaseInstrument(config);
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
     var masterGain, calculatedMasterGainEnvelope;
@@ -361,49 +368,6 @@ function SynthInstrument(config, noiseBuffer) {
       pitchLfoOscillator: pitchLfoOscillator,
       filterLfoOscillator: filterLfoOscillator,
     };
-  };
-
-  synthInstrument.gateOff = function(noteContext, gateOffTime, isInteractive) {
-    var MINIMUM_RELEASE_TIME = 0.005;
-    var safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
-    var safeFilterRelease;
-
-    // Filter Envelope Release
-    if (config.filter.mode === "envelope") {
-      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
-      if (isInteractive) {
-        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
-      }
-      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
-    }
-
-    // Gain Envelope Release
-    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
-    gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
-
-    if (isInteractive) {
-      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
-      // The gain value is manually set to the current gain value because `cancelScheduledValues()`
-      // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the
-      // release portion of the envelope will have no effect, and cause notes that are played
-      // for a shorter amount of time than the attack+decay time to be suddenly cut off, instead
-      // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
-      // another way to solve this problem.
-      noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
-      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
-    }
-
-    noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
-
-    noteContext.oscillator1.stop(gainReleaseEndTime);
-    noteContext.oscillator2.stop(gainReleaseEndTime);
-    noteContext.noise.stop(gainReleaseEndTime);
-    if (noteContext.pitchLfoOscillator !== undefined) {
-      noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
-    }
-    if (config.filter.mode === "lfo") {
-      noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
-    }
   };
 
 
