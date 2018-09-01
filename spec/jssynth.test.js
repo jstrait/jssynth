@@ -159,7 +159,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.decayEndTime).toEqual(1.0);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.001);
     expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
@@ -176,7 +176,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
     expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.25);
     expect(calculatedEnvelope.decayEndTime).toEqual(1.1);
-    expect(calculatedEnvelope.decayEndAmplitude).toEqual(NaN);
+    expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.2500000000000003);
   });
 
   it("should calculate correctly attack time is shorter than note duration ", function() {
@@ -191,7 +191,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
-    expect(calculatedEnvelope.decayEndTime).toEqual(1.5);
+    expect(calculatedEnvelope.decayEndTime).toEqual(1.501);
     expect(calculatedEnvelope.decayEndAmplitude).toEqual(0.5);
   });
 
