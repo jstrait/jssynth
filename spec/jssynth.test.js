@@ -146,7 +146,7 @@ describe("JSSynth.SequenceParser", function() {
 });
 
 
-describe("JSSynth.EnvelopeCalculator", function() {
+describe("JSSynth.Envelope", function() {
   it("should calculate correctly when envelope is effectively a no-op", function() {
     var envelope = {
       attack:  0.0,
@@ -155,7 +155,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 1.1);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -171,7 +171,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 1.1);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.25);
@@ -187,7 +187,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -203,7 +203,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -219,7 +219,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -235,7 +235,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
@@ -251,7 +251,7 @@ describe("JSSynth.EnvelopeCalculator", function() {
       release: 0.0,
     }
 
-    var calculatedEnvelope = JSSynth.EnvelopeCalculator.calculate(0.5, envelope, 1.0, 2.0);
+    var calculatedEnvelope = JSSynth.Envelope(0.5, envelope, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);

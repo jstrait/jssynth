@@ -133,7 +133,7 @@ function SampleInstrument(config, bufferCollection) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = Envelope(amplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -157,7 +157,7 @@ function SampleInstrument(config, bufferCollection) {
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
@@ -275,7 +275,7 @@ function SynthInstrument(config, noiseBuffer) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    calculatedMasterGainEnvelope = EnvelopeCalculator.calculate(amplitude / (config.oscillators.length + 1), config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = Envelope(amplitude / (config.oscillators.length + 1), config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -298,7 +298,7 @@ function SynthInstrument(config, noiseBuffer) {
       filterLfoOscillator.connect(filterLfoGain);
     }
     else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = EnvelopeCalculator.calculate(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
+      calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
       // Envelope Attack
       filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
@@ -416,42 +416,40 @@ function SynthInstrument(config, noiseBuffer) {
   return synthInstrument;
 };
 
-var EnvelopeCalculator = {
-  calculate: function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
-    var attackEndTime = gateOnTime + envelope.attack;
-    var attackEndAmplitude, attackEndAmplitudePercentage;
-    var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage, targetAmplitudeAfterDecayEnds;
-    var delta;
+var Envelope = function(baseAmplitude, envelope, gateOnTime, gateOffTime) {
+  var attackEndTime = gateOnTime + envelope.attack;
+  var attackEndAmplitude, attackEndAmplitudePercentage;
+  var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage, targetAmplitudeAfterDecayEnds;
+  var delta;
 
-    if (attackEndTime < gateOffTime) {
-      attackEndAmplitude = baseAmplitude;
-    }
-    else {
-      attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
-      attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
-      attackEndTime = gateOffTime;
-    }
+  if (attackEndTime < gateOffTime) {
+    attackEndAmplitude = baseAmplitude;
+  }
+  else {
+    attackEndAmplitudePercentage = ((gateOffTime - gateOnTime) / (attackEndTime - gateOnTime));
+    attackEndAmplitude = baseAmplitude * attackEndAmplitudePercentage;
+    attackEndTime = gateOffTime;
+  }
 
-    decayEndTime = attackEndTime + Math.max(envelope.decay, 0.001);
-    targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
-    if (gateOffTime > decayEndTime) {
-      decayEndAmplitude = targetAmplitudeAfterDecayEnds;
-    }
-    else {
-      decayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (decayEndTime - attackEndTime));
-      decayEndTime = gateOffTime;
+  decayEndTime = attackEndTime + Math.max(envelope.decay, 0.001);
+  targetAmplitudeAfterDecayEnds = baseAmplitude * envelope.sustain;
+  if (gateOffTime > decayEndTime) {
+    decayEndAmplitude = targetAmplitudeAfterDecayEnds;
+  }
+  else {
+    decayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (decayEndTime - attackEndTime));
+    decayEndTime = gateOffTime;
 
-      delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
-      decayEndAmplitude = attackEndAmplitude - (delta * decayEndAmplitudePercentage);
-    }
+    delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
+    decayEndAmplitude = attackEndAmplitude - (delta * decayEndAmplitudePercentage);
+  }
 
-    return {
-      attackEndTime: attackEndTime,
-      attackEndAmplitude: attackEndAmplitude,
-      decayEndTime: decayEndTime,
-      decayEndAmplitude: decayEndAmplitude,
-    };
-  },
+  return {
+    attackEndTime: attackEndTime,
+    attackEndAmplitude: attackEndAmplitude,
+    decayEndTime: decayEndTime,
+    decayEndAmplitude: decayEndAmplitude,
+  };
 };
 
 var SequenceParser = {
@@ -974,4 +972,4 @@ function WaveWriter() {
   };
 };
 
-export { SynthInstrument, SampleInstrument, EnvelopeCalculator, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export { SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
