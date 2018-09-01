@@ -335,17 +335,19 @@ function SynthInstrument(config, noiseBuffer) {
 
 
     // LFO for base sound
-    pitchLfoOscillator = synthInstrument.buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
-    pitchLfoGain = synthInstrument.buildGain(audioContext, config.lfo.amplitude);
-    pitchLfoOscillator.connect(pitchLfoGain);
-    pitchLfoGain.connect(oscillator1.frequency);
-    pitchLfoGain.connect(oscillator2.frequency);
+    if (config.lfo.frequency > 0.0 && config.lfo.amplitude > 0.0) {
+      pitchLfoOscillator = synthInstrument.buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
+      pitchLfoGain = synthInstrument.buildGain(audioContext, config.lfo.amplitude);
+      pitchLfoOscillator.connect(pitchLfoGain);
+      pitchLfoGain.connect(oscillator1.frequency);
+      pitchLfoGain.connect(oscillator2.frequency);
+      pitchLfoOscillator.start(gateOnTime);
+    }
 
 
     oscillator1.start(gateOnTime);
     oscillator2.start(gateOnTime);
     noise.start(gateOnTime);
-    pitchLfoOscillator.start(gateOnTime);
     if (config.filter.mode === "lfo") {
       filterLfoOscillator.start(gateOnTime);
     }
@@ -396,7 +398,9 @@ function SynthInstrument(config, noiseBuffer) {
     noteContext.oscillator1.stop(gainReleaseEndTime);
     noteContext.oscillator2.stop(gainReleaseEndTime);
     noteContext.noise.stop(gainReleaseEndTime);
-    noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
+    if (noteContext.pitchLfoOscillator !== undefined) {
+      noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
+    }
     if (config.filter.mode === "lfo") {
       noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
     }
