@@ -377,7 +377,8 @@ function SynthInstrument(config, noiseBuffer) {
 var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateOffTime) {
   var attackEndTime = gateOnTime + envelopeConfig.attack;
   var attackEndAmplitude, attackEndAmplitudePercentage;
-  var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage, targetAmplitudeAfterDecayEnds;
+  var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage;
+  var sustainAmplitude;
   var delta;
 
   if (attackEndTime < gateOffTime) {
@@ -390,15 +391,15 @@ var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateO
   }
 
   decayEndTime = attackEndTime + Math.max(envelopeConfig.decay, 0.001);
-  targetAmplitudeAfterDecayEnds = targetAttackAmplitude * envelopeConfig.sustain;
+  sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustain;
   if (gateOffTime > decayEndTime) {
-    decayEndAmplitude = targetAmplitudeAfterDecayEnds;
+    decayEndAmplitude = sustainAmplitude;
   }
   else {
     decayEndAmplitudePercentage = ((gateOffTime - attackEndTime) / (decayEndTime - attackEndTime));
     decayEndTime = gateOffTime;
 
-    delta = attackEndAmplitude - targetAmplitudeAfterDecayEnds;
+    delta = attackEndAmplitude - sustainAmplitude;
     decayEndAmplitude = attackEndAmplitude - (delta * decayEndAmplitudePercentage);
   }
 
