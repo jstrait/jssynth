@@ -158,7 +158,7 @@ var BaseInstrument = function(config) {
     if (noteContext.pitchLfoOscillator !== undefined) {
       noteContext.pitchLfoOscillator.stop(gainReleaseEndTime);
     }
-    if (config.filter.mode === "lfo") {
+    if (noteContext.filterLfoOscillator !== undefined) {
       noteContext.filterLfoOscillator.stop(gainReleaseEndTime);
     }
   };
