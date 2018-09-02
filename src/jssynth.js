@@ -381,6 +381,42 @@ var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateO
   var sustainAmplitude;
   var delta;
 
+  var valueAtTime = function(rawTime, rawGateOffTime) {
+    var time = rawTime - gateOnTime;
+    var gateOffTime = rawGateOffTime - gateOnTime;
+    var sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustain;
+
+    if (time < 0.0) {
+      return 0.0;
+    }
+    else if (time > gateOffTime) {
+      // In release portion
+      if (time >= (gateOffTime + envelopeConfig.release)) {
+        return 0.0;
+      }
+      else {
+        return (1.0 - ((time - gateOffTime) / envelopeConfig.release)) * sustainAmplitude;
+      }
+    }
+    else if (time <= envelopeConfig.attack) {
+      // In attack portion
+      if (envelopeConfig.attack === 0) {
+        return targetAttackAmplitude;
+      }
+      else {
+        return (time / envelopeConfig.attack) * targetAttackAmplitude;
+      }
+    }
+    else if (time <= (envelopeConfig.attack + envelopeConfig.decay)) {
+      // In decay portion
+      return ((1.0 - ((time - envelopeConfig.attack) / envelopeConfig.decay)) * (targetAttackAmplitude - sustainAmplitude)) + sustainAmplitude;
+    }
+    else {
+      // In sustain portion
+      return sustainAmplitude;
+    }
+  };
+
   if (attackEndTime < gateOffTime) {
     attackEndAmplitude = targetAttackAmplitude;
   }
@@ -408,6 +444,7 @@ var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateO
     attackEndAmplitude: attackEndAmplitude,
     decayEndTime: decayEndTime,
     decayEndAmplitude: decayEndAmplitude,
+    valueAtTime: valueAtTime,
   };
 };
 
