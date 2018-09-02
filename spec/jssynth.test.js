@@ -149,11 +149,11 @@ describe("JSSynth.SequenceParser", function() {
 describe("JSSynth.Envelope", function() {
   it("should calculate correctly when envelope is effectively a no-op", function() {
     var envelopeConfig = {
-      attack:  0.0,
-      decay:   0.0,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.0,
+      decayTime: 0.0,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
@@ -173,11 +173,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when attack time is longer than note duration", function() {
     var envelopeConfig = {
-      attack:  0.2,
-      decay:   0.0,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.2,
+      decayTime: 0.0,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
@@ -197,11 +197,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly attack time is shorter than note duration ", function() {
     var envelopeConfig = {
-      attack:  0.5,
-      decay:   0.0,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.5,
+      decayTime: 0.0,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
@@ -223,11 +223,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when decay ends before note ends", function() {
     var envelopeConfig = {
-      attack:  0.5,
-      decay:   0.25,
-      sustain: 0.5,
-      release: 0.0,
-    }
+      attackTime: 0.5,
+      decayTime: 0.25,
+      sustainPercentage: 0.5,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
@@ -251,11 +251,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when decay is a no-op because sustain is 100%", function() {
     var envelopeConfig = {
-      attack:  0.5,
-      decay:   1.0,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.5,
+      decayTime: 1.0,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
@@ -275,11 +275,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when decay ends before gate off, but is a no-op due to sustain volume", function() {
     var envelopeConfig = {
-      attack:  0.0,
-      decay:   0.5,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.0,
+      decayTime: 0.5,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
@@ -303,11 +303,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when decay ends after gate off, but is a no-op due to sustain volume", function() {
     var envelopeConfig = {
-      attack:  0.0,
-      decay:   1.5,
-      sustain: 1.0,
-      release: 0.0,
-    }
+      attackTime: 0.0,
+      decayTime:1.5,
+      sustainPercentage: 1.0,
+      releaseTime: 0.0,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
@@ -331,11 +331,11 @@ describe("JSSynth.Envelope", function() {
 
   it("should calculate correctly when there is a release portion of the envelope", function() {
     var envelopeConfig = {
-      attack:  0.0,
-      decay:   0.0,
-      sustain: 1.0,
-      release: 0.5,
-    }
+      attackTime: 0.0,
+      decayTime: 0.0,
+      sustainPercentage: 1.0,
+      releaseTime: 0.5,
+    };
 
     var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 

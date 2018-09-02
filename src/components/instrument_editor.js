@@ -80,14 +80,14 @@ class SampleInstrumentEditor extends React.Component {
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
     this.setFilterEnvelopeAmount = this.setFilterEnvelopeAmount.bind(this);
-    this.setFilterEnvelopeAttack = this.setFilterEnvelopeAttack.bind(this);
-    this.setFilterEnvelopeDecay = this.setFilterEnvelopeDecay.bind(this);
-    this.setFilterEnvelopeSustain = this.setFilterEnvelopeSustain.bind(this);
-    this.setFilterEnvelopeRelease = this.setFilterEnvelopeRelease.bind(this);
-    this.setEnvelopeAttack = this.setEnvelopeAttack.bind(this);
-    this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
-    this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
-    this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
+    this.setFilterEnvelopeAttackTime = this.setFilterEnvelopeAttackTime.bind(this);
+    this.setFilterEnvelopeDecayTime = this.setFilterEnvelopeDecayTime.bind(this);
+    this.setFilterEnvelopeSustainPercentage = this.setFilterEnvelopeSustainPercentage.bind(this);
+    this.setFilterEnvelopeReleaseTime = this.setFilterEnvelopeReleaseTime.bind(this);
+    this.setEnvelopeAttackTime = this.setEnvelopeAttackTime.bind(this);
+    this.setEnvelopeDecayTime = this.setEnvelopeDecayTime.bind(this);
+    this.setEnvelopeSustainPercentage = this.setEnvelopeSustainPercentage.bind(this);
+    this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -140,36 +140,36 @@ class SampleInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeAttack(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttack", parseFloat(e.target.value));
+  setFilterEnvelopeAttackTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeDecay(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecay", parseFloat(e.target.value));
+  setFilterEnvelopeDecayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeSustain(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustain", parseFloat(e.target.value));
+  setFilterEnvelopeSustainPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeRelease(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeRelease", parseFloat(e.target.value));
+  setFilterEnvelopeReleaseTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeAttack(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeAttack", parseFloat(e.target.value));
+  setEnvelopeAttackTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeDecay(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeDecay", parseFloat(e.target.value));
+  setEnvelopeDecayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeSustain(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeSustain", parseFloat(e.target.value));
+  setEnvelopeSustainPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setEnvelopeRelease(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeRelease", parseFloat(e.target.value));
+  setEnvelopeReleaseTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
   };
 
   render() {
@@ -244,29 +244,29 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
-                <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
+                <span>{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
-                <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
+                <span>{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
-                <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
+                <span>{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
-                <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
+                <span>{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
               </span>
             </span>
           </span>
@@ -276,29 +276,29 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Attack Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
-              <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
+              <span>{this.props.instrument.envelopeAttackTime * 1000} ms</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label">Decay Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
-              <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
+              <span>{this.props.instrument.envelopeDecayTime * 1000} ms</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label">Sustain Volume:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
-              <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
+              <span>{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
             </span>
           </span>
           <span className="control">
             <label className="control-label">Release Speed:</label>
             <span className="annotated-input">
-              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
-              <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
+              <span>{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
             </span>
           </span>
         </div>
@@ -355,14 +355,14 @@ class SynthInstrumentEditor extends React.Component {
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
     this.setFilterEnvelopeAmount = this.setFilterEnvelopeAmount.bind(this);
-    this.setFilterEnvelopeAttack = this.setFilterEnvelopeAttack.bind(this);
-    this.setFilterEnvelopeDecay = this.setFilterEnvelopeDecay.bind(this);
-    this.setFilterEnvelopeSustain = this.setFilterEnvelopeSustain.bind(this);
-    this.setFilterEnvelopeRelease = this.setFilterEnvelopeRelease.bind(this);
-    this.setEnvelopeAttack = this.setEnvelopeAttack.bind(this);
-    this.setEnvelopeDecay = this.setEnvelopeDecay.bind(this);
-    this.setEnvelopeSustain = this.setEnvelopeSustain.bind(this);
-    this.setEnvelopeRelease = this.setEnvelopeRelease.bind(this);
+    this.setFilterEnvelopeAttackTime = this.setFilterEnvelopeAttackTime.bind(this);
+    this.setFilterEnvelopeDecayTime = this.setFilterEnvelopeDecayTime.bind(this);
+    this.setFilterEnvelopeSustainPercentage = this.setFilterEnvelopeSustainPercentage.bind(this);
+    this.setFilterEnvelopeReleaseTime = this.setFilterEnvelopeReleaseTime.bind(this);
+    this.setEnvelopeAttackTime = this.setEnvelopeAttackTime.bind(this);
+    this.setEnvelopeDecayTime = this.setEnvelopeDecayTime.bind(this);
+    this.setEnvelopeSustainPercentage = this.setEnvelopeSustainPercentage.bind(this);
+    this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -443,36 +443,36 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeAttack(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttack", parseFloat(e.target.value));
+  setFilterEnvelopeAttackTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeDecay(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecay", parseFloat(e.target.value));
+  setFilterEnvelopeDecayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeSustain(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustain", parseFloat(e.target.value));
+  setFilterEnvelopeSustainPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeRelease(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeRelease", parseFloat(e.target.value));
+  setFilterEnvelopeReleaseTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeAttack(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeAttack", parseFloat(e.target.value));
+  setEnvelopeAttackTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeDecay(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeDecay", parseFloat(e.target.value));
+  setEnvelopeDecayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", parseFloat(e.target.value));
   };
 
-  setEnvelopeSustain(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeSustain", parseFloat(e.target.value));
+  setEnvelopeSustainPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setEnvelopeRelease(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeRelease", parseFloat(e.target.value));
+  setEnvelopeReleaseTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
   };
 
 
@@ -589,29 +589,29 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttack} onChange={this.setFilterEnvelopeAttack} />
-                <span>{this.props.instrument.filterEnvelopeAttack * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
+                <span>{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecay} onChange={this.setFilterEnvelopeDecay} />
-                <span>{this.props.instrument.filterEnvelopeDecay * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
+                <span>{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustain} onChange={this.setFilterEnvelopeSustain} />
-                <span>{(this.props.instrument.filterEnvelopeSustain * 100).toFixed(0)}%</span>
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
+                <span>{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeRelease} onChange={this.setFilterEnvelopeRelease} />
-                <span>{this.props.instrument.filterEnvelopeRelease * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
+                <span>{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
               </span>
             </span>
           </span>
@@ -645,29 +645,29 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttack} onChange={this.setEnvelopeAttack} />
-                <span>{this.props.instrument.envelopeAttack * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
+                <span>{this.props.instrument.envelopeAttackTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecay} onChange={this.setEnvelopeDecay} />
-                <span>{this.props.instrument.envelopeDecay * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
+                <span>{this.props.instrument.envelopeDecayTime * 1000} ms</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label">Sustain Volume:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustain} onChange={this.setEnvelopeSustain} />
-                <span>{(this.props.instrument.envelopeSustain * 100).toFixed(0)}%</span>
+                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
+                <span>{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
               </span>
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeRelease} onChange={this.setEnvelopeRelease} />
-                <span>{this.props.instrument.envelopeRelease * 1000} ms</span>
+                <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
+                <span>{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
               </span>
             </span>
           </div>

@@ -122,7 +122,7 @@ var BaseInstrument = function(config) {
 
     // Filter Envelope Release
     if (config.filter.mode === "envelope") {
-      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.release);
+      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.releaseTime);
       if (isInteractive) {
         noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
       }
@@ -130,7 +130,7 @@ var BaseInstrument = function(config) {
     }
 
     // Gain Envelope Release
-    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.release);
+    safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.releaseTime);
     gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
     if (isInteractive) {
@@ -375,7 +375,7 @@ function SynthInstrument(config, noiseBuffer) {
 };
 
 var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateOffTime) {
-  var attackEndTime = gateOnTime + envelopeConfig.attack;
+  var attackEndTime = gateOnTime + envelopeConfig.attackTime;
   var attackEndAmplitude, attackEndAmplitudePercentage;
   var decayEndTime, decayEndAmplitude, decayEndAmplitudePercentage;
   var sustainAmplitude;
@@ -384,32 +384,32 @@ var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateO
   var valueAtTime = function(rawTime, rawGateOffTime) {
     var time = rawTime - gateOnTime;
     var gateOffTime = rawGateOffTime - gateOnTime;
-    var sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustain;
+    var sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustainPercentage;
 
     if (time < 0.0) {
       return 0.0;
     }
     else if (time > gateOffTime) {
       // In release portion
-      if (time >= (gateOffTime + envelopeConfig.release)) {
+      if (time >= (gateOffTime + envelopeConfig.releaseTime)) {
         return 0.0;
       }
       else {
-        return (1.0 - ((time - gateOffTime) / envelopeConfig.release)) * sustainAmplitude;
+        return (1.0 - ((time - gateOffTime) / envelopeConfig.releaseTime)) * sustainAmplitude;
       }
     }
-    else if (time <= envelopeConfig.attack) {
+    else if (time <= envelopeConfig.attackTime) {
       // In attack portion
-      if (envelopeConfig.attack === 0) {
+      if (envelopeConfig.attackTime === 0) {
         return targetAttackAmplitude;
       }
       else {
-        return (time / envelopeConfig.attack) * targetAttackAmplitude;
+        return (time / envelopeConfig.attackTime) * targetAttackAmplitude;
       }
     }
-    else if (time <= (envelopeConfig.attack + envelopeConfig.decay)) {
+    else if (time <= (envelopeConfig.attackTime + envelopeConfig.decayTime)) {
       // In decay portion
-      return ((1.0 - ((time - envelopeConfig.attack) / envelopeConfig.decay)) * (targetAttackAmplitude - sustainAmplitude)) + sustainAmplitude;
+      return ((1.0 - ((time - envelopeConfig.attackTime) / envelopeConfig.decayTime)) * (targetAttackAmplitude - sustainAmplitude)) + sustainAmplitude;
     }
     else {
       // In sustain portion
@@ -426,8 +426,8 @@ var Envelope = function(targetAttackAmplitude, envelopeConfig, gateOnTime, gateO
     attackEndTime = gateOffTime;
   }
 
-  decayEndTime = attackEndTime + Math.max(envelopeConfig.decay, 0.001);
-  sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustain;
+  decayEndTime = attackEndTime + Math.max(envelopeConfig.decayTime, 0.001);
+  sustainAmplitude = targetAttackAmplitude * envelopeConfig.sustainPercentage;
   if (gateOffTime > decayEndTime) {
     decayEndAmplitude = sustainAmplitude;
   }
