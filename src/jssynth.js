@@ -250,7 +250,6 @@ function SampleInstrument(config, bufferCollection) {
     audioBufferSourceNode.start(gateOnTime);
 
     return {
-      audioContext: audioContext,
       gateOnTime: gateOnTime,
       amplitude: amplitude,
       audioBufferSourceNode: audioBufferSourceNode,
