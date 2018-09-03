@@ -117,7 +117,7 @@ var BaseInstrument = function(config) {
 
   var gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
-    var safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
+    var masterGainAtReleaseStart, safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
     var safeFilterRelease;
 
     // Filter Envelope Release
@@ -142,7 +142,8 @@ var BaseInstrument = function(config) {
       // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
       // another way to solve this problem.
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
-      noteContext.masterGain.gain.setValueAtTime(noteContext.masterGain.gain.value, gateOffTime);
+      masterGainAtReleaseStart = Envelope(noteContext.amplitude, config.envelope, noteContext.gateOnTime, gateOffTime).valueAtTime(gateOffTime);
+      noteContext.masterGain.gain.setValueAtTime(masterGainAtReleaseStart, gateOffTime);
     }
 
     noteContext.masterGain.gain.setTargetAtTime(0.0, gateOffTime, safeMasterGainRelease / 5);
@@ -250,6 +251,8 @@ function SampleInstrument(config, bufferCollection) {
 
     return {
       audioContext: audioContext,
+      gateOnTime: gateOnTime,
+      amplitude: amplitude,
       audioBufferSourceNode: audioBufferSourceNode,
       masterGain: masterGain,
       filter: filter,
@@ -265,7 +268,7 @@ function SynthInstrument(config, noiseBuffer) {
   var synthInstrument = BaseInstrument(config);
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var masterGain, calculatedMasterGainEnvelope;
+    var masterGainAmplitude, masterGain, calculatedMasterGainEnvelope;
     var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
     var oscillator1, oscillator1Gain, oscillator2, oscillator2Gain, noise, noiseGain;
     var pitchLfoOscillator, pitchLfoGain;
@@ -276,7 +279,8 @@ function SynthInstrument(config, noiseBuffer) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    calculatedMasterGainEnvelope = Envelope(amplitude / (config.oscillators.length + 1), config.envelope, gateOnTime, gateOffTime);
+    masterGainAmplitude = amplitude / (config.oscillators.length + 1);
+    calculatedMasterGainEnvelope = Envelope(masterGainAmplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -360,6 +364,8 @@ function SynthInstrument(config, noiseBuffer) {
     }
 
     return {
+      gateOnTime: gateOnTime,
+      amplitude: masterGainAmplitude,
       oscillator1: oscillator1,
       oscillator2: oscillator2,
       noise: noise,
