@@ -99,14 +99,14 @@ class NoteInput extends React.Component {
     else if (e.keyCode === TWO && e.shiftKey) {
       noteParts = this.extractNoteParts(this.props.note.name);
 
-      if (noteParts.modifier === "" || noteParts.modifier === "b") {
-        noteParts.modifier += "b";
+      if (noteParts.modifier === "" || noteParts.modifier === "@") {
+        noteParts.modifier += "@";
       }
-      else if (noteParts.modifier === "bb") {
+      else if (noteParts.modifier === "@@") {
         noteParts.modifier = "";
       }
       else {
-        noteParts.modifier = "b";
+        noteParts.modifier = "@";
       }
 
       this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
@@ -178,21 +178,17 @@ class NoteInput extends React.Component {
   };
 
   noteIsValid(rawNoteString) {
-    return /^$|^-$|^ $|(^[A-G](b|bb|#|##){0,1}[0-7]$)/.test(rawNoteString);
+    return /^$|^-$|^ $|(^[A-G](@|@@|#|##){0,1}[0-7]$)/.test(rawNoteString);
   };
 
   formatNote(rawNoteString) {
     let formattedNoteName = rawNoteString;
 
-    // Only make first character uppercase, but not subsequent characters, to avoid
-    // making a 'b' uppercase, which will mess with ♭ replacement.
-    let firstCharacter = formattedNoteName.substr(0, 1);
-    formattedNoteName = firstCharacter.toUpperCase() + formattedNoteName.substr(1);
-
+    formattedNoteName = formattedNoteName.toUpperCase();
     formattedNoteName = formattedNoteName.replace("##", "𝄪");
     formattedNoteName = formattedNoteName.replace("#", "♯");
-    formattedNoteName = formattedNoteName.replace("bb", "𝄫");
-    formattedNoteName = formattedNoteName.replace("b", "♭");
+    formattedNoteName = formattedNoteName.replace("@@", "𝄫");
+    formattedNoteName = formattedNoteName.replace("@", "♭");
     formattedNoteName = formattedNoteName.replace("-", "—");
 
     return formattedNoteName;

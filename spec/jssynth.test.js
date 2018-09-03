@@ -23,20 +23,20 @@ describe("JSSynth.Note", function() {
 
   it("should handle enharmonic equivalents properly", function() {
     var note1 = new JSSynth.Note("D#", 3, 1);
-    var note2 = new JSSynth.Note("Eb", 3, 1);
-    var note3 = new JSSynth.Note("Fbb", 3, 1);
+    var note2 = new JSSynth.Note("E@", 3, 1);
+    var note3 = new JSSynth.Note("F@@", 3, 1);
 
     expect(note1.name()).toEqual('D#');
     expect(note1.octave()).toEqual(3);
     expect(note1.stepDuration()).toEqual(1);
     expect(note1.frequency()).toEqual(311.1269837220809);
 
-    expect(note2.name()).toEqual('Eb');
+    expect(note2.name()).toEqual('E@');
     expect(note2.octave()).toEqual(3);
     expect(note2.stepDuration()).toEqual(1);
     expect(note2.frequency()).toEqual(311.1269837220809);
 
-    expect(note3.name()).toEqual('Fbb');
+    expect(note3.name()).toEqual('F@@');
     expect(note3.octave()).toEqual(3);
     expect(note3.stepDuration()).toEqual(1);
     expect(note3.frequency()).toEqual(311.1269837220809);
@@ -64,14 +64,14 @@ describe("JSSynth.Note", function() {
 
 describe("JSSynth.SequenceParser", function() {
   it("should properly parse a valid sequence", function() {
-    var rawSequence = "A4 Bb2  C#5 ";
+    var rawSequence = "A4 B@2  C#5 ";
     var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepDuration()).toEqual(1);
 
-    expect(parsedSequence[1].name()).toEqual("Bb");
+    expect(parsedSequence[1].name()).toEqual("B@");
     expect(parsedSequence[1].octave()).toEqual(2);
     expect(parsedSequence[1].stepDuration()).toEqual(1);
 

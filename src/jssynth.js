@@ -503,50 +503,50 @@ function Note(newNoteName, newOctave, newStepDuration) {
   var ENHARMONIC_EQUIVALENTS = {
     "A"   : "A",
     "G##" : "A",
-    "Bbb" : "A",
+    "B@@" : "A",
 
     "A#"  : "A#",
-    "Bb"  : "A#",
-    "Cbb" : "A#",
+    "B@"  : "A#",
+    "C@@" : "A#",
 
     "B"   : "B",
     "A##" : "B",
-    "Cb"  : "B",
+    "C@"  : "B",
 
     "C"   : "C",
     "B#"  : "C",
-    "Dbb" : "C",
+    "D@@" : "C",
 
     "C#"  : "C#",
     "B##" : "C#",
-    "Db"  : "C#",
+    "D@"  : "C#",
 
     "D"   : "D",
     "C##" : "D",
-    "Ebb" : "D",
+    "E@@" : "D",
 
     "D#"  : "D#",
-    "Eb"  : "D#",
-    "Fbb" : "D#",
+    "E@"  : "D#",
+    "F@@" : "D#",
 
     "E"   : "E",
     "D##" : "E",
-    "Fb"  : "E",
+    "F@"  : "E",
 
     "F"   : "F",
     "E#"  : "F",
-    "Gbb" : "F",
+    "G@@" : "F",
 
     "F#"  : "F#",
     "E##" : "F#",
-    "Gb"  : "F#",
+    "G@"  : "F#",
 
     "G"   : "G",
     "F##" : "G",
-    "Abb" : "G",
+    "A@@" : "G",
 
     "G#"  : "G#",
-    "Ab"  : "G#",
+    "A@"  : "G#",
   };
 
   var MIDDLE_OCTAVE = 4;

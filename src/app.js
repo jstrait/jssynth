@@ -460,7 +460,7 @@ class App extends React.Component {
                       {name: "F3"},
                       {name: "A4"},
                       {name: ""},
-                      {name: "Eb4"},
+                      {name: "E@4"},
                       {name: "A4"},
                       {name: "A4"},
                       {name: "A4"},
