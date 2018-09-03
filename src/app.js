@@ -604,6 +604,7 @@ class App extends React.Component {
       selectedPatternID: 1,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
+      downloadEnabled: (typeof document.createElement('a').download !== "undefined"),
       downloadFileName: "js-130",
       keyboardActive: false,
       activeKeyboardNotes: [],
@@ -1422,7 +1423,7 @@ class App extends React.Component {
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
+          <DownloadButton enabled={this.state.downloadEnabled} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
