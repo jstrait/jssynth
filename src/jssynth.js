@@ -179,7 +179,7 @@ var BaseInstrument = function(config) {
 
 
 function SampleInstrument(config, bufferCollection) {
-  var BASE_FREQUENCY = Note("A", 4, 1).frequency();
+  var BASE_FREQUENCY = Note(config.rootNoteName, config.rootOctave, 1).frequency();
   var audioBuffer = bufferCollection.getBuffer(config.sample);
   var sampleInstrument = BaseInstrument(config);
 
