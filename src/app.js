@@ -21,6 +21,16 @@ class App extends React.Component {
 
     this.state = {
       isLoaded: false,
+      measureCount: 8,
+      selectedTrackID: 1,
+      selectedPatternID: 1,
+      selectedPatternRowIndex: undefined,
+      selectedPatternNoteIndex: undefined,
+      downloadEnabled: (typeof document.createElement('a').download !== "undefined"),
+      downloadFileName: "js-130",
+      keyboardActive: false,
+      activeKeyboardNotes: [],
+      activeNoteContexts: [],
       transport: {
         enabled: true,
         playing: false,
@@ -599,16 +609,6 @@ class App extends React.Component {
           ],
         },
       ],
-      measureCount: 8,
-      selectedTrackID: 1,
-      selectedPatternID: 1,
-      selectedPatternRowIndex: undefined,
-      selectedPatternNoteIndex: undefined,
-      downloadEnabled: (typeof document.createElement('a').download !== "undefined"),
-      downloadFileName: "js-130",
-      keyboardActive: false,
-      activeKeyboardNotes: [],
-      activeNoteContexts: [],
     };
 
     this.itemByID = this.itemByID.bind(this);
