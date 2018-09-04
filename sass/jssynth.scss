@@ -264,24 +264,39 @@ a {
   color: #ccc;
 }
 
-input.note {
+.note-box {
+  display: block;
+  height: 2.0rem;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
-  outline: none;
   border: 1px solid $border-color;
-  border-radius: 0;  /* For iOS */
   margin: 1px;
   font-size: 1.0rem;
-  line-height: 2.0rem;
   font-weight: normal;
 }
 
-input.note-focused {
-  margin-top: 0;
-  margin-bottom: 0;
+.note-box-focused {
   background: $light-orange;
   border: 2px solid $orange;
+}
+
+.note-box-invalid {
+  background: #f66;
+}
+
+/*
+The note input should be invisible, but if you actually make it fully invisible
+by using "display: none" etc., it no longer responds to key presses. This makes
+it as invisible as possible, while still not being _completely_ hidden.
+*/
+.note-input {
+  background: $white;
+  height: 0;
+  width: 0;
+  border: 1px solid $white;
+  outline: none;
+  caret-color: transparent;
 }
 
 
