@@ -201,109 +201,109 @@ class Keyboard extends React.Component {
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="0" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="0" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="0" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="1" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="1" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="1" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="2" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="2" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="2" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="3" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="3" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="3" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="4" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="4" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="4" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="5" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="5" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="5" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="6" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="6" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="6" />
 
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="A#" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="B" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="C#" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="D#" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="E" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="F#" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G" octave="7" />
-          <Key active={this.props.active} activeNotes={this.props.activeNotes} pressNote={this.props.pressNote} releaseNote={this.props.releaseNote} noteName="G#" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="A" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="A#" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="B" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="C" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="C#" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="D" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="D#" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="E" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="F" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="F#" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="G" octave="7" />
+          <Key activeNotes={this.props.activeNotes} noteName="G#" octave="7" />
         </div>
       </div>
       <div className={"keyboard-scroll-button js-keyboard-scroll-right flex flex-align-center flex-justify-center full-height" + (this.scrollRightTimeoutID !== undefined ? " pressed" : "")}>&rarr;</div>
