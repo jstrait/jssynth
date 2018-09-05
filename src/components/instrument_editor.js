@@ -73,6 +73,8 @@ class SampleInstrumentEditor extends React.Component {
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
     this.setLoop = this.setLoop.bind(this);
+    this.setRootNoteName = this.setRootNoteName.bind(this);
+    this.setRootNoteOctave = this.setRootNoteOctave.bind(this);
     this.setFilterCutoff = this.setFilterCutoff.bind(this);
     this.setFilterResonance = this.setFilterResonance.bind(this);
     this.setFilterModulator = this.setFilterModulator.bind(this);
@@ -110,6 +112,14 @@ class SampleInstrumentEditor extends React.Component {
 
   setLoop(e) {
     this.props.updateInstrument(this.props.instrument.id, "loop", e.target.checked);
+  };
+
+  setRootNoteName(e) {
+    this.props.updateInstrument(this.props.instrument.id, "rootNoteName", e.target.value);
+  };
+
+  setRootNoteOctave(e) {
+    this.props.updateInstrument(this.props.instrument.id, "rootNoteOctave", parseInt(e.target.value, 10));
   };
 
   setFilterCutoff(e) {
@@ -189,6 +199,35 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Loop:</label>
             <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
+          </span>
+          <span className="control">
+            <label className="control-label">Root Note:</label>
+            <span>
+              <select value={this.props.instrument.rootNoteName} onChange={this.setRootNoteName}>
+                <option value="A">A</option>
+                <option value="A#">A♯</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="C#">C♯</option>
+                <option value="D">D</option>
+                <option value="D#">D♯</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F♯</option>
+                <option value="G">G</option>
+                <option value="G#">G♯</option>
+              </select>
+              <select value={this.props.instrument.rootNoteOctave} onChange={this.setRootNoteOctave}>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+            </span>
           </span>
         </div>
         <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "filter" ? "" : " display-none")}>

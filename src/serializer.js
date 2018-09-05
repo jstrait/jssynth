@@ -64,8 +64,8 @@ class Serializer {
     let serializedConfig = {
       sample: instrument.sample,
       loop: instrument.loop,
-      rootNoteName: instrument.rootNote.slice(0, -1),
-      rootOctave: instrument.rootNote.slice(-1),
+      rootNoteName: instrument.rootNoteName,
+      rootNoteOctave: instrument.rootNoteOctave,
       filter: {
         cutoff:    filterCutoff,
         resonance: instrument.filterResonance,

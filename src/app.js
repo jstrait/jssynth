@@ -140,7 +140,8 @@ class App extends React.Component {
           sample: "Instrument 4",
           filename: "bass.wav",
           loop: false,
-          rootNote: "A4",
+          rootNoteName: "A",
+          rootNoteOctave: 4,
           filterCutoff: 9950,
           filterResonance: 0,
           filterModulator: "lfo",
@@ -164,7 +165,8 @@ class App extends React.Component {
           sample: "Instrument 5",
           filename: "snare.wav",
           loop: false,
-          rootNote: "A4",
+          rootNoteName: "A",
+          rootNoteOctave: 4,
           filterCutoff: 9950,
           filterResonance: 0,
           filterModulator: "lfo",
@@ -188,7 +190,8 @@ class App extends React.Component {
           sample: "Instrument 6",
           filename: "hihat.wav",
           loop: false,
-          rootNote: "A4",
+          rootNoteName: "A",
+          rootNoteOctave: 4,
           filterCutoff: 9950,
           filterResonance: 0,
           filterModulator: "lfo",
@@ -1004,7 +1007,8 @@ class App extends React.Component {
         sample:                label,
         filename:              file.name,
         loop:                  false,
-        rootNote:              "A4",
+        rootNoteName:          "A",
+        rootNoteOctave:        4,
         filterCutoff:          9950,
         filterResonance:       0,
         filterModulator:       'lfo',
@@ -1463,7 +1467,8 @@ class App extends React.Component {
                      setNoteValue={this.setNoteValue}
                      keyboardActive={this.state.keyboardActive} />
         <Keyboard active={this.state.keyboardActive}
-                  rootNote={instrument.rootNote}
+                  rootNoteName={instrument.rootNoteName}
+                  rootNoteOctave={instrument.rootNoteOctave}
                   activeNotes={this.state.activeKeyboardNotes}
                   activate={this.activateKeyboard}
                   deactivate={this.deactivateKeyboard}
