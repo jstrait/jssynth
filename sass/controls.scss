@@ -24,30 +24,6 @@ input[type='range']::-webkit-slider-thumb {
   background: $black;
 }
 
-input[type='range']:disabled::-webkit-slider-thumb {
-  background: #ccc;
-}
-
-input[type='range']::-webkit-slider-thumb:hover {
-  background: $orange;
-}
-
-input[type='range']:disabled::-webkit-slider-thumb:hover {
-  background: #ccc;
-}
-
-input[type='range']::-webkit-slider-thumb:active {
-  background: $orange;
-}
-
-input[type='range']:disabled::-webkit-slider-thumb:active {
-  background: #ccc;
-}
-
-input[type=range]::-moz-focus-outer {
-  border: 0;
-}
-
 input[type='range']::-moz-range-thumb {
   height: 1.5rem;
   width: 1.5rem;
@@ -56,24 +32,34 @@ input[type='range']::-moz-range-thumb {
   border: 0;
 }
 
-input[type='range']:disabled::-moz-range-thumb {
-  background: #ccc;
-}
-
-input[type='range']::-moz-range-thumb:hover {
+input[type='range']::-webkit-slider-thumb:hover,
+input[type='range']::-webkit-slider-thumb:active
+{
   background: $orange;
 }
 
-input[type='range']:disabled::-moz-range-thumb:hover {
-  background: #ccc;
-}
-
-input[type='range']::-moz-range-thumb:active {
+input[type='range']::-moz-range-thumb:hover,
+input[type='range']::-moz-range-thumb:active
+{
   background: $orange;
 }
 
-input[type='range']:disabled::-moz-range-thumb:active {
+input[type='range']:disabled::-webkit-slider-thumb,
+input[type='range']:disabled::-webkit-slider-thumb:hover,
+input[type='range']:disabled::-webkit-slider-thumb:active
+{
   background: #ccc;
+}
+
+input[type='range']:disabled::-moz-range-thumb,
+input[type='range']:disabled::-moz-range-thumb:hover,
+input[type='range']:disabled::-moz-range-thumb:active
+ {
+  background: #ccc;
+}
+
+input[type=range]::-moz-focus-outer {
+  border: 0;
 }
 
 input[type='range']::-moz-range-track {
