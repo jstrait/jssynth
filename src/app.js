@@ -21,6 +21,7 @@ class App extends React.Component {
 
     this.state = {
       isLoaded: false,
+      loadingStatusMessage: "Loading...",
       measureCount: 8,
       selectedTrackID: 1,
       selectedPatternID: 1,
@@ -675,10 +676,17 @@ class App extends React.Component {
       { label: "Instrument 5", url: "sounds/snare.wav", },
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
-    this.transport.bufferCollection.addBuffersFromURLs(bufferConfigs, () => {
-      this.setState({isLoaded: true});
-      this.syncTransportNotes();
-    });
+
+    this.transport.bufferCollection.addBuffersFromURLs(
+      bufferConfigs,
+      () => {
+        this.setState({isLoaded: true});
+        this.syncTransportNotes();
+      },
+      () => {
+        this.setState({loadingStatusMessage: "An error occurred while trying to start the JS-130"});
+      }
+    );
   };
 
   itemByID(array, targetID) {
@@ -1414,7 +1422,7 @@ class App extends React.Component {
       <div className="full-width flex flex-column flex-align-center flex-justify-center" style={{"minHeight": "100vh"}}>
         <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
         <span className="lightText">Web Synthesizer</span>
-        <span className="mt1">Loading...</span>
+        <span className="mt1">{this.state.loadingStatusMessage}</span>
       </div>
       }
       {isLoaded === true &&

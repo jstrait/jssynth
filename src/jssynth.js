@@ -7,14 +7,21 @@ function BufferCollection(audioContext) {
     buffers[label] = buffer;
   };
 
-  var addBufferFromURL = function(label, url, onSuccess) {
+  var addBufferFromURL = function(label, url, onSuccess, onError) {
     var onDecodeSuccess = function(buffer) {
       buffers[label] = buffer;
       onSuccess();
     };
 
     var onDecodeError = function(e) {
-      console.log("Error decoding audio data: " + e.message);
+      var errorMessage = "Error decoding audio data for URL `" + url + "`";
+
+      if (e) {  // The error object seems to be null in Safari (as of v11)
+        errorMessage += ": " + e.message;
+      }
+
+      console.log(errorMessage);
+      onError();
     };
 
     var request = new XMLHttpRequest();
@@ -29,7 +36,7 @@ function BufferCollection(audioContext) {
     request.send();
   };
 
-  var addBuffersFromURLs = function(bufferConfig, onAllBuffersLoaded) {
+  var addBuffersFromURLs = function(bufferConfig, onAllBuffersLoaded, onLoadError) {
     var loadedBufferCount = 0;
     var allBuffersCount = bufferConfig.length;
     var i;
@@ -43,7 +50,7 @@ function BufferCollection(audioContext) {
     };
 
     for (i = 0; i < bufferConfig.length; i++) {
-      addBufferFromURL(bufferConfig[i].label, bufferConfig[i].url, onBufferLoaded);
+      addBufferFromURL(bufferConfig[i].label, bufferConfig[i].url, onBufferLoaded, onLoadError);
     }
   };
 
