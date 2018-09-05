@@ -57,6 +57,11 @@ class SampleInstrumentEditor extends React.Component {
       selectedTab: "base_sound",
     };
 
+    this.SAMPLE_LOOP_OPTIONS = [
+      {label: "Play Once", value: false},
+      {label: "Loop", value: true},
+    ];
+
     this.WAVEFORM_OPTIONS = [
       {label: "Sine", value: "sine"},
       {label: "Square", value: "square"},
@@ -110,8 +115,8 @@ class SampleInstrumentEditor extends React.Component {
     this.props.setBufferFromFile(this.props.instrument.id, this.fileInput.files[0]);
   };
 
-  setLoop(e) {
-    this.props.updateInstrument(this.props.instrument.id, "loop", e.target.checked);
+  setLoop(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "loop", newValue);
   };
 
   setRootNoteName(e) {
@@ -197,10 +202,6 @@ class SampleInstrumentEditor extends React.Component {
           <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
           <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
           <span className="control">
-            <label className="control-label">Loop:</label>
-            <input type="checkbox" checked={this.props.instrument.loop === true} onChange={this.setLoop} />
-          </span>
-          <span className="control">
             <label className="control-label">Root Note:</label>
             <span>
               <select value={this.props.instrument.rootNoteName} onChange={this.setRootNoteName}>
@@ -228,6 +229,10 @@ class SampleInstrumentEditor extends React.Component {
                 <option value="7">7</option>
               </select>
             </span>
+          </span>
+          <span className="control">
+            <label className="control-label">Playback:</label>
+            <TabStrip items={this.SAMPLE_LOOP_OPTIONS} selectedValue={this.props.instrument.loop} setSelectedValue={this.setLoop} />
           </span>
         </div>
         <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "filter" ? "" : " display-none")}>
