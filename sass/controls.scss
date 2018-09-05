@@ -32,6 +32,13 @@ input[type='range']::-moz-range-thumb {
   border: 0;
 }
 
+input[type='range']::-ms-thumb {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 0.75rem;
+  background: $black;
+}
+
 input[type='range']::-webkit-slider-thumb:hover,
 input[type='range']::-webkit-slider-thumb:active
 {
@@ -40,6 +47,12 @@ input[type='range']::-webkit-slider-thumb:active
 
 input[type='range']::-moz-range-thumb:hover,
 input[type='range']::-moz-range-thumb:active
+{
+  background: $orange;
+}
+
+input[type='range']::-ms-thumb:hover,
+input[type='range']::-ms-thumb:active
 {
   background: $orange;
 }
@@ -54,6 +67,13 @@ input[type='range']:disabled::-webkit-slider-thumb:active
 input[type='range']:disabled::-moz-range-thumb,
 input[type='range']:disabled::-moz-range-thumb:hover,
 input[type='range']:disabled::-moz-range-thumb:active
+ {
+  background: #ccc;
+}
+
+input[type='range']:disabled::-ms-thumb,
+input[type='range']:disabled::-ms-thumb:hover,
+input[type='range']:disabled::-ms-thumb:active
  {
   background: #ccc;
 }
