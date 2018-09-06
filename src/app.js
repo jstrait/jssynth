@@ -778,14 +778,9 @@ class App extends React.Component {
     const newTempo = parseInt(e.target.value, 10);
 
     this.setState((prevState, props) => ({
-      transport: {
-        enabled: prevState.transport.enabled,
-        playing: prevState.transport.playing,
-        amplitude: prevState.transport.amplitude,
+      transport: Object.assign({}, prevState.transport, {
         tempo: newTempo,
-        measure: prevState.transport.measure,
-        step: prevState.transport.step,
-      }
+      }),
     }));
     this.transport.setTempo(newTempo);
   };
@@ -794,14 +789,9 @@ class App extends React.Component {
     const newAmplitude = parseFloat(e.target.value);
 
     this.setState((prevState, props) => ({
-      transport: {
-        enabled: prevState.transport.enabled,
-        playing: prevState.transport.playing,
+      transport: Object.assign({}, prevState.transport, {
         amplitude: newAmplitude,
-        tempo: prevState.transport.tempo,
-        measure: prevState.transport.measure,
-        step: prevState.transport.step,
-      }
+      }),
     }));
     this.transport.setAmplitude(newAmplitude);
   };
@@ -811,14 +801,10 @@ class App extends React.Component {
     let newMeasure = Math.floor((newStep / 16) % 8);
 
     this.setState((prevState, props) => ({
-      transport: {
-        enabled: prevState.transport.enabled,
-        playing: prevState.transport.playing,
-        amplitude: prevState.transport.amplitude,
-        tempo: prevState.transport.tempo,
+      transport: Object.assign({}, prevState.transport, {
         measure: newMeasure,
         step: newStep,
-      }
+      }),
     }));
   };
 
@@ -829,28 +815,20 @@ class App extends React.Component {
       clearInterval(this.timeoutID);
 
       this.setState((prevState, props) => ({
-        transport: {
-          enabled: prevState.transport.enabled,
+        transport: Object.assign({}, prevState.transport, {
           playing: !(prevState.transport.playing),
-          amplitude: prevState.transport.amplitude,
-          tempo: prevState.transport.tempo,
           measure: undefined,
           step: undefined,
-        }
+        }),
       }));
     }
     else {
       this.timeoutID = setInterval(() => this.syncCurrentStep(), 15);
 
       this.setState((prevState, props) => ({
-        transport: {
-          enabled: prevState.transport.enabled,
+        transport: Object.assign({}, prevState.transport, {
           playing: !(prevState.transport.playing),
-          amplitude: prevState.transport.amplitude,
-          tempo: prevState.transport.tempo,
-          measure: prevState.transport.measure,
-          step: prevState.transport.step,
-        }
+        }),
       }));
     }
   };
