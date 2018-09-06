@@ -654,7 +654,6 @@ class App extends React.Component {
     this.patternByID = this.patternByID.bind(this);
     this.patternIndexByID = this.patternIndexByID.bind(this);
     this.patternsByTrackID = this.patternsByTrackID.bind(this);
-    this.setPatternName = this.setPatternName.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
@@ -840,17 +839,27 @@ class App extends React.Component {
   };
 
   setTrackName(id, newTrackName) {
-    let tracks = this.state.tracks;
-    let newTrackList = tracks.concat([]);
     let i;
+    let patternIndex = 1;
+    let newTrackList = this.state.tracks.concat([]);
+    let newPatternList = this.state.patterns.concat([]);
+
     for (i = 0; i < newTrackList.length; i++) {
       if (newTrackList[i].id == id) {
         newTrackList[i].name = newTrackName;
       }
     }
 
+    for (i = 0; i < newPatternList.length; i++) {
+      if (newPatternList[i].trackID == id) {
+        newPatternList[i].name = newTrackName + " " + patternIndex;
+        patternIndex += 1;
+      }
+    }
+
     this.setState({
-      tracks: newTrackList
+      tracks: newTrackList,
+      patterns: newPatternList,
     });
   };
 
@@ -1139,7 +1148,7 @@ class App extends React.Component {
   };
 
   removePattern(id) {
-    let i;
+    let i, patternCount = 1;
     let pattern = this.patternByID(id);
     let patternIndex = this.patternIndexByID(id);
     let newPatterns = this.state.patterns.concat([]);
@@ -1151,6 +1160,12 @@ class App extends React.Component {
     let newSelectedPatternID = this.state.selectedPatternID;
 
     newPatterns.splice(patternIndex, 1);
+    for (i = 0; i < newPatterns.length; i++) {
+      if (newPatterns[i].trackID === track.id) {
+        newPatterns[i].name = track.name + " " + patternCount;
+        patternCount += 1;
+      }
+    }
 
     newTrack.patterns = track.patterns.concat([]);
     for (i = 0; i < newTrack.patterns.length; i++) {
@@ -1250,11 +1265,6 @@ class App extends React.Component {
     this.setState({
       selectedPatternID: newSelectedPatternID,
     });
-  };
-
-  setPatternName(patternID, newName) {
-    this.patternByID(patternID).name = newName;
-    this.forceUpdate();
   };
 
   setSelectedPatternNoteIndex(rowIndex, noteIndex) {
@@ -1443,7 +1453,6 @@ class App extends React.Component {
                      updateInstrument={this.updateInstrument}
                      setBufferFromFile={this.setBufferFromFile}
                      setSelectedPattern={this.setSelectedPattern}
-                     setPatternName={this.setPatternName}
                      addPattern={this.addPattern}
                      duplicatePattern={this.duplicatePattern}
                      removePattern={this.removePattern}

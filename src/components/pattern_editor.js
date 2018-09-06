@@ -250,7 +250,6 @@ class PatternEditor extends React.Component {
       tipsAndTricksVisible: false,
     };
 
-    this.setPatternName = this.setPatternName.bind(this);
     this.addPattern = this.addPattern.bind(this);
     this.duplicatePattern = this.duplicatePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
@@ -258,10 +257,6 @@ class PatternEditor extends React.Component {
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
     this.eraseNote = this.eraseNote.bind(this);
     this.setNoteAsDash = this.setNoteAsDash.bind(this);
-  };
-
-  setPatternName(e) {
-    this.props.setPatternName(this.props.selectedPattern.id, e.target.value);
   };
 
   addPattern(e) {
@@ -337,7 +332,7 @@ class PatternEditor extends React.Component {
         <button className="button-full button-hollow" onClick={this.duplicatePattern}>Duplicate Pattern</button>
       </div>
 
-      <label>Name:</label> <input className="underlinedInput" value={this.props.selectedPattern.name} onChange={this.setPatternName} type="text" /> <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
+      <label>{this.props.selectedPattern.name}</label> &ndash; <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
       {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}
       <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
