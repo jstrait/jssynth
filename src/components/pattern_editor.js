@@ -333,8 +333,8 @@ class PatternEditor extends React.Component {
       </div>
 
       <label>{this.props.selectedPattern.name}</label> &ndash; <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
-      {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}
       <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
