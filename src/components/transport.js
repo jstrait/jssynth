@@ -36,7 +36,7 @@ class PlayButton extends React.Component {
   };
 
   render() {
-    return <button className={"mr1 round button-full button-hollow" + (this.props.playing ? " button-enabled" : "")} onClick={this.props.onClick}>►</button>;
+    return <button className={"mr1 round button-full button-hollow" + (this.props.playing ? " button-enabled" : "")}  onClick={this.props.onClick}><span className={"play-icon" + (this.props.playing ? " play-icon-enabled" : "")}>Play</span></button>;
   };
 };
 
