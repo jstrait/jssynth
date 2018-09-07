@@ -262,7 +262,7 @@ function SampleInstrument(config, bufferCollection) {
   return sampleInstrument;
 };
 
-function SynthInstrument(config, noiseBuffer) {
+function SynthInstrument(config, whiteNoiseBuffer, pinkNoiseBuffer) {
   var synthInstrument = BaseInstrument(config);
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
@@ -337,7 +337,15 @@ function SynthInstrument(config, noiseBuffer) {
     // Noise
     noiseGain = synthInstrument.buildGain(audioContext, config.noise.amplitude);
     noise = audioContext.createBufferSource();
-    noise.buffer = noiseBuffer;
+    if (config.noise.type === "white") {
+      noise.buffer = whiteNoiseBuffer;
+    }
+    else if (config.noise.type === "pink") {
+      noise.buffer = pinkNoiseBuffer;
+    }
+    else {
+      console.log("Error: Invalid noise type '" + config.noise.type + "'");
+    }
     noise.loop = true;
     noise.connect(noiseGain);
     noiseGain.connect(filter);
@@ -710,13 +718,38 @@ function Transport(songPlayer, stopCallback) {
     playing = false;
   };
 
-  var buildNoiseBuffer = function() {
+  var buildWhiteNoiseBuffer = function() {
     var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
     var noiseChannel = noiseBuffer.getChannelData(0);
     var i;
 
     for (i = 0; i < noiseChannel.length; i++) {
       noiseChannel[i] = (Math.random() * 2.0) - 1.0;
+    }
+
+    return noiseBuffer;
+  };
+
+  var buildPinkNoiseBuffer = function() {
+    var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
+    var noiseChannel = noiseBuffer.getChannelData(0);
+    var white;
+    var i;
+
+    // Adapted from https://noisehack.com/generate-noise-web-audio-api/, https://github.com/zacharydenton/noise.js
+    var b0, b1, b2, b3, b4, b5, b6;
+    b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
+    for (i = 0; i < noiseChannel.length; i++) {
+      white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      noiseChannel[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+      noiseChannel[i] *= 0.11; // (roughly) compensate for gain
+      b6 = white * 0.115926;
     }
 
     return noiseBuffer;
@@ -806,7 +839,8 @@ function Transport(songPlayer, stopCallback) {
   setTempo(100);
   setAmplitude(0.25);
   bufferCollection = BufferCollection(audioContext);
-  bufferCollection.addBuffer("noise", buildNoiseBuffer());
+  bufferCollection.addBuffer("white-noise", buildWhiteNoiseBuffer());
+  bufferCollection.addBuffer("pink-noise", buildPinkNoiseBuffer());
 
 
   return {

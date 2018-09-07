@@ -361,6 +361,11 @@ class SynthInstrumentEditor extends React.Component {
       {label: "+2", value: 2},
     ];
 
+    this.NOISE_OPTIONS = [
+      {label: "White", value: "white"},
+      {label: "Pink", value: "pink"},
+    ];
+
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setOscillator1Waveform = this.setOscillator1Waveform.bind(this);
     this.setOscillator1Octave = this.setOscillator1Octave.bind(this);
@@ -370,6 +375,7 @@ class SynthInstrumentEditor extends React.Component {
     this.setOscillator2Detune = this.setOscillator2Detune.bind(this);
     this.setOscillator2Amplitude = this.setOscillator2Amplitude.bind(this);
     this.setNoiseAmplitude = this.setNoiseAmplitude.bind(this);
+    this.setNoiseType = this.setNoiseType.bind(this);
     this.setLFOAmplitude = this.setLFOAmplitude.bind(this);
     this.setLFOFrequency = this.setLFOFrequency.bind(this);
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
@@ -425,6 +431,10 @@ class SynthInstrumentEditor extends React.Component {
 
   setNoiseAmplitude(e) {
     this.props.updateInstrument(this.props.instrument.id, "noiseAmplitude", parseFloat(e.target.value));
+  };
+
+  setNoiseType(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "noiseType", newValue);
   };
 
   setLFOAmplitude(e) {
@@ -557,6 +567,10 @@ class SynthInstrumentEditor extends React.Component {
               <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.noiseAmplitude} onChange={this.setNoiseAmplitude} />
               <span>{(this.props.instrument.noiseAmplitude * 100).toFixed(0)}%</span>
             </span>
+          </span>
+          <span className="control">
+            <label className="control-label indented">Type:</label>
+            <TabStrip items={this.NOISE_OPTIONS} selectedValue={this.props.instrument.noiseType} setSelectedValue={this.setNoiseType} />
           </span>
         </div>
 

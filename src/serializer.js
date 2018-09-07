@@ -23,6 +23,7 @@ class Serializer {
       ],
       noise: {
         amplitude: instrument.noiseAmplitude,
+        type: instrument.noiseType,
       },
       lfo: {
         waveform:  instrument.lfoWaveform,
@@ -53,7 +54,7 @@ class Serializer {
       },
     };
 
-    return new JSSynth.SynthInstrument(serializedConfig, bufferCollection.getBuffer("noise"));
+    return new JSSynth.SynthInstrument(serializedConfig, bufferCollection.getBuffer("white-noise"), bufferCollection.getBuffer("pink-noise"));
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
