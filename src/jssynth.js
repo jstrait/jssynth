@@ -356,8 +356,8 @@ function SynthInstrument(config, noiseBuffer) {
       pitchLfoOscillator = synthInstrument.buildOscillator(audioContext, config.lfo.waveform, config.lfo.frequency, 0);
       pitchLfoGain = synthInstrument.buildGain(audioContext, config.lfo.amplitude);
       pitchLfoOscillator.connect(pitchLfoGain);
-      pitchLfoGain.connect(oscillator1.frequency);
-      pitchLfoGain.connect(oscillator2.frequency);
+      pitchLfoGain.connect(oscillator1.detune);
+      pitchLfoGain.connect(oscillator2.detune);
       pitchLfoOscillator.start(gateOnTime);
     }
 

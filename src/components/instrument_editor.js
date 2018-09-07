@@ -667,8 +667,8 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Amount:</label>
               <span className="annotated-input">
-                <input type="range" min="0" max="100" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
-                <span>{this.props.instrument.lfoAmplitude}Hz</span>
+                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
+                <span>{this.props.instrument.lfoAmplitude}c</span>
               </span>
             </span>
             <span className="control">
