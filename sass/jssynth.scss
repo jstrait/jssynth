@@ -267,9 +267,8 @@ a {
 .note-box {
   display: block;
   height: 2.0rem;
-  width: 100%;
+  width: calc(100% - 2px);
   text-align: center;
-  box-sizing: border-box;
   border: 1px solid $border-color;
   margin: 1px;
   font-size: 1.0rem;
@@ -279,6 +278,7 @@ a {
 .note-box-focused {
   background: $light-orange;
   border: 2px solid $orange;
+  margin: 0;
 }
 
 .note-box-invalid {
