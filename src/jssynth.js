@@ -232,6 +232,7 @@ function SampleInstrument(config, bufferCollection) {
 
       filterLfoOscillator = sampleInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
+      filterLfoOscillator.start(gateOnTime);
     }
     else if (config.filter.mode === "envelope") {
       calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
@@ -247,10 +248,6 @@ function SampleInstrument(config, bufferCollection) {
     }
 
     filter.connect(masterGain);
-
-    if (config.filter.mode === "lfo") {
-      filterLfoOscillator.start(gateOnTime);
-    }
 
     // Audio Buffer
     audioBufferSourceNode = buildBufferSourceNode(audioContext, filter, note);
@@ -307,6 +304,7 @@ function SynthInstrument(config, noiseBuffer) {
 
       filterLfoOscillator = synthInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
+      filterLfoOscillator.start(gateOnTime);
     }
     else if (config.filter.mode === "envelope") {
       calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
@@ -332,6 +330,7 @@ function SynthInstrument(config, noiseBuffer) {
                                                   config.oscillators[0].detune);
     oscillator1.connect(oscillator1Gain);
     oscillator1Gain.connect(filter);
+    oscillator1.start(gateOnTime);
 
     // Secondary sound generator
     oscillator2Gain = synthInstrument.buildGain(audioContext, config.oscillators[1].amplitude);
@@ -341,6 +340,7 @@ function SynthInstrument(config, noiseBuffer) {
                                                   config.oscillators[1].detune);
     oscillator2.connect(oscillator2Gain);
     oscillator2Gain.connect(filter);
+    oscillator2.start(gateOnTime);
 
     // Noise
     noiseGain = synthInstrument.buildGain(audioContext, config.noise.amplitude);
@@ -349,7 +349,7 @@ function SynthInstrument(config, noiseBuffer) {
     noise.loop = true;
     noise.connect(noiseGain);
     noiseGain.connect(filter);
-
+    noise.start(gateOnTime);
 
     // LFO for base sound
     if (config.lfo.frequency > 0.0 && config.lfo.amplitude > 0.0) {
@@ -359,14 +359,6 @@ function SynthInstrument(config, noiseBuffer) {
       pitchLfoGain.connect(oscillator1.detune);
       pitchLfoGain.connect(oscillator2.detune);
       pitchLfoOscillator.start(gateOnTime);
-    }
-
-
-    oscillator1.start(gateOnTime);
-    oscillator2.start(gateOnTime);
-    noise.start(gateOnTime);
-    if (config.filter.mode === "lfo") {
-      filterLfoOscillator.start(gateOnTime);
     }
 
     return {
