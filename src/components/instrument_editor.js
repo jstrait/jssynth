@@ -69,11 +69,6 @@ class SampleInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
-    this.FILTER_MODULATION_OPTIONS = [
-      {label: "Wobble", value: "lfo"},
-      {label: "Envelope", value: "envelope"},
-    ];
-
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -82,7 +77,6 @@ class SampleInstrumentEditor extends React.Component {
     this.setRootNoteOctave = this.setRootNoteOctave.bind(this);
     this.setFilterCutoff = this.setFilterCutoff.bind(this);
     this.setFilterResonance = this.setFilterResonance.bind(this);
-    this.setFilterModulator = this.setFilterModulator.bind(this);
     this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
@@ -133,10 +127,6 @@ class SampleInstrumentEditor extends React.Component {
 
   setFilterResonance(e) {
     this.props.updateInstrument(this.props.instrument.id, "filterResonance", parseInt(e.target.value, 10));
-  };
-
-  setFilterModulator(newValue) {
-    this.props.updateInstrument(this.props.instrument.id, "filterModulator", newValue);
   };
 
   setFilterLFOAmplitude(e) {
@@ -251,33 +241,8 @@ class SampleInstrumentEditor extends React.Component {
               <span>{this.props.instrument.filterResonance}</span>
             </span>
           </span>
-          <span className="control">
-            <label className="control-label">Modulation:</label>
-            <TabStrip items={this.FILTER_MODULATION_OPTIONS} selectedValue={this.props.instrument.filterModulator} setSelectedValue={this.setFilterModulator} />
-          </span>
-          <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
-            <span className="block mt1 lightText">Cutoff Wobble:</span>
-            <span className="control">
-              <label className="control-label indented">Amount:</label>
-              <span className="annotated-input">
-                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-                <span>{this.props.instrument.filterLFOAmplitude}c</span>
-              </span>
-            </span>
-            <span className="control">
-              <label className="control-label indented">Rate:</label>
-              <span className="annotated-input">
-                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
-              </span>
-            </span>
-            <span className="control">
-              <label className="control-label indented">Waveform:</label>
-              <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.filterLFOWaveform} setSelectedValue={this.setFilterLFOWaveForm} />
-            </span>
-          </span>
-          <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
-            <span className="block mt1 lightText">Cutoff Envelope:</span>
+          <span>
+            <span className="block lightText">Cutoff Envelope:</span>
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <span className="annotated-input">
@@ -312,6 +277,27 @@ class SampleInstrumentEditor extends React.Component {
                 <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
                 <span>{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
               </span>
+            </span>
+          </span>
+          <span>
+            <span className="block lightText">Cutoff Wobble:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{this.props.instrument.filterLFOAmplitude}c</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Rate:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
+                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Waveform:</label>
+              <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.filterLFOWaveform} setSelectedValue={this.setFilterLFOWaveForm} />
             </span>
           </span>
         </div>
@@ -375,11 +361,6 @@ class SynthInstrumentEditor extends React.Component {
       {label: "+2", value: 2},
     ];
 
-    this.FILTER_MODULATION_OPTIONS = [
-      {label: "Wobble", value: "lfo"},
-      {label: "Envelope", value: "envelope"},
-    ];
-
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setOscillator1Waveform = this.setOscillator1Waveform.bind(this);
     this.setOscillator1Octave = this.setOscillator1Octave.bind(this);
@@ -394,7 +375,6 @@ class SynthInstrumentEditor extends React.Component {
     this.setLFOWaveForm = this.setLFOWaveForm.bind(this);
     this.setFilterCutoff = this.setFilterCutoff.bind(this);
     this.setFilterResonance = this.setFilterResonance.bind(this);
-    this.setFilterModulator = this.setFilterModulator.bind(this);
     this.setFilterLFOAmplitude = this.setFilterLFOAmplitude.bind(this);
     this.setFilterLFOFrequency = this.setFilterLFOFrequency.bind(this);
     this.setFilterLFOWaveForm = this.setFilterLFOWaveForm.bind(this);
@@ -596,33 +576,8 @@ class SynthInstrumentEditor extends React.Component {
               <span>{this.props.instrument.filterResonance}</span>
             </span>
           </span>
-          <span className="control">
-            <label className="control-label">Modulation:</label>
-            <TabStrip items={this.FILTER_MODULATION_OPTIONS} selectedValue={this.props.instrument.filterModulator} setSelectedValue={this.setFilterModulator} />
-          </span>
-          <span className={(this.props.instrument.filterModulator === "lfo" ? "" : "display-none" )}>
-            <span className="block mt1 lightText">Cutoff Wobble:</span>
-            <span className="control">
-              <label className="control-label indented">Amount:</label>
-              <span className="annotated-input">
-                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-                <span>{this.props.instrument.filterLFOAmplitude}c</span>
-              </span>
-            </span>
-            <span className="control">
-              <label className="control-label indented">Rate:</label>
-              <span className="annotated-input">
-                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
-              </span>
-            </span>
-            <span className="control">
-              <label className="control-label indented">Waveform:</label>
-              <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.filterLFOWaveform} setSelectedValue={this.setFilterLFOWaveForm} />
-            </span>
-          </span>
-          <span className={(this.props.instrument.filterModulator === "lfo" ? "display-none" : "" )}>
-            <span className="block mt1 lightText">Cutoff Envelope:</span>
+          <span>
+            <span className="block lightText">Cutoff Envelope:</span>
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <span className="annotated-input">
@@ -657,6 +612,27 @@ class SynthInstrumentEditor extends React.Component {
                 <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
                 <span>{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
               </span>
+            </span>
+          </span>
+          <span>
+            <span className="block lightText">Cutoff Wobble:</span>
+            <span className="control">
+              <label className="control-label indented">Amount:</label>
+              <span className="annotated-input">
+                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{this.props.instrument.filterLFOAmplitude}c</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Rate:</label>
+              <span className="annotated-input">
+                <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
+                <span>{this.props.instrument.filterLFOFrequency}Hz</span>
+              </span>
+            </span>
+            <span className="control">
+              <label className="control-label indented">Waveform:</label>
+              <TabStrip items={this.WAVEFORM_OPTIONS} selectedValue={this.props.instrument.filterLFOWaveform} setSelectedValue={this.setFilterLFOWaveForm} />
             </span>
           </span>
         </div>

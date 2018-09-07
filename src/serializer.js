@@ -32,7 +32,6 @@ class Serializer {
       filter: {
         cutoff:    instrument.filterCutoff,
         resonance: instrument.filterResonance,
-        mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
           frequency: instrument.filterLFOFrequency,
@@ -66,7 +65,6 @@ class Serializer {
       filter: {
         cutoff:    instrument.filterCutoff,
         resonance: instrument.filterResonance,
-        mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
           frequency: instrument.filterLFOFrequency,
