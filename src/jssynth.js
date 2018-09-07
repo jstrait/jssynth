@@ -228,7 +228,7 @@ function SampleInstrument(config, bufferCollection) {
 
     if (config.filter.mode === "lfo") {
       filterLfoGain = sampleInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
-      filterLfoGain.connect(filter.frequency);
+      filterLfoGain.connect(filter.detune);
 
       filterLfoOscillator = sampleInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);
@@ -300,7 +300,7 @@ function SynthInstrument(config, noiseBuffer) {
 
     if (config.filter.mode === "lfo") {
       filterLfoGain = synthInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
-      filterLfoGain.connect(filter.frequency);
+      filterLfoGain.connect(filter.detune);
 
       filterLfoOscillator = synthInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
       filterLfoOscillator.connect(filterLfoGain);

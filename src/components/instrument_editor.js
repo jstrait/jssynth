@@ -260,8 +260,8 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-                <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{this.props.instrument.filterLFOAmplitude}c</span>
               </span>
             </span>
             <span className="control">
@@ -605,8 +605,8 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <span className="annotated-input">
-                <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-                <span>{(this.props.instrument.filterLFOAmplitude * 100).toFixed(0)}%</span>
+                <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
+                <span>{this.props.instrument.filterLFOAmplitude}c</span>
               </span>
             </span>
             <span className="control">

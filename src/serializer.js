@@ -6,7 +6,6 @@ class Serializer {
   constructor() {};
 
   static serializeSynthInstrument(instrument, bufferCollection) {
-    let filterCutoff = instrument.filterCutoff;
     let serializedConfig = {
       oscillators: [
         {
@@ -31,13 +30,13 @@ class Serializer {
         amplitude: instrument.lfoAmplitude,
       },
       filter: {
-        cutoff:    filterCutoff,
+        cutoff:    instrument.filterCutoff,
         resonance: instrument.filterResonance,
         mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
           frequency: instrument.filterLFOFrequency,
-          amplitude: instrument.filterLFOAmplitude * filterCutoff,
+          amplitude: instrument.filterLFOAmplitude,
         },
         envelope: {
           amount:            instrument.filterEnvelopeAmount,
@@ -59,21 +58,19 @@ class Serializer {
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
-    let filterCutoff = instrument.filterCutoff;
-
     let serializedConfig = {
       sample: instrument.sample,
       loop: instrument.loop,
       rootNoteName: instrument.rootNoteName,
       rootNoteOctave: instrument.rootNoteOctave,
       filter: {
-        cutoff:    filterCutoff,
+        cutoff:    instrument.filterCutoff,
         resonance: instrument.filterResonance,
         mode: instrument.filterModulator,
         lfo: {
           waveform:  instrument.filterLFOWaveform,
           frequency: instrument.filterLFOFrequency,
-          amplitude: instrument.filterLFOAmplitude * filterCutoff,
+          amplitude: instrument.filterLFOAmplitude,
         },
         envelope: {
           amount:            instrument.filterEnvelopeAmount,
