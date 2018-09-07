@@ -128,13 +128,11 @@ var BaseInstrument = function(config) {
     var safeFilterRelease;
 
     // Filter Envelope Release
-    if (config.filter.mode === "envelope") {
-      safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.releaseTime);
-      if (isInteractive) {
-        noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
-      }
-      noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
+    safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.releaseTime);
+    if (isInteractive) {
+      noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
     }
+    noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
 
     // Gain Envelope Release
     safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.releaseTime);
@@ -226,25 +224,22 @@ function SampleInstrument(config, bufferCollection) {
     // Filter
     filter = sampleInstrument.buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
-    if (config.filter.mode === "lfo") {
-      filterLfoGain = sampleInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
-      filterLfoGain.connect(filter.detune);
+    filterLfoGain = sampleInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
+    filterLfoGain.connect(filter.detune);
 
-      filterLfoOscillator = sampleInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
-      filterLfoOscillator.connect(filterLfoGain);
-      filterLfoOscillator.start(gateOnTime);
-    }
-    else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
+    filterLfoOscillator = sampleInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+    filterLfoOscillator.connect(filterLfoGain);
+    filterLfoOscillator.start(gateOnTime);
 
-      // Envelope Attack
-      filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+    calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
-      // Envelope Decay/Sustain
-      if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
-      }
+    // Envelope Attack
+    filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
+    filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+
+    // Envelope Decay/Sustain
+    if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
+      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
     }
 
     filter.connect(masterGain);
@@ -298,25 +293,22 @@ function SynthInstrument(config, noiseBuffer) {
     // Filter
     filter = synthInstrument.buildFilter(audioContext, config.filter.cutoff, config.filter.resonance);
 
-    if (config.filter.mode === "lfo") {
-      filterLfoGain = synthInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
-      filterLfoGain.connect(filter.detune);
+    filterLfoGain = synthInstrument.buildGain(audioContext, config.filter.lfo.amplitude);
+    filterLfoGain.connect(filter.detune);
 
-      filterLfoOscillator = synthInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
-      filterLfoOscillator.connect(filterLfoGain);
-      filterLfoOscillator.start(gateOnTime);
-    }
-    else if (config.filter.mode === "envelope") {
-      calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
+    filterLfoOscillator = synthInstrument.buildOscillator(audioContext, config.filter.lfo.waveform, config.filter.lfo.frequency, 0);
+    filterLfoOscillator.connect(filterLfoGain);
+    filterLfoOscillator.start(gateOnTime);
 
-      // Envelope Attack
-      filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
-      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+    calculatedFilterEnvelope = Envelope(config.filter.envelope.amount, config.filter.envelope, gateOnTime, gateOffTime);
 
-      // Envelope Decay/Sustain
-      if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
-        filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
-      }
+    // Envelope Attack
+    filter.frequency.setValueAtTime(config.filter.cutoff, envelopeAttackStartTime);
+    filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.attackEndAmplitude, calculatedFilterEnvelope.attackEndTime);
+
+    // Envelope Decay/Sustain
+    if (calculatedFilterEnvelope.attackEndTime < gateOffTime) {
+      filter.frequency.linearRampToValueAtTime(config.filter.cutoff + calculatedFilterEnvelope.decayEndAmplitude, calculatedFilterEnvelope.decayEndTime);
     }
 
     filter.connect(masterGain);
