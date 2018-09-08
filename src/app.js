@@ -671,7 +671,7 @@ class App extends React.Component {
 
     this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
     if (this.transport === false) {
-      this.state.loadingStatusMessage = "Your browser doesn't appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.";
+      this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
     }
     else {
       this.transport.setTempo(this.state.transport.tempo);
@@ -1411,7 +1411,7 @@ class App extends React.Component {
       <div className="full-width flex flex-column flex-align-center flex-justify-center" style={{"minHeight": "100vh"}}>
         <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
         <span className="lightText">Web Synthesizer</span>
-        <span className="mt1">{this.state.loadingStatusMessage}</span>
+        <span className="mt1 ml1 mr1">{this.state.loadingStatusMessage}</span>
       </div>
       }
       {isLoaded === true &&
