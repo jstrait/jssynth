@@ -33,7 +33,6 @@ class App extends React.Component {
       activeKeyboardNotes: [],
       activeNoteContexts: [],
       transport: {
-        enabled: true,
         playing: false,
         amplitude: 0.75,
         tempo: 114,
@@ -623,9 +622,6 @@ class App extends React.Component {
     this.timeoutID = undefined;
     this.songPlayer = JSSynth.SongPlayer(this.state.measureCount);
     this.offlineSongPlayer = JSSynth.SongPlayer(this.state.measureCount);
-    this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
-    this.transport.setTempo(this.state.transport.tempo);
-    this.transport.setAmplitude(this.state.transport.amplitude);
 
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateAmplitude = this.updateAmplitude.bind(this);
@@ -672,16 +668,26 @@ class App extends React.Component {
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
 
-    this.transport.bufferCollection.addBuffersFromURLs(
-      bufferConfigs,
-      () => {
-        this.setState({isLoaded: true});
-        this.syncTransportNotes();
-      },
-      () => {
-        this.setState({loadingStatusMessage: "An error occurred while trying to start the JS-130"});
-      }
-    );
+
+    this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
+    if (this.transport === false) {
+      this.state.loadingStatusMessage = "Your browser doesn't appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.";
+    }
+    else {
+      this.transport.setTempo(this.state.transport.tempo);
+      this.transport.setAmplitude(this.state.transport.amplitude);
+
+      this.transport.bufferCollection.addBuffersFromURLs(
+        bufferConfigs,
+        () => {
+          this.setState({isLoaded: true});
+          this.syncTransportNotes();
+        },
+        () => {
+          this.setState({loadingStatusMessage: "An error occurred while trying to start the JS-130"});
+        }
+      );
+    }
   };
 
   itemByID(array, targetID) {
@@ -1415,8 +1421,7 @@ class App extends React.Component {
             <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
             <span className="lightText">Web Synthesizer</span>
           </div>
-          <Transport enabled={this.state.transport.enabled}
-                     playing={this.state.transport.playing}
+          <Transport playing={this.state.transport.playing}
                      amplitude={this.state.transport.amplitude}
                      tempo={this.state.transport.tempo}
                      togglePlaying={this.togglePlaying}

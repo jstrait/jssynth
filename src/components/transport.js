@@ -40,42 +40,20 @@ class PlayButton extends React.Component {
   };
 };
 
-class TransportError extends React.Component {
-  constructor(props) {
-    super(props);
-  };
-
-  render() {
-    return <div className="transport-error ml2 mr2">
-      <span className="block bold red"><span className="round white bg-red inline-block center mr-half width-1 lh3">!</span>Playback not support in your browser</span>
-      <span className="block">Try a recent version of Chrome, Safari, or Firefox.</span>
-    </div>;
-  };
-};
-
 class Transport extends React.Component {
   constructor(props) {
     super(props);
   };
 
   render() {
-    let transportContent;
-
-    if (this.props.enabled) {
-      transportContent = <div className="transport-inner flex flex-align-center">
+    return <div id="transport" className="flex flex-uniform-size flex-align-center">
+      <div className="transport-inner flex flex-align-center">
         <PlayButton playing={this.props.playing} onClick={this.props.togglePlaying} />
         <span className="transport-controls flex-uniform-size inline-block">
           <TempoSlider tempo={this.props.tempo} onChange={this.props.updateTempo} />
           <AmplitudeSlider amplitude={this.props.amplitude} onChange={this.props.updateAmplitude} />
         </span>
-      </div>;
-    }
-    else {
-      transportContent = <TransportError />
-    }
-
-    return <div id="transport" className="flex flex-uniform-size flex-align-center">
-      {transportContent}
+      </div>
     </div>;
   };
 };
