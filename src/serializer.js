@@ -161,7 +161,7 @@ class Serializer {
   static serialize(measureCount, tracks, instruments, patterns, bufferCollection) {
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
-    const trackVolumeMultiplier = 1 / tracks.length;
+    const trackVolumeMultiplier = 1 / Math.max(8, tracks.length);
 
     let i, j;
     let serializedInstrument;
