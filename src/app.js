@@ -1337,7 +1337,8 @@ class App extends React.Component {
     let newNotes = [];
     let newNoteContexts = [];
     let indicesToRemove = [];
-    let instrumentID = this.trackByID(this.state.selectedTrackID).instrumentID;
+    let currentTrack = this.trackByID(this.state.selectedTrackID);
+    let instrumentID = currentTrack.instrumentID;
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.transport.bufferCollection)
 
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
@@ -1364,7 +1365,7 @@ class App extends React.Component {
         }
 
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
-        noteContext = this.transport.playImmediateNote(instrument, note, 1.0);
+        noteContext = this.transport.playImmediateNote(instrument, note, currentTrack.volume * (1 / Math.max(8, this.state.tracks.length)));
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);
