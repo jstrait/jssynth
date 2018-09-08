@@ -96,8 +96,6 @@
 .white { color: $white; }
 
 @media (min-width: 769px) {
-  .pl1-l { padding-left: $size-1; }
-  .pr1-l { padding-right: $size-1; }
   .block-l { display: block; }
   .display-none-l { display: none; }
 }
