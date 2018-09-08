@@ -474,7 +474,7 @@ var SequenceParser = {
       else {
         noteName = noteString.slice(0, -1);
         octave = noteString.slice(-1);
-        sequence[i] = new Note(noteName, octave, noteDuration);
+        sequence[i] = Note(noteName, octave, noteDuration);
         noteDuration = 1;
       }
     }
@@ -897,7 +897,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     }
 
     audioContext.oncomplete = function(e) {
-      var waveWriter = new WaveWriter();
+      var waveWriter = WaveWriter();
 
       var sampleData = e.renderedBuffer.getChannelData(0);
 

@@ -621,9 +621,9 @@ class App extends React.Component {
     // Transport
     let stopCallback = function() { };
     this.timeoutID = undefined;
-    this.songPlayer = new JSSynth.SongPlayer(this.state.measureCount);
-    this.offlineSongPlayer = new JSSynth.SongPlayer(this.state.measureCount);
-    this.transport = new JSSynth.Transport(this.songPlayer, stopCallback);
+    this.songPlayer = JSSynth.SongPlayer(this.state.measureCount);
+    this.offlineSongPlayer = JSSynth.SongPlayer(this.state.measureCount);
+    this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
     this.transport.setTempo(this.state.transport.tempo);
     this.transport.setAmplitude(this.state.transport.amplitude);
 
