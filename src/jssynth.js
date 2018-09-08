@@ -790,8 +790,8 @@ function Transport(songPlayer, stopCallback) {
     return currentStep;
   };
 
-  var playImmediateNote = function(instrument, note) {
-    return instrument.gateOn(audioContext, masterGain, note, 1.0, audioContext.currentTime, Number.POSITIVE_INFINITY);
+  var playImmediateNote = function(instrument, note, amplitude) {
+    return instrument.gateOn(audioContext, masterGain, note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 
   var stopNote = function(instrument, noteContext) {
