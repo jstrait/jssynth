@@ -684,7 +684,7 @@ class App extends React.Component {
           this.syncTransportNotes();
         },
         () => {
-          this.setState({loadingStatusMessage: "An error occurred while trying to start the JS-130"});
+          this.setState({loadingStatusMessage: "An error occurred while starting up"});
         }
       );
     }
