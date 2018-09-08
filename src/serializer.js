@@ -158,16 +158,10 @@ class Serializer {
     return patterns;
   };
 
-  static unmutedTrackCounter(count, currentTrack) {
-    return (currentTrack.muted) ? count : (count + 1);
-  };
-
   static serialize(measureCount, tracks, instruments, patterns, bufferCollection) {
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
-
-    const unmutedTrackCount = tracks.reduce(Serializer.unmutedTrackCounter, 0);
-    const trackVolumeMultiplier = 1 / unmutedTrackCount;
+    const trackVolumeMultiplier = 1 / tracks.length;
 
     let i, j;
     let serializedInstrument;
