@@ -194,7 +194,7 @@ class Keyboard extends React.Component {
 
     this.touchHandler(this.touches);
 
-    // Prevent page from scrolling vertically while dragging on keyboard
+    // Prevent page from scrolling vertically or zooming in while dragging on keyboard
     e.preventDefault();
   };
 
@@ -204,12 +204,26 @@ class Keyboard extends React.Component {
 
   componentDidMount() {
     this.keyboardContainer.scrollLeft = (this.keyboardContainer.scrollWidth / 2) - (this.keyboardContainer.clientWidth / 2);
+
+    // This event handler is added manually to the actual DOM element, instead of using the
+    // normal React way of attaching events because React seems to have a bug that prevents
+    // preventDefault() from working correctly in a "touchmove" handler (as of v16.4.2).
+    // The preventDefault() is needed to prevent the "pinch zoom into page" gesture from
+    // activating when using the keyboard on iOS.
+    // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
+    // https://github.com/facebook/react/issues/9809.
+    this.keyboardOuterContainer.addEventListener("touchmove", this.touchMove, false);
+  };
+
+  componentWillUnmount() {
+    const removeEvent = keyboardOuterContainer.removeEventListener || keyboardOuterContainer.detachEvent;
+    removeEvent.removeEvent("touchmove", this.touchMove);
   };
 
   render() {
     let rootNote = this.props.rootNoteName + this.props.rootNoteOctave;
 
-    return <div className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd} onTouchMove={this.touchMove}>
+    return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
