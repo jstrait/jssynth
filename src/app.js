@@ -632,7 +632,6 @@ class App extends React.Component {
     this.updateTempo = this.updateTempo.bind(this);
     this.setDownloadFileName = this.setDownloadFileName.bind(this);
     this.export = this.export.bind(this);
-    this.syncTransportNotes();
 
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
