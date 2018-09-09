@@ -593,10 +593,10 @@ class SynthInstrumentEditor extends React.Component {
           <span>
             <span className="block lightText">Cutoff Envelope:</span>
             <span className="control">
-              <label className="control-label indented">Amount:</label>
+              <label className="control-label indented">Attack Target:</label>
               <span className="annotated-input">
                 <input type="range" min="0" max="9950" step="50" value={this.props.instrument.filterEnvelopeAmount} onChange={this.setFilterEnvelopeAmount} />
-                <span>{this.props.instrument.filterEnvelopeAmount}Hz</span>
+                <span>{this.props.instrument.filterEnvelopeAmount + this.props.instrument.filterCutoff}Hz</span>
               </span>
             </span>
             <span className="control">
