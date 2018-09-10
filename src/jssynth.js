@@ -865,25 +865,6 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
   //       calculate a real value for this.
   var MAX_RELEASE_TIME = 0.3;
 
-
-  var calculateMaxSampleValue = function(sampleData) {
-    var absoluteSampleValue;
-    var maxSampleValue = 0;
-    var i;
-
-    // Using Math.max() can result in 'Maximum call stack size exceeded' errors,
-    // and Float32Array doesn't appear to support forEach() in Safari 9
-    for (i = 0; i < sampleData.length; i++) {
-      absoluteSampleValue = Math.abs(sampleData[i]);
-
-      if (absoluteSampleValue > maxSampleValue) {
-        maxSampleValue = absoluteSampleValue;
-      }
-    }
-
-    return maxSampleValue;
-  };
-
   var buildOfflineAudioContext = function() {
     var playbackTime = (songPlayer.stepCount() * STEP_INTERVAL) + MAX_RELEASE_TIME;
     var sampleCount = SAMPLE_RATE * playbackTime;
@@ -900,10 +881,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
       var waveWriter = WaveWriter();
 
       var sampleData = e.renderedBuffer.getChannelData(0);
-
-      var maxSampleValue = calculateMaxSampleValue(sampleData);
-      var scaleFactor = (maxSampleValue > 1.0) ? (1.0 / maxSampleValue) : 1.0;
-      var outputView = waveWriter.write(sampleData, scaleFactor);
+      var outputView = waveWriter.write(sampleData);
       var blob = new Blob([outputView], { type: "audio/wav" });
 
       completeCallback(blob);
@@ -943,17 +921,18 @@ function WaveWriter() {
   var BITS_PER_SAMPLE = 16;
   var BYTES_PER_SAMPLE = 2;
   var SAMPLE_RATE = 44100;
+  var MAX_SAMPLE_VALUE = 32767;
 
   var BLOCK_ALIGN = BYTES_PER_SAMPLE * NUM_CHANNELS;
   var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
 
   var WAVEFILE_HEADER_BYTE_COUNT = 44;
 
-  var write = function(rawFloat32SampleData, scaleFactor) {
+  var write = function(rawFloat32SampleData) {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
-    var maxSampleValue;
+    var constrainedSample;
     var i;
 
     outputView.setUint8(  0, "R".charCodeAt(0), LITTLE_ENDIAN);
@@ -982,11 +961,11 @@ function WaveWriter() {
     outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
-    maxSampleValue = scaleFactor * 32767.0;
     // Float32Array doesn't appear to support forEach() in Safari 9
     for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
-      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), rawFloat32SampleData[i] * maxSampleValue, LITTLE_ENDIAN);
+      constrainedSample = Math.max(Math.min(rawFloat32SampleData[i], 1.0), -1.0);
+      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), constrainedSample * MAX_SAMPLE_VALUE, LITTLE_ENDIAN);
     }
 
     return outputView;
