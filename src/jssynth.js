@@ -607,12 +607,10 @@ function SongPlayer(measureCount) {
 
     while (currentTime < endTime) {
       incomingNotes = notes[stepIndex];
-      if (incomingNotes) {
-        incomingNotes.forEach(function(note) {
-          noteTimeDuration = stepDuration * note.note().stepDuration();
-          note.instrument().scheduleNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
-        });
-      }
+      incomingNotes.forEach(function(note) {
+        noteTimeDuration = stepDuration * note.note().stepDuration();
+        note.instrument().scheduleNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+      });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
 
