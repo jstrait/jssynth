@@ -177,6 +177,7 @@ var BaseInstrument = function(config) {
     buildGain: buildGain,
     buildFilter: buildFilter,
     scheduleNote: scheduleNote,
+    config: function() { return config; },
   };
 
   return baseInstrument;
@@ -631,6 +632,30 @@ function SongPlayer(measureCount) {
     return scheduledSteps;
   };
 
+  var playbackTime = function(stepDuration) {
+    var note, noteTimeDuration, noteEndTime;
+    var i, j;
+
+    var noteStartTime = 0.0;
+    var maxEndTime = 0.0;
+
+    for (i = 0; i < notes.length; i++) {
+      for(j = 0; j < notes[i].length; j++) {
+        note = notes[i][j];
+        noteTimeDuration = stepDuration * note.note().stepDuration();
+        noteEndTime = noteStartTime + noteTimeDuration + note.instrument().config().envelope.releaseTime;
+
+        if (noteEndTime > maxEndTime) {
+          maxEndTime = noteEndTime;
+        }
+      }
+
+      noteStartTime += stepDuration;
+    }
+
+    return maxEndTime;
+  };
+
 
   reset();
 
@@ -641,6 +666,7 @@ function SongPlayer(measureCount) {
     isFinishedPlaying: function() { return isFinishedPlaying; },
     replaceNotes: replaceNotes,
     tick: tick,
+    playbackTime: playbackTime,
   };
 };
 
@@ -859,12 +885,11 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
   var STEP_INTERVAL = 60.0 / SIXTEENTHS_PER_MINUTE;
 
-  // TODO: Instead of adding 0.3 for maximum amount of release from final note, actually
-  //       calculate a real value for this.
-  var MAX_RELEASE_TIME = 0.3;
-
   var buildOfflineAudioContext = function() {
-    var playbackTime = (songPlayer.stepCount() * STEP_INTERVAL) + MAX_RELEASE_TIME;
+    var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL;
+    var actualPlaybackTime = songPlayer.playbackTime(STEP_INTERVAL);
+    var playbackTime = Math.max(minimumPlaybackTime, actualPlaybackTime);
+
     var sampleCount = SAMPLE_RATE * playbackTime;
     var audioContext;
 
