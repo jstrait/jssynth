@@ -15,22 +15,23 @@ The song below is an example of what you can create with the JS-130, along with 
 * Oscillator Instruments
   * Base oscillator with sine/square/saw/triangle wave
   * Secondary oscillator with same wave types, and optional detune from primary oscillator
+  * White or pink noise
+  * Adjustable volume for each noise source (oscillator 1, oscillator 2, noise)
   * LFO to control oscillator pitch (i.e. "pitch wobble")
-  * Filter, with choice of LFO or ADSR envelope to control filter cutoff frequency
+  * Filter, with LFO and ADSR envelope to control filter cutoff frequency
   * ADSR Envelope to control loudness
 * Sample Instruments
   * Use a sound file (*.wav, *.mp3, etc.) as an instrument
-  * Filter, with choice of LFO or ADSR envelope to control filter cutoff frequency
+  * Filter, with LFO and ADSR envelope to control filter cutoff frequency
   * ADSR Envelope to control loudness
 * Sequencer
-  * Multiple tracks
-  * Different instrument patch for each track
-  * Different set of patterns (16 steps long) for each track
+  * Multiple tracks, each with its own instrument and set of patterns
+  * Enter notes in patterns via on-screen piano keyboard, or computer's text keyboard
   * Full songs 8 patterns long (i.e. 128 steps)
   * Volume control + mute for each track
 * Tempo control
 * Master volume control
-* On-screen keyboard to try out sounds
+* On-screen keyboard to enter notes and try out sounds
 * Download sequencer output to a *.wav file
 
 ## Screenshots
