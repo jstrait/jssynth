@@ -291,6 +291,7 @@ button:disabled {
   padding: 0.0rem 0.25rem;
   background: $red;
   color: $white;
+  font-size: 0.75rem;
 }
 
 .keyboard span.g,
@@ -356,5 +357,9 @@ button:disabled {
   .keyboard span.d,
   .keyboard span.e {
     margin-left: -1.5rem;
+  }
+
+  .keyboard-key-root-indicator {
+    font-size: 1.0rem;
   }
 }
