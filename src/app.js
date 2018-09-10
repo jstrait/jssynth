@@ -1277,6 +1277,7 @@ class App extends React.Component {
   setNoteValue(noteValue, patternID, rowIndex, noteIndex) {
     let i;
     let pattern = this.patternByID(patternID);
+    let previousValue = pattern.rows[rowIndex].notes[noteIndex].name;
 
     pattern.rows[rowIndex].notes[noteIndex].name = noteValue;
 
@@ -1287,7 +1288,7 @@ class App extends React.Component {
         i -= 1;
       }
     }
-    else if (noteValue === "") {
+    else if (noteValue === "" || previousValue === "-") {
       i = noteIndex + 1;
       while (i < pattern.rows[rowIndex].notes.length && pattern.rows[rowIndex].notes[i].name === "-") {
         pattern.rows[rowIndex].notes[i].name = "";
