@@ -628,6 +628,7 @@ class App extends React.Component {
     this.updateTempo = this.updateTempo.bind(this);
     this.setDownloadFileName = this.setDownloadFileName.bind(this);
     this.export = this.export.bind(this);
+    this.onVisibilityChange = this.onVisibilityChange.bind(this);
 
     // Sequencer
     this.setTrackName = this.setTrackName.bind(this);
@@ -668,6 +669,7 @@ class App extends React.Component {
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
 
+    document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
     this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
     if (this.transport === false) {
@@ -1393,6 +1395,12 @@ class App extends React.Component {
     let offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.transport.amplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
+
+  onVisibilityChange(e) {
+    if (document.hidden === true && this.state.transport.playing === true) {
+      this.togglePlaying();
+    }
+ };
 
   render() {
     let selectedTrack = this.trackByID(this.state.selectedTrackID);
