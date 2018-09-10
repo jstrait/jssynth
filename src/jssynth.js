@@ -927,6 +927,8 @@ function WaveWriter() {
   var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
 
   var WAVEFILE_HEADER_BYTE_COUNT = 44;
+  var RIFF_CHUNK_BODY_BYTE_COUNT_MINIMUM = 36;
+  var FORMAT_CHUNK_BODY_BYTE_COUNT = 16;
 
   var write = function(rawFloat32SampleData) {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
@@ -939,7 +941,7 @@ function WaveWriter() {
     outputView.setUint8(  1, "I".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8(  2, "F".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8(  3, "F".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint32( 4, 36 + sampleDataByteCount, LITTLE_ENDIAN);
+    outputView.setUint32( 4, RIFF_CHUNK_BODY_BYTE_COUNT_MINIMUM + sampleDataByteCount, LITTLE_ENDIAN);
     outputView.setUint8(  8, "W".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8(  9, "A".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8( 10, "V".charCodeAt(0), LITTLE_ENDIAN);
@@ -948,7 +950,7 @@ function WaveWriter() {
     outputView.setUint8( 13, "m".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8( 14, "t".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint8( 15, " ".charCodeAt(0), LITTLE_ENDIAN);
-    outputView.setUint32(16, 16, LITTLE_ENDIAN);
+    outputView.setUint32(16, FORMAT_CHUNK_BODY_BYTE_COUNT, LITTLE_ENDIAN);
     outputView.setUint16(20, AUDIO_FORMAT_CODE, LITTLE_ENDIAN);
     outputView.setUint16(22, NUM_CHANNELS, LITTLE_ENDIAN);
     outputView.setUint32(24, SAMPLE_RATE, LITTLE_ENDIAN);
