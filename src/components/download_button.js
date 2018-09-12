@@ -50,8 +50,8 @@ class DownloadButton extends React.Component {
     }
 
     return <div id="download-container" className="relative">
-      <button className="button-full button-hollow right" onClick={this.toggleEnabled}>
-        <span className="h3 lh-flush">&darr;</span>&nbsp; *.wav
+      <button className="button-full button-hollow right flex flex-align-center" onClick={this.toggleEnabled}>
+        <span className="h3 lh-flush">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
       <a id="hidden-download-link" className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
       <div className={"mt3 p1 popup-box" + (this.state.enabled ? "" : " display-none")}>
