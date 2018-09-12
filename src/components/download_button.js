@@ -7,17 +7,17 @@ class DownloadButton extends React.Component {
     super(props);
 
     this.state = {
-      enabled: false,
+      isPopupVisible: false,
       errorMessage: "",
     };
 
-    this.toggleEnabled = this.toggleEnabled.bind(this);
+    this.togglePopup = this.togglePopup.bind(this);
     this.beginExport = this.beginExport.bind(this);
   };
 
-  toggleEnabled(e) {
+  togglePopup(e) {
     this.setState((prevState, props) => ({
-      enabled: !prevState.enabled,
+      isPopupVisible: !prevState.isPopupVisible,
     }));
   };
 
@@ -50,11 +50,11 @@ class DownloadButton extends React.Component {
     }
 
     return <div id="download-container" className="relative">
-      <button className="button-full button-hollow right flex flex-align-center" onClick={this.toggleEnabled}>
+      <button className="button-full button-hollow right flex flex-align-center" onClick={this.togglePopup}>
         <span className="h3 lh-flush">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
       <a id="hidden-download-link" className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
-      <div className={"mt3 p1 popup-box" + (this.state.enabled ? "" : " display-none")}>
+      <div className={"mt3 p1 popup-box" + (this.state.isPopupVisible ? "" : " display-none")}>
         {bodyContent}
       </div>
     </div>;
