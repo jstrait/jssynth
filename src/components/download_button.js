@@ -42,8 +42,8 @@ class DownloadButton extends React.Component {
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
-        <button className="button-full button-hollow mt1 right" onClick={this.beginExport}>Download</button>
-      </span>
+        <button className="button-full button-hollow mt1 right" disabled={this.props.downloadInProgress} onClick={this.beginExport}>Download</button>
+      </span>;
     }
     else {
       bodyContent = <span>Downloading to *.wav is not supported in your browser. If using a mobile device, try using a desktop browser instead.</span>;

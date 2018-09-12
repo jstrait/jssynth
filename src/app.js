@@ -28,6 +28,7 @@ class App extends React.Component {
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
       downloadEnabled: (typeof document.createElement('a').download !== "undefined"),
+      downloadInProgress: false,
       downloadFileName: "js-130",
       keyboardActive: false,
       activeKeyboardNotes: [],
@@ -1383,6 +1384,8 @@ class App extends React.Component {
   };
 
   export() {
+    let app = this;
+
     let exportCompleteCallback = function(blob) {
       let url = window.URL.createObjectURL(blob);
 
@@ -1391,9 +1394,15 @@ class App extends React.Component {
       hiddenDownloadLink.click();
 
       window.URL.revokeObjectURL(blob);
+
+      app.setState({downloadInProgress: false});
     };
 
-    let offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.transport.amplitude, exportCompleteCallback);
+    let offlineTransport;
+
+    this.setState({downloadInProgress: true});
+
+    offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.transport.amplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
@@ -1437,7 +1446,7 @@ class App extends React.Component {
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton enabled={this.state.downloadEnabled} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
+          <DownloadButton enabled={this.state.downloadEnabled} downloadInProgress={this.state.downloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
