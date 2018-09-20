@@ -799,7 +799,7 @@ function Transport(songPlayer, stopCallback) {
 
   var calculateCurrentStep = function() {
     if (!playing) {
-      return null;
+      return undefined;
     }
 
     var currentTime = audioContext.currentTime;
