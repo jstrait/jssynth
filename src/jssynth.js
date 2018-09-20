@@ -797,7 +797,7 @@ function Transport(songPlayer, stopCallback) {
     }
   };
 
-  var currentStep = function() {
+  var calculateCurrentStep = function() {
     if (!playing) {
       return null;
     }
@@ -873,7 +873,7 @@ function Transport(songPlayer, stopCallback) {
     setTempo: setTempo,
     setAmplitude: setAmplitude,
     toggle: toggle,
-    currentStep: currentStep,
+    currentStep: calculateCurrentStep,
     bufferCollection: bufferCollection,
   };
 };
