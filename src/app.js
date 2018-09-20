@@ -118,7 +118,7 @@ class App extends React.Component {
           noiseType: "pink",
           lfoWaveform: "sine",
           lfoFrequency: 6,
-          lfoAmplitude: 29,
+          lfoAmplitude: 57,
           filterCutoff: 2800,
           filterResonance: 0,
           filterLFOWaveform: "sine",
