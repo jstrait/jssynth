@@ -664,12 +664,6 @@ class App extends React.Component {
     this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
 
-    let bufferConfigs = [
-      { label: "Instrument 4", url: "sounds/bass.wav", },
-      { label: "Instrument 5", url: "sounds/snare.wav", },
-      { label: "Instrument 6", url: "sounds/hihat.wav", },
-    ];
-
     document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
     this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
@@ -677,10 +671,57 @@ class App extends React.Component {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
     }
     else {
+      let bufferConfigs = [
+        { label: "Instrument 4", url: "sounds/bass.wav", },
+        { label: "Instrument 5", url: "sounds/snare.wav", },
+        { label: "Instrument 6", url: "sounds/hihat.wav", },
+      ];
+
       this.transport.setTempo(this.state.transport.tempo);
       this.transport.setAmplitude(this.state.transport.amplitude);
 
-      this.transport.bufferCollection.addBuffersFromURLs(
+      var buildWhiteNoiseBuffer = function(audioContext) {
+        var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
+        var noiseChannel = noiseBuffer.getChannelData(0);
+        var i;
+
+        for (i = 0; i < noiseChannel.length; i++) {
+          noiseChannel[i] = (Math.random() * 2.0) - 1.0;
+        }
+
+        return noiseBuffer;
+      };
+
+      var buildPinkNoiseBuffer = function(audioContext) {
+        var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
+        var noiseChannel = noiseBuffer.getChannelData(0);
+        var white;
+        var i;
+
+        // Adapted from https://noisehack.com/generate-noise-web-audio-api/, https://github.com/zacharydenton/noise.js
+        var b0, b1, b2, b3, b4, b5, b6;
+        b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
+        for (i = 0; i < noiseChannel.length; i++) {
+          white = Math.random() * 2 - 1;
+          b0 = 0.99886 * b0 + white * 0.0555179;
+          b1 = 0.99332 * b1 + white * 0.0750759;
+          b2 = 0.96900 * b2 + white * 0.1538520;
+          b3 = 0.86650 * b3 + white * 0.3104856;
+          b4 = 0.55000 * b4 + white * 0.5329522;
+          b5 = -0.7616 * b5 - white * 0.0168980;
+          noiseChannel[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+          noiseChannel[i] *= 0.11; // (roughly) compensate for gain
+          b6 = white * 0.115926;
+        }
+
+        return noiseBuffer;
+      };
+
+      this.bufferCollection = JSSynth.BufferCollection(this.transport.audioContext());
+      this.bufferCollection.addBuffer("white-noise", buildWhiteNoiseBuffer(this.transport.audioContext()));
+      this.bufferCollection.addBuffer("pink-noise", buildPinkNoiseBuffer(this.transport.audioContext()));
+
+      this.bufferCollection.addBuffersFromURLs(
         bufferConfigs,
         () => {
           this.setState({isLoaded: true});
@@ -838,7 +879,7 @@ class App extends React.Component {
   };
 
   syncTransportNotes() {
-    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.instruments, this.state.patterns, this.transport.bufferCollection);
+    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.instruments, this.state.patterns, this.bufferCollection);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
   };
@@ -999,7 +1040,7 @@ class App extends React.Component {
     let newInstrumentID = this.idGenerator.next();
     let label = 'Instrument ' + newInstrumentID;
 
-    this.transport.bufferCollection.addBufferFromFile(label, file, () => {
+    this.bufferCollection.addBufferFromFile(label, file, () => {
       let newInstrument = {
         id:                    newInstrumentID,
         type:                  'sample',
@@ -1056,7 +1097,7 @@ class App extends React.Component {
 
     let removedInstrument = this.instrumentByID(track.instrumentID);
     if (removedInstrument.type === "sample") {
-      this.transport.bufferCollection.removeBuffer(removedInstrument.sample);
+      this.bufferCollection.removeBuffer(removedInstrument.sample);
     }
 
     this.setState({
@@ -1312,7 +1353,7 @@ class App extends React.Component {
     let instrument = this.instrumentByID(instrumentID);
     let label = instrument.sample;
 
-    this.transport.bufferCollection.addBufferFromFile(label, file, () => {
+    this.bufferCollection.addBufferFromFile(label, file, () => {
       this.syncTransportNotes();
       this.updateInstrument(instrumentID, "filename", file.name);
     });
@@ -1343,7 +1384,7 @@ class App extends React.Component {
     let indicesToRemove = [];
     let currentTrack = this.trackByID(this.state.selectedTrackID);
     let instrumentID = currentTrack.instrumentID;
-    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.transport.bufferCollection)
+    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.bufferCollection)
 
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
