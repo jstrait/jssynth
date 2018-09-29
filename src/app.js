@@ -666,8 +666,8 @@ class App extends React.Component {
 
     document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
-    this.transport = JSSynth.Transport(this.songPlayer, stopCallback);
-    if (this.transport === false) {
+    this.audioSource = JSSynth.AudioSource();
+    if (this.audioSource.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
     }
     else {
@@ -677,6 +677,7 @@ class App extends React.Component {
         { label: "Instrument 6", url: "sounds/hihat.wav", },
       ];
 
+      this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
       this.transport.setTempo(this.state.transport.tempo);
       this.transport.setAmplitude(this.state.transport.amplitude);
 
@@ -717,9 +718,9 @@ class App extends React.Component {
         return noiseBuffer;
       };
 
-      this.bufferCollection = JSSynth.BufferCollection(this.transport.audioContext());
-      this.bufferCollection.addBuffer("white-noise", buildWhiteNoiseBuffer(this.transport.audioContext()));
-      this.bufferCollection.addBuffer("pink-noise", buildPinkNoiseBuffer(this.transport.audioContext()));
+      this.bufferCollection = JSSynth.BufferCollection(this.audioSource.audioContext());
+      this.bufferCollection.addBuffer("white-noise", buildWhiteNoiseBuffer(this.audioSource.audioContext()));
+      this.bufferCollection.addBuffer("pink-noise", buildPinkNoiseBuffer(this.audioSource.audioContext()));
 
       this.bufferCollection.addBuffersFromURLs(
         bufferConfigs,
@@ -1393,7 +1394,7 @@ class App extends React.Component {
     for (i = 0; i < this.state.activeKeyboardNotes.length; i++) {
       if (!notes.includes(this.state.activeKeyboardNotes[i])) {
         noteContext = this.state.activeNoteContexts[i];
-        this.transport.stopNote(instrument, noteContext);
+        this.audioSource.stopNote(instrument, noteContext);
         indicesToRemove.push(i);
       }
     }
@@ -1410,7 +1411,7 @@ class App extends React.Component {
         }
 
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
-        noteContext = this.transport.playImmediateNote(instrument, note, currentTrack.volume * (1 / Math.max(8, this.state.tracks.length)));
+        noteContext = this.audioSource.playImmediateNote(instrument, note, currentTrack.volume * (1 / Math.max(8, this.state.tracks.length)));
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);

@@ -670,19 +670,10 @@ function SongPlayer(measureCount) {
   };
 };
 
-function Transport(songPlayer, stopCallback) {
-  var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
-  var TICK_INTERVAL = 50;         // in milliseconds
-  var LOOP = true;
-
+function AudioSource() {
   var audioContext;
   var clipDetector;
   var masterGain;
-  var currentStep;
-  var scheduledSteps;
-  var stepInterval;
-  var timeoutId;
-  var isPlaying = false;
 
   var detectClipping = function(e) {
     var i;
@@ -697,10 +688,79 @@ function Transport(songPlayer, stopCallback) {
     }
   };
 
-  var tick = function() {
-    var finalTime = audioContext.currentTime + SCHEDULE_AHEAD_TIME;
+  var playImmediateNote = function(instrument, note, amplitude) {
+    return instrument.gateOn(audioContext, masterGain, note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
+  };
 
-    var newScheduledSteps = songPlayer.tick(audioContext, masterGain, finalTime, stepInterval, LOOP);
+  var stopNote = function(instrument, noteContext) {
+    instrument.gateOff(noteContext, audioContext.currentTime, true);
+  };
+
+  var setClipDetectionEnabled = function(isEnabled) {
+    if (isEnabled === true) {
+      clipDetector.connect(audioContext.destination);
+    }
+    else {
+      clipDetector.disconnect(audioContext.destination);
+    }
+  };
+
+  if (window.AudioContext) {
+    // Why create an AudioContext, immediately close it, and then recreate
+    // another one? Good question.
+    //
+    // The reason is that in iOS, there is a bug in which an AudioContext
+    // can be created with a sample rate of 48,000Hz, which for reasons
+    // causes audio playback to be distorted. If you re-load the page,
+    // the sample rate will be set to 44,100Hz instead, and playback
+    // will sound normal.
+    //
+    // Creating an AudioContext, closing it, and recreating another
+    // one works around this issue, I _think_ by basically simulating
+    // the page re-load behavior, causing the sample rate of the 2nd
+    // AudioContext to be 44,100Hz.
+    //
+    // This fix was figured out by searching Google, which returned
+    // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
+    audioContext = new AudioContext();
+    if (audioContext.close) {
+      audioContext.close();
+      audioContext = new AudioContext();
+    }
+
+    clipDetector = audioContext.createScriptProcessor(512);
+    clipDetector.onaudioprocess = detectClipping;
+
+    masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
+    masterGain.connect(clipDetector);
+  }
+
+
+  return {
+    audioContext: function() { return audioContext; },
+    masterGain: function() { return masterGain; },
+    playImmediateNote: playImmediateNote,
+    stopNote: stopNote,
+    setClipDetectionEnabled: setClipDetectionEnabled,
+  };
+};
+
+function Transport(audioSource, songPlayer, stopCallback) {
+  var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
+  var TICK_INTERVAL = 50;         // in milliseconds
+  var LOOP = true;
+
+  var currentStep;
+  var scheduledSteps;
+  var stepInterval;
+  var timeoutId;
+  var isPlaying = false;
+
+  var tick = function() {
+    var finalTime = audioSource.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
+
+    var newScheduledSteps = songPlayer.tick(audioSource.audioContext(), audioSource.masterGain(), finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
@@ -710,6 +770,8 @@ function Transport(songPlayer, stopCallback) {
   };
 
   var start = function() {
+    var audioContext = audioSource.audioContext();
+
     currentStep = 0;
     scheduledSteps = [];
     songPlayer.reset(audioContext.currentTime);
@@ -728,7 +790,7 @@ function Transport(songPlayer, stopCallback) {
       }
     }
 
-    clipDetector.connect(audioContext.destination);
+    audioSource.setClipDetectionEnabled(true);
 
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
@@ -737,7 +799,7 @@ function Transport(songPlayer, stopCallback) {
 
   var stop = function() {
     window.clearInterval(timeoutId);
-    clipDetector.disconnect(audioContext.destination);
+    audioSource.setClipDetectionEnabled(false);
     isPlaying = false;
   };
 
@@ -747,7 +809,7 @@ function Transport(songPlayer, stopCallback) {
   };
 
   var setAmplitude = function(newAmplitude) {
-    masterGain.gain.value = newAmplitude;
+    audioSource.masterGain().gain.value = newAmplitude;
   };
 
   var toggle = function() {
@@ -764,7 +826,7 @@ function Transport(songPlayer, stopCallback) {
       return undefined;
     }
 
-    var currentTime = audioContext.currentTime;
+    var currentTime = audioSource.audioContext().currentTime;
     var i = 0;
     while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
       currentStep = scheduledSteps[i].step;
@@ -776,64 +838,16 @@ function Transport(songPlayer, stopCallback) {
     return currentStep;
   };
 
-  var playImmediateNote = function(instrument, note, amplitude) {
-    return instrument.gateOn(audioContext, masterGain, note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
-  };
-
-  var stopNote = function(instrument, noteContext) {
-    instrument.gateOff(noteContext, audioContext.currentTime, true);
-  };
-
-  var initializeAudioContext = function() {
-    if (window.AudioContext) {
-      // Why do we create an AudioContext, immediately close it, and then
-      // recreate another one? Good question.
-      //
-      // The reason is that in iOS, there is a bug in which an AudioContext
-      // can be created with a sample rate of 48,000Hz, which for reasons
-      // causes audio playback to be distorted. If you re-load the page,
-      // the sample rate will be set to 44,100Hz instead, and playback
-      // will sound normal.
-      //
-      // Creating an AudioContext, closing it, and recreating another
-      // one works around this issue, I _think_ by basically simulating
-      // the page re-load behavior, causing the sample rate of the 2nd
-      // AudioContext to be 44,100Hz.
-      //
-      // This fix was figured out by searching Google, which returned
-      // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
-      audioContext = new AudioContext();
-      if (audioContext.close) {
-        audioContext.close();
-        audioContext = new AudioContext();
-      }
-
-      clipDetector = audioContext.createScriptProcessor(512);
-      clipDetector.onaudioprocess = detectClipping;
-
-      masterGain = audioContext.createGain();
-      masterGain.connect(audioContext.destination);
-      masterGain.connect(clipDetector);
-    }
-  };
-
-  initializeAudioContext();
-  if (audioContext === undefined) {
-    return false;
-  }
 
   setTempo(100);
   setAmplitude(0.25);
 
 
   return {
-    playImmediateNote: playImmediateNote,
-    stopNote: stopNote,
     setTempo: setTempo,
     setAmplitude: setAmplitude,
     toggle: toggle,
     currentStep: calculateCurrentStep,
-    audioContext: function() { return audioContext; },
   };
 };
 
@@ -961,4 +975,4 @@ function WaveWriter() {
   };
 };
 
-export { BufferCollection, SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export { BufferCollection, SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, AudioSource, Transport, OfflineTransport, InstrumentNote, WaveWriter };
