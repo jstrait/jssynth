@@ -682,7 +682,7 @@ function Transport(songPlayer, stopCallback) {
   var scheduledSteps;
   var stepInterval;
   var timeoutId;
-  var playing = false;
+  var isPlaying = false;
   var bufferCollection;
 
   var detectClipping = function(e) {
@@ -733,13 +733,13 @@ function Transport(songPlayer, stopCallback) {
 
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
-    playing = true;
+    isPlaying = true;
   };
 
   var stop = function() {
     window.clearInterval(timeoutId);
     clipDetector.disconnect(audioContext.destination);
-    playing = false;
+    isPlaying = false;
   };
 
   var buildWhiteNoiseBuffer = function() {
@@ -789,7 +789,7 @@ function Transport(songPlayer, stopCallback) {
   };
 
   var toggle = function() {
-    if (playing) {
+    if (isPlaying) {
       stop();
     }
     else {
@@ -798,7 +798,7 @@ function Transport(songPlayer, stopCallback) {
   };
 
   var calculateCurrentStep = function() {
-    if (!playing) {
+    if (!isPlaying) {
       return undefined;
     }
 
