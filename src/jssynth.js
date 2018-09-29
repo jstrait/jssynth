@@ -581,10 +581,7 @@ function InstrumentNote(note, instrument, amplitude) {
   };
 };
 
-function SongPlayer(measureCount) {
-  var STEPS_PER_MEASURE = 16;
-  var STEP_COUNT = measureCount * STEPS_PER_MEASURE;
-
+function SongPlayer() {
   var notes = [];
 
   var stepIndex;
@@ -616,7 +613,7 @@ function SongPlayer(measureCount) {
       scheduledSteps.push({ step: stepIndex, time: currentTime });
 
       stepIndex += 1;
-      if (stepIndex >= STEP_COUNT) {
+      if (stepIndex >= notes.length) {
         if (loop) {
           stepIndex = 0;
         }
@@ -662,7 +659,7 @@ function SongPlayer(measureCount) {
 
   return {
     reset: reset,
-    stepCount: function() { return STEP_COUNT; },
+    stepCount: function() { return notes.length; },
     isFinishedPlaying: function() { return isFinishedPlaying; },
     replaceNotes: replaceNotes,
     tick: tick,
