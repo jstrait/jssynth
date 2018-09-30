@@ -1419,10 +1419,10 @@ class App extends React.Component {
     }
 
     // Finally, update state
-    this.setState((prevState, props) => ({
+    this.setState({
       activeKeyboardNotes: newActiveKeyboardNotes,
       activeNoteContexts: newActiveNoteContexts,
-    }));
+    });
   };
 
   export() {
