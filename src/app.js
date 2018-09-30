@@ -1398,7 +1398,7 @@ class App extends React.Component {
         indicesToRemove.push(i);
       }
     }
-    for (i = 0; i < indicesToRemove.length; i++) {
+    for (i = indicesToRemove.length - 1; i >= 0; i--) {
       newActiveKeyboardNotes.splice(indicesToRemove[i], 1);
       newActiveNoteContexts.splice(indicesToRemove[i], 1);
     }
