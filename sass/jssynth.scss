@@ -121,7 +121,8 @@ a {
   }
 
  .tab-strip {
-    width: 100%;
+    flex: 0 0 100%;
+    order: 1;
  }
 }
 

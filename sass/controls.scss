@@ -155,21 +155,11 @@ button:disabled {
   box-sizing: border-box;
 }
 
-.control .annotated-input {
-  -webkit-flex: 1;
-  flex: 1;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-.control .annotated-input input {
-  -webkit-flex: 1;
+.control input[type='range'] {
   flex: 1;
 }
 
-.control .annotated-input span {
+.control-value {
   width: 5.0rem;
   padding-left: 0.5rem;
   box-sizing: border-box;
@@ -184,20 +174,32 @@ button:disabled {
   .control-label {
     width: 35%;
   }
+
+  .control input[type='range'] {
+    margin-top: calc(0.75rem - 1px);
+    margin-bottom: calc(0.75rem - 1px);
+  }
 }
 
 @media (max-width: 480px) {
   .control {
-    -webkit-flex-direction: column;
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
   .control-label {
-    width: 100%;
+    order: 0;
+    width: auto;
   }
 
-  .annotated-input {
-    width: 100%;
+  .control-value {
+    order: 1;
+  }
+
+  .control input[type='range'] {
+    order: 2;
+    flex: 0 0 100%;
+    margin-top: calc(0.75rem - 1px);
+    margin-bottom: calc(1.0rem - 1px);
   }
 }
 
