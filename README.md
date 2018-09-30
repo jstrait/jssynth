@@ -36,5 +36,11 @@ The song below is an example of what you can create with the JS-130, along with 
 
 ## Screenshots
 ![JS-130 Sequencer](js-130-sequencer.png)
+
+---
+
 ![JS-130 Instrument Editor](js-130-instrument-editor.png)
+
+---
+
 ![JS-130 Pattern Editor](js-130-pattern-editor.png)
