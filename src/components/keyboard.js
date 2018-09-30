@@ -41,6 +41,7 @@ class Keyboard extends React.Component {
     this.touchStart = this.touchStart.bind(this);
     this.touchEnd = this.touchEnd.bind(this);
     this.touchMove = this.touchMove.bind(this);
+    this.gestureStart = this.gestureStart.bind(this);
     this.scroll = this.scroll.bind(this);
 
     this.touches = {};
@@ -198,6 +199,10 @@ class Keyboard extends React.Component {
     e.preventDefault();
   };
 
+  gestureStart(e) {
+    e.preventDefault();
+  };
+
   scroll(delta) {
     this.keyboardContainer.scrollLeft += delta;
   };
@@ -213,11 +218,17 @@ class Keyboard extends React.Component {
     // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
     // https://github.com/facebook/react/issues/9809.
     this.keyboardOuterContainer.addEventListener("touchmove", this.touchMove, false);
+
+    // This prevents the "three finger page zoom" gesture on iOS while using the piano keyboard,
+    // because it makes it very difficult to play chords without accidentally changing the page zoom.
+    // React doesn't support the "gesturestart" event, so adding it manually.
+    this.keyboardOuterContainer.addEventListener("gesturestart", this.gestureStart, false);
   };
 
   componentWillUnmount() {
     const removeEvent = keyboardOuterContainer.removeEventListener || keyboardOuterContainer.detachEvent;
     removeEvent.removeEvent("touchmove", this.touchMove);
+    removeEvent.removeEvent("gesturestart", this.gestureStart);
   };
 
   render() {
