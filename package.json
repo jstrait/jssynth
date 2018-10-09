@@ -9,7 +9,7 @@
   "scripts": {
     "build-babel": "babel src/ --out-dir build",
     "build-webpack": "webpack --config webpack.config.js",
-    "build-css": "sass sass/jssynth.scss | uglifycss > jssynth.css",
+    "build-css": "sass sass/jssynth.scss build/jssynth.css | uglifycss build/jssynth.css --output jssynth.css",
     "build": "yarn run build-css && yarn run build-babel && yarn run build-webpack"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "jest": "^23.6.0",
+    "uglifycss": "^0.0.29",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   }
