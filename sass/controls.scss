@@ -185,7 +185,6 @@ button:disabled {
   }
 
   .control input[type='range'] {
-    margin-top: calc(0.75rem - 1px);
     margin-bottom: calc(0.75rem - 1px);
   }
 }
@@ -207,7 +206,6 @@ button:disabled {
   .control input[type='range'] {
     order: 2;
     flex: 0 0 100%;
-    margin-top: calc(0.75rem - 1px);
     margin-bottom: calc(1.0rem - 1px);
   }
 }
