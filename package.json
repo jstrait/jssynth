@@ -7,20 +7,19 @@
   "author": "Joel Strait <joel.strait@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-babel": "babel src/ --out-dir build",
     "build-webpack": "webpack --config webpack.config.js",
     "build-css": "sass sass/jssynth.scss build/jssynth.css | uglifycss build/jssynth.css --output jssynth.css",
-    "build": "yarn run build-css && yarn run build-babel && yarn run build-webpack"
+    "build": "yarn run build-css && yarn run build-webpack"
   },
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
     "jest": "^23.6.0",
     "sass": "^1.14.2",
     "uglifycss": "^0.0.29",
