@@ -222,7 +222,7 @@ class NoteInput extends React.Component {
   };
 
   render() {
-    return <input ref={(input) => { this.noteInput = input; }} className="note-input" type="text" readonly="true" onKeyDown={this.onKeyDown} onBlur={this.onBlur} />
+    return <input ref={(input) => { this.noteInput = input; }} className="note-input" type="text" readOnly={true} onKeyDown={this.onKeyDown} onBlur={this.onBlur} />
   };
 };
 
