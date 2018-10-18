@@ -1456,7 +1456,7 @@ chokidar@^1.6.1:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chokidar@^2.0.2:
+chokidar@^2.0.0, chokidar@^2.0.2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
   integrity sha512-z9n7yt9rOvIJrMhvDtDictKrkFHeihkNl6uWMmZlmL6tJtX9Cs+87oK+teBx+JIgzvbX3yZHT3eF8vpbDxHJXQ==
@@ -4999,6 +4999,13 @@ sane@^2.0.0:
     watch "~0.18.0"
   optionalDependencies:
     fsevents "^1.1.1"
+
+sass@^1.14.2:
+  version "1.14.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.14.2.tgz#6fabdb10939a3f6848cda59b7d91d6a3103923c0"
+  integrity sha512-2tv+ROdMomDr9+uc+LCSUPFTZwOZ0MB7BbidrRZ5s3pbg1qKTKS7pL71dVvkOUjrSicHuk7fnqEVG73oa9FJtg==
+  dependencies:
+    chokidar "^2.0.0"
 
 sax@^1.2.4:
   version "1.2.4"
