@@ -20,6 +20,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "copy-webpack-plugin": "^4.5.3",
     "jest": "^23.6.0",
     "sass": "^1.14.2",
     "uglifycss": "^0.0.29",

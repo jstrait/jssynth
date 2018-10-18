@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
@@ -19,6 +20,12 @@ module.exports = {
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: 'jssynth.html', to: 'build/' },
+      { from: 'sounds/*.wav', to: 'build/' },
+      { from: 'images/*.png', to: 'build/' },
+      { from: 'lib/*.js', to: 'build/' },
+    ], {}),
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: true,
@@ -27,7 +34,7 @@ module.exports = {
     })
   ],
   output: {
-    filename: 'jssynth.js',
+    filename: 'build/jssynth.js',
     path: path.resolve(__dirname, '.')
   }
 };
