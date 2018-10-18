@@ -45,15 +45,15 @@ class TrackPatternListHeader extends React.Component {
   };
 
   render() {
-    return <div class="relative" style={{height: "31px"}}>
+    return <div className="relative" style={{height: "31px"}}>
       <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "31px"}}>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measureIndex + 1}</span></li>
         )}
-        <li class="flex-uniform-size list-style-none bb"></li>
+        <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
-      <div class="sequencer-step-timeline">
-        <span class={"sequencer-step-timeline-playback-head" + (this.props.isPlaying ? " sequencer-step-timeline-playback-head-enabled" : "")} style={{marginLeft: this.props.isPlaying ? ((this.props.currentStep * 9) + "px") : "0"}}></span>
+      <div className="sequencer-step-timeline">
+        <span className={"sequencer-step-timeline-playback-head" + (this.props.isPlaying ? " sequencer-step-timeline-playback-head-enabled" : "")} style={{marginLeft: this.props.isPlaying ? ((this.props.currentStep * 9) + "px") : "0"}}></span>
       </div>
     </div>;
   };
@@ -71,7 +71,7 @@ class TrackPatternList extends React.Component {
         <TrackMeasure measure={index} trackID={this.props.track.id} pattern={pattern} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
-      <li class="flex-uniform-size list-style-none bg-lighter-gray bb"></li>
+      <li className="flex-uniform-size list-style-none bg-lighter-gray bb"></li>
     </ul>;
   };
 };

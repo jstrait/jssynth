@@ -230,39 +230,39 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Cutoff:</label>
             <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
-            <span class="control-value">{this.props.instrument.filterCutoff}Hz</span>
+            <span className="control-value">{this.props.instrument.filterCutoff}Hz</span>
           </span>
           <span className="control">
             <label className="control-label">Resonance:</label>
             <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
-            <span class="control-value">{this.props.instrument.filterResonance}</span>
+            <span className="control-value">{this.props.instrument.filterResonance}</span>
           </span>
           <span>
             <span className="block lightText">Cutoff Envelope:</span>
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <input type="range" min="0" max="9950" step="50" value={this.props.instrument.filterEnvelopeAmount} onChange={this.setFilterEnvelopeAmount} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeAmount}Hz</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeAmount}Hz</span>
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
-              <span class="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
             </span>
           </span>
           <span>
@@ -270,12 +270,12 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-              <span class="control-value">{this.props.instrument.filterLFOAmplitude}c</span>
+              <span className="control-value">{this.props.instrument.filterLFOAmplitude}c</span>
             </span>
             <span className="control">
               <label className="control-label indented">Rate:</label>
               <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-              <span class="control-value">{this.props.instrument.filterLFOFrequency}Hz</span>
+              <span className="control-value">{this.props.instrument.filterLFOFrequency}Hz</span>
             </span>
             <span className="control">
               <label className="control-label indented">Waveform:</label>
@@ -288,22 +288,22 @@ class SampleInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Attack Speed:</label>
             <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
-            <span class="control-value">{this.props.instrument.envelopeAttackTime * 1000} ms</span>
+            <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000} ms</span>
           </span>
           <span className="control">
             <label className="control-label">Decay Speed:</label>
             <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
-            <span class="control-value">{this.props.instrument.envelopeDecayTime * 1000} ms</span>
+            <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000} ms</span>
           </span>
           <span className="control">
             <label className="control-label">Sustain Volume:</label>
             <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
-            <span class="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
+            <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
           </span>
           <span className="control">
             <label className="control-label">Release Speed:</label>
             <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
-            <span class="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
+            <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
           </span>
         </div>
       </div>
@@ -507,7 +507,7 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator1Amplitude} onChange={this.setOscillator1Amplitude} />
-            <span class="control-value">{(this.props.instrument.oscillator1Amplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{(this.props.instrument.oscillator1Amplitude * 100).toFixed(0)}%</span>
           </span>
           <span className="block lightText">Secondary:</span>
           <span className="control">
@@ -521,18 +521,18 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Detune:</label>
             <input type="range" min="-700" max="700" step="1" value={this.props.instrument.oscillator2Detune} onChange={this.setOscillator2Detune} />
-            <span class="control-value">{this.props.instrument.oscillator2Detune}c</span>
+            <span className="control-value">{this.props.instrument.oscillator2Detune}c</span>
           </span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator2Amplitude} onChange={this.setOscillator2Amplitude} />
-            <span class="control-value">{(this.props.instrument.oscillator2Amplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{(this.props.instrument.oscillator2Amplitude * 100).toFixed(0)}%</span>
           </span>
           <span className="block lightText">Noise:</span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.noiseAmplitude} onChange={this.setNoiseAmplitude} />
-            <span class="control-value">{(this.props.instrument.noiseAmplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{(this.props.instrument.noiseAmplitude * 100).toFixed(0)}%</span>
           </span>
           <span className="control">
             <label className="control-label indented">Type:</label>
@@ -545,39 +545,39 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Cutoff:</label>
               <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
-              <span class="control-value">{this.props.instrument.filterCutoff}Hz</span>
+              <span className="control-value">{this.props.instrument.filterCutoff}Hz</span>
           </span>
           <span className="control">
             <label className="control-label">Resonance:</label>
             <input type="range" min="0" max="20" step="1.0" value={this.props.instrument.filterResonance} onChange={this.setFilterResonance} />
-            <span class="control-value">{this.props.instrument.filterResonance}</span>
+            <span className="control-value">{this.props.instrument.filterResonance}</span>
           </span>
           <span>
             <span className="block lightText">Cutoff Envelope:</span>
             <span className="control">
               <label className="control-label indented">Attack Target:</label>
               <input type="range" min="0" max="9950" step="50" value={this.props.instrument.filterEnvelopeAmount} onChange={this.setFilterEnvelopeAmount} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeAmount + this.props.instrument.filterCutoff}Hz</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeAmount + this.props.instrument.filterCutoff}Hz</span>
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
-              <span class="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
-              <span class="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000} ms</span>
             </span>
           </span>
           <span>
@@ -585,12 +585,12 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Amount:</label>
               <input type="range" min="0" max="1200" step="1" value={this.props.instrument.filterLFOAmplitude} onChange={this.setFilterLFOAmplitude} />
-              <span class="control-value">{this.props.instrument.filterLFOAmplitude}c</span>
+              <span className="control-value">{this.props.instrument.filterLFOAmplitude}c</span>
             </span>
             <span className="control">
               <label className="control-label indented">Rate:</label>
               <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.filterLFOFrequency} onChange={this.setFilterLFOFrequency} />
-              <span class="control-value">{this.props.instrument.filterLFOFrequency}Hz</span>
+              <span className="control-value">{this.props.instrument.filterLFOFrequency}Hz</span>
             </span>
             <span className="control">
               <label className="control-label indented">Waveform:</label>
@@ -605,12 +605,12 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Amount:</label>
               <input type="range" min="0" max="1200" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
-              <span class="control-value">{this.props.instrument.lfoAmplitude}c</span>
+              <span className="control-value">{this.props.instrument.lfoAmplitude}c</span>
             </span>
             <span className="control">
               <label className="control-label">Rate:</label>
               <input type="range" min="0.0" max="20.0" step="0.1" value={this.props.instrument.lfoFrequency} onChange={this.setLFOFrequency} />
-              <span class="control-value">{this.props.instrument.lfoFrequency}Hz</span>
+              <span className="control-value">{this.props.instrument.lfoFrequency}Hz</span>
             </span>
             <span className="control">
               <label className="control-label">Waveform:</label>
@@ -623,22 +623,22 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
-              <span class="control-value">{this.props.instrument.envelopeAttackTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
-              <span class="control-value">{this.props.instrument.envelopeDecayTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000} ms</span>
             </span>
             <span className="control">
               <label className="control-label">Sustain Volume:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
-              <span class="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
-              <span class="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
+              <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
             </span>
           </div>
         </div>
