@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "A synthesizer and sequencer for your browser",
   "main": "jssynth.js",
+  "private": true,
   "repository": "https://github.com/jstrait/jssynth.git",
   "author": "Joel Strait <joel.strait@gmail.com>",
   "license": "MIT",
