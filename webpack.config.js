@@ -46,13 +46,13 @@ module.exports = {
   },
  plugins: [
     new CopyWebpackPlugin([
-      { from: 'jssynth.html', to: 'build/' },
-      { from: 'sounds/*.wav', to: 'build/' },
-      { from: 'images/*.png', to: 'build/' },
-      { from: 'lib/*.js', to: 'build/' },
+      { from: 'jssynth.html', to: 'dist/' },
+      { from: 'sounds/*.wav', to: 'dist/' },
+      { from: 'images/*.png', to: 'dist/' },
+      { from: 'lib/*.js', to: 'dist/' },
     ], {}),
     new MiniCssExtractPlugin({
-        filename: "build/jssynth.css",
+        filename: "dist/jssynth.css",
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -62,7 +62,7 @@ module.exports = {
     })
   ],
   output: {
-    filename: 'build/jssynth.js',
+    filename: 'dist/jssynth.js',
     path: path.resolve(__dirname, '.')
   }
 };
