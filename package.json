@@ -7,7 +7,8 @@
   "author": "Joel Strait <joel.strait@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build-dev": "webpack --config webpack.config.js --mode development",
+    "build-prod": "webpack --config webpack.config.js --mode production"
   },
   "dependencies": {
     "react": "^16.5.2",
