@@ -1,6 +1,6 @@
 "use strict";
 
-import * as JSSynth from "./../build/jssynth";
+import * as JSSynth from "./../src/jssynth";
 
 describe("JSSynth.Note", function() {
   it("should construct a Note properly", function() {
