@@ -7,9 +7,7 @@
   "author": "Joel Strait <joel.strait@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-webpack": "webpack --config webpack.config.js",
-    "build-css": "sass sass/jssynth.scss | uglifycss > build/jssynth.css",
-    "build": "yarn run build-css && yarn run build-webpack"
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "react": "^16.5.2",
@@ -21,9 +19,12 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "copy-webpack-plugin": "^4.5.3",
+    "css-loader": "^1.0.0",
     "jest": "^23.6.0",
+    "mini-css-extract-plugin": "^0.4.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "sass": "^1.14.2",
-    "uglifycss": "^0.0.29",
+    "sass-loader": "^7.1.0",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   }
