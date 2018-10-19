@@ -35,14 +35,14 @@ input[type='range']::-webkit-slider-thumb {
   height: 1.5rem;
   width: 1.5rem;
   margin-top: calc(-0.75rem + 1px);
-  border-radius: 0.75rem;
+  border-radius: 50%;
   background: $black;
 }
 
 input[type='range']::-moz-range-thumb {
   height: 1.5rem;
   width: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 50%;
   background: $black;
   border: 0;
 }
@@ -50,7 +50,7 @@ input[type='range']::-moz-range-thumb {
 input[type='range']::-ms-thumb {
   height: 1.5rem;
   width: 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 50%;
   background: $black;
 }
 
