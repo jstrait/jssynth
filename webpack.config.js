@@ -44,7 +44,7 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({}),
     ],
   },
- plugins: [
+  plugins: [
     new CopyWebpackPlugin([
       { from: 'jssynth.html', to: 'dist/' },
       { from: 'sounds/*.wav', to: 'dist/' },
