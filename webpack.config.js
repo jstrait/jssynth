@@ -15,8 +15,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
         }
       },
       {
@@ -35,7 +35,7 @@ module.exports = {
               implementation: require('sass'),
             },
           },
-        ]
+        ],
       }
     ]
   },
@@ -57,12 +57,12 @@ module.exports = {
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: true,
-        mangle: true
-      }
-    })
+        mangle: true,
+      },
+    }),
   ],
   output: {
     filename: 'dist/jssynth.js',
-    path: path.resolve(__dirname, '.')
+    path: path.resolve(__dirname, '.'),
   }
 };
