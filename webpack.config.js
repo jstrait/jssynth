@@ -48,7 +48,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
-      { from: 'jssynth.html', to: 'dist/' },
+      { from: 'html/jssynth.html', to: 'dist/' },
       { from: 'sounds/*.wav', to: 'dist/' },
       { from: 'images/*.png', to: 'dist/' },
       { from: 'lib/*.js', to: 'dist/' },
