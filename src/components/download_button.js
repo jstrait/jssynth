@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class DownloadButton extends React.Component {
+export class DownloadButton extends React.Component {
   constructor(props) {
     super(props);
 
@@ -60,5 +60,3 @@ class DownloadButton extends React.Component {
     </div>;
   };
 };
-
-export { DownloadButton };

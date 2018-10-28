@@ -1,6 +1,6 @@
 "use strict";
 
-class IDGenerator {
+export class IDGenerator {
   constructor(initialNextID) {
     this.nextID = initialNextID;
   };
@@ -10,5 +10,3 @@ class IDGenerator {
     return this.nextID;
   };
 };
-
-export { IDGenerator };

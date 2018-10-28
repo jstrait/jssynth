@@ -5,7 +5,7 @@ import React from 'react';
 import { SynthInstrumentEditor, SampleInstrumentEditor } from "./instrument_editor";
 import { PatternEditor } from "./pattern_editor";
 
-class TrackEditor extends React.Component {
+export class TrackEditor extends React.Component {
   constructor(props) {
     super(props);
 
@@ -81,5 +81,3 @@ class TrackEditor extends React.Component {
     </div>;
   };
 };
-
-export { TrackEditor };

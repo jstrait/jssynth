@@ -2,7 +2,7 @@
 
 import * as JSSynth from "./jssynth";
 
-class Serializer {
+export class Serializer {
   constructor() {};
 
   static serializeSynthInstrument(instrument, bufferCollection) {
@@ -200,5 +200,3 @@ class Serializer {
     return serializedNotes;
   };
 };
-
-export { Serializer };
