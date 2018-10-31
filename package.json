@@ -1,6 +1,6 @@
 {
   "name": "jssynth",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "A synthesizer and sequencer for your browser",
   "private": true,
   "repository": "https://github.com/jstrait/jssynth.git",
