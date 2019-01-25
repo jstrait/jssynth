@@ -632,6 +632,7 @@ class App extends React.Component {
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
 
     // Sequencer
+    this.setMeasureCount = this.setMeasureCount.bind(this);
     this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
@@ -883,6 +884,38 @@ class App extends React.Component {
     let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.instruments, this.state.patterns, this.bufferCollection);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
+  };
+
+  setMeasureCount(newMeasureCount) {
+    let i, j;
+    let extraPatterns;
+
+    if (newMeasureCount > this.state.measureCount) {
+      for (i = 0; i < this.state.tracks.length; i++) {
+        extraPatterns = new Array(newMeasureCount - this.state.measureCount);
+        for (j = 0; j < extraPatterns.length; j++) {
+          extraPatterns[j] = {patternID: -1};
+        }
+        this.state.tracks[i].patterns = this.state.tracks[i].patterns.concat(extraPatterns);
+      }
+      this.forceUpdate();
+    }
+    else if (newMeasureCount < this.state.measureCount) {
+      for (i = 0; i < this.state.tracks.length; i++) {
+        this.state.tracks[i].patterns.splice(newMeasureCount, this.state.measureCount - newMeasureCount);
+      }
+      this.forceUpdate();
+    }
+    else {
+      // Should not get here
+    }
+
+
+    this.setState({
+      measureCount: newMeasureCount,
+    }, function() {
+      this.syncTransportNotes();
+    });
   };
 
   setTrackName(id, newTrackName) {
@@ -1493,6 +1526,7 @@ class App extends React.Component {
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
                    measureCount={this.state.measureCount}
+                   setMeasureCount={this.setMeasureCount}
                    currentMeasure={this.state.transport.measure}
                    currentStep={this.state.transport.step}
                    isPlaying={this.state.transport.playing}

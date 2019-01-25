@@ -123,9 +123,14 @@ class Sequencer extends React.Component {
       expanded: true,
     };
 
+    this.setMeasureCount = this.setMeasureCount.bind(this);
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
+  };
+
+  setMeasureCount(e) {
+    this.props.setMeasureCount(parseInt(e.target.value, 10));
   };
 
   toggleExpansion() {
@@ -148,7 +153,13 @@ class Sequencer extends React.Component {
 
   render() {
     return <div className="pt1 pb1 border-box bt-thick">
-      <h2 className="mt0 mb1 pl1">Sequencer</h2>
+      <div className="flex flex-justify-space-between">
+        <h2 className="mt0 mb1 pl1">Sequencer</h2>
+        <span className="pr1">
+          <label>Measures:</label>
+          <input type="number" min="1" max="64" value={this.props.measureCount} onChange={this.setMeasureCount} />
+        </span>
+      </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
           <li className="list-style-none pl1 border-box bb br" style={{height: "31px"}}>
