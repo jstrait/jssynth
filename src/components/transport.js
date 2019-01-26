@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class TempoSlider extends React.Component {
+class TempoSlider extends React.PureComponent {
   constructor(props) {
     super(props);
   };
@@ -16,7 +16,7 @@ class TempoSlider extends React.Component {
   };
 };
 
-class AmplitudeSlider extends React.Component {
+class AmplitudeSlider extends React.PureComponent {
   constructor(props) {
     super(props);
   };
@@ -30,7 +30,7 @@ class AmplitudeSlider extends React.Component {
   };
 };
 
-class PlayButton extends React.Component {
+class PlayButton extends React.PureComponent {
   constructor(props) {
     super(props);
   };
@@ -40,7 +40,7 @@ class PlayButton extends React.Component {
   };
 };
 
-class Transport extends React.Component {
+class Transport extends React.PureComponent {
   constructor(props) {
     super(props);
   };
