@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export class DownloadButton extends React.Component {
+export class DownloadButton extends React.PureComponent {
   constructor(props) {
     super(props);
 

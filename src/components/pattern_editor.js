@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class PatternListItem extends React.Component {
+class PatternListItem extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -226,7 +226,7 @@ class NoteInput extends React.Component {
   };
 };
 
-class PatternRowRemoveButton extends React.Component {
+class PatternRowRemoveButton extends React.PureComponent {
   constructor(props) {
     super(props);
 
