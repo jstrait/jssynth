@@ -16,7 +16,7 @@ class Key extends React.Component {
 
     let rootNoteIndicator;
     if (this.props.rootNote === noteLabel) {
-      rootNoteIndicator = <span class="keyboard-key-root-indicator">Root</span>;
+      rootNoteIndicator = <span className="keyboard-key-root-indicator">Root</span>;
     }
 
     return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={this.props.noteName + "-" + this.props.octave}>
