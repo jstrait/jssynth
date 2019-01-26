@@ -138,6 +138,53 @@ class TrackRemoveButton extends React.PureComponent {
   };
 };
 
+class MeasureCount extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      editMode: false,
+    };
+
+    this.setMeasureCount = this.setMeasureCount.bind(this);
+    this.enableEditMode = this.enableEditMode.bind(this);
+    this.disableEditMode = this.disableEditMode.bind(this);
+  };
+
+  setMeasureCount(e) {
+    this.props.setMeasureCount(parseInt(this.measureCountInput.value, 10));
+    this.setState(() => ({ editMode: false }));
+  };
+
+  enableEditMode() {
+    this.setState(() => ({
+      editMode: true,
+    }));
+  };
+
+  disableEditMode() {
+    this.setState(() => ({
+      editMode: false,
+    }));
+  };
+
+  render() {
+    if (this.state.editMode === true) {
+      return <span className="pr1">
+        <label>Measures:</label>
+        <input type="number" min="1" max="64" defaultValue={this.props.measureCount} ref={input => {this.measureCountInput = input;}} />
+        <a href="javascript:void(0);" className="h4" onClick={this.disableEditMode}>cancel</a>
+        <button className="button-small button-hollow" onClick={this.setMeasureCount}>Save</button>
+      </span>;
+    }
+    else {
+      return <span className="pr1">
+        <label>Measures: {this.props.measureCount}</label> <a href="javascript:void(0);" className="h4" onClick={this.enableEditMode}>change</a>
+      </span>;
+    }
+  };
+};
+
 class Sequencer extends React.Component {
   constructor(props) {
     super(props);
@@ -146,15 +193,11 @@ class Sequencer extends React.Component {
       expanded: true,
     };
 
-    this.setMeasureCount = this.setMeasureCount.bind(this);
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   };
 
-  setMeasureCount(e) {
-    this.props.setMeasureCount(parseInt(e.target.value, 10));
-  };
 
   toggleExpansion() {
     this.setState((prevState, props) => ({
@@ -178,10 +221,7 @@ class Sequencer extends React.Component {
     return <div className="pt1 pb1 border-box bt-thick">
       <div className="flex flex-justify-space-between">
         <h2 className="mt0 mb1 pl1">Sequencer</h2>
-        <span className="pr1">
-          <label>Measures:</label>
-          <input type="number" min="1" max="64" value={this.props.measureCount} onChange={this.setMeasureCount} />
-        </span>
+        <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
