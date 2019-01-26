@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class TabStrip extends React.Component {
+class TabStrip extends React.PureComponent {
   constructor(props) {
     super(props);
   };
@@ -16,7 +16,7 @@ class TabStrip extends React.Component {
   };
 };
 
-class TabStripItem extends React.Component {
+class TabStripItem extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ class TabStripItem extends React.Component {
   };
 };
 
-class InstrumentPaneTab extends React.Component {
+class InstrumentPaneTab extends React.PureComponent {
   constructor(props) {
     super(props);
 
