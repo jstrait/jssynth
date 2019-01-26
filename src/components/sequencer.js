@@ -148,7 +148,7 @@ class MeasureCount extends React.PureComponent {
     };
 
     this.MIN_VALUE = 1;
-    this.MAX_VALUE = 64;
+    this.MAX_VALUE = 99;
     this.validateValue = this.validateValue.bind(this);
     this.setMeasureCount = this.setMeasureCount.bind(this);
     this.enableEditMode = this.enableEditMode.bind(this);
