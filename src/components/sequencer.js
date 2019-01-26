@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class TrackHeader extends React.Component {
+class TrackHeader extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -12,15 +12,15 @@ class TrackHeader extends React.Component {
   };
 
   setTrackName(e) {
-    this.props.setTrackName(this.props.track.id, e.target.value);
+    this.props.setTrackName(this.props.trackID, e.target.value);
   };
 
   setTrackVolume(e) {
-    this.props.setTrackVolume(this.props.track.id, parseFloat(e.target.value));
+    this.props.setTrackVolume(this.props.trackID, parseFloat(e.target.value));
   };
 
   toggleTrackMute(e) {
-    this.props.toggleTrackMute(this.props.track.id, !this.props.track.muted);
+    this.props.toggleTrackMute(this.props.trackID, !this.props.muted);
   };
 
   render() {
@@ -29,17 +29,17 @@ class TrackHeader extends React.Component {
     };
 
     return <li className="flex flex-column flex-uniform-size flex-justify-center bg-light-gray list-style-none pl1 pr1 border-box bb br">
-      <span className="short-name">{shortTrackName(this.props.track.name)}</span>
-      <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.track.name} onChange={this.setTrackName} />
+      <span className="short-name">{shortTrackName(this.props.name)}</span>
+      <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.name} onChange={this.setTrackName} />
       <span className="sequencer-volume-container flex flex-align-center">
-        <button className={"button-hollow button-small" + (this.props.track.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
-        <input className="flex-uniform-size" style={{marginLeft: "4px", width: "1px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.track.muted} value={this.props.track.volume} onChange={this.setTrackVolume} />
+        <button className={"button-hollow button-small" + (this.props.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
+        <input className="flex-uniform-size" style={{marginLeft: "4px", width: "1px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.muted} value={this.props.volume} onChange={this.setTrackVolume} />
       </span>
     </li>;
   };
 };
 
-class TrackPatternListHeader extends React.Component {
+class TrackPatternListHeader extends React.PureComponent {
   constructor(props) {
     super(props);
   };
@@ -68,7 +68,7 @@ class TrackPatternList extends React.Component {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
       {this.props.track.patterns.map((pattern, index) =>
       <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure" : "")}>
-        <TrackMeasure measure={index} trackID={this.props.track.id} pattern={pattern} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
+        <TrackMeasure measure={index} trackID={this.props.track.id} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
       <li className="flex-uniform-size list-style-none bg-lighter-gray bb"></li>
@@ -87,9 +87,32 @@ class TrackMeasure extends React.Component {
     this.props.setTrackPattern(this.props.trackID, this.props.measure, parseInt(e.target.value, 10));
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const basicPropsChanged = this.props.trackID !== nextProps.trackID ||
+                              this.props.patternID !== nextProps.patternID ||
+                              this.props.measure !== nextProps.measure;
+    let i;
+
+    if (basicPropsChanged) {
+      return true;
+    }
+
+    if (this.props.trackPatternOptions.length !== nextProps.trackPatternOptions.length) {
+      return true;
+    }
+
+    for (i = 0; i < this.props.trackPatternOptions.length; i++) {
+      if (this.props.trackPatternOptions[i] !== nextProps.trackPatternOptions[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   render() {
     return <span className="flex flex-align-center full-height pl-half pr-half border-box">
-      <select className="full-width" value={this.props.pattern.patternID} onChange={this.setMeasurePattern}>
+      <select className="full-width" value={this.props.patternID} onChange={this.setMeasurePattern}>
         <option key={0} value="-1"></option>
         {this.props.trackPatternOptions.map((trackPatternOption, index) =>
         <option key={index + 1} value={trackPatternOption.id}>{trackPatternOption.name}</option>
@@ -99,7 +122,7 @@ class TrackMeasure extends React.Component {
   };
 };
 
-class TrackRemoveButton extends React.Component {
+class TrackRemoveButton extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -167,6 +190,10 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader key={track.id}
+                         trackID={track.id}
+                         name={track.name}
+                         muted={track.muted}
+                         volume={track.volume}
                          track={track}
                          setTrackName={this.props.setTrackName}
                          setTrackVolume={this.props.setTrackVolume}
