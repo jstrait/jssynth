@@ -144,11 +144,26 @@ class MeasureCount extends React.PureComponent {
 
     this.state = {
       editMode: false,
+      isValidValue: true,
     };
 
+    this.MIN_VALUE = 1;
+    this.MAX_VALUE = 64;
+    this.validateValue = this.validateValue.bind(this);
     this.setMeasureCount = this.setMeasureCount.bind(this);
     this.enableEditMode = this.enableEditMode.bind(this);
     this.disableEditMode = this.disableEditMode.bind(this);
+  };
+
+  validateValue(e) {
+    let val = parseInt(e.target.value, 10);
+    let isValidValue = false;
+
+    if (val >= this.MIN_VALUE && val <= this.MAX_VALUE) {
+      isValidValue = true;
+    }
+
+    this.setState(() => ({ isValidValue: isValidValue }));
   };
 
   setMeasureCount(e) {
@@ -159,6 +174,7 @@ class MeasureCount extends React.PureComponent {
   enableEditMode() {
     this.setState(() => ({
       editMode: true,
+      isValidValue: true,
     }));
   };
 
@@ -172,9 +188,9 @@ class MeasureCount extends React.PureComponent {
     if (this.state.editMode === true) {
       return <span className="pr1">
         <label>Measures:</label>
-        <input type="number" min="1" max="64" defaultValue={this.props.measureCount} ref={input => {this.measureCountInput = input;}} />
+        <input type="number" min={this.MIN_VALUE} max={this.MAX_VALUE} defaultValue={this.props.measureCount} onChange={this.validateValue} ref={input => {this.measureCountInput = input;}} />
         <a href="javascript:void(0);" className="h4" onClick={this.disableEditMode}>cancel</a>
-        <button className="button-small button-hollow" onClick={this.setMeasureCount}>Save</button>
+        <button className="button-small button-hollow" disabled={!this.state.isValidValue} onClick={this.setMeasureCount}>Save</button>
       </span>;
     }
     else {
