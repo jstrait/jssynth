@@ -1564,7 +1564,7 @@ class App extends React.Component {
                   deactivate={this.deactivateKeyboard}
                   setNotes={this.setKeyboardNotes} />
         <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
-          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-18</p>
+          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
         </div>
       </div>
       }
