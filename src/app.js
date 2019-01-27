@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 
 import * as JSSynth from "./jssynth";
 import { IDGenerator } from "./id_generator";
+import { MidiController } from "./midi_controller";
 import { Serializer } from "./serializer";
 
 import { DownloadButton } from "./components/download_button";
@@ -664,6 +665,12 @@ class App extends React.Component {
     this.activateKeyboard = this.activateKeyboard.bind(this);
     this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
+
+    // MIDI
+    this.onMIDIStateChange = this.onMIDIStateChange.bind(this);
+    this.onMIDIMessage = this.onMIDIMessage.bind(this);
+    this.onMIDIError = this.onMIDIError.bind(this);
+    this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
 
     document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
@@ -1456,6 +1463,43 @@ class App extends React.Component {
       activeKeyboardNotes: newActiveKeyboardNotes,
       activeNoteContexts: newActiveNoteContexts,
     });
+  };
+
+  onMIDIStateChange(data) {
+    console.log("MIDI State Change!");
+    console.log(data);
+  };
+
+  onMIDIMessage(messageType, data) {
+    const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    let noteName, octave, noteString;
+    let newActiveNotes = this.state.activeKeyboardNotes.concat([]);
+
+    // Convert MIDI note number into internal note format
+    noteName = NOTE_NAMES[data.noteNumber % 12];
+    octave = -2 + Math.floor((data.noteNumber + 3) / 12);  // The +3 is to compensate for octave starting at "A" vs. "C"
+    noteString = `${noteName}-${octave}`;
+
+    if (messageType === "noteon") {
+      if (!newActiveNotes.includes(noteString)) {
+        newActiveNotes.push(noteString);
+      }
+      this.setKeyboardNotes(newActiveNotes);
+    }
+    else if (messageType === "noteoff") {
+      let noteIndex = newActiveNotes.indexOf(noteString);
+      if (noteIndex !== -1) {
+        newActiveNotes.splice(noteIndex, 1);
+      }
+      this.setKeyboardNotes(newActiveNotes);
+    }
+    else if (messageType === "controller") {
+      // Maybe do something with controller messages in the future
+    }
+  };
+
+  onMIDIError() {
+    console.log("Unexpected MIDI error");
   };
 
   export() {
