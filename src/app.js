@@ -116,6 +116,11 @@ class App extends React.Component {
         { label: "Instrument 6", url: "sounds/hihat.wav", },
       ];
 
+      var i;
+      for (i = 0; i < this.state.tracks.length; i++) {
+        this.audioSource.addTrack(this.state.tracks[i].id, this.state.tracks[i].volume);
+      }
+
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
       this.transport.setTempo(this.state.transport.tempo);
       this.audioSource.masterGain().gain.value = this.state.masterAmplitude;
@@ -390,7 +395,7 @@ class App extends React.Component {
     this.setState({
       tracks: newTrackList
     });
-    this.syncTransportNotes();
+    this.audioSource.setTrackAmplitude(id, newTrackVolume);
   };
 
   toggleTrackMute(id, newMutedState) {
@@ -463,6 +468,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
+      this.audioSource.addTrack(newTrack.id, newTrack.volume);
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -575,6 +581,7 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
     }, function() {
+      this.audioSource.removeTrack(id);
       this.syncTransportNotes();
     });
   };
@@ -878,7 +885,7 @@ class App extends React.Component {
         }
 
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
-        noteContext = this.audioSource.playImmediateNote(instrument, note, currentTrack.volume * (1 / Math.max(8, this.state.tracks.length)), 1);
+        noteContext = this.audioSource.playImmediateNote(instrument, note, 1.0, currentTrack.id);
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);

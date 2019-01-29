@@ -608,7 +608,7 @@ function SongPlayer() {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepDuration();
-        note.instrument().scheduleNote(audioContext, audioSource.destination(1), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+        note.instrument().scheduleNote(audioContext, audioSource.destination(note.trackID()), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
       });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
@@ -731,19 +731,51 @@ function Track(audioContext, audioDestination, initialAmplitude) {
     return gain;
   };
 
+  var destroy = function() {
+    gain.disconnect(audioDestination);
+  };
+
   setAmplitude(initialAmplitude);
   gain.connect(audioDestination);
 
   return {
     setAmplitude: setAmplitude,
     input: input,
+    destroy: destroy,
+  };
+};
+
+function TrackCollection(audioContext, audioDestination) {
+  var tracks = {};
+  var count = 0;
+
+  var track = function(id) {
+    return tracks[id];
+  };
+
+  var add = function(id, amplitude) {
+    tracks[id] = Track(audioContext, audioDestination, amplitude);
+    count += 1;
+  };
+
+  var remove = function(id) {
+    tracks[id].destroy();
+    tracks[id] = undefined;
+    count -= 1;
+  };
+
+  return {
+    track: track,
+    add: add,
+    remove: remove,
+    count: function() { return count; },
   };
 };
 
 function AudioSource(audioContext) {
   var clipDetector;
   var masterGain;
-  var tracks = {};
+  var trackCollection;
 
   var detectClipping = function(e) {
     var i;
@@ -759,15 +791,26 @@ function AudioSource(audioContext) {
   };
 
   var addTrack = function(id, amplitude) {
-    tracks[id] = Track(audioContext, masterGain, amplitude);
+    trackCollection.add(id, amplitude);
+  };
+
+  var removeTrack = function(id) {
+    trackCollection.remove(id);
+  };
+
+  var setTrackAmplitude = function(id, newAmplitude) {
+    var track = trackCollection.track(id);
+    track.setAmplitude(newAmplitude);
   };
 
   var destination = function(id) {
-    if (tracks[id] === undefined) {
+    var track = trackCollection.track(id);
+
+    if (track === undefined) {
       return undefined;
     }
 
-    return tracks[id].input();
+    return track.input();
   };
 
   var playImmediateNote = function(instrument, note, amplitude, trackID) {
@@ -796,12 +839,15 @@ function AudioSource(audioContext) {
     masterGain.connect(audioContext.destination);
     masterGain.connect(clipDetector);
 
-    addTrack(1, 1.0);
+    trackCollection = TrackCollection(audioContext, masterGain);
   }
 
   return {
     audioContext: function() { return audioContext; },
     masterGain: function() { return masterGain; },
+    addTrack: addTrack,
+    removeTrack: removeTrack,
+    setTrackAmplitude: setTrackAmplitude,
     destination: destination,
     playImmediateNote: playImmediateNote,
     stopNote: stopNote,
