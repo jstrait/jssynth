@@ -35,9 +35,9 @@ class App extends React.Component {
       keyboardActive: false,
       activeKeyboardNotes: [],
       activeNoteContexts: [],
+      masterAmplitude: 0.75,
       transport: {
         playing: false,
-        amplitude: 0.75,
         tempo: 114,
         measure: undefined,
         step: undefined,
@@ -57,7 +57,7 @@ class App extends React.Component {
     this.offlineSongPlayer = JSSynth.SongPlayer();
 
     this.togglePlaying = this.togglePlaying.bind(this);
-    this.updateAmplitude = this.updateAmplitude.bind(this);
+    this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
     this.updateTempo = this.updateTempo.bind(this);
     this.setDownloadFileName = this.setDownloadFileName.bind(this);
     this.export = this.export.bind(this);
@@ -118,7 +118,7 @@ class App extends React.Component {
 
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
       this.transport.setTempo(this.state.transport.tempo);
-      this.audioSource.masterGain().gain.value = this.state.transport.amplitude;
+      this.audioSource.masterGain().gain.value = this.state.masterAmplitude;
 
       var buildWhiteNoiseBuffer = function(audioContext) {
         var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
@@ -270,14 +270,10 @@ class App extends React.Component {
     this.transport.setTempo(newTempo);
   };
 
-  updateAmplitude(e) {
+  updateMasterAmplitude(e) {
     const newAmplitude = parseFloat(e.target.value);
 
-    this.setState((prevState, props) => ({
-      transport: Object.assign({}, prevState.transport, {
-        amplitude: newAmplitude,
-      }),
-    }));
+    this.setState({masterAmplitude: newAmplitude});
     this.audioSource.masterGain().gain.value = newAmplitude;
   };
 
@@ -952,7 +948,7 @@ class App extends React.Component {
 
     this.setState({downloadInProgress: true});
 
-    offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.transport.amplitude, exportCompleteCallback);
+    offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
@@ -991,10 +987,10 @@ class App extends React.Component {
             <span className="lightText">Web Synthesizer</span>
           </div>
           <Transport playing={this.state.transport.playing}
-                     amplitude={this.state.transport.amplitude}
+                     amplitude={this.state.masterAmplitude}
                      tempo={this.state.transport.tempo}
                      togglePlaying={this.togglePlaying}
-                     updateAmplitude={this.updateAmplitude}
+                     updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
           <DownloadButton enabled={this.state.downloadEnabled} downloadInProgress={this.state.downloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
