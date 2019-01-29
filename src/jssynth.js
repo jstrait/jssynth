@@ -803,6 +803,10 @@ function AudioSource(audioContext) {
     channel.setAmplitude(newAmplitude);
   };
 
+  var setMasterAmplitude = function(newAmplitude) {
+    masterGain.gain.value = newAmplitude;
+  };
+
   var destination = function(id) {
     var channel = channelCollection.channel(id);
 
@@ -844,10 +848,10 @@ function AudioSource(audioContext) {
 
   return {
     audioContext: function() { return audioContext; },
-    masterGain: function() { return masterGain; },
     addChannel: addChannel,
     removeChannel: removeChannel,
     setChannelAmplitude: setChannelAmplitude,
+    setMasterAmplitude: setMasterAmplitude,
     destination: destination,
     playImmediateNote: playImmediateNote,
     stopNote: stopNote,
@@ -996,7 +1000,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
 
   var offlineAudioContext = buildOfflineAudioContext();
   var offlineAudioSource = AudioSource(offlineAudioContext);
-  offlineAudioSource.masterGain().gain.value = amplitude;
+  offlineAudioSource.setMasterAmplitude(amplitude);
 
 
   return {

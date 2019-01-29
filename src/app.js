@@ -123,7 +123,7 @@ class App extends React.Component {
 
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
       this.transport.setTempo(this.state.transport.tempo);
-      this.audioSource.masterGain().gain.value = this.state.masterAmplitude;
+      this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
 
       var buildWhiteNoiseBuffer = function(audioContext) {
         var noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
@@ -279,7 +279,7 @@ class App extends React.Component {
     const newAmplitude = parseFloat(e.target.value);
 
     this.setState({masterAmplitude: newAmplitude});
-    this.audioSource.masterGain().gain.value = newAmplitude;
+    this.audioSource.setMasterAmplitude(newAmplitude);
   };
 
   syncCurrentStep() {
