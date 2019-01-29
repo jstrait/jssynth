@@ -118,7 +118,7 @@ class App extends React.Component {
 
       var i;
       for (i = 0; i < this.state.tracks.length; i++) {
-        this.audioSource.addTrack(this.state.tracks[i].id, this.state.tracks[i].volume);
+        this.audioSource.addChannel(this.state.tracks[i].id, this.state.tracks[i].volume);
       }
 
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
@@ -395,7 +395,7 @@ class App extends React.Component {
     this.setState({
       tracks: newTrackList
     });
-    this.audioSource.setTrackAmplitude(id, newTrackVolume);
+    this.audioSource.setChannelAmplitude(id, newTrackVolume);
   };
 
   toggleTrackMute(id, newMutedState) {
@@ -468,7 +468,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.audioSource.addTrack(newTrack.id, newTrack.volume);
+      this.audioSource.addChannel(newTrack.id, newTrack.volume);
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -581,7 +581,7 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
     }, function() {
-      this.audioSource.removeTrack(id);
+      this.audioSource.removeChannel(id);
       this.syncTransportNotes();
     });
   };

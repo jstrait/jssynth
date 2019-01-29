@@ -573,12 +573,12 @@ function Note(newNoteName, newOctave, newStepDuration) {
   };
 };
 
-function InstrumentNote(note, instrument, amplitude, trackID) {
+function InstrumentNote(note, instrument, amplitude, channelID) {
   return {
     note: function() { return note; },
     instrument: function() { return instrument; },
     amplitude: function() { return amplitude; },
-    trackID: function() { return trackID; },
+    channelID: function() { return channelID; },
   };
 };
 
@@ -608,7 +608,7 @@ function SongPlayer() {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepDuration();
-        note.instrument().scheduleNote(audioContext, audioSource.destination(note.trackID()), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+        note.instrument().scheduleNote(audioContext, audioSource.destination(note.channelID()), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
       });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
@@ -720,7 +720,7 @@ var AudioContextBuilder = (function() {
 })();
 
 
-function Track(audioContext, audioDestination, initialAmplitude) {
+function Channel(audioContext, audioDestination, initialAmplitude) {
   var gain = audioContext.createGain();
 
   var setAmplitude = function(newAmplitude) {
@@ -745,27 +745,27 @@ function Track(audioContext, audioDestination, initialAmplitude) {
   };
 };
 
-function TrackCollection(audioContext, audioDestination) {
-  var tracks = {};
+function ChannelCollection(audioContext, audioDestination) {
+  var channels = {};
   var count = 0;
 
-  var track = function(id) {
-    return tracks[id];
+  var channel = function(id) {
+    return channels[id];
   };
 
   var add = function(id, amplitude) {
-    tracks[id] = Track(audioContext, audioDestination, amplitude);
+    channels[id] = Channel(audioContext, audioDestination, amplitude);
     count += 1;
   };
 
   var remove = function(id) {
-    tracks[id].destroy();
-    tracks[id] = undefined;
+    channels[id].destroy();
+    channels[id] = undefined;
     count -= 1;
   };
 
   return {
-    track: track,
+    channel: channel,
     add: add,
     remove: remove,
     count: function() { return count; },
@@ -775,7 +775,7 @@ function TrackCollection(audioContext, audioDestination) {
 function AudioSource(audioContext) {
   var clipDetector;
   var masterGain;
-  var trackCollection;
+  var channelCollection;
 
   var detectClipping = function(e) {
     var i;
@@ -790,31 +790,31 @@ function AudioSource(audioContext) {
     }
   };
 
-  var addTrack = function(id, amplitude) {
-    trackCollection.add(id, amplitude);
+  var addChannel = function(id, amplitude) {
+    channelCollection.add(id, amplitude);
   };
 
-  var removeTrack = function(id) {
-    trackCollection.remove(id);
+  var removeChannel = function(id) {
+    channelCollection.remove(id);
   };
 
-  var setTrackAmplitude = function(id, newAmplitude) {
-    var track = trackCollection.track(id);
-    track.setAmplitude(newAmplitude);
+  var setChannelAmplitude = function(id, newAmplitude) {
+    var channel = channelCollection.channel(id);
+    channel.setAmplitude(newAmplitude);
   };
 
   var destination = function(id) {
-    var track = trackCollection.track(id);
+    var channel = channelCollection.channel(id);
 
-    if (track === undefined) {
+    if (channel === undefined) {
       return undefined;
     }
 
-    return track.input();
+    return channel.input();
   };
 
-  var playImmediateNote = function(instrument, note, amplitude, trackID) {
-    return instrument.gateOn(audioContext, destination(trackID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
+  var playImmediateNote = function(instrument, note, amplitude, channelID) {
+    return instrument.gateOn(audioContext, destination(channelID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 
   var stopNote = function(instrument, noteContext) {
@@ -839,15 +839,15 @@ function AudioSource(audioContext) {
     masterGain.connect(audioContext.destination);
     masterGain.connect(clipDetector);
 
-    trackCollection = TrackCollection(audioContext, masterGain);
+    channelCollection = ChannelCollection(audioContext, masterGain);
   }
 
   return {
     audioContext: function() { return audioContext; },
     masterGain: function() { return masterGain; },
-    addTrack: addTrack,
-    removeTrack: removeTrack,
-    setTrackAmplitude: setTrackAmplitude,
+    addChannel: addChannel,
+    removeChannel: removeChannel,
+    setChannelAmplitude: setChannelAmplitude,
     destination: destination,
     playImmediateNote: playImmediateNote,
     stopNote: stopNote,
