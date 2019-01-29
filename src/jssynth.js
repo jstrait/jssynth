@@ -608,7 +608,7 @@ function SongPlayer() {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepDuration();
-        note.instrument().scheduleNote(audioContext, audioSource.destination(note.channelID()), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+        audioSource.scheduleNote(note.channelID(), note.instrument(), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
       });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
@@ -817,6 +817,10 @@ function AudioSource(audioContext) {
     return channel.input();
   };
 
+  var scheduleNote = function(channelID, instrument, note, amplitude, gateOnTime, gateOffTime) {
+    instrument.scheduleNote(audioContext, destination(channelID), note, amplitude, gateOnTime, gateOffTime);
+  };
+
   var playImmediateNote = function(channelID, instrument, note, amplitude) {
     return instrument.gateOn(audioContext, destination(channelID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
@@ -853,6 +857,7 @@ function AudioSource(audioContext) {
     setChannelAmplitude: setChannelAmplitude,
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,
+    scheduleNote: scheduleNote,
     playImmediateNote: playImmediateNote,
     stopNote: stopNote,
     setClipDetectionEnabled: setClipDetectionEnabled,
