@@ -573,11 +573,12 @@ function Note(newNoteName, newOctave, newStepDuration) {
   };
 };
 
-function InstrumentNote(note, instrument, amplitude) {
+function InstrumentNote(note, instrument, amplitude, trackID) {
   return {
     note: function() { return note; },
     instrument: function() { return instrument; },
     amplitude: function() { return amplitude; },
+    trackID: function() { return trackID; },
   };
 };
 
@@ -598,7 +599,7 @@ function SongPlayer() {
     notes = newNotes;
   };
 
-  var tick = function(audioContext, audioDestination, endTime, stepDuration, loop) {
+  var tick = function(audioContext, audioSource, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
     var incomingNotes;
@@ -607,7 +608,7 @@ function SongPlayer() {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepDuration();
-        note.instrument().scheduleNote(audioContext, audioDestination, note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+        note.instrument().scheduleNote(audioContext, audioSource.destination(1), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
       });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
@@ -719,9 +720,30 @@ var AudioContextBuilder = (function() {
 })();
 
 
+function Track(audioContext, audioDestination, initialAmplitude) {
+  var gain = audioContext.createGain();
+
+  var setAmplitude = function(newAmplitude) {
+    gain.gain.value = newAmplitude;
+  };
+
+  var input = function() {
+    return gain;
+  };
+
+  setAmplitude(initialAmplitude);
+  gain.connect(audioDestination);
+
+  return {
+    setAmplitude: setAmplitude,
+    input: input,
+  };
+};
+
 function AudioSource(audioContext) {
   var clipDetector;
   var masterGain;
+  var tracks = {};
 
   var detectClipping = function(e) {
     var i;
@@ -736,8 +758,20 @@ function AudioSource(audioContext) {
     }
   };
 
-  var playImmediateNote = function(instrument, note, amplitude) {
-    return instrument.gateOn(audioContext, masterGain, note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
+  var addTrack = function(id, amplitude) {
+    tracks[id] = Track(audioContext, masterGain, amplitude);
+  };
+
+  var destination = function(id) {
+    if (tracks[id] === undefined) {
+      return undefined;
+    }
+
+    return tracks[id].input();
+  };
+
+  var playImmediateNote = function(instrument, note, amplitude, trackID) {
+    return instrument.gateOn(audioContext, destination(trackID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 
   var stopNote = function(instrument, noteContext) {
@@ -761,11 +795,14 @@ function AudioSource(audioContext) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioContext.destination);
     masterGain.connect(clipDetector);
+
+    addTrack(1, 1.0);
   }
 
   return {
     audioContext: function() { return audioContext; },
     masterGain: function() { return masterGain; },
+    destination: destination,
     playImmediateNote: playImmediateNote,
     stopNote: stopNote,
     setClipDetectionEnabled: setClipDetectionEnabled,
@@ -787,7 +824,7 @@ function Transport(audioSource, songPlayer, stopCallback) {
   var tick = function() {
     var finalTime = audioSource.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
 
-    var newScheduledSteps = songPlayer.tick(audioSource.audioContext(), audioSource.masterGain(), finalTime, stepInterval, LOOP);
+    var newScheduledSteps = songPlayer.tick(audioSource.audioContext(), audioSource, finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
@@ -906,7 +943,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     var finalTime = startTime + scheduleAheadTime;
 
     songPlayer.reset(startTime);
-    songPlayer.tick(offlineAudioContext, offlineAudioSource.masterGain(), finalTime, STEP_INTERVAL, false);
+    songPlayer.tick(offlineAudioContext, offlineAudioSource, finalTime, STEP_INTERVAL, false);
 
     offlineAudioContext.startRendering();
   };
