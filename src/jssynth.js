@@ -835,10 +835,6 @@ function Transport(audioSource, songPlayer, stopCallback) {
     stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
-  var setAmplitude = function(newAmplitude) {
-    audioSource.masterGain().gain.value = newAmplitude;
-  };
-
   var toggle = function() {
     if (isPlaying) {
       stop();
@@ -867,12 +863,10 @@ function Transport(audioSource, songPlayer, stopCallback) {
 
 
   setTempo(100);
-  setAmplitude(0.25);
 
 
   return {
     setTempo: setTempo,
-    setAmplitude: setAmplitude,
     toggle: toggle,
     currentStep: calculateCurrentStep,
   };
