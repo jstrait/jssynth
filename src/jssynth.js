@@ -667,8 +667,59 @@ function SongPlayer() {
   };
 };
 
-function AudioSource() {
-  var audioContext;
+
+var AudioContextBuilder = (function() {
+  var buildAudioContext = function() {
+    var audioContext;
+
+    if (window.AudioContext) {
+      // Why create an AudioContext, immediately close it, and then recreate
+      // another one? Good question.
+      //
+      // The reason is that in iOS, there is a bug in which an AudioContext
+      // can be created with a sample rate of 48,000Hz, which for reasons
+      // causes audio playback to be distorted. If you re-load the page,
+      // the sample rate will be set to 44,100Hz instead, and playback
+      // will sound normal.
+      //
+      // Creating an AudioContext, closing it, and recreating another
+      // one works around this issue, I _think_ by basically simulating
+      // the page re-load behavior, causing the sample rate of the 2nd
+      // AudioContext to be 44,100Hz.
+      //
+      // This fix was figured out by searching Google, which returned
+      // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
+      audioContext = new AudioContext();
+      if (audioContext.close) {
+        audioContext.close();
+        audioContext = new AudioContext();
+      }
+    }
+
+    return audioContext;
+  };
+
+  var buildOfflineAudioContext = function(channelCount, sampleCount, sampleRate) {
+    var offlineAudioContext;
+
+    if (window.offlineAudioContext) {
+      offlineAudioContext = new OfflineAudioContext(channelCount, sampleCount, sampleRate);
+    }
+    else if (window.webkitOfflineAudioContext) {
+      offlineAudioContext = new webkitOfflineAudioContext(channelCount, sampleCount, sampleRate);
+    }
+
+    return offlineAudioContext;
+  };
+
+  return {
+    buildAudioContext: buildAudioContext,
+    buildOfflineAudioContext: buildOfflineAudioContext,
+  };
+})();
+
+
+function AudioSource(audioContext) {
   var clipDetector;
   var masterGain;
 
@@ -702,29 +753,8 @@ function AudioSource() {
     }
   };
 
-  if (window.AudioContext) {
-    // Why create an AudioContext, immediately close it, and then recreate
-    // another one? Good question.
-    //
-    // The reason is that in iOS, there is a bug in which an AudioContext
-    // can be created with a sample rate of 48,000Hz, which for reasons
-    // causes audio playback to be distorted. If you re-load the page,
-    // the sample rate will be set to 44,100Hz instead, and playback
-    // will sound normal.
-    //
-    // Creating an AudioContext, closing it, and recreating another
-    // one works around this issue, I _think_ by basically simulating
-    // the page re-load behavior, causing the sample rate of the 2nd
-    // AudioContext to be 44,100Hz.
-    //
-    // This fix was figured out by searching Google, which returned
-    // this GitHub issue: https://github.com/photonstorm/phaser/issues/2373
-    audioContext = new AudioContext();
-    if (audioContext.close) {
-      audioContext.close();
-      audioContext = new AudioContext();
-    }
 
+  if (audioContext !== undefined) {
     clipDetector = audioContext.createScriptProcessor(512);
     clipDetector.onaudioprocess = detectClipping;
 
@@ -732,7 +762,6 @@ function AudioSource() {
     masterGain.connect(audioContext.destination);
     masterGain.connect(clipDetector);
   }
-
 
   return {
     audioContext: function() { return audioContext; },
@@ -742,6 +771,7 @@ function AudioSource() {
     setClipDetectionEnabled: setClipDetectionEnabled,
   };
 };
+
 
 function Transport(audioSource, songPlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
@@ -861,16 +891,9 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     var playbackTime = Math.max(minimumPlaybackTime, actualPlaybackTime);
 
     var sampleCount = SAMPLE_RATE * playbackTime;
-    var audioContext;
+    var offlineAudioContext = AudioContextBuilder.buildOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
 
-    if (window.OfflineAudioContext) {
-      audioContext = new OfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
-    }
-    else if (window.webkitOfflineAudioContext) {
-      audioContext = new webkitOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
-    }
-
-    audioContext.oncomplete = function(e) {
+    offlineAudioContext.oncomplete = function(e) {
       var waveWriter = WaveWriter();
 
       var sampleData = e.renderedBuffer.getChannelData(0);
@@ -880,7 +903,7 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
       completeCallback(blob);
     };
 
-    return audioContext;
+    return offlineAudioContext;
   };
 
   var tick = function() {
@@ -889,16 +912,14 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     var finalTime = startTime + scheduleAheadTime;
 
     songPlayer.reset(startTime);
-    songPlayer.tick(offlineAudioContext, masterGain, finalTime, STEP_INTERVAL, false);
+    songPlayer.tick(offlineAudioContext, offlineAudioSource.masterGain(), finalTime, STEP_INTERVAL, false);
 
     offlineAudioContext.startRendering();
   };
 
   var offlineAudioContext = buildOfflineAudioContext();
-  var masterGain = offlineAudioContext.createGain();
-
-  masterGain.gain.value = amplitude;
-  masterGain.connect(offlineAudioContext.destination);
+  var offlineAudioSource = AudioSource(offlineAudioContext);
+  offlineAudioSource.masterGain().gain.value = amplitude;
 
 
   return {
@@ -972,4 +993,4 @@ function WaveWriter() {
   };
 };
 
-export { BufferCollection, SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, AudioSource, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export { BufferCollection, SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, AudioContextBuilder, AudioSource, Transport, OfflineTransport, InstrumentNote, WaveWriter };
