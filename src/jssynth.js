@@ -817,7 +817,7 @@ function AudioSource(audioContext) {
     return channel.input();
   };
 
-  var playImmediateNote = function(instrument, note, amplitude, channelID) {
+  var playImmediateNote = function(channelID, instrument, note, amplitude) {
     return instrument.gateOn(audioContext, destination(channelID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 

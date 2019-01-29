@@ -885,7 +885,7 @@ class App extends React.Component {
         }
 
         note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
-        noteContext = this.audioSource.playImmediateNote(instrument, note, 1.0, currentTrack.id);
+        noteContext = this.audioSource.playImmediateNote(currentTrack.id, instrument, note, 1.0);
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);
