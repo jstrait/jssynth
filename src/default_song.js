@@ -31,6 +31,8 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
   {
     id: 2,
@@ -62,6 +64,8 @@ const instruments = [
     envelopeDecayTime: 0.09,
     envelopeSustainPercentage: 0.16,
     envelopeReleaseTime: 0.99,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
   {
     id: 3,
@@ -93,6 +97,8 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
   {
     id: 4,
@@ -117,6 +123,8 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
   {
     id: 5,
@@ -141,6 +149,8 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
   {
     id:6,
@@ -165,6 +175,8 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
+    delayTime: 0.0,
+    delayFeedback: 0.0,
   },
 ];
 

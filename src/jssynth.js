@@ -720,9 +720,13 @@ var AudioContextBuilder = (function() {
 })();
 
 
-function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier) {
+function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, delayTime, delayFeedback) {
   var amplitude = initialAmplitude;
   var multiplier = initialMultiplier;
+
+  var inputNode = audioContext.createGain();
+  var delay = audioContext.createDelay();
+  var feedback = audioContext.createGain();
   var gain = audioContext.createGain();
 
   var setAmplitude = function(newAmplitude) {
@@ -736,7 +740,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   };
 
   var input = function() {
-    return gain;
+    return inputNode;
   };
 
   var destroy = function() {
@@ -744,6 +748,16 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   };
 
   setAmplitude(initialAmplitude);
+
+  inputNode.gain.value = 1.0;
+  delay.delayTime.value = delayTime;
+  feedback.gain.value = delayFeedback;
+
+  inputNode.connect(gain);
+  inputNode.connect(delay);
+  delay.connect(feedback);
+  delay.connect(gain);
+  feedback.connect(delay);
   gain.connect(audioDestination);
 
   return {
@@ -762,8 +776,8 @@ function ChannelCollection(audioContext, audioDestination) {
     return channels[id];
   };
 
-  var add = function(id, amplitude) {
-    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0);
+  var add = function(id, amplitude, delayTime, delayFeedback) {
+    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, delayTime, delayFeedback);
     count += 1;
 
     setMultipliers();
@@ -812,8 +826,8 @@ function AudioSource(audioContext) {
     }
   };
 
-  var addChannel = function(id, amplitude) {
-    channelCollection.add(id, amplitude);
+  var addChannel = function(id, amplitude, delayTime, delayFeedback) {
+    channelCollection.add(id, amplitude, delayTime, delayFeedback);
   };
 
   var removeChannel = function(id) {
@@ -1031,7 +1045,7 @@ function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeCallback
   offlineAudioSource.setMasterAmplitude(amplitude);
 
   for (i = 0; i < tracks.length; i++) {
-    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume);
+    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume, 0.0, 0.0);
   }
 
 

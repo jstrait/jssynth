@@ -117,8 +117,10 @@ class App extends React.Component {
       ];
 
       var i;
+      var instrument;
       for (i = 0; i < this.state.tracks.length; i++) {
-        this.audioSource.addChannel(this.state.tracks[i].id, this.state.tracks[i].volume);
+        instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
+        this.audioSource.addChannel(this.state.tracks[i].id, this.state.tracks[i].volume, instrument.delayTime, instrument.delayFeedback);
       }
 
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
@@ -468,7 +470,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.audioSource.addChannel(newTrack.id, newTrack.volume);
+      this.audioSource.addChannel(newTrack.id, newTrack.volume, newInstrument.delayTime, newInstrument.delayFeedback);
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -505,6 +507,8 @@ class App extends React.Component {
       envelopeDecayTime: 0.0,
       envelopeSustainPercentage: 1.0,
       envelopeReleaseTime: 0.0,
+      delayTime: 0.0,
+      delayFeedback: 0.0,
     };
 
     this.addGenericTrack(newInstrument, "Synth Track");
@@ -538,6 +542,8 @@ class App extends React.Component {
         envelopeDecayTime: 0.0,
         envelopeSustainPercentage: 1.0,
         envelopeReleaseTime: 0.0,
+        delayTime: 0.0,
+        delayFeedback: 0.0,
       };
 
       this.addGenericTrack(newInstrument, "Sampler Track");
