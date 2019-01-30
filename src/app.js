@@ -955,7 +955,7 @@ class App extends React.Component {
 
     this.setState({downloadInProgress: true});
 
-    offlineTransport = new JSSynth.OfflineTransport(this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
+    offlineTransport = new JSSynth.OfflineTransport(this.state.tracks, this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 

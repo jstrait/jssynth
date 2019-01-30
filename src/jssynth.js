@@ -987,7 +987,7 @@ function Transport(audioSource, songPlayer, stopCallback) {
 };
 
 
-function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
+function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeCallback) {
   var NUM_CHANNELS = 1;
   var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
@@ -1025,9 +1025,14 @@ function OfflineTransport(songPlayer, tempo, amplitude, completeCallback) {
     offlineAudioContext.startRendering();
   };
 
+  var i;
   var offlineAudioContext = buildOfflineAudioContext();
   var offlineAudioSource = AudioSource(offlineAudioContext);
   offlineAudioSource.setMasterAmplitude(amplitude);
+
+  for (i = 0; i < tracks.length; i++) {
+    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume);
+  }
 
 
   return {
