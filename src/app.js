@@ -327,6 +327,18 @@ class App extends React.Component {
     this.offlineSongPlayer.replaceNotes(serializedNotes);
   };
 
+  syncChannels() {
+    let i;
+    let track, instrument;
+
+    for (i = 0; i < this.state.tracks.length; i++) {
+      track = this.state.tracks[i];
+      instrument = this.instrumentByID(track.instrumentID);
+      this.audioSource.setChannelAmplitude(track.id, track.volume);
+      this.audioSource.setChannelDelay(track.id, instrument.delayTime, instrument.delayFeedback);
+    }
+  };
+
   setMeasureCount(newMeasureCount) {
     let i, j;
     let extraPatterns;
@@ -828,6 +840,7 @@ class App extends React.Component {
     this.forceUpdate();
 
     this.syncTransportNotes();
+    this.syncChannels();
   };
 
   setBufferFromFile(instrumentID, file) {

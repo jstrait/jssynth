@@ -89,6 +89,8 @@ class SampleInstrumentEditor extends React.Component {
     this.setEnvelopeDecayTime = this.setEnvelopeDecayTime.bind(this);
     this.setEnvelopeSustainPercentage = this.setEnvelopeSustainPercentage.bind(this);
     this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
+    this.setDelayTime = this.setDelayTime.bind(this);
+    this.setDelayFeedback = this.setDelayFeedback.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -177,12 +179,21 @@ class SampleInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
   };
 
+  setDelayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "delayTime", parseFloat(e.target.value));
+  };
+
+  setDelayFeedback(e) {
+    this.props.updateInstrument(this.props.instrument.id, "delayFeedback", parseFloat(e.target.value));
+  };
+
   render() {
     return <div>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Loudness Envelope" value="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Effects" value="effects" isSelected={this.state.selectedTab === "effects"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
@@ -306,6 +317,21 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
           </span>
         </div>
+        <div>
+          <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Effects</h2>
+            <span className="control">
+              <label className="control-label">Delay Time:</label>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
+              <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Delay Feedback:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
+              <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>;
   };
@@ -367,6 +393,8 @@ class SynthInstrumentEditor extends React.Component {
     this.setEnvelopeDecayTime = this.setEnvelopeDecayTime.bind(this);
     this.setEnvelopeSustainPercentage = this.setEnvelopeSustainPercentage.bind(this);
     this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
+    this.setDelayTime = this.setDelayTime.bind(this);
+    this.setDelayFeedback = this.setDelayFeedback.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -483,6 +511,14 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
   };
 
+  setDelayTime(e) {
+    this.props.updateInstrument(this.props.instrument.id, "delayTime", parseFloat(e.target.value));
+  };
+
+  setDelayFeedback(e) {
+    this.props.updateInstrument(this.props.instrument.id, "delayFeedback", parseFloat(e.target.value));
+  };
+
 
   render() {
     return <div>
@@ -491,6 +527,7 @@ class SynthInstrumentEditor extends React.Component {
         <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Pitch Wobble" value="pitch_wobble" isSelected={this.state.selectedTab === "pitch_wobble"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Loudness Envelope" value="loudness_envelope" isSelected={this.state.selectedTab === "loudness_envelope"} setSelectedTab={this.setSelectedTab} />
+        <InstrumentPaneTab label="Effects" value="effects" isSelected={this.state.selectedTab === "effects"} setSelectedTab={this.setSelectedTab} />
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
@@ -639,6 +676,22 @@ class SynthInstrumentEditor extends React.Component {
               <label className="control-label">Release Speed:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
               <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000} ms</span>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Effects</h2>
+            <span className="control">
+              <label className="control-label">Delay Time:</label>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
+              <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Delay Feedback:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
+              <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
             </span>
           </div>
         </div>

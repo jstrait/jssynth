@@ -739,6 +739,11 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
     gain.gain.value = amplitude * multiplier;
   };
 
+  var setDelay = function(delayTime, delayFeedback) {
+    delay.delayTime.value = delayTime;
+    feedback.gain.value = delayFeedback;
+  };
+
   var input = function() {
     return inputNode;
   };
@@ -763,6 +768,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   return {
     setAmplitude: setAmplitude,
     setMultiplier: setMultiplier,
+    setDelay: setDelay,
     input: input,
     destroy: destroy,
   };
@@ -839,6 +845,11 @@ function AudioSource(audioContext) {
     channel.setAmplitude(newAmplitude);
   };
 
+  var setChannelDelay = function(channelID, delayTime, delayFeedback) {
+    var channel = channelCollection.channel(channelID);
+    channel.setDelay(delayTime, delayFeedback);
+  };
+
   var setMasterAmplitude = function(newAmplitude) {
     masterGain.gain.value = newAmplitude;
   };
@@ -891,6 +902,7 @@ function AudioSource(audioContext) {
     addChannel: addChannel,
     removeChannel: removeChannel,
     setChannelAmplitude: setChannelAmplitude,
+    setChannelDelay: setChannelDelay,
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,
     scheduleNote: scheduleNote,
