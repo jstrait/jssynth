@@ -720,11 +720,19 @@ var AudioContextBuilder = (function() {
 })();
 
 
-function Channel(audioContext, audioDestination, initialAmplitude) {
+function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier) {
+  var amplitude = initialAmplitude;
+  var multiplier = initialMultiplier;
   var gain = audioContext.createGain();
 
   var setAmplitude = function(newAmplitude) {
-    gain.gain.value = newAmplitude;
+    amplitude = newAmplitude;
+    gain.gain.value = amplitude * multiplier;
+  };
+
+  var setMultiplier = function(newMultiplier) {
+    multiplier = newMultiplier;
+    gain.gain.value = amplitude * multiplier;
   };
 
   var input = function() {
@@ -740,6 +748,7 @@ function Channel(audioContext, audioDestination, initialAmplitude) {
 
   return {
     setAmplitude: setAmplitude,
+    setMultiplier: setMultiplier,
     input: input,
     destroy: destroy,
   };
@@ -754,14 +763,27 @@ function ChannelCollection(audioContext, audioDestination) {
   };
 
   var add = function(id, amplitude) {
-    channels[id] = Channel(audioContext, audioDestination, amplitude);
+    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0);
     count += 1;
+
+    setMultipliers();
   };
 
   var remove = function(id) {
     channels[id].destroy();
-    channels[id] = undefined;
+    delete channels[id];
     count -= 1;
+
+    setMultipliers();
+  };
+
+  var setMultipliers = function() {
+    var id;
+    var newMultiplier = 1 / Math.max(8, count);
+
+    for (id in channels) {
+      channels[id].setMultiplier(newMultiplier);
+    }
   };
 
   return {
