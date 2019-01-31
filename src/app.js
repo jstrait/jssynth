@@ -371,20 +371,17 @@ class App extends React.Component {
     });
   };
 
-  setTrackName(id, newTrackName) {
+  setTrackName(trackID, newTrackName) {
     let i;
     let patternIndex = 1;
     let newTrackList = this.state.tracks.concat([]);
     let newPatternList = this.state.patterns.concat([]);
 
-    for (i = 0; i < newTrackList.length; i++) {
-      if (newTrackList[i].id == id) {
-        newTrackList[i].name = newTrackName;
-      }
-    }
+    let track = this.itemByID(newTrackList, trackID);
+    track.name = newTrackName;
 
     for (i = 0; i < newPatternList.length; i++) {
-      if (newPatternList[i].trackID == id) {
+      if (newPatternList[i].trackID == trackID) {
         newPatternList[i].name = newTrackName + " " + patternIndex;
         patternIndex += 1;
       }
@@ -396,31 +393,25 @@ class App extends React.Component {
     });
   };
 
-  setTrackVolume(id, newTrackVolume) {
+  setTrackVolume(trackID, newTrackVolume) {
     let tracks = this.state.tracks;
     let newTrackList = tracks.concat([]);
-    let i;
-    for (i = 0; i < newTrackList.length; i++) {
-      if (newTrackList[i].id == id) {
-        newTrackList[i].volume = newTrackVolume;
-      }
-    }
+    let track = this.itemByID(newTrackList, trackID);
+
+    track.volume = newTrackVolume;
 
     this.setState({
       tracks: newTrackList
     });
-    this.audioSource.setChannelAmplitude(id, newTrackVolume);
+    this.audioSource.setChannelAmplitude(trackID, newTrackVolume);
   };
 
-  toggleTrackMute(id, newMutedState) {
+  toggleTrackMute(trackID, newIsMuted) {
     let tracks = this.state.tracks;
     let newTrackList = tracks.concat([]);
-    let i;
-    for (i = 0; i < newTrackList.length; i++) {
-      if (newTrackList[i].id == id) {
-        newTrackList[i].muted = newMutedState;
-      }
-    }
+    let track = this.itemByID(newTrackList, trackID);
+
+    track.muted = newIsMuted;
 
     this.setState({
       tracks: newTrackList
