@@ -720,12 +720,15 @@ var AudioContextBuilder = (function() {
 })();
 
 
-function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, delayTime, delayFeedback) {
+function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
   var amplitude = initialAmplitude;
   var multiplier = initialMultiplier;
   var isMuted = false;
 
   var inputNode = audioContext.createGain();
+  var reverb = audioContext.createConvolver();
+  var reverbDryGain = audioContext.createGain();
+  var reverbWetGain = audioContext.createGain();
   var delay = audioContext.createDelay();
   var feedback = audioContext.createGain();
   var gain = audioContext.createGain();
@@ -750,6 +753,13 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
     feedback.gain.value = delayFeedback;
   };
 
+  var setReverb = function(newReverbWetPercentage) {
+    // Equal power crossfade, as described at https://www.html5rocks.com/en/tutorials/webaudio/intro/
+    // (source code https://www.html5rocks.com/en/tutorials/webaudio/intro/js/crossfade-sample.js).
+    reverbDryGain.gain.value = Math.cos(newReverbWetPercentage * 0.5 * Math.PI);
+    reverbWetGain.gain.value = Math.cos((1.0 - newReverbWetPercentage) * 0.5 * Math.PI);
+  };
+
   var input = function() {
     return inputNode;
   };
@@ -770,14 +780,21 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   setAmplitude(initialAmplitude);
 
   inputNode.gain.value = 1.0;
+  reverb.buffer = reverbBuffer;
+  setReverb(initialReverbWetPercentage);
   delay.delayTime.value = delayTime;
   feedback.gain.value = delayFeedback;
 
-  inputNode.connect(gain);
+  inputNode.connect(reverbDryGain);
+  inputNode.connect(reverb);
   inputNode.connect(delay);
   delay.connect(feedback);
-  delay.connect(gain);
   feedback.connect(delay);
+  delay.connect(reverbDryGain);
+  delay.connect(reverb);
+  reverb.connect(reverbWetGain);
+  reverbDryGain.connect(gain);
+  reverbWetGain.connect(gain);
   gain.connect(audioDestination);
 
   return {
@@ -785,6 +802,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
     setMultiplier: setMultiplier,
     setIsMuted: setIsMuted,
     setDelay: setDelay,
+    setReverb: setReverb,
     input: input,
     destroy: destroy,
   };
@@ -798,8 +816,8 @@ function ChannelCollection(audioContext, audioDestination) {
     return channels[id];
   };
 
-  var add = function(id, amplitude, delayTime, delayFeedback) {
-    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, delayTime, delayFeedback);
+  var add = function(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
+    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
     count += 1;
 
     setMultipliers();
@@ -848,8 +866,8 @@ function AudioSource(audioContext) {
     }
   };
 
-  var addChannel = function(id, amplitude, delayTime, delayFeedback) {
-    channelCollection.add(id, amplitude, delayTime, delayFeedback);
+  var addChannel = function(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
+    channelCollection.add(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
   };
 
   var removeChannel = function(id) {
@@ -869,6 +887,11 @@ function AudioSource(audioContext) {
   var setChannelDelay = function(channelID, delayTime, delayFeedback) {
     var channel = channelCollection.channel(channelID);
     channel.setDelay(delayTime, delayFeedback);
+  };
+
+  var setChannelReverb = function(channelID, reverbWetPercentage) {
+    var channel = channelCollection.channel(channelID);
+    channel.setReverb(reverbWetPercentage);
   };
 
   var setMasterAmplitude = function(newAmplitude) {
@@ -925,6 +948,7 @@ function AudioSource(audioContext) {
     setChannelAmplitude: setChannelAmplitude,
     setChannelIsMuted: setChannelIsMuted,
     setChannelDelay: setChannelDelay,
+    setChannelReverb: setChannelReverb,
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,
     scheduleNote: scheduleNote,
@@ -1079,7 +1103,7 @@ function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeCallback
   offlineAudioSource.setMasterAmplitude(amplitude);
 
   for (i = 0; i < tracks.length; i++) {
-    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume, 0.0, 0.0);
+    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume, undefined, 0.0, 0.0, 0.0);
   }
 
 

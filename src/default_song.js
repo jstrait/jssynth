@@ -33,6 +33,7 @@ const instruments = [
     envelopeReleaseTime: 0,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
   {
     id: 2,
@@ -66,6 +67,7 @@ const instruments = [
     envelopeReleaseTime: 0.99,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
   {
     id: 3,
@@ -99,6 +101,7 @@ const instruments = [
     envelopeReleaseTime: 0,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
   {
     id: 4,
@@ -125,6 +128,7 @@ const instruments = [
     envelopeReleaseTime: 0,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
   {
     id: 5,
@@ -151,6 +155,7 @@ const instruments = [
     envelopeReleaseTime: 0,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
   {
     id:6,
@@ -177,6 +182,7 @@ const instruments = [
     envelopeReleaseTime: 0,
     delayTime: 0.0,
     delayFeedback: 0.0,
+    reverbWetPercentage: 0.0,
   },
 ];
 

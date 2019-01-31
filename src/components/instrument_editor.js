@@ -91,6 +91,7 @@ class SampleInstrumentEditor extends React.Component {
     this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
+    this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -185,6 +186,10 @@ class SampleInstrumentEditor extends React.Component {
 
   setDelayFeedback(e) {
     this.props.updateInstrument(this.props.instrument.id, "delayFeedback", parseFloat(e.target.value));
+  };
+
+  setReverbWetPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "reverbWetPercentage", parseFloat(e.target.value));
   };
 
   render() {
@@ -330,6 +335,11 @@ class SampleInstrumentEditor extends React.Component {
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
               <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
             </span>
+            <span className="control">
+              <label className="control-label">Reverb Amount:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
+              <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
+            </span>
           </div>
         </div>
       </div>
@@ -395,6 +405,7 @@ class SynthInstrumentEditor extends React.Component {
     this.setEnvelopeReleaseTime = this.setEnvelopeReleaseTime.bind(this);
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
+    this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -517,6 +528,10 @@ class SynthInstrumentEditor extends React.Component {
 
   setDelayFeedback(e) {
     this.props.updateInstrument(this.props.instrument.id, "delayFeedback", parseFloat(e.target.value));
+  };
+
+  setReverbWetPercentage(e) {
+    this.props.updateInstrument(this.props.instrument.id, "reverbWetPercentage", parseFloat(e.target.value));
   };
 
 
@@ -692,6 +707,11 @@ class SynthInstrumentEditor extends React.Component {
               <label className="control-label">Delay Feedback:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
               <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Reverb Amount:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
+              <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
             </span>
           </div>
         </div>

@@ -116,13 +116,6 @@ class App extends React.Component {
         { label: "Instrument 6", url: "sounds/hihat.wav", },
       ];
 
-      var i;
-      var instrument;
-      for (i = 0; i < this.state.tracks.length; i++) {
-        instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
-        this.audioSource.addChannel(this.state.tracks[i].id, this.state.tracks[i].volume, instrument.delayTime, instrument.delayFeedback);
-      }
-
       this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
       this.transport.setTempo(this.state.transport.tempo);
       this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
@@ -164,14 +157,42 @@ class App extends React.Component {
         return noiseBuffer;
       };
 
+      var buildReverbImpulseResponse = function(audioContext) {
+        var impulseResponseBuffer = audioContext.createBuffer(1, audioContext.sampleRate, audioContext.sampleRate);
+        var channelData = impulseResponseBuffer.getChannelData(0);
+        var sampleCount = impulseResponseBuffer.sampleRate;
+        var i;
+
+        for (i = 0; i < channelData.length; i++) {
+          channelData[i] = ((Math.random() * 2) - 1) * ((sampleCount - i) / sampleCount);
+        }
+
+        return impulseResponseBuffer;
+      };
+
       this.bufferCollection = JSSynth.BufferCollection(this.audioSource.audioContext());
       this.bufferCollection.addBuffer("white-noise", buildWhiteNoiseBuffer(this.audioSource.audioContext()));
       this.bufferCollection.addBuffer("pink-noise", buildPinkNoiseBuffer(this.audioSource.audioContext()));
+      this.bufferCollection.addBuffer("reverb", buildReverbImpulseResponse(this.audioSource.audioContext()));
 
       this.bufferCollection.addBuffersFromURLs(
         bufferConfigs,
         () => {
+          var i;
+          var instrument;
+
           this.setState({isLoaded: true});
+
+          for (i = 0; i < this.state.tracks.length; i++) {
+            instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
+            this.audioSource.addChannel(this.state.tracks[i].id,
+                                        this.state.tracks[i].volume,
+                                        this.bufferCollection.getBuffer("reverb"),
+                                        instrument.reverbWetPercentage,
+                                        instrument.delayTime,
+                                        instrument.delayFeedback);
+          }
+
           this.syncTransportNotes();
         },
         () => {
@@ -336,6 +357,7 @@ class App extends React.Component {
       instrument = this.instrumentByID(track.instrumentID);
       this.audioSource.setChannelAmplitude(track.id, track.volume);
       this.audioSource.setChannelDelay(track.id, instrument.delayTime, instrument.delayFeedback);
+      this.audioSource.setChannelReverb(track.id, instrument.reverbWetPercentage);
     }
   };
 
@@ -473,7 +495,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.audioSource.addChannel(newTrack.id, newTrack.volume, newInstrument.delayTime, newInstrument.delayFeedback);
+      this.audioSource.addChannel(newTrack.id, newTrack.volume, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -512,6 +534,7 @@ class App extends React.Component {
       envelopeReleaseTime: 0.0,
       delayTime: 0.0,
       delayFeedback: 0.0,
+      reverbWetPercentage: 0.0,
     };
 
     this.addGenericTrack(newInstrument, "Synth Track");
@@ -547,6 +570,7 @@ class App extends React.Component {
         envelopeReleaseTime: 0.0,
         delayTime: 0.0,
         delayFeedback: 0.0,
+        reverbWetPercentage: 0.0,
       };
 
       this.addGenericTrack(newInstrument, "Sampler Track");
