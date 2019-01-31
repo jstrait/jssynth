@@ -723,6 +723,7 @@ var AudioContextBuilder = (function() {
 function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, delayTime, delayFeedback) {
   var amplitude = initialAmplitude;
   var multiplier = initialMultiplier;
+  var isMuted = false;
 
   var inputNode = audioContext.createGain();
   var delay = audioContext.createDelay();
@@ -731,12 +732,17 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
 
   var setAmplitude = function(newAmplitude) {
     amplitude = newAmplitude;
-    gain.gain.value = amplitude * multiplier;
+    syncGain();
   };
 
   var setMultiplier = function(newMultiplier) {
     multiplier = newMultiplier;
-    gain.gain.value = amplitude * multiplier;
+    syncGain();
+  };
+
+  var setIsMuted = function(newIsMuted) {
+    isMuted = newIsMuted;
+    syncGain();
   };
 
   var setDelay = function(delayTime, delayFeedback) {
@@ -750,6 +756,15 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
 
   var destroy = function() {
     gain.disconnect(audioDestination);
+  };
+
+  var syncGain = function() {
+    if (isMuted === true) {
+      gain.gain.value = 0.0;
+    }
+    else {
+      gain.gain.value = amplitude * multiplier;
+    }
   };
 
   setAmplitude(initialAmplitude);
@@ -768,6 +783,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   return {
     setAmplitude: setAmplitude,
     setMultiplier: setMultiplier,
+    setIsMuted: setIsMuted,
     setDelay: setDelay,
     input: input,
     destroy: destroy,
@@ -845,6 +861,11 @@ function AudioSource(audioContext) {
     channel.setAmplitude(newAmplitude);
   };
 
+  var setChannelIsMuted = function(id, newIsMuted) {
+    var channel = channelCollection.channel(id);
+    channel.setIsMuted(newIsMuted);
+  };
+
   var setChannelDelay = function(channelID, delayTime, delayFeedback) {
     var channel = channelCollection.channel(channelID);
     channel.setDelay(delayTime, delayFeedback);
@@ -902,6 +923,7 @@ function AudioSource(audioContext) {
     addChannel: addChannel,
     removeChannel: removeChannel,
     setChannelAmplitude: setChannelAmplitude,
+    setChannelIsMuted: setChannelIsMuted,
     setChannelDelay: setChannelDelay,
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,

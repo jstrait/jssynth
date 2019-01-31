@@ -172,10 +172,6 @@ export class Serializer {
     }
 
     tracks.forEach(function(track) {
-      if (track.muted) {
-        return;
-      }
-
       serializedInstrument = Serializer.serializeInstrument(Serializer.instrumentByID(instruments, track.instrumentID), bufferCollection);
       serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
 

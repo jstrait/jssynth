@@ -416,7 +416,7 @@ class App extends React.Component {
     this.setState({
       tracks: newTrackList
     });
-    this.syncTransportNotes();
+    this.audioSource.setChannelIsMuted(trackID, newIsMuted);
   };
 
   setTrackPattern(trackID, measure, patternID) {
