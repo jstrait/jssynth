@@ -987,9 +987,23 @@ class App extends React.Component {
 
     let offlineTransport;
 
+    let i;
+    let serializedTracks = [];
+    let track, instrument;
+    for(i = 0; i < this.state.tracks.length; i++) {
+      track = this.state.tracks[i];
+      instrument = this.instrumentByID(track.instrumentID);
+      serializedTracks.push({id: track.id,
+                             volume: track.volume,
+                             reverbBuffer: this.bufferCollection.getBuffer("reverb"),
+                             reverbWetPercentage: instrument.reverbWetPercentage,
+                             delayTime: instrument.delayTime,
+                             delayFeedback: instrument.delayFeedback});
+    }
+
     this.setState({downloadInProgress: true});
 
-    offlineTransport = new JSSynth.OfflineTransport(this.state.tracks, this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
+    offlineTransport = new JSSynth.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 

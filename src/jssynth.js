@@ -1100,10 +1100,12 @@ function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeCallback
   var i;
   var offlineAudioContext = buildOfflineAudioContext();
   var offlineAudioSource = AudioSource(offlineAudioContext);
+  var track;
   offlineAudioSource.setMasterAmplitude(amplitude);
 
   for (i = 0; i < tracks.length; i++) {
-    offlineAudioSource.addChannel(tracks[i].id, tracks[i].volume, undefined, 0.0, 0.0, 0.0);
+    track = tracks[i];
+    offlineAudioSource.addChannel(track.id, track.volume, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
   }
 
 
