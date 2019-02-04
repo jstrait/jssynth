@@ -14,4 +14,18 @@ import { SynthInstrument } from "./synth_core/instrument";
 import { Transport } from "./synth_core/transport";
 import { WaveWriter } from "./synth_core/wave_writer";
 
-export { BufferCollection, SynthInstrument, SampleInstrument, Envelope, SequenceParser, Note, SongPlayer, AudioContextBuilder, AudioSource, Transport, OfflineTransport, InstrumentNote, WaveWriter };
+export {
+  AudioContextBuilder,
+  AudioSource,
+  BufferCollection,
+  Envelope,
+  InstrumentNote,
+  OfflineTransport,
+  Note,
+  SampleInstrument,
+  SequenceParser,
+  SongPlayer,
+  SynthInstrument,
+  Transport,
+  WaveWriter,
+};
