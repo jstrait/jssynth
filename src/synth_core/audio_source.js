@@ -10,6 +10,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   var reverbDryGain = audioContext.createGain();
   var reverbWetGain = audioContext.createGain();
   var delay = audioContext.createDelay();
+  var delayGain = audioContext.createGain();
   var feedback = audioContext.createGain();
   var gain = audioContext.createGain();
 
@@ -31,6 +32,15 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   var setDelay = function(delayTime, delayFeedback) {
     delay.delayTime.value = delayTime;
     feedback.gain.value = delayFeedback;
+
+    if (delayTime === 0.0) {
+      // Turn off the delay, to avoid doubling the base sound,
+      // and causing the track to be artificially loud.
+      delayGain.gain.value = 0.0;
+    }
+    else {
+      delayGain.gain.value = 1.0;
+    }
   };
 
   var setReverb = function(newReverbWetPercentage) {
@@ -62,16 +72,16 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   inputNode.gain.value = 1.0;
   reverb.buffer = reverbBuffer;
   setReverb(initialReverbWetPercentage);
-  delay.delayTime.value = delayTime;
-  feedback.gain.value = delayFeedback;
+  setDelay(delayTime, delayFeedback);
 
   inputNode.connect(reverbDryGain);
   inputNode.connect(reverb);
   inputNode.connect(delay);
   delay.connect(feedback);
   feedback.connect(delay);
-  delay.connect(reverbDryGain);
-  delay.connect(reverb);
+  delay.connect(delayGain);
+  delayGain.connect(reverbDryGain);
+  delayGain.connect(reverb);
   reverb.connect(reverbWetGain);
   reverbDryGain.connect(gain);
   reverbWetGain.connect(gain);
