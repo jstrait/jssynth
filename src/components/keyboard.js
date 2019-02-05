@@ -19,7 +19,7 @@ class Key extends React.PureComponent {
       rootNoteIndicator = <span className="keyboard-key-root-indicator">Root</span>;
     }
 
-    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={this.props.noteName + "-" + this.props.octave}>
+    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={noteLabel}>
       <span className="keyboard-key-label">{rootNoteIndicator}<br />{noteLabel}</span>
     </span>;
   };
@@ -238,109 +238,109 @@ class Keyboard extends React.Component {
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
-          <Key isActive={this.props.activeNotes.includes("A-0")} noteName="A" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-0")} noteName="A#" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-0")} noteName="B" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-0")} noteName="C" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-0")} noteName="C#" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-0")} noteName="D" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-0")} noteName="D#" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-0")} noteName="E" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-0")} noteName="F" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-0")} noteName="F#" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-0")} noteName="G" octave="0" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-0")} noteName="G#" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A0")} noteName="A" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#0")} noteName="A#" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B0")} noteName="B" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C0")} noteName="C" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#0")} noteName="C#" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D0")} noteName="D" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#0")} noteName="D#" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E0")} noteName="E" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F0")} noteName="F" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#0")} noteName="F#" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G0")} noteName="G" octave="0" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#0")} noteName="G#" octave="0" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-1")} noteName="A" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-1")} noteName="A#" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-1")} noteName="B" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-1")} noteName="C" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-1")} noteName="C#" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-1")} noteName="D" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-1")} noteName="D#" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-1")} noteName="E" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-1")} noteName="F" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-1")} noteName="F#" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-1")} noteName="G" octave="1" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-1")} noteName="G#" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A1")} noteName="A" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#1")} noteName="A#" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B1")} noteName="B" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C1")} noteName="C" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#1")} noteName="C#" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D1")} noteName="D" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#1")} noteName="D#" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E1")} noteName="E" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F1")} noteName="F" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#1")} noteName="F#" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G1")} noteName="G" octave="1" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#1")} noteName="G#" octave="1" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-2")} noteName="A" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-2")} noteName="A#" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-2")} noteName="B" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-2")} noteName="C" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-2")} noteName="C#" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-2")} noteName="D" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-2")} noteName="D#" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-2")} noteName="E" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-2")} noteName="F" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-2")} noteName="F#" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-2")} noteName="G" octave="2" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-2")} noteName="G#" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A2")} noteName="A" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#2")} noteName="A#" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B2")} noteName="B" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C2")} noteName="C" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#2")} noteName="C#" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D2")} noteName="D" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#2")} noteName="D#" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E2")} noteName="E" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F2")} noteName="F" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#2")} noteName="F#" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G2")} noteName="G" octave="2" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#2")} noteName="G#" octave="2" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-3")} noteName="A" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-3")} noteName="A#" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-3")} noteName="B" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-3")} noteName="C" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-3")} noteName="C#" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-3")} noteName="D" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-3")} noteName="D#" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-3")} noteName="E" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-3")} noteName="F" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-3")} noteName="F#" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-3")} noteName="G" octave="3" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-3")} noteName="G#" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A3")} noteName="A" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#3")} noteName="A#" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B3")} noteName="B" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C3")} noteName="C" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#3")} noteName="C#" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D3")} noteName="D" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#3")} noteName="D#" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E3")} noteName="E" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F3")} noteName="F" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#3")} noteName="F#" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G3")} noteName="G" octave="3" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#3")} noteName="G#" octave="3" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-4")} noteName="A" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-4")} noteName="A#" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-4")} noteName="B" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-4")} noteName="C" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-4")} noteName="C#" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-4")} noteName="D" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-4")} noteName="D#" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-4")} noteName="E" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-4")} noteName="F" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-4")} noteName="F#" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-4")} noteName="G" octave="4" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-4")} noteName="G#" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A4")} noteName="A" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#4")} noteName="A#" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B4")} noteName="B" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C4")} noteName="C" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#4")} noteName="C#" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D4")} noteName="D" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#4")} noteName="D#" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E4")} noteName="E" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F4")} noteName="F" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#4")} noteName="F#" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G4")} noteName="G" octave="4" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#4")} noteName="G#" octave="4" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-5")} noteName="A" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-5")} noteName="A#" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-5")} noteName="B" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-5")} noteName="C" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-5")} noteName="C#" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-5")} noteName="D" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-5")} noteName="D#" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-5")} noteName="E" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-5")} noteName="F" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-5")} noteName="F#" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-5")} noteName="G" octave="5" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-5")} noteName="G#" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A5")} noteName="A" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#5")} noteName="A#" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B5")} noteName="B" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C5")} noteName="C" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#5")} noteName="C#" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D5")} noteName="D" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#5")} noteName="D#" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E5")} noteName="E" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F5")} noteName="F" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#5")} noteName="F#" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G5")} noteName="G" octave="5" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#5")} noteName="G#" octave="5" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-6")} noteName="A" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-6")} noteName="A#" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-6")} noteName="B" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-6")} noteName="C" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-6")} noteName="C#" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-6")} noteName="D" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-6")} noteName="D#" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-6")} noteName="E" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-6")} noteName="F" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-6")} noteName="F#" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-6")} noteName="G" octave="6" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-6")} noteName="G#" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A6")} noteName="A" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#6")} noteName="A#" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B6")} noteName="B" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C6")} noteName="C" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#6")} noteName="C#" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D6")} noteName="D" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#6")} noteName="D#" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E6")} noteName="E" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F6")} noteName="F" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#6")} noteName="F#" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G6")} noteName="G" octave="6" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#6")} noteName="G#" octave="6" rootNote={rootNote} />
 
-          <Key isActive={this.props.activeNotes.includes("A-7")} noteName="A" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("A#-7")} noteName="A#" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("B-7")} noteName="B" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C-7")} noteName="C" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("C#-7")} noteName="C#" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D-7")} noteName="D" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("D#-7")} noteName="D#" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("E-7")} noteName="E" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F-7")} noteName="F" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("F#-7")} noteName="F#" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G-7")} noteName="G" octave="7" rootNote={rootNote} />
-          <Key isActive={this.props.activeNotes.includes("G#-7")} noteName="G#" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A7")} noteName="A" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("A#7")} noteName="A#" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("B7")} noteName="B" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C7")} noteName="C" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("C#7")} noteName="C#" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D7")} noteName="D" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("D#7")} noteName="D#" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("E7")} noteName="E" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F7")} noteName="F" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("F#7")} noteName="F#" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G7")} noteName="G" octave="7" rootNote={rootNote} />
+          <Key isActive={this.props.activeNotes.includes("G#7")} noteName="G#" octave="7" rootNote={rootNote} />
         </div>
       </div>
       <div className={"keyboard-scroll-button js-keyboard-scroll-right flex flex-align-center flex-justify-center full-height" + (this.scrollRightTimeoutID !== undefined ? " pressed" : "")}>&rarr;</div>

@@ -916,10 +916,10 @@ class App extends React.Component {
     for (i = 0; i < notes.length; i++) {
       if (!this.state.activeKeyboardNotes.includes(notes[i])) {
         if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternNoteIndex !== undefined) {
-          this.setNoteValue(notes[i].replace("-", ""), this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+          this.setNoteValue(notes[i], this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
         }
 
-        note = JSSynth.Note(notes[i].split("-")[0], notes[i].split("-")[1], 1);
+        note = JSSynth.Note(notes[i].slice(0, -1), notes[i].slice(-1), 1);
         noteContext = this.audioSource.playImmediateNote(currentTrack.id, instrument, note, 1.0);
 
         newActiveKeyboardNotes.push(notes[i]);
@@ -947,7 +947,7 @@ class App extends React.Component {
     // Convert MIDI note number into internal note format
     noteName = NOTE_NAMES[data.noteNumber % 12];
     octave = -2 + Math.floor((data.noteNumber + 3) / 12);  // The +3 is to compensate for octave starting at "A" vs. "C"
-    noteString = `${noteName}-${octave}`;
+    noteString = `${noteName}${octave}`;
 
     if (messageType === "noteon") {
       if (!newActiveNotes.includes(noteString)) {
