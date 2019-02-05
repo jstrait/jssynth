@@ -65,8 +65,8 @@ const instruments = [
     envelopeDecayTime: 0.09,
     envelopeSustainPercentage: 0.16,
     envelopeReleaseTime: 0.99,
-    delayTime: 0.0,
-    delayFeedback: 0.0,
+    delayTime: 0.4,
+    delayFeedback: 0.5,
     reverbWetPercentage: 0.0,
   },
   {
