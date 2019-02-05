@@ -50,7 +50,7 @@ export function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeC
 
   for (i = 0; i < tracks.length; i++) {
     track = tracks[i];
-    offlineAudioSource.addChannel(track.id, track.volume, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
+    offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
   }
 
 

@@ -1,9 +1,9 @@
 "use strict";
 
-function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
+function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, initialIsMuted, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
   var amplitude = initialAmplitude;
   var multiplier = initialMultiplier;
-  var isMuted = false;
+  var isMuted = initialIsMuted;
 
   var inputNode = audioContext.createGain();
   var reverb = audioContext.createConvolver();
@@ -106,8 +106,8 @@ function ChannelCollection(audioContext, audioDestination) {
     return channels[id];
   };
 
-  var add = function(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
-    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
+  var add = function(id, amplitude, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
+    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
     count += 1;
 
     setMultipliers();
@@ -156,8 +156,8 @@ function AudioSource(audioContext) {
     }
   };
 
-  var addChannel = function(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
-    channelCollection.add(id, amplitude, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
+  var addChannel = function(id, amplitude, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
+    channelCollection.add(id, amplitude, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
   };
 
   var removeChannel = function(id) {

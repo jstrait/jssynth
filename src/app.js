@@ -187,6 +187,7 @@ class App extends React.Component {
             instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
             this.audioSource.addChannel(this.state.tracks[i].id,
                                         this.state.tracks[i].volume,
+                                        this.state.tracks[i].muted,
                                         this.bufferCollection.getBuffer("reverb"),
                                         instrument.reverbWetPercentage,
                                         instrument.delayTime,
@@ -495,7 +496,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.audioSource.addChannel(newTrack.id, newTrack.volume, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
+      this.audioSource.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -995,6 +996,7 @@ class App extends React.Component {
       instrument = this.instrumentByID(track.instrumentID);
       serializedTracks.push({id: track.id,
                              volume: track.volume,
+                             isMuted: track.muted,
                              reverbBuffer: this.bufferCollection.getBuffer("reverb"),
                              reverbWetPercentage: instrument.reverbWetPercentage,
                              delayTime: instrument.delayTime,
