@@ -142,12 +142,22 @@ class Keyboard extends React.Component {
   };
 
   mouseOver(e) {
+    let noMouseButtonsPressed = false;
+
     if (e.buttons !== undefined && e.buttons === 0) {
-      this.props.deactivate();
+      noMouseButtonsPressed = true;
     }
     // Safari, as of v11, doesn't support `buttons`, but it does support the non-standard `which`
     else if (e.nativeEvent.which !== undefined && e.nativeEvent.which === 0) {
-      this.props.deactivate();
+      noMouseButtonsPressed = true;
+    }
+
+    if (noMouseButtonsPressed === true) {
+      // Only deactivate if current active, to avoid performing a
+      // no-op state change and re-rendering of unrelated components.
+      if (this.props.active) {
+        this.props.deactivate();
+      }
     }
   };
 
