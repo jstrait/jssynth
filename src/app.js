@@ -895,6 +895,7 @@ class App extends React.Component {
     let currentTrack = this.trackByID(this.state.selectedTrackID);
     let instrumentID = currentTrack.instrumentID;
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.bufferCollection);
+    let activeNoteSetHasChanged = false;
 
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
@@ -905,6 +906,7 @@ class App extends React.Component {
         noteContext = this.state.activeNoteContexts[i];
         this.audioSource.stopNote(instrument, noteContext);
         indicesToRemove.push(i);
+        activeNoteSetHasChanged = true;
       }
     }
     for (i = indicesToRemove.length - 1; i >= 0; i--) {
@@ -924,14 +926,17 @@ class App extends React.Component {
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);
+        activeNoteSetHasChanged = true;
       }
     }
 
     // Finally, update state
-    this.setState({
-      activeKeyboardNotes: newActiveKeyboardNotes,
-      activeNoteContexts: newActiveNoteContexts,
-    });
+    if (activeNoteSetHasChanged === true) {
+      this.setState({
+        activeKeyboardNotes: newActiveKeyboardNotes,
+        activeNoteContexts: newActiveNoteContexts,
+      });
+    }
   };
 
   onMIDIStateChange(data) {
