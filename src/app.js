@@ -889,7 +889,6 @@ class App extends React.Component {
     let i;
     let noteContext;
     let note;
-    let indicesToRemove = [];
     let currentTrack = this.trackByID(this.state.selectedTrackID);
     let instrumentID = currentTrack.instrumentID;
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.bufferCollection);
@@ -899,17 +898,16 @@ class App extends React.Component {
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
 
     // First, stop notes no longer in the active set
-    for (i = 0; i < this.state.activeKeyboardNotes.length; i++) {
-      if (!notes.includes(this.state.activeKeyboardNotes[i])) {
-        noteContext = this.state.activeNoteContexts[i];
+    for (i = newActiveKeyboardNotes.length - 1; i >= 0; i--) {
+      if (!notes.includes(newActiveKeyboardNotes[i])) {
+        noteContext = newActiveNoteContexts[i];
+
         this.audioSource.stopNote(instrument, noteContext);
-        indicesToRemove.push(i);
+        newActiveKeyboardNotes.splice(i, 1);
+        newActiveNoteContexts.splice(i, 1);
+
         activeNoteSetHasChanged = true;
       }
-    }
-    for (i = indicesToRemove.length - 1; i >= 0; i--) {
-      newActiveKeyboardNotes.splice(indicesToRemove[i], 1);
-      newActiveNoteContexts.splice(indicesToRemove[i], 1);
     }
 
     // Next, start notes newly added to the active set
