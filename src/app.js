@@ -889,8 +889,6 @@ class App extends React.Component {
     let i;
     let noteContext;
     let note;
-    let newNotes = [];
-    let newNoteContexts = [];
     let indicesToRemove = [];
     let currentTrack = this.trackByID(this.state.selectedTrackID);
     let instrumentID = currentTrack.instrumentID;
