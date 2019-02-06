@@ -308,7 +308,7 @@ class App extends React.Component {
 
   syncCurrentStep() {
     let newStep = this.transport.currentStep();
-    let newMeasure = Math.floor((newStep / 16) % 8);
+    let newMeasure = Math.floor((newStep / 16) % this.state.measureCount);
 
     this.setState((prevState, props) => ({
       transport: Object.assign({}, prevState.transport, {
