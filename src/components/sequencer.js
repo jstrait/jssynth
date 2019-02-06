@@ -66,9 +66,9 @@ class TrackPatternList extends React.Component {
 
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
-      {this.props.track.patterns.map((pattern, index) =>
+      {this.props.patterns.map((pattern, index) =>
       <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure" : "")}>
-        <TrackMeasure measure={index} trackID={this.props.track.id} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
+        <TrackMeasure measure={index} trackID={this.props.trackID} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
       <li className="flex-uniform-size list-style-none bg-lighter-gray bb"></li>
@@ -264,7 +264,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList currentMeasure={this.props.currentMeasure} track={track} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
+            <TrackPatternList currentMeasure={this.props.currentMeasure} trackID={track.id} patterns={track.patterns} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
           </li>
           )}
         </ul>
