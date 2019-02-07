@@ -172,6 +172,10 @@ class MeasureCount extends React.PureComponent {
   };
 
   enableEditMode() {
+    if (this.props.isEditable === false) {
+      return;
+    }
+
     this.setState(() => ({
       editMode: true,
       isValidValue: true,
@@ -197,7 +201,8 @@ class MeasureCount extends React.PureComponent {
     }
     else {
       return <span className="pr1 align-right">
-        <label>Measures: {this.props.measureCount}</label> <a href="javascript:void(0);" className="block h4 lh-flush" onClick={this.enableEditMode}>change</a>
+        <label>Measures: {this.props.measureCount}</label>
+        <a href="javascript:void(0);" className={"block h4 lh-flush" + (this.props.isEditable ? "" : " disabled")} onClick={this.enableEditMode}>change</a>
       </span>;
     }
   };
@@ -239,7 +244,7 @@ class Sequencer extends React.Component {
     return <div className="pt1 pb1 border-box bt-thick">
       <div className="flex flex-justify-space-between">
         <h2 className="mt0 mb1 pl1">Sequencer</h2>
-        <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
+        <MeasureCount isEditable={!this.props.isPlaying} measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>

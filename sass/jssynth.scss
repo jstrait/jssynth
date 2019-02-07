@@ -38,6 +38,12 @@ a {
   color: #0af;
 }
 
+a.disabled {
+  color: #aaa;
+  text-decoration: none;
+  cursor: default;
+}
+
 /* Header */
 
 .logo {
