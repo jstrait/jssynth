@@ -45,6 +45,8 @@ class App extends React.Component {
       instruments: DefaultSong.instruments,
       patterns: DefaultSong.patterns,
       tracks: DefaultSong.tracks,
+      midiEnabled: false,
+      midiInputNames: ["None"],
     };
 
     this.itemByID = this.itemByID.bind(this);
@@ -181,7 +183,7 @@ class App extends React.Component {
           var i;
           var instrument;
 
-          this.setState({isLoaded: true});
+          this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
 
           for (i = 0; i < this.state.tracks.length; i++) {
             instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
@@ -936,8 +938,18 @@ class App extends React.Component {
   };
 
   onMIDIStateChange(data) {
-    console.log("MIDI State Change!");
-    console.log(data);
+    let inputs = this.midiController.inputs();
+
+    let connectedInputNames = inputs.map(function(input) {
+      return (input.state === "connected") ? input.name : undefined;
+    });
+
+    connectedInputNames = connectedInputNames.filter(function(inputName) { return inputName !== undefined });
+    if (connectedInputNames.length === 0) {
+      connectedInputNames = ["None"];
+    }
+
+    this.setState({midiInputNames: [].concat(connectedInputNames)});
   };
 
   onMIDIMessage(messageType, data) {
@@ -1092,8 +1104,12 @@ class App extends React.Component {
                   activate={this.activateKeyboard}
                   deactivate={this.deactivateKeyboard}
                   setNotes={this.setKeyboardNotes} />
-        <div className="flex flex-column flex-uniform-size flex-justify-end mt2">
-          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
+        <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
+          <p className="center mt1 mb1">MIDI Device(s):&nbsp;
+          {this.state.midiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
+          {this.state.midiEnabled === true && this.state.midiInputNames.join(", ")}
+          </p>
+          <p className="center mt1 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
         </div>
       </div>
       }
