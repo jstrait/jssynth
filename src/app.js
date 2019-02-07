@@ -107,6 +107,10 @@ class App extends React.Component {
 
     document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
+    this.initialize();
+  };
+
+  initialize() {
     this.audioSource = JSSynth.AudioSource(JSSynth.AudioContextBuilder.buildAudioContext());
     if (this.audioSource.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
