@@ -111,52 +111,53 @@ class App extends React.Component {
   };
 
   initialize() {
+    const bufferConfigs = [
+      { label: "Instrument 4", url: "sounds/bass.wav", },
+      { label: "Instrument 5", url: "sounds/snare.wav", },
+      { label: "Instrument 6", url: "sounds/hihat.wav", },
+    ];
+
     this.audioSource = JSSynth.AudioSource(JSSynth.AudioContextBuilder.buildAudioContext());
+
     if (this.audioSource.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
+      return;
     }
-    else {
-      let bufferConfigs = [
-        { label: "Instrument 4", url: "sounds/bass.wav", },
-        { label: "Instrument 5", url: "sounds/snare.wav", },
-        { label: "Instrument 6", url: "sounds/hihat.wav", },
-      ];
 
-      this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, function() {});
-      this.transport.setTempo(this.state.transport.tempo);
-      this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
+    this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, function() {});
+    this.transport.setTempo(this.state.transport.tempo);
+    this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
 
-      this.bufferCollection = JSSynth.BufferCollection(this.audioSource.audioContext());
-      this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.audioSource.audioContext()));
-      this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.audioSource.audioContext()));
-      this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.audioSource.audioContext()));
+    this.bufferCollection = JSSynth.BufferCollection(this.audioSource.audioContext());
+    this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.audioSource.audioContext()));
+    this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.audioSource.audioContext()));
+    this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.audioSource.audioContext()));
 
-      this.bufferCollection.addBuffersFromURLs(
-        bufferConfigs,
-        () => {
-          let i;
-          let instrument;
+    this.bufferCollection.addBuffersFromURLs(
+      bufferConfigs,
+      () => {
+        let i;
+        let instrument;
 
-          this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
+        this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
 
-          for (i = 0; i < this.state.tracks.length; i++) {
-            instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
-            this.audioSource.addChannel(this.state.tracks[i].id,
-                                        this.state.tracks[i].volume,
-                                        this.state.tracks[i].muted,
-                                        this.bufferCollection.getBuffer("reverb"),
-                                        instrument.reverbWetPercentage,
-                                        instrument.delayTime,
-                                        instrument.delayFeedback);
-          }
-
-          this.syncTransportNotes();
-        },
-        () => {
-          this.setState({loadingStatusMessage: "An error occurred while starting up"});
+        for (i = 0; i < this.state.tracks.length; i++) {
+          instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
+          this.audioSource.addChannel(this.state.tracks[i].id,
+                                      this.state.tracks[i].volume,
+                                      this.state.tracks[i].muted,
+                                      this.bufferCollection.getBuffer("reverb"),
+                                      instrument.reverbWetPercentage,
+                                      instrument.delayTime,
+                                      instrument.delayFeedback);
         }
-      );
-    }
+
+        this.syncTransportNotes();
+      },
+      () => {
+        this.setState({loadingStatusMessage: "An error occurred while starting up"});
+      }
+    );
   };
 
   itemByID(array, targetID) {
