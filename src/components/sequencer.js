@@ -156,12 +156,13 @@ class MeasureCount extends React.PureComponent {
   };
 
   validateValue(e) {
-    let val = parseInt(e.target.value, 10);
-    let isValidValue = false;
+    let inputString = e.target.value;
+    let isValidNumber = /^\d\d?$/.test(inputString);
+    let parsedNumber = parseInt(inputString, 10);
 
-    if (val >= this.MIN_VALUE && val <= this.MAX_VALUE) {
-      isValidValue = true;
-    }
+    let isValidValue = isValidNumber &&
+                       parsedNumber >= this.MIN_VALUE &&
+                       parsedNumber <= this.MAX_VALUE;
 
     this.setState(() => ({ isValidValue: isValidValue }));
   };
