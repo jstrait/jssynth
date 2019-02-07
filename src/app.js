@@ -130,8 +130,8 @@ class App extends React.Component {
       this.bufferCollection.addBuffersFromURLs(
         bufferConfigs,
         () => {
-          var i;
-          var instrument;
+          let i;
+          let instrument;
 
           this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
 
