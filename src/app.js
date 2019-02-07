@@ -54,7 +54,6 @@ class App extends React.Component {
     this.indexByID = this.indexByID.bind(this);
 
     // Transport
-    let stopCallback = function() { };
     this.timeoutID = undefined;
     this.songPlayer = JSSynth.SongPlayer();
     this.offlineSongPlayer = JSSynth.SongPlayer();
@@ -119,7 +118,7 @@ class App extends React.Component {
         { label: "Instrument 6", url: "sounds/hihat.wav", },
       ];
 
-      this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, stopCallback);
+      this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, function() {});
       this.transport.setTempo(this.state.transport.tempo);
       this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
 
