@@ -53,7 +53,7 @@ export function SongPlayer() {
     var i, j;
 
     var noteStartTime = 0.0;
-    var maxEndTime = 0.0;
+    var maxNoteEndTime = 0.0;
 
     for (i = 0; i < notes.length; i++) {
       for(j = 0; j < notes[i].length; j++) {
@@ -61,15 +61,15 @@ export function SongPlayer() {
         noteTimeDuration = stepDuration * note.note().stepDuration();
         noteEndTime = noteStartTime + noteTimeDuration + note.instrument().config().envelope.releaseTime;
 
-        if (noteEndTime > maxEndTime) {
-          maxEndTime = noteEndTime;
+        if (noteEndTime > maxNoteEndTime) {
+          maxNoteEndTime = noteEndTime;
         }
       }
 
       noteStartTime += stepDuration;
     }
 
-    return maxEndTime;
+    return maxNoteEndTime;
   };
 
 
