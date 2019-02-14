@@ -17,7 +17,7 @@ export function SongPlayer() {
     notes = newNotes;
   };
 
-  var tick = function(audioContext, audioSource, endTime, stepDuration, loop) {
+  var tick = function(audioSource, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
     var incomingNotes;

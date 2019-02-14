@@ -37,7 +37,7 @@ export function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeC
     var finalTime = startTime + scheduleAheadTime;
 
     songPlayer.reset(startTime);
-    songPlayer.tick(offlineAudioContext, offlineAudioSource, finalTime, STEP_INTERVAL, false);
+    songPlayer.tick(offlineAudioSource, finalTime, STEP_INTERVAL, false);
 
     offlineAudioContext.startRendering();
   };

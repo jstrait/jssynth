@@ -14,7 +14,7 @@ export function Transport(audioSource, songPlayer, stopCallback) {
   var tick = function() {
     var finalTime = audioSource.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
 
-    var newScheduledSteps = songPlayer.tick(audioSource.audioContext(), audioSource, finalTime, stepInterval, LOOP);
+    var newScheduledSteps = songPlayer.tick(audioSource, finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
