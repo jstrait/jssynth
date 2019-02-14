@@ -155,7 +155,7 @@ class App extends React.Component {
                                       instrument.delayFeedback);
         }
 
-        this.syncTransportNotes();
+        this.syncScoreToSynthCore();
         this.syncInstrumentsToSynthCore();
       },
       () => {
@@ -304,7 +304,7 @@ class App extends React.Component {
     }
   };
 
-  syncTransportNotes() {
+  syncScoreToSynthCore() {
     let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.patterns);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
@@ -366,7 +366,7 @@ class App extends React.Component {
     this.setState({
       measureCount: newMeasureCount,
     }, function() {
-      this.syncTransportNotes();
+      this.syncScoreToSynthCore();
     });
   };
 
@@ -422,7 +422,7 @@ class App extends React.Component {
     this.trackByID(trackID).patterns[measure].patternID = patternID;
     this.forceUpdate();
 
-    this.syncTransportNotes();
+    this.syncScoreToSynthCore();
   };
 
   addGenericTrack(newInstrument, newTrackName) {
@@ -594,7 +594,7 @@ class App extends React.Component {
     }, function() {
       this.audioSource.removeChannel(id);
       this.notePlayer.removeChannel(id);
-      this.syncTransportNotes();
+      this.syncScoreToSynthCore();
       this.syncInstrumentsToSynthCore();
     });
   };
@@ -720,7 +720,7 @@ class App extends React.Component {
       tracks: newTracks,
       selectedPatternID: newSelectedPatternID,
     }, function() {
-      this.syncTransportNotes();
+      this.syncScoreToSynthCore();
     });
   };
 
@@ -778,7 +778,7 @@ class App extends React.Component {
     this.setState({
       patterns: newPatterns,
     }, function() {
-      this.syncTransportNotes();
+      this.syncScoreToSynthCore();
     });
   };
 
@@ -827,7 +827,7 @@ class App extends React.Component {
     }
 
     this.forceUpdate();
-    this.syncTransportNotes();
+    this.syncScoreToSynthCore();
   };
 
   updateInstrument(id, field, value) {
