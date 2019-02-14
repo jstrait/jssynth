@@ -305,9 +305,9 @@ class App extends React.Component {
   };
 
   syncScoreToSynthCore() {
-    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.patterns);
-    this.songPlayer.replaceNotes(serializedNotes);
-    this.offlineSongPlayer.replaceNotes(serializedNotes);
+    let serializedScore = Serializer.serializeScore(this.state.measureCount, this.state.tracks, this.state.patterns);
+    this.songPlayer.replaceScore(serializedScore);
+    this.offlineSongPlayer.replaceScore(serializedScore);
   };
 
   syncInstrumentsToSynthCore() {

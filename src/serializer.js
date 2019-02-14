@@ -147,7 +147,7 @@ export class Serializer {
     return patterns;
   };
 
-  static serialize(measureCount, tracks, patterns) {
+  static serializeScore(measureCount, tracks, patterns) {
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
@@ -177,6 +177,6 @@ export class Serializer {
       }
     });
 
-    return serializedNotes;
+    return JSSynth.Score(serializedNotes);
   };
 };

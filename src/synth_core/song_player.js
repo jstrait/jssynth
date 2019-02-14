@@ -1,7 +1,9 @@
 "use strict";
 
+import { Score } from "./score";
+
 export function SongPlayer() {
-  var notes = [];
+  var score = Score([]);
 
   var stepIndex;
   var isFinishedPlaying;
@@ -13,8 +15,8 @@ export function SongPlayer() {
     currentTime = newCurrentTime;
   };
 
-  var replaceNotes = function(newNotes) {
-    notes = newNotes;
+  var replaceScore = function(newScore) {
+    score = newScore;
   };
 
   var tick = function(audioSource, notePlayer, endTime, stepDuration, loop) {
@@ -23,7 +25,7 @@ export function SongPlayer() {
     var incomingNotes;
 
     while (currentTime < endTime) {
-      incomingNotes = notes[stepIndex];
+      incomingNotes = score.notesAtStepIndex(stepIndex);
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepCount();
         notePlayer.scheduleNote(note.channelID(),
@@ -38,7 +40,7 @@ export function SongPlayer() {
       scheduledSteps.push({ step: stepIndex, time: currentTime });
 
       stepIndex += 1;
-      if (stepIndex >= notes.length) {
+      if (stepIndex >= score.stepCount()) {
         if (loop) {
           stepIndex = 0;
         }
@@ -55,15 +57,18 @@ export function SongPlayer() {
   };
 
   var playbackTime = function(notePlayer, stepDuration) {
+    var notesAtStepIndex;
     var note, noteEndTime;
     var i, j;
 
     var noteStartTime = 0.0;
     var maxNoteEndTime = 0.0;
 
-    for (i = 0; i < notes.length; i++) {
-      for(j = 0; j < notes[i].length; j++) {
-        note = notes[i][j];
+    for (i = 0; i < score.stepCount(); i++) {
+      notesAtStepIndex = score.notesAtStepIndex(i);
+
+      for(j = 0; j < notesAtStepIndex.length; j++) {
+        note = notesAtStepIndex[j];
         noteEndTime = noteStartTime + notePlayer.noteDuration(note.channelID(), note.note().stepCount(), stepDuration);
         if (noteEndTime > maxNoteEndTime) {
           maxNoteEndTime = noteEndTime;
@@ -82,9 +87,9 @@ export function SongPlayer() {
 
   return {
     reset: reset,
-    stepCount: function() { return notes.length; },
+    stepCount: function() { return score.stepCount(); },
     isFinishedPlaying: function() { return isFinishedPlaying; },
-    replaceNotes: replaceNotes,
+    replaceScore: replaceScore,
     tick: tick,
     playbackTime: playbackTime,
   };
