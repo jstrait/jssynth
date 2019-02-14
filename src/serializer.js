@@ -147,12 +147,11 @@ export class Serializer {
     return patterns;
   };
 
-  static serialize(measureCount, tracks, instruments, patterns, bufferCollection) {
+  static serialize(measureCount, tracks, patterns) {
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
     let i, j;
-    let serializedInstrument;
     let serializedPatterns;
     let serializedNotes = [];
 
@@ -161,7 +160,6 @@ export class Serializer {
     }
 
     tracks.forEach(function(track) {
-      serializedInstrument = Serializer.serializeInstrument(Serializer.instrumentByID(instruments, track.instrumentID), bufferCollection);
       serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
 
       for (i = 0; i < measureCount; i++) {
@@ -171,7 +169,7 @@ export class Serializer {
           sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], serializedInstrument, 1.0, track.id));
+                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], 1.0, track.id));
               }
             }
           });

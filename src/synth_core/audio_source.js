@@ -198,18 +198,6 @@ function AudioSource(audioContext) {
     return channel.input();
   };
 
-  var scheduleNote = function(channelID, instrument, note, amplitude, gateOnTime, gateOffTime) {
-    instrument.scheduleNote(audioContext, destination(channelID), note, amplitude, gateOnTime, gateOffTime);
-  };
-
-  var playImmediateNote = function(channelID, instrument, note, amplitude) {
-    return instrument.gateOn(audioContext, destination(channelID), note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
-  };
-
-  var stopNote = function(instrument, noteContext) {
-    instrument.gateOff(noteContext, audioContext.currentTime, true);
-  };
-
   var setClipDetectionEnabled = function(isEnabled) {
     if (isEnabled === true) {
       clipDetector.connect(audioContext.destination);
@@ -241,9 +229,6 @@ function AudioSource(audioContext) {
     setChannelReverb: setChannelReverb,
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,
-    scheduleNote: scheduleNote,
-    playImmediateNote: playImmediateNote,
-    stopNote: stopNote,
     setClipDetectionEnabled: setClipDetectionEnabled,
   };
 };

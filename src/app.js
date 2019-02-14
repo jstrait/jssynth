@@ -118,13 +118,14 @@ class App extends React.Component {
     ];
 
     this.audioSource = JSSynth.AudioSource(JSSynth.AudioContextBuilder.buildAudioContext());
+    this.notePlayer = JSSynth.NotePlayer();
 
     if (this.audioSource.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
       return;
     }
 
-    this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, function() {});
+    this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, this.notePlayer, function() {});
     this.transport.setTempo(this.state.transport.tempo);
     this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
 
@@ -137,13 +138,15 @@ class App extends React.Component {
       bufferConfigs,
       () => {
         let i;
+        let channelID;
         let instrument;
 
         this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
 
         for (i = 0; i < this.state.tracks.length; i++) {
+          channelID = this.state.tracks[i].id;
           instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
-          this.audioSource.addChannel(this.state.tracks[i].id,
+          this.audioSource.addChannel(channelID,
                                       this.state.tracks[i].volume,
                                       this.state.tracks[i].muted,
                                       this.bufferCollection.getBuffer("reverb"),
@@ -153,6 +156,7 @@ class App extends React.Component {
         }
 
         this.syncTransportNotes();
+        this.syncInstrumentsToSynthCore();
       },
       () => {
         this.setState({loadingStatusMessage: "An error occurred while starting up"});
@@ -301,9 +305,24 @@ class App extends React.Component {
   };
 
   syncTransportNotes() {
-    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.instruments, this.state.patterns, this.bufferCollection);
+    let serializedNotes = Serializer.serialize(this.state.measureCount, this.state.tracks, this.state.patterns);
     this.songPlayer.replaceNotes(serializedNotes);
     this.offlineSongPlayer.replaceNotes(serializedNotes);
+  };
+
+  syncInstrumentsToSynthCore() {
+    let channelID;
+    let instrumentConfig;
+    let serializedInstrument;
+    let i;
+
+    for (i = 0; i < this.state.tracks.length; i++) {
+      channelID = this.state.tracks[i].id;
+      instrumentConfig = this.instrumentByID(this.state.tracks[i].instrumentID);
+      serializedInstrument = Serializer.serializeInstrument(instrumentConfig, this.bufferCollection);
+
+      this.notePlayer.addChannel(channelID, serializedInstrument);
+    }
   };
 
   syncChannels() {
@@ -454,6 +473,7 @@ class App extends React.Component {
     }),
     function() {
       this.audioSource.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
+      this.syncInstrumentsToSynthCore();
       this.setSelectedTrack(newTrack.id);
     });
   };
@@ -573,7 +593,9 @@ class App extends React.Component {
       tracks: newTracks,
     }, function() {
       this.audioSource.removeChannel(id);
+      this.notePlayer.removeChannel(id);
       this.syncTransportNotes();
+      this.syncInstrumentsToSynthCore();
     });
   };
 
@@ -812,7 +834,7 @@ class App extends React.Component {
     this.instrumentByID(id)[field] = value;
     this.forceUpdate();
 
-    this.syncTransportNotes();
+    this.syncInstrumentsToSynthCore();
     this.syncChannels();
   };
 
@@ -821,7 +843,6 @@ class App extends React.Component {
     let label = instrument.sample;
 
     this.bufferCollection.addBufferFromFile(label, file, () => {
-      this.syncTransportNotes();
       this.updateInstrument(instrumentID, "filename", file.name);
     });
   };
@@ -859,7 +880,7 @@ class App extends React.Component {
       if (!notes.includes(newActiveKeyboardNotes[i])) {
         noteContext = newActiveNoteContexts[i];
 
-        this.audioSource.stopNote(instrument, noteContext);
+        this.notePlayer.stopNote(this.state.selectedTrackID, this.audioSource.audioContext(), noteContext);
         newActiveKeyboardNotes.splice(i, 1);
         newActiveNoteContexts.splice(i, 1);
 
@@ -875,7 +896,11 @@ class App extends React.Component {
         }
 
         note = JSSynth.Note(notes[i].slice(0, -1), notes[i].slice(-1), 1);
-        noteContext = this.audioSource.playImmediateNote(currentTrack.id, instrument, note, 1.0);
+        noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
+                                                        this.audioSource.audioContext(),
+                                                        this.audioSource.destination(currentTrack.id),
+                                                        note,
+                                                        1.0);
 
         newActiveKeyboardNotes.push(notes[i]);
         newActiveNoteContexts.push(noteContext);
@@ -973,7 +998,7 @@ class App extends React.Component {
 
     this.setState({downloadInProgress: true});
 
-    offlineTransport = new JSSynth.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
+    offlineTransport = new JSSynth.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 

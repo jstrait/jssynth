@@ -2,9 +2,10 @@
 
 import { AudioContextBuilder } from "./audio_context_builder";
 import { AudioSource } from "./audio_source";
+import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
-export function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeCallback) {
+export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitude, completeCallback) {
   var NUM_CHANNELS = 1;
   var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
@@ -12,7 +13,7 @@ export function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeC
 
   var buildOfflineAudioContext = function() {
     var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL;
-    var actualPlaybackTime = songPlayer.playbackTime(STEP_INTERVAL);
+    var actualPlaybackTime = songPlayer.playbackTime(notePlayer, STEP_INTERVAL);
     var playbackTime = Math.max(minimumPlaybackTime, actualPlaybackTime);
 
     var sampleCount = SAMPLE_RATE * playbackTime;
@@ -37,7 +38,7 @@ export function OfflineTransport(tracks, songPlayer, tempo, amplitude, completeC
     var finalTime = startTime + scheduleAheadTime;
 
     songPlayer.reset(startTime);
-    songPlayer.tick(offlineAudioSource, finalTime, STEP_INTERVAL, false);
+    songPlayer.tick(offlineAudioSource, notePlayer, finalTime, STEP_INTERVAL, false);
 
     offlineAudioContext.startRendering();
   };

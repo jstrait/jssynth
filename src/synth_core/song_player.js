@@ -17,7 +17,7 @@ export function SongPlayer() {
     notes = newNotes;
   };
 
-  var tick = function(audioSource, endTime, stepDuration, loop) {
+  var tick = function(audioSource, notePlayer, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
     var incomingNotes;
@@ -26,7 +26,13 @@ export function SongPlayer() {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepDuration();
-        audioSource.scheduleNote(note.channelID(), note.instrument(), note.note(), note.amplitude(), currentTime, currentTime + noteTimeDuration);
+        notePlayer.scheduleNote(note.channelID(),
+                                audioSource.audioContext(),
+                                audioSource.destination(note.channelID()),
+                                note.note(),
+                                note.amplitude(),
+                                currentTime,
+                                currentTime + noteTimeDuration);
       });
 
       scheduledSteps.push({ step: stepIndex, time: currentTime });
@@ -48,8 +54,8 @@ export function SongPlayer() {
     return scheduledSteps;
   };
 
-  var playbackTime = function(stepDuration) {
-    var note, noteTimeDuration, noteEndTime;
+  var playbackTime = function(notePlayer, stepDuration) {
+    var note, noteEndTime;
     var i, j;
 
     var noteStartTime = 0.0;
@@ -58,9 +64,7 @@ export function SongPlayer() {
     for (i = 0; i < notes.length; i++) {
       for(j = 0; j < notes[i].length; j++) {
         note = notes[i][j];
-        noteTimeDuration = stepDuration * note.note().stepDuration();
-        noteEndTime = noteStartTime + noteTimeDuration + note.instrument().config().envelope.releaseTime;
-
+        noteEndTime = noteStartTime + notePlayer.noteDuration(note.channelID(), note.note().stepDuration(), stepDuration);
         if (noteEndTime > maxNoteEndTime) {
           maxNoteEndTime = noteEndTime;
         }
