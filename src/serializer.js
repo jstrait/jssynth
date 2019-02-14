@@ -123,17 +123,6 @@ export class Serializer {
     return serializedPatterns;
   };
 
-  static trackByID(tracks, id) {
-    let i;
-    for (i = 0; i < tracks.length; i++) {
-      if (tracks[i].id === id) {
-        return tracks[i];
-      }
-    }
-
-    return undefined;
-  };
-
   static instrumentByID(instruments, id) {
     let i;
     for (i = 0; i < instruments.length; i++) {
