@@ -1,6 +1,6 @@
 "use strict";
 
-export function Note(newNoteName, newOctave, newStepDuration) {
+export function Note(newNoteName, newOctave, newStepCount) {
   var NOTE_RATIOS = {
     "A"  : 1.0,
     "A#" : Math.pow(2,  1 / 12),
@@ -77,14 +77,14 @@ export function Note(newNoteName, newOctave, newStepDuration) {
 
   var noteName = newNoteName;
   var octave = parseInt(newOctave, 10);
-  var stepDuration = parseInt(newStepDuration, 10);
+  var stepCount = parseInt(newStepCount, 10);
   var frequency = calculateFrequency(noteName, octave);
 
 
   return {
     name: function() { return noteName; },
     octave: function() { return octave; },
-    stepDuration: function() { return stepDuration; },
+    stepCount: function() { return stepCount; },
     frequency: function() { return frequency; },
   };
 };

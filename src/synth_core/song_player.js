@@ -25,7 +25,7 @@ export function SongPlayer() {
     while (currentTime < endTime) {
       incomingNotes = notes[stepIndex];
       incomingNotes.forEach(function(note) {
-        noteTimeDuration = stepDuration * note.note().stepDuration();
+        noteTimeDuration = stepDuration * note.note().stepCount();
         notePlayer.scheduleNote(note.channelID(),
                                 audioSource.audioContext(),
                                 audioSource.destination(note.channelID()),
@@ -64,7 +64,7 @@ export function SongPlayer() {
     for (i = 0; i < notes.length; i++) {
       for(j = 0; j < notes[i].length; j++) {
         note = notes[i][j];
-        noteEndTime = noteStartTime + notePlayer.noteDuration(note.channelID(), note.note().stepDuration(), stepDuration);
+        noteEndTime = noteStartTime + notePlayer.noteDuration(note.channelID(), note.note().stepCount(), stepDuration);
         if (noteEndTime > maxNoteEndTime) {
           maxNoteEndTime = noteEndTime;
         }
