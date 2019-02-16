@@ -9,18 +9,18 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
   var NUM_CHANNELS = 1;
   var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
-  var STEP_INTERVAL = 60.0 / SIXTEENTHS_PER_MINUTE;
+  var STEP_INTERVAL_IN_SECONDS = 60.0 / SIXTEENTHS_PER_MINUTE;
   var FADE_OUT_TIME_IN_SECONDS = 1.5;
 
-  var calculatePlaybackTime = function() {
-    var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL;
-    var actualPlaybackTime = songPlayer.playbackTime(notePlayer, STEP_INTERVAL);
+  var calculatePlaybackTimeInSeconds = function() {
+    var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL_IN_SECONDS;
+    var actualPlaybackTime = songPlayer.playbackTime(notePlayer, STEP_INTERVAL_IN_SECONDS);
 
     return Math.max(minimumPlaybackTime, actualPlaybackTime) + FADE_OUT_TIME_IN_SECONDS;
   };
 
-  var buildOfflineAudioContext = function(playbackTime) {
-    var sampleCount = SAMPLE_RATE * playbackTime;
+  var buildOfflineAudioContext = function(playbackTimeInSeconds) {
+    var sampleCount = SAMPLE_RATE * playbackTimeInSeconds;
     var offlineAudioContext = AudioContextBuilder.buildOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
 
     offlineAudioContext.oncomplete = function(e) {
@@ -37,19 +37,19 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
   };
 
   var tick = function() {
-    var scheduleAheadTime = songPlayer.stepCount() * STEP_INTERVAL;
-    var startTime = offlineAudioContext.currentTime;
-    var finalTime = startTime + scheduleAheadTime;
+    var scheduleAheadTimeInSeconds = songPlayer.stepCount() * STEP_INTERVAL_IN_SECONDS;
+    var startTimeInSeconds = offlineAudioContext.currentTime;
+    var finalTimeInSeconds = startTimeInSeconds + scheduleAheadTimeInSeconds;
 
-    songPlayer.reset(startTime);
-    songPlayer.tick(offlineAudioSource, notePlayer, finalTime, STEP_INTERVAL, false);
+    songPlayer.reset(startTimeInSeconds);
+    songPlayer.tick(offlineAudioSource, notePlayer, finalTimeInSeconds, STEP_INTERVAL_IN_SECONDS, false);
 
     offlineAudioContext.startRendering();
   };
 
   var i;
-  var playbackTime = calculatePlaybackTime();
-  var offlineAudioContext = buildOfflineAudioContext(playbackTime);
+  var playbackTimeInSeconds = calculatePlaybackTimeInSeconds();
+  var offlineAudioContext = buildOfflineAudioContext(playbackTimeInSeconds);
   var offlineAudioSource = AudioSource(offlineAudioContext);
   var track;
   offlineAudioSource.setMasterAmplitude(masterAmplitude);
@@ -59,8 +59,8 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
   }
 
-  offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTime - FADE_OUT_TIME_IN_SECONDS);
-  offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTime);
+  offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTimeInSeconds - FADE_OUT_TIME_IN_SECONDS);
+  offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTimeInSeconds);
 
 
   return {
