@@ -99,9 +99,9 @@ const instruments = [
     envelopeDecayTime: 0,
     envelopeSustainPercentage: 1,
     envelopeReleaseTime: 0,
-    delayTime: 0.0,
-    delayFeedback: 0.0,
-    reverbWetPercentage: 0.0,
+    delayTime: 0.3,
+    delayFeedback: 0.4,
+    reverbWetPercentage: 0.4,
   },
   {
     id: 4,
