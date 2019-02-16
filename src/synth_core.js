@@ -1,10 +1,10 @@
 "use strict";
 
 export { AudioContextBuilder } from "./synth_core/audio_context_builder";
-export { AudioSource } from "./synth_core/audio_source";
 export { BufferCollection } from "./synth_core/buffer_collection";
 export { Envelope } from "./synth_core/envelope";
 export { InstrumentNote } from "./synth_core/instrument_note";
+export { Mixer } from "./synth_core/audio_source";
 export { Note } from "./synth_core/note";
 export { NotePlayer } from "./synth_core/note_player";
 export { OfflineTransport } from "./synth_core/offline_transport";

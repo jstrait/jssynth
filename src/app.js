@@ -117,22 +117,22 @@ class App extends React.Component {
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
 
-    this.audioSource = SynthCore.AudioSource(SynthCore.AudioContextBuilder.buildAudioContext());
+    this.mixer = SynthCore.Mixer(SynthCore.AudioContextBuilder.buildAudioContext());
     this.notePlayer = SynthCore.NotePlayer();
 
-    if (this.audioSource.audioContext() === undefined) {
+    if (this.mixer.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
       return;
     }
 
-    this.transport = SynthCore.Transport(this.audioSource, this.songPlayer, this.notePlayer, function() {});
+    this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
     this.transport.setTempo(this.state.transport.tempo);
-    this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
+    this.mixer.setMasterAmplitude(this.state.masterAmplitude);
 
-    this.bufferCollection = SynthCore.BufferCollection(this.audioSource.audioContext());
-    this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.audioSource.audioContext()));
-    this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.audioSource.audioContext()));
-    this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.audioSource.audioContext()));
+    this.bufferCollection = SynthCore.BufferCollection(this.mixer.audioContext());
+    this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.mixer.audioContext()));
+    this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.mixer.audioContext()));
+    this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.mixer.audioContext()));
 
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
@@ -146,13 +146,13 @@ class App extends React.Component {
         for (i = 0; i < this.state.tracks.length; i++) {
           channelID = this.state.tracks[i].id;
           instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
-          this.audioSource.addChannel(channelID,
-                                      this.state.tracks[i].volume,
-                                      this.state.tracks[i].muted,
-                                      this.bufferCollection.getBuffer("reverb"),
-                                      instrument.reverbWetPercentage,
-                                      instrument.delayTime,
-                                      instrument.delayFeedback);
+          this.mixer.addChannel(channelID,
+                                this.state.tracks[i].volume,
+                                this.state.tracks[i].muted,
+                                this.bufferCollection.getBuffer("reverb"),
+                                instrument.reverbWetPercentage,
+                                instrument.delayTime,
+                                instrument.delayFeedback);
         }
 
         this.syncScoreToSynthCore();
@@ -264,7 +264,7 @@ class App extends React.Component {
     const newAmplitude = parseFloat(e.target.value);
 
     this.setState({masterAmplitude: newAmplitude});
-    this.audioSource.setMasterAmplitude(newAmplitude);
+    this.mixer.setMasterAmplitude(newAmplitude);
   };
 
   syncCurrentStep() {
@@ -332,9 +332,9 @@ class App extends React.Component {
     for (i = 0; i < this.state.tracks.length; i++) {
       track = this.state.tracks[i];
       instrument = this.instrumentByID(track.instrumentID);
-      this.audioSource.setChannelAmplitude(track.id, track.volume);
-      this.audioSource.setChannelDelay(track.id, instrument.delayTime, instrument.delayFeedback);
-      this.audioSource.setChannelReverb(track.id, instrument.reverbWetPercentage);
+      this.mixer.setChannelAmplitude(track.id, track.volume);
+      this.mixer.setChannelDelay(track.id, instrument.delayTime, instrument.delayFeedback);
+      this.mixer.setChannelReverb(track.id, instrument.reverbWetPercentage);
     }
   };
 
@@ -402,7 +402,7 @@ class App extends React.Component {
     this.setState({
       tracks: newTrackList
     });
-    this.audioSource.setChannelAmplitude(trackID, newTrackVolume);
+    this.mixer.setChannelAmplitude(trackID, newTrackVolume);
   };
 
   toggleTrackMute(trackID, newIsMuted) {
@@ -415,7 +415,7 @@ class App extends React.Component {
     this.setState({
       tracks: newTrackList
     });
-    this.audioSource.setChannelIsMuted(trackID, newIsMuted);
+    this.mixer.setChannelIsMuted(trackID, newIsMuted);
   };
 
   setTrackPattern(trackID, measure, patternID) {
@@ -472,7 +472,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.audioSource.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
+      this.mixer.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
       this.syncInstrumentsToSynthCore();
       this.setSelectedTrack(newTrack.id);
     });
@@ -592,7 +592,7 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
     }, function() {
-      this.audioSource.removeChannel(id);
+      this.mixer.removeChannel(id);
       this.notePlayer.removeChannel(id);
       this.syncScoreToSynthCore();
       this.syncInstrumentsToSynthCore();
@@ -880,7 +880,7 @@ class App extends React.Component {
       if (!notes.includes(newActiveKeyboardNotes[i])) {
         noteContext = newActiveNoteContexts[i];
 
-        this.notePlayer.stopNote(this.state.selectedTrackID, this.audioSource.audioContext(), noteContext);
+        this.notePlayer.stopNote(this.state.selectedTrackID, this.mixer.audioContext(), noteContext);
         newActiveKeyboardNotes.splice(i, 1);
         newActiveNoteContexts.splice(i, 1);
 
@@ -897,8 +897,8 @@ class App extends React.Component {
 
         note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
         noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
-                                                        this.audioSource.audioContext(),
-                                                        this.audioSource.destination(currentTrack.id),
+                                                        this.mixer.audioContext(),
+                                                        this.mixer.destination(currentTrack.id),
                                                         note,
                                                         1.0);
 

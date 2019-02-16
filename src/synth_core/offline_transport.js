@@ -1,7 +1,7 @@
 "use strict";
 
 import { AudioContextBuilder } from "./audio_context_builder";
-import { AudioSource } from "./audio_source";
+import { Mixer } from "./audio_source";
 import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
@@ -36,22 +36,22 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     return offlineAudioContext;
   };
 
-  var buildOfflineAudioSource = function(offlineAudioContext) {
+  var buildOfflineMixer = function(offlineAudioContext) {
     var i;
     var track;
-    var offlineAudioSource = AudioSource(offlineAudioContext);
+    var offlineMixer = Mixer(offlineAudioContext);
 
-    offlineAudioSource.setMasterAmplitude(masterAmplitude);
+    offlineMixer.setMasterAmplitude(masterAmplitude);
 
     for (i = 0; i < tracks.length; i++) {
       track = tracks[i];
-      offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
+      offlineMixer.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
     }
 
-    offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTimeInSeconds - FADE_OUT_TIME_IN_SECONDS);
-    offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTimeInSeconds);
+    offlineMixer.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTimeInSeconds - FADE_OUT_TIME_IN_SECONDS);
+    offlineMixer.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTimeInSeconds);
 
-    return offlineAudioSource;
+    return offlineMixer;
   };
 
   var tick = function() {
@@ -60,14 +60,14 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     var finalTimeInSeconds = startTimeInSeconds + scheduleAheadTimeInSeconds;
 
     songPlayer.reset(startTimeInSeconds);
-    songPlayer.tick(offlineAudioSource, notePlayer, finalTimeInSeconds, STEP_INTERVAL_IN_SECONDS, false);
+    songPlayer.tick(offlineMixer, notePlayer, finalTimeInSeconds, STEP_INTERVAL_IN_SECONDS, false);
 
     offlineAudioContext.startRendering();
   };
 
   var playbackTimeInSeconds = calculatePlaybackTimeInSeconds();
   var offlineAudioContext = buildOfflineAudioContext(playbackTimeInSeconds);
-  var offlineAudioSource = buildOfflineAudioSource(offlineAudioContext);
+  var offlineMixer = buildOfflineMixer(offlineAudioContext);
 
 
   return {

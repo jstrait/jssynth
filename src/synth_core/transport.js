@@ -1,6 +1,6 @@
 "use strict";
 
-export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
+export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
   var LOOP = true;
@@ -12,9 +12,9 @@ export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
   var isPlaying = false;
 
   var tick = function() {
-    var finalTime = audioSource.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
+    var finalTime = mixer.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
 
-    var newScheduledSteps = songPlayer.tick(audioSource, notePlayer, finalTime, stepInterval, LOOP);
+    var newScheduledSteps = songPlayer.tick(mixer, notePlayer, finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
 
     if (songPlayer.isFinishedPlaying()) {
@@ -24,7 +24,7 @@ export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
   };
 
   var start = function() {
-    var audioContext = audioSource.audioContext();
+    var audioContext = mixer.audioContext();
 
     currentStep = 0;
     scheduledSteps = [];
@@ -44,7 +44,7 @@ export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
       }
     }
 
-    audioSource.setClipDetectionEnabled(true);
+    mixer.setClipDetectionEnabled(true);
 
     tick();
     timeoutId = window.setInterval(tick, TICK_INTERVAL);
@@ -53,7 +53,7 @@ export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
 
   var stop = function() {
     window.clearInterval(timeoutId);
-    audioSource.setClipDetectionEnabled(false);
+    mixer.setClipDetectionEnabled(false);
     isPlaying = false;
   };
 
@@ -76,7 +76,7 @@ export function Transport(audioSource, songPlayer, notePlayer, stopCallback) {
       return undefined;
     }
 
-    var currentTime = audioSource.audioContext().currentTime;
+    var currentTime = mixer.audioContext().currentTime;
     var i = 0;
     while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
       currentStep = scheduledSteps[i].step;

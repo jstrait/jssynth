@@ -1,6 +1,6 @@
 "use strict";
 
-function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, initialIsMuted, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
+function MixerChannel(audioContext, audioDestination, initialAmplitude, initialMultiplier, initialIsMuted, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
   var HALF_PI = Math.PI / 2;
 
   var amplitude = initialAmplitude;
@@ -100,7 +100,7 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   };
 };
 
-function ChannelCollection(audioContext, audioDestination) {
+function MixerChannelCollection(audioContext, audioDestination) {
   var channels = {};
   var count = 0;
 
@@ -109,7 +109,7 @@ function ChannelCollection(audioContext, audioDestination) {
   };
 
   var add = function(id, amplitude, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback) {
-    channels[id] = Channel(audioContext, audioDestination, amplitude, 1.0, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
+    channels[id] = MixerChannel(audioContext, audioDestination, amplitude, 1.0, isMuted, reverbBuffer, reverbWetPercentage, delayTime, delayFeedback);
     count += 1;
 
     setMultipliers();
@@ -140,7 +140,7 @@ function ChannelCollection(audioContext, audioDestination) {
   };
 };
 
-function AudioSource(audioContext) {
+function Mixer(audioContext) {
   var clipDetector;
   var masterGain;
   var channelCollection;
@@ -218,7 +218,7 @@ function AudioSource(audioContext) {
     masterGain.connect(audioContext.destination);
     masterGain.connect(clipDetector);
 
-    channelCollection = ChannelCollection(audioContext, masterGain);
+    channelCollection = MixerChannelCollection(audioContext, masterGain);
   }
 
   return {
@@ -236,4 +236,4 @@ function AudioSource(audioContext) {
   };
 };
 
-export { AudioSource };
+export { Mixer };

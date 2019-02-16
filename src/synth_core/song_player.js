@@ -19,7 +19,7 @@ export function SongPlayer() {
     score = newScore;
   };
 
-  var tick = function(audioSource, notePlayer, endTime, stepDuration, loop) {
+  var tick = function(mixer, notePlayer, endTime, stepDuration, loop) {
     var scheduledSteps = [];
     var noteTimeDuration;
     var incomingNotes;
@@ -29,8 +29,8 @@ export function SongPlayer() {
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepCount();
         notePlayer.scheduleNote(note.channelID(),
-                                audioSource.audioContext(),
-                                audioSource.destination(note.channelID()),
+                                mixer.audioContext(),
+                                mixer.destination(note.channelID()),
                                 note.note(),
                                 note.amplitude(),
                                 currentTime,
