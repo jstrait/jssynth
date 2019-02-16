@@ -895,7 +895,7 @@ class App extends React.Component {
           this.setNoteValue(notes[i], this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
         }
 
-        note = JSSynth.Note(notes[i].slice(0, -1), notes[i].slice(-1), 1);
+        note = JSSynth.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
         noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
                                                         this.audioSource.audioContext(),
                                                         this.audioSource.destination(currentTrack.id),
