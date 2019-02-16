@@ -3,7 +3,7 @@
 export { AudioContextBuilder } from "./synth_core/audio_context_builder";
 export { AudioSource } from "./synth_core/audio_source";
 export { BufferCollection } from "./synth_core/buffer_collection";
-export { Envelope } from "./synth_core/instrument";
+export { Envelope } from "./synth_core/envelope";
 export { InstrumentNote } from "./synth_core/instrument_note";
 export { Note } from "./synth_core/note";
 export { NotePlayer } from "./synth_core/note_player";
