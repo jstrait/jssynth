@@ -1,10 +1,10 @@
 "use strict";
 
-import * as JSSynth from "./../src/jssynth";
+import * as SynthCore from "./../src/synth_core";
 
-describe("JSSynth.Note", function() {
+describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
-    var note = new JSSynth.Note('A', 3, 1);
+    var note = new SynthCore.Note('A', 3, 1);
 
     expect(note.name()).toEqual('A');
     expect(note.octave()).toEqual(3);
@@ -13,7 +13,7 @@ describe("JSSynth.Note", function() {
   });
 
   it("should construct a Note properly", function() {
-    var note = new JSSynth.Note('V', 3, 1);
+    var note = new SynthCore.Note('V', 3, 1);
 
     expect(note.name()).toEqual('V');
     expect(note.octave()).toEqual(3);
@@ -22,9 +22,9 @@ describe("JSSynth.Note", function() {
   });
 
   it("should handle enharmonic equivalents properly", function() {
-    var note1 = new JSSynth.Note("D#", 3, 1);
-    var note2 = new JSSynth.Note("E@", 3, 1);
-    var note3 = new JSSynth.Note("F@@", 3, 1);
+    var note1 = new SynthCore.Note("D#", 3, 1);
+    var note2 = new SynthCore.Note("E@", 3, 1);
+    var note3 = new SynthCore.Note("F@@", 3, 1);
 
     expect(note1.name()).toEqual('D#');
     expect(note1.octave()).toEqual(3);
@@ -43,7 +43,7 @@ describe("JSSynth.Note", function() {
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = new JSSynth.Note('A', '3', '2');
+    var note = new SynthCore.Note('A', '3', '2');
 
     expect(note.name()).toEqual('A');
     expect(note.octave()).toEqual(3);
@@ -52,7 +52,7 @@ describe("JSSynth.Note", function() {
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = new JSSynth.Note('', '', '');
+    var note = new SynthCore.Note('', '', '');
 
     expect(note.name()).toEqual('');
     expect(note.octave()).toEqual(NaN);
@@ -62,10 +62,10 @@ describe("JSSynth.Note", function() {
 });
 
 
-describe("JSSynth.SequenceParser", function() {
+describe("SynthCore.SequenceParser", function() {
   it("should properly parse a valid sequence", function() {
     var rawSequence = "A4 B@2  C#5 ";
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
@@ -83,7 +83,7 @@ describe("JSSynth.SequenceParser", function() {
   it("should properly parse a sequence containing ties", function() {
     var rawSequence = "A4 - - - C2 - D4 G3 - -";
 
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
@@ -105,7 +105,7 @@ describe("JSSynth.SequenceParser", function() {
   it("should properly parse a sequence with bad note names", function() {
     var rawSequence = "V3 - - -";
 
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("V");
     expect(parsedSequence[0].octave()).toEqual(3);
@@ -115,7 +115,7 @@ describe("JSSynth.SequenceParser", function() {
   it("should properly parse a sequence containing trailing spaces", function() {
     var rawSequence = "A4 - - -   ";
 
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
@@ -125,7 +125,7 @@ describe("JSSynth.SequenceParser", function() {
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
     var rawSequence = "A4 -  - - C2";
 
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
@@ -139,14 +139,14 @@ describe("JSSynth.SequenceParser", function() {
   it("should properly parse a sequence with leading sustain characters ('-')", function() {
     var rawSequence = "- - - -";
 
-    var parsedSequence = new JSSynth.SequenceParser.parse(rawSequence);
+    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence).toEqual([]);
   });
 });
 
 
-describe("JSSynth.Envelope", function() {
+describe("SynthCore.Envelope", function() {
   it("should calculate correctly when envelope is effectively a no-op", function() {
     var envelopeConfig = {
       attackTime: 0.0,
@@ -155,7 +155,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -179,7 +179,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 1.1);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 1.1);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.1);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.25);
@@ -203,7 +203,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -229,7 +229,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -257,7 +257,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.5);
     expect(calculatedEnvelope.attackEndAmplitude).toEqual(0.5);
@@ -281,7 +281,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
@@ -309,7 +309,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.0,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBeCloseTo(0.5);
@@ -337,7 +337,7 @@ describe("JSSynth.Envelope", function() {
       releaseTime: 0.5,
     };
 
-    var calculatedEnvelope = JSSynth.Envelope(0.5, envelopeConfig, 1.0, 2.0);
+    var calculatedEnvelope = SynthCore.Envelope(0.5, envelopeConfig, 1.0, 2.0);
 
     expect(calculatedEnvelope.attackEndTime).toEqual(1.0);
     expect(calculatedEnvelope.attackEndAmplitude).toBe(0.5);

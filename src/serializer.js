@@ -1,6 +1,6 @@
 "use strict";
 
-import * as JSSynth from "./jssynth";
+import * as SynthCore from "./synth_core";
 
 export class Serializer {
   constructor() {};
@@ -54,7 +54,7 @@ export class Serializer {
       },
     };
 
-    return new JSSynth.SynthInstrument(serializedConfig, bufferCollection.getBuffer("white-noise"), bufferCollection.getBuffer("pink-noise"));
+    return new SynthCore.SynthInstrument(serializedConfig, bufferCollection.getBuffer("white-noise"), bufferCollection.getBuffer("pink-noise"));
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
@@ -87,7 +87,7 @@ export class Serializer {
       },
     };
 
-    return new JSSynth.SampleInstrument(serializedConfig, bufferCollection);
+    return new SynthCore.SampleInstrument(serializedConfig, bufferCollection);
   };
 
   static serializeInstrument(instrument, bufferCollection) {
@@ -113,7 +113,7 @@ export class Serializer {
         let rawSequenceString;
 
         rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
-        sequence = JSSynth.SequenceParser.parse(rawSequenceString);
+        sequence = SynthCore.SequenceParser.parse(rawSequenceString);
         serializedRows.push(sequence);
       });
 
@@ -169,7 +169,7 @@ export class Serializer {
           sequences.forEach(function(sequence) {
             for (j = 0; j < sequence.length; j++) {
               if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new JSSynth.InstrumentNote(sequence[j], 1.0, track.id));
+                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new SynthCore.InstrumentNote(sequence[j], 1.0, track.id));
               }
             }
           });
@@ -177,6 +177,6 @@ export class Serializer {
       }
     });
 
-    return JSSynth.Score(serializedNotes);
+    return SynthCore.Score(serializedNotes);
   };
 };

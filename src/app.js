@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import * as JSSynth from "./jssynth";
+import * as SynthCore from "./synth_core";
 import * as DefaultSong from "./default_song";
 import { BufferGenerator } from "./buffer_generator";
 import { IDGenerator } from "./id_generator";
@@ -55,8 +55,8 @@ class App extends React.Component {
 
     // Transport
     this.timeoutID = undefined;
-    this.songPlayer = JSSynth.SongPlayer();
-    this.offlineSongPlayer = JSSynth.SongPlayer();
+    this.songPlayer = SynthCore.SongPlayer();
+    this.offlineSongPlayer = SynthCore.SongPlayer();
 
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
@@ -117,19 +117,19 @@ class App extends React.Component {
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
 
-    this.audioSource = JSSynth.AudioSource(JSSynth.AudioContextBuilder.buildAudioContext());
-    this.notePlayer = JSSynth.NotePlayer();
+    this.audioSource = SynthCore.AudioSource(SynthCore.AudioContextBuilder.buildAudioContext());
+    this.notePlayer = SynthCore.NotePlayer();
 
     if (this.audioSource.audioContext() === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
       return;
     }
 
-    this.transport = JSSynth.Transport(this.audioSource, this.songPlayer, this.notePlayer, function() {});
+    this.transport = SynthCore.Transport(this.audioSource, this.songPlayer, this.notePlayer, function() {});
     this.transport.setTempo(this.state.transport.tempo);
     this.audioSource.setMasterAmplitude(this.state.masterAmplitude);
 
-    this.bufferCollection = JSSynth.BufferCollection(this.audioSource.audioContext());
+    this.bufferCollection = SynthCore.BufferCollection(this.audioSource.audioContext());
     this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.audioSource.audioContext()));
     this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.audioSource.audioContext()));
     this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.audioSource.audioContext()));
@@ -895,7 +895,7 @@ class App extends React.Component {
           this.setNoteValue(notes[i], this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
         }
 
-        note = JSSynth.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
+        note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
         noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
                                                         this.audioSource.audioContext(),
                                                         this.audioSource.destination(currentTrack.id),
@@ -1003,7 +1003,7 @@ class App extends React.Component {
 
     this.setState({downloadInProgress: true});
 
-    offlineTransport = new JSSynth.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
+    offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
