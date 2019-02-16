@@ -227,6 +227,7 @@ function AudioSource(audioContext) {
     setChannelIsMuted: setChannelIsMuted,
     setChannelDelay: setChannelDelay,
     setChannelReverb: setChannelReverb,
+    masterGainNode: function() { return masterGain; },
     setMasterAmplitude: setMasterAmplitude,
     destination: destination,
     setClipDetectionEnabled: setClipDetectionEnabled,

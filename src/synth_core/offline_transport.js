@@ -10,12 +10,16 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitud
   var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
   var STEP_INTERVAL = 60.0 / SIXTEENTHS_PER_MINUTE;
+  var FADE_OUT_TIME_IN_SECONDS = 1.5;
 
-  var buildOfflineAudioContext = function() {
+  var calculatePlaybackTime = function() {
     var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL;
     var actualPlaybackTime = songPlayer.playbackTime(notePlayer, STEP_INTERVAL);
-    var playbackTime = Math.max(minimumPlaybackTime, actualPlaybackTime);
 
+    return Math.max(minimumPlaybackTime, actualPlaybackTime) + FADE_OUT_TIME_IN_SECONDS;
+  };
+
+  var buildOfflineAudioContext = function(playbackTime) {
     var sampleCount = SAMPLE_RATE * playbackTime;
     var offlineAudioContext = AudioContextBuilder.buildOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
 
@@ -44,7 +48,8 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitud
   };
 
   var i;
-  var offlineAudioContext = buildOfflineAudioContext();
+  var playbackTime = calculatePlaybackTime();
+  var offlineAudioContext = buildOfflineAudioContext(playbackTime);
   var offlineAudioSource = AudioSource(offlineAudioContext);
   var track;
   offlineAudioSource.setMasterAmplitude(amplitude);
@@ -53,6 +58,9 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitud
     track = tracks[i];
     offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
   }
+
+  offlineAudioSource.masterGainNode().gain.setValueAtTime(amplitude, playbackTime - FADE_OUT_TIME_IN_SECONDS);
+  offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTime);
 
 
   return {
