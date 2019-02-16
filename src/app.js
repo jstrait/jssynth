@@ -117,22 +117,24 @@ class App extends React.Component {
       { label: "Instrument 6", url: "sounds/hihat.wav", },
     ];
 
-    this.mixer = SynthCore.Mixer(SynthCore.AudioContextBuilder.buildAudioContext());
-    this.notePlayer = SynthCore.NotePlayer();
+    const audioContext = SynthCore.AudioContextBuilder.buildAudioContext();
 
-    if (this.mixer.audioContext() === undefined) {
+    if (audioContext === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
       return;
     }
+
+    this.mixer = SynthCore.Mixer(audioContext);
+    this.notePlayer = SynthCore.NotePlayer();
 
     this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
     this.transport.setTempo(this.state.transport.tempo);
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
 
-    this.bufferCollection = SynthCore.BufferCollection(this.mixer.audioContext());
-    this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(this.mixer.audioContext()));
-    this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(this.mixer.audioContext()));
-    this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(this.mixer.audioContext()));
+    this.bufferCollection = SynthCore.BufferCollection(audioContext);
+    this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(audioContext));
+    this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(audioContext));
+    this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(audioContext));
 
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
