@@ -5,7 +5,7 @@ import { AudioSource } from "./audio_source";
 import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
-export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitude, completeCallback) {
+export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAmplitude, completeCallback) {
   var NUM_CHANNELS = 1;
   var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
@@ -52,14 +52,14 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, amplitud
   var offlineAudioContext = buildOfflineAudioContext(playbackTime);
   var offlineAudioSource = AudioSource(offlineAudioContext);
   var track;
-  offlineAudioSource.setMasterAmplitude(amplitude);
+  offlineAudioSource.setMasterAmplitude(masterAmplitude);
 
   for (i = 0; i < tracks.length; i++) {
     track = tracks[i];
     offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
   }
 
-  offlineAudioSource.masterGainNode().gain.setValueAtTime(amplitude, playbackTime - FADE_OUT_TIME_IN_SECONDS);
+  offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTime - FADE_OUT_TIME_IN_SECONDS);
   offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTime);
 
 
