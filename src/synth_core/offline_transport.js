@@ -36,6 +36,24 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     return offlineAudioContext;
   };
 
+  var buildOfflineAudioSource = function(offlineAudioContext) {
+    var i;
+    var track;
+    var offlineAudioSource = AudioSource(offlineAudioContext);
+
+    offlineAudioSource.setMasterAmplitude(masterAmplitude);
+
+    for (i = 0; i < tracks.length; i++) {
+      track = tracks[i];
+      offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
+    }
+
+    offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTimeInSeconds - FADE_OUT_TIME_IN_SECONDS);
+    offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTimeInSeconds);
+
+    return offlineAudioSource;
+  };
+
   var tick = function() {
     var scheduleAheadTimeInSeconds = songPlayer.stepCount() * STEP_INTERVAL_IN_SECONDS;
     var startTimeInSeconds = offlineAudioContext.currentTime;
@@ -47,20 +65,9 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     offlineAudioContext.startRendering();
   };
 
-  var i;
   var playbackTimeInSeconds = calculatePlaybackTimeInSeconds();
   var offlineAudioContext = buildOfflineAudioContext(playbackTimeInSeconds);
-  var offlineAudioSource = AudioSource(offlineAudioContext);
-  var track;
-  offlineAudioSource.setMasterAmplitude(masterAmplitude);
-
-  for (i = 0; i < tracks.length; i++) {
-    track = tracks[i];
-    offlineAudioSource.addChannel(track.id, track.volume, track.isMuted, track.reverbBuffer, track.reverbWetPercentage, track.delayTime, track.delayFeedback);
-  }
-
-  offlineAudioSource.masterGainNode().gain.setValueAtTime(masterAmplitude, playbackTimeInSeconds - FADE_OUT_TIME_IN_SECONDS);
-  offlineAudioSource.masterGainNode().gain.linearRampToValueAtTime(0.0, playbackTimeInSeconds);
+  var offlineAudioSource = buildOfflineAudioSource(offlineAudioContext);
 
 
   return {
