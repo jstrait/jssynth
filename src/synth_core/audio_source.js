@@ -1,6 +1,8 @@
 "use strict";
 
 function Channel(audioContext, audioDestination, initialAmplitude, initialMultiplier, initialIsMuted, reverbBuffer, initialReverbWetPercentage, delayTime, delayFeedback) {
+  var HALF_PI = Math.PI / 2;
+
   var amplitude = initialAmplitude;
   var multiplier = initialMultiplier;
   var isMuted = initialIsMuted;
@@ -46,8 +48,8 @@ function Channel(audioContext, audioDestination, initialAmplitude, initialMultip
   var setReverb = function(newReverbWetPercentage) {
     // Equal power crossfade, as described at https://www.html5rocks.com/en/tutorials/webaudio/intro/
     // (source code https://www.html5rocks.com/en/tutorials/webaudio/intro/js/crossfade-sample.js).
-    reverbDryGain.gain.value = Math.cos(newReverbWetPercentage * 0.5 * Math.PI);
-    reverbWetGain.gain.value = Math.cos((1.0 - newReverbWetPercentage) * 0.5 * Math.PI);
+    reverbDryGain.gain.value = Math.cos(newReverbWetPercentage * HALF_PI);
+    reverbWetGain.gain.value = Math.cos((1.0 - newReverbWetPercentage) * HALF_PI);
   };
 
   var input = function() {
