@@ -20,18 +20,21 @@ The song below is an example of what you can create with the JS-130, along with 
   * LFO to control oscillator pitch (i.e. "pitch wobble")
   * Filter, with LFO and ADSR envelope to control filter cutoff frequency
   * ADSR Envelope to control loudness
-* Sample Instruments
+  * Feedback delay and reverb effects
+* Sampler Instruments
   * Use a sound file (*.wav, *.mp3, etc.) as an instrument
   * Filter, with LFO and ADSR envelope to control filter cutoff frequency
   * ADSR Envelope to control loudness
+  * Feedback delay and reverb effects
 * Sequencer
   * Multiple tracks, each with its own instrument and set of patterns
-  * Enter notes in patterns via on-screen piano keyboard, or computer's text keyboard
-  * Full songs 8 patterns long (i.e. 128 steps)
+  * Enter notes in patterns via on-screen piano keyboard, MIDI keyboard, or computer's keyboard
+  * Full songs 1-99 patterns long
   * Volume control + mute for each track
 * Tempo control
 * Master volume control
 * On-screen keyboard to enter notes and try out sounds
+* MIDI keyboard support (only in browsers that support Web MIDI, such as Chrome)
 * Download sequencer output to a *.wav file
 
 ## Screenshots
