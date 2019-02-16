@@ -937,6 +937,11 @@ class App extends React.Component {
     let noteName, octave, noteString;
     let newActiveNotes = this.state.activeKeyboardNotes.concat([]);
 
+    // Note number 0-11 are for the -1 octave, which is not currently supported
+    if (data.noteNumber < 12) {
+      return;
+    }
+
     // Convert MIDI note number into internal note format
     noteName = NOTE_NAMES[data.noteNumber % 12];
     octave = Math.floor(data.noteNumber / 12) - 1;
