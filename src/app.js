@@ -939,7 +939,7 @@ class App extends React.Component {
 
     // Convert MIDI note number into internal note format
     noteName = NOTE_NAMES[data.noteNumber % 12];
-    octave = -2 + Math.floor((data.noteNumber + 3) / 12);  // The +3 is to compensate for octave starting at "A" vs. "C"
+    octave = Math.floor(data.noteNumber / 12) - 1;
     noteString = `${noteName}${octave}`;
 
     if (messageType === "noteon") {

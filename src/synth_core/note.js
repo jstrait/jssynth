@@ -70,7 +70,15 @@ export function Note(newNoteName, newOctave, newStepCount) {
 
   var calculateFrequency = function(noteName, octave) {
     var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
-    var octaveMultiplier = Math.pow(2.0, (octave - MIDDLE_OCTAVE));
+    var octaveExponent = octave - MIDDLE_OCTAVE;
+    var octaveMultiplier;
+
+    // Compensate for octaves starting at C, but base frequency (440Hz) being an A
+    if (normalizedNoteName !== "A" && normalizedNoteName !== "A#" && normalizedNoteName !== "B") {
+      octaveExponent -= 1;
+    }
+
+    octaveMultiplier = Math.pow(2.0, octaveExponent);
 
     return NOTE_RATIOS[normalizedNoteName] * MIDDLE_A_FREQUENCY * octaveMultiplier;
   };
