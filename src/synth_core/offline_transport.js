@@ -1,7 +1,7 @@
 "use strict";
 
 import { AudioContextBuilder } from "./audio_context_builder";
-import { Mixer } from "./audio_source";
+import { Mixer } from "./mixer";
 import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
