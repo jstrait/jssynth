@@ -11,17 +11,17 @@ class PatternListItem extends React.PureComponent {
   };
 
   setSelectedPatternID(e) {
-    this.props.setSelectedPattern(this.props.pattern.id);
+    this.props.setSelectedPattern(this.props.patternID);
   };
 
   removePattern(e) {
     e.stopPropagation();
-    this.props.removePattern(this.props.pattern.id);
+    this.props.removePattern(this.props.patternID);
   };
 
   render() {
-    return <li className={"flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 " + (this.props.pattern.id === this.props.selectedPattern.id ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedPatternID}>
-      <span className="no-whitespace-wrap overflow-hidden-x">{this.props.pattern.name}</span>
+    return <li className={"flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 " + (this.props.patternID === this.props.selectedPattern.id ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedPatternID}>
+      <span className="no-whitespace-wrap overflow-hidden-x">{this.props.patternName}</span>
       <button className={"button-small button-hollow round ml1 pt0 pb0 pl0 pr0" + (this.props.removable ? "" : " display-none")} onClick={this.removePattern}>&nbsp;X&nbsp;</button>
     </li>
   };
@@ -325,7 +325,7 @@ class PatternEditor extends React.Component {
       <div className="mb2">
         <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width">
           {this.props.patterns.map((pattern) =>
-          <PatternListItem key={pattern.id} pattern={pattern} selectedPattern={this.props.selectedPattern} removable={this.props.patterns.length > 1} setSelectedPattern={this.props.setSelectedPattern} removePattern={this.props.removePattern} />
+          <PatternListItem key={pattern.id} patternID={pattern.id} patternName={pattern.name} selectedPattern={this.props.selectedPattern} removable={this.props.patterns.length > 1} setSelectedPattern={this.props.setSelectedPattern} removePattern={this.props.removePattern} />
           )}
         </ul>
         <button className="button-full button-hollow mr-half" onClick={this.addPattern}>Add Pattern</button>
