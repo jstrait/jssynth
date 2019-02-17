@@ -102,7 +102,8 @@ class TrackMeasure extends React.Component {
     }
 
     for (i = 0; i < this.props.trackPatternOptions.length; i++) {
-      if (this.props.trackPatternOptions[i] !== nextProps.trackPatternOptions[i]) {
+      if (this.props.trackPatternOptions[i].id !== nextProps.trackPatternOptions[i].id ||
+          this.props.trackPatternOptions[i].name !== nextProps.trackPatternOptions[i].name) {
         return true;
       }
     }

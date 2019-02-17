@@ -1020,10 +1020,15 @@ class App extends React.Component {
     let instrument = this.instrumentByID(selectedTrack.instrumentID);
     let patterns = this.patternsByTrackID(this.state.selectedTrackID);
 
-    let i;
+    let i, j;
     let trackPatternOptions = {};
+    let trackPatterns;
     for (i = 0; i < this.state.tracks.length; i++) {
-      trackPatternOptions[this.state.tracks[i].id] = this.patternsByTrackID(this.state.tracks[i].id);
+      trackPatterns = this.patternsByTrackID(this.state.tracks[i].id);
+      trackPatternOptions[this.state.tracks[i].id] = [];
+      for (j = 0; j < trackPatterns.length; j++) {
+        trackPatternOptions[this.state.tracks[i].id].push({id: trackPatterns[j].id, name: trackPatterns[j].name});
+      }
     }
 
     let isLoaded = this.state.isLoaded;
