@@ -259,7 +259,6 @@ class Sequencer extends React.Component {
                          name={track.name}
                          muted={track.muted}
                          volume={track.volume}
-                         track={track}
                          setTrackName={this.props.setTrackName}
                          setTrackVolume={this.props.setTrackVolume}
                          toggleTrackMute={this.props.toggleTrackMute} />
