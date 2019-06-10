@@ -36,9 +36,8 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   var start = function() {
     var audioContext = mixer.audioContext();
 
-    currentStep = 0;
     scheduledSteps = [];
-    songPlayer.reset(audioContext.currentTime);
+    songPlayer.reset(audioContext.currentTime, currentStep);
 
     // Fix for Safari 9.1 (and maybe 9?)
     // For some reason, the AudioContext on a new page load is in suspended state

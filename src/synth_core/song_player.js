@@ -9,8 +9,8 @@ export function SongPlayer() {
   var isFinishedPlaying;
   var currentTime;
 
-  var reset = function(newCurrentTime) {
-    nextStepToSchedule = 0;
+  var reset = function(newCurrentTime, newNextStepToSchedule) {
+    nextStepToSchedule = newNextStepToSchedule;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
   };

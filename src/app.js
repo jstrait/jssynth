@@ -291,7 +291,6 @@ class App extends React.Component {
         transport: Object.assign({}, prevState.transport, {
           playing: !(prevState.transport.playing),
           measure: undefined,
-          step: 0,
         }),
       }));
     }
