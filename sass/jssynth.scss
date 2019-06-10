@@ -188,16 +188,68 @@ a.disabled {
 
 .sequencer-step-timeline {
   width: 100%;
-  height: 9px;
+  height: 1.5rem;
   position: absolute;
   bottom: 1px;
 }
 
-.sequencer-step-timeline-playback-head {
-  display: block;
+input[type='range'].sequencer-playback-header::-webkit-slider-runnable-track {
+  height: 0px;
+  background-color: red;
+}
+
+input[type='range'].sequencer-playback-header::-moz-range-track {
+  height: 0px;
+  background-color: red;
+}
+
+input[type='range'].sequencer-playback-header::-ms-track {
+  height: 0px;
+  background-color: red;
+}
+
+input[type='range'].sequencer-playback-header::-webkit-slider-thumb {
+  background: #aaaaaaaa;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+input[type='range'].sequencer-playback-header::-moz-range-thumb {
+  background: #aaaaaaaa;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+input[type='range'].sequencer-playback-header::-ms-thumb {
+  background: #aaaaaaaa;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+input[type='range'].sequencer-playback-header::-webkit-slider-thumb:hover,
+input[type='range'].sequencer-playback-header::-webkit-slider-thumb:active {
+  background: #666666aa;
+}
+
+input[type='range'].sequencer-playback-header::-moz-range-thumb:hover,
+input[type='range'].sequencer-playback-header::-moz-range-thumb:active {
+  background: #666666aa;
+}
+
+
+input[type='range'].sequencer-playback-header::-ms-thumb:hover,
+input[type='range'].sequencer-playback-header::-ms-thumb:active {
+  background: #666666aa;
+}
+
+
+.sequencer-playback-line {
+  position: absolute;
+  top: 3.0rem;
+  bottom: 0;
   width: 8px;
-  height: 9px;
   background: $orange;
+  opacity: 0.3;
 }
 
 .sequencer-current-measure {
@@ -213,7 +265,7 @@ a.disabled {
   background-image: url(images/sequencer_step.png);
   background-repeat: repeat-x;
   background-position: bottom left;
-  background-size: 9px 9px;
+  background-size: 9px 1.5rem;
 }
 
 .expanded {

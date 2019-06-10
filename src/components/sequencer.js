@@ -42,18 +42,26 @@ class TrackHeader extends React.PureComponent {
 class TrackPatternListHeader extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this.setCurrentStep = this.setCurrentStep.bind(this);
+  };
+
+  setCurrentStep(e) {
+    this.props.setCurrentStep(parseInt(e.target.value, 10));
   };
 
   render() {
-    return <div className="relative" style={{height: "31px"}}>
-      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "31px"}}>
+    let baseTimelineWidth = this.props.measureCount * 16 * 9;
+
+    return <div className="relative" style={{height: "3.0rem"}}>
+      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "3.0rem"}}>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measureIndex + 1}</span></li>
         )}
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <span className="sequencer-step-timeline-playback-head" style={{marginLeft: (this.props.currentStep * 9) + "px"}}></span>
+        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc((1.5rem - 9px) / -2)"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
       </div>
     </div>;
   };
@@ -250,7 +258,7 @@ class Sequencer extends React.Component {
       </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl1 border-box bb br" style={{height: "31px"}}>
+          <li className="list-style-none pl1 border-box bb br" style={{height: "3.0rem"}}>
             <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
@@ -264,9 +272,10 @@ class Sequencer extends React.Component {
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
         </ul>
-        <ul className="flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <ul className="relative flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+          <span className="sequencer-playback-line" style={{left: (this.props.currentStep * 9) + "px"}}></span>
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} />
+            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
@@ -275,7 +284,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
-          <li className="list-style-none inline-block pr1 border-box bb" style={{height: "31px"}}>&nbsp;</li>
+          <li className="list-style-none inline-block pr1 border-box bb" style={{height: "3.0rem"}}>&nbsp;</li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="flex flex-align-center flex-uniform-size bg-light-gray pl-half pr-half list-style-none border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />

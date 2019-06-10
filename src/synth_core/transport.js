@@ -71,6 +71,15 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
     stepInterval = 60.0 / sixteenthsPerMinute;
   };
 
+  var setCurrentStep = function(newCurrentStep) {
+    currentStep = newCurrentStep;
+
+    if (isPlaying === true) {
+      songPlayer.reset(mixer.audioContext().currentTime, currentStep);
+      scheduledSteps = [];
+    }
+  };
+
   var toggle = function() {
     if (isPlaying) {
       stop();
@@ -88,5 +97,6 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
     setTempo: setTempo,
     toggle: toggle,
     currentStep: function() { return currentStep; },
+    setCurrentStep: setCurrentStep,
   };
 };

@@ -67,6 +67,7 @@ class App extends React.Component {
 
     // Sequencer
     this.setMeasureCount = this.setMeasureCount.bind(this);
+    this.setCurrentStep = this.setCurrentStep.bind(this);
     this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
@@ -369,6 +370,23 @@ class App extends React.Component {
     }, function() {
       this.syncScoreToSynthCore();
     });
+  };
+
+  setCurrentStep(newStep) {
+    let newMeasure;
+
+    if (this.state.transport.playing === true) {
+      newMeasure = Math.floor((newStep / 16) % this.state.measureCount);
+    }
+
+    this.transport.setCurrentStep(newStep);
+
+    this.setState((prevState, props) => ({
+      transport: Object.assign({}, prevState.transport, {
+        measure: newMeasure,
+        step: newStep,
+      }),
+    }));
   };
 
   setTrackName(trackID, newTrackName) {
@@ -1061,6 +1079,7 @@ class App extends React.Component {
                    setMeasureCount={this.setMeasureCount}
                    currentMeasure={this.state.transport.measure}
                    currentStep={this.state.transport.step}
+                   setCurrentStep={this.setCurrentStep}
                    isPlaying={this.state.transport.playing}
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
