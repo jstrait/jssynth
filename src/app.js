@@ -40,7 +40,6 @@ class App extends React.Component {
       transport: {
         playing: false,
         tempo: 114,
-        measure: undefined,
         step: 0,
       },
       instruments: DefaultSong.instruments,
@@ -272,11 +271,9 @@ class App extends React.Component {
 
   syncCurrentStep() {
     let newStep = this.transport.currentStep();
-    let newMeasure = Math.floor((newStep / 16) % this.state.measureCount);
 
     this.setState((prevState, props) => ({
       transport: Object.assign({}, prevState.transport, {
-        measure: newMeasure,
         step: newStep,
       }),
     }));
@@ -291,7 +288,6 @@ class App extends React.Component {
       this.setState((prevState, props) => ({
         transport: Object.assign({}, prevState.transport, {
           playing: !(prevState.transport.playing),
-          measure: undefined,
         }),
       }));
     }
@@ -373,17 +369,10 @@ class App extends React.Component {
   };
 
   setCurrentStep(newStep) {
-    let newMeasure;
-
-    if (this.state.transport.playing === true) {
-      newMeasure = Math.floor((newStep / 16) % this.state.measureCount);
-    }
-
     this.transport.setCurrentStep(newStep);
 
     this.setState((prevState, props) => ({
       transport: Object.assign({}, prevState.transport, {
-        measure: newMeasure,
         step: newStep,
       }),
     }));
@@ -1077,7 +1066,6 @@ class App extends React.Component {
                    trackPatternOptions={trackPatternOptions}
                    measureCount={this.state.measureCount}
                    setMeasureCount={this.setMeasureCount}
-                   currentMeasure={this.state.transport.measure}
                    currentStep={this.state.transport.step}
                    setCurrentStep={this.setCurrentStep}
                    isPlaying={this.state.transport.playing}

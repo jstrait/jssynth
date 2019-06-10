@@ -75,7 +75,7 @@ class TrackPatternList extends React.Component {
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
       {this.props.patterns.map((pattern, index) =>
-      <li key={index} className={"sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br" + (this.props.currentMeasure === index ? " sequencer-current-measure" : "")}>
+      <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
         <TrackMeasure measure={index} trackID={this.props.trackID} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
@@ -275,11 +275,11 @@ class Sequencer extends React.Component {
         <ul className="relative flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <span className="sequencer-playback-line" style={{left: (this.props.currentStep * 9) + "px"}}></span>
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentMeasure={this.props.currentMeasure} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
+            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList currentMeasure={this.props.currentMeasure} trackID={track.id} patterns={track.patterns} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
+            <TrackPatternList trackID={track.id} patterns={track.patterns} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
           </li>
           )}
         </ul>
