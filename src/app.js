@@ -41,7 +41,7 @@ class App extends React.Component {
         playing: false,
         tempo: 114,
         measure: undefined,
-        step: undefined,
+        step: 0,
       },
       instruments: DefaultSong.instruments,
       patterns: DefaultSong.patterns,
@@ -291,7 +291,7 @@ class App extends React.Component {
         transport: Object.assign({}, prevState.transport, {
           playing: !(prevState.transport.playing),
           measure: undefined,
-          step: undefined,
+          step: 0,
         }),
       }));
     }

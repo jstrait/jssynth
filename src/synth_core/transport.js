@@ -5,17 +5,27 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   var TICK_INTERVAL = 50;         // in milliseconds
   var LOOP = true;
 
-  var currentStep;
+  var currentStep = 0;
   var scheduledSteps;
   var stepInterval;
   var timeoutId;
   var isPlaying = false;
 
   var tick = function() {
-    var finalTime = mixer.audioContext().currentTime + SCHEDULE_AHEAD_TIME;
+    var currentTime = mixer.audioContext().currentTime;
+    var finalTime = currentTime + SCHEDULE_AHEAD_TIME;
+    var i;
 
     var newScheduledSteps = songPlayer.tick(mixer, notePlayer, finalTime, stepInterval, LOOP);
     scheduledSteps = scheduledSteps.concat(newScheduledSteps);
+
+    i = 0;
+    while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
+      currentStep = scheduledSteps[i].step;
+      scheduledSteps.splice(0, 1);
+
+      i++;
+    }
 
     if (songPlayer.isFinishedPlaying()) {
       stop();
@@ -71,23 +81,6 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
     }
   };
 
-  var calculateCurrentStep = function() {
-    if (!isPlaying) {
-      return undefined;
-    }
-
-    var currentTime = mixer.audioContext().currentTime;
-    var i = 0;
-    while (i < scheduledSteps.length && scheduledSteps[i].time <= currentTime) {
-      currentStep = scheduledSteps[i].step;
-      scheduledSteps.splice(0, 1);
-
-      i++;
-    }
-
-    return currentStep;
-  };
-
 
   setTempo(100);
 
@@ -95,6 +88,6 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   return {
     setTempo: setTempo,
     toggle: toggle,
-    currentStep: calculateCurrentStep,
+    currentStep: function() { return currentStep; },
   };
 };

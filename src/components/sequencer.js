@@ -53,7 +53,7 @@ class TrackPatternListHeader extends React.PureComponent {
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <span className={"sequencer-step-timeline-playback-head" + (this.props.isPlaying ? " sequencer-step-timeline-playback-head-enabled" : "")} style={{marginLeft: this.props.isPlaying ? ((this.props.currentStep * 9) + "px") : "0"}}></span>
+        <span className="sequencer-step-timeline-playback-head" style={{marginLeft: (this.props.currentStep * 9) + "px"}}></span>
       </div>
     </div>;
   };
