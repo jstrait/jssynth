@@ -5,9 +5,9 @@ import { Score } from "./score";
 export function SongPlayer() {
   var score = Score([]);
 
-  var nextStepToSchedule;
-  var isFinishedPlaying;
-  var currentTime;
+  var nextStepToSchedule = 0;
+  var isFinishedPlaying = false;
+  var currentTime = 0.0;
 
   var reset = function(newCurrentTime, newNextStepToSchedule) {
     nextStepToSchedule = newNextStepToSchedule;
@@ -80,9 +80,6 @@ export function SongPlayer() {
 
     return maxNoteEndTime;
   };
-
-
-  reset();
 
 
   return {
