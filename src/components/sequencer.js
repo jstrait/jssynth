@@ -55,13 +55,14 @@ class TrackPatternListHeader extends React.PureComponent {
 
     return <div className="relative" style={{height: "3.0rem"}}>
       <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "3.0rem"}}>
+        <li className="sequencer-row-padding list-style-none border-box bb br"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measureIndex + 1}</span></li>
         )}
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc((1.5rem - 9px) / -2)"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
+        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc(0.75rem + ((1.5rem - 9px) / -2))"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
       </div>
     </div>;
   };
@@ -74,6 +75,7 @@ class TrackPatternList extends React.Component {
 
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
+      <li className="sequencer-row-padding list-style-none border-box bb br bg-lighter-gray"></li>
       {this.props.patterns.map((pattern, index) =>
       <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
         <TrackMeasure measure={index} trackID={this.props.trackID} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
@@ -258,7 +260,7 @@ class Sequencer extends React.Component {
       </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl1 border-box bb br" style={{height: "3.0rem"}}>
+          <li className="list-style-none pl1 border-box bb" style={{height: "3.0rem"}}>
             <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
@@ -273,7 +275,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className="relative flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-          <span className="sequencer-playback-line" style={{left: (this.props.currentStep * 9) + "px"}}></span>
+          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 0.75rem)`}}></span>
           <li className="inline-block list-style-none full-width border-box">
             <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
           </li>

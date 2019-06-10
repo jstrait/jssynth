@@ -261,6 +261,10 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   flex: 0 0 9.0rem;
 }
 
+.sequencer-row-padding {
+  flex: 0 0 0.75rem;
+}
+
 .sequencer-cell-header {
   background-image: url(images/sequencer_step.png);
   background-repeat: repeat-x;
