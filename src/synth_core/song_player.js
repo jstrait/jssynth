@@ -5,12 +5,12 @@ import { Score } from "./score";
 export function SongPlayer() {
   var score = Score([]);
 
-  var stepIndex;
+  var nextStepToSchedule;
   var isFinishedPlaying;
   var currentTime;
 
   var reset = function(newCurrentTime) {
-    stepIndex = 0;
+    nextStepToSchedule = 0;
     isFinishedPlaying = false;
     currentTime = newCurrentTime;
   };
@@ -25,7 +25,7 @@ export function SongPlayer() {
     var incomingNotes;
 
     while (currentTime < endTime) {
-      incomingNotes = score.notesAtStepIndex(stepIndex);
+      incomingNotes = score.notesAtStepIndex(nextStepToSchedule);
       incomingNotes.forEach(function(note) {
         noteTimeDuration = stepDuration * note.note().stepCount();
         notePlayer.scheduleNote(note.channelID(),
@@ -37,12 +37,12 @@ export function SongPlayer() {
                                 currentTime + noteTimeDuration);
       });
 
-      scheduledSteps.push({ step: stepIndex, time: currentTime });
+      scheduledSteps.push({ step: nextStepToSchedule, time: currentTime });
 
-      stepIndex += 1;
-      if (stepIndex >= score.stepCount()) {
+      nextStepToSchedule += 1;
+      if (nextStepToSchedule >= score.stepCount()) {
         if (loop) {
-          stepIndex = 0;
+          nextStepToSchedule = 0;
         }
         else {
           isFinishedPlaying = true;
