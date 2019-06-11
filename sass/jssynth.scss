@@ -247,9 +247,9 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   position: absolute;
   top: 3.0rem;
   bottom: 0;
-  width: 8px;
+  width: 5px;
   background: $orange;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .sequencer-current-measure {

@@ -62,7 +62,7 @@ class TrackPatternListHeader extends React.PureComponent {
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc(0.75rem + ((1.5rem - 9px) / -2))"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
+        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "-0.5px"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
       </div>
     </div>;
   };
@@ -275,7 +275,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className="relative flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 0.75rem)`}}></span>
+          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 9px)`}}></span>
           <li className="inline-block list-style-none full-width border-box">
             <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
           </li>
