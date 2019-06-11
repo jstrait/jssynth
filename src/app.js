@@ -1076,7 +1076,6 @@ class App extends React.Component {
                    setMeasureCount={this.setMeasureCount}
                    currentStep={this.state.transport.step}
                    setCurrentStep={this.setCurrentStep}
-                   isPlaying={this.state.transport.playing}
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
