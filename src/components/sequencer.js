@@ -44,10 +44,20 @@ class TrackPatternListHeader extends React.PureComponent {
     super(props);
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
+    this.onPlaybackHeadTouchStart = this.onPlaybackHeadTouchStart.bind(this);
+    this.onPlaybackHeadTouchEnd = this.onPlaybackHeadTouchEnd.bind(this);
   };
 
   setCurrentStep(e) {
     this.props.setCurrentStep(parseInt(e.target.value, 10));
+  };
+
+  onPlaybackHeadTouchStart(e) {
+    this.props.setIsTimelineElementActive(true);
+  };
+
+  onPlaybackHeadTouchEnd(e) {
+    this.props.setIsTimelineElementActive(false);
   };
 
   render() {
@@ -62,7 +72,7 @@ class TrackPatternListHeader extends React.PureComponent {
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "-0.5px"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} />
+        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "-0.5px"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
       </div>
     </div>;
   };
@@ -226,9 +236,11 @@ class Sequencer extends React.Component {
 
     this.state = {
       expanded: true,
+      isTimelineElementActive: false,
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
+    this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   };
@@ -238,6 +250,10 @@ class Sequencer extends React.Component {
     this.setState((prevState, props) => ({
       expanded: !prevState.expanded,
     }));
+  };
+
+  setIsTimelineElementActive(newIsTimelineElementActive) {
+    this.setState({isTimelineElementActive: newIsTimelineElementActive});
   };
 
   showFileChooser(e) {
@@ -274,10 +290,10 @@ class Sequencer extends React.Component {
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
         </ul>
-        <ul className="relative flex flex-uniform-size flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 9px)`}}></span>
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} />
+            <TrackPatternListHeader isPlaying={this.props.isPlaying} measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} setIsTimelineElementActive={this.setIsTimelineElementActive} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
