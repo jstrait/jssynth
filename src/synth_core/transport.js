@@ -72,6 +72,10 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   };
 
   var setCurrentStep = function(newCurrentStep) {
+    if (currentStep === newCurrentStep) {
+      return;
+    }
+
     currentStep = newCurrentStep;
 
     if (isPlaying === true) {

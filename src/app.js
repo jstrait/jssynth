@@ -339,6 +339,8 @@ class App extends React.Component {
   setMeasureCount(newMeasureCount) {
     let i, j;
     let extraPatterns;
+    let newMaxStep;
+    let newCurrentStep = this.transport.currentStep();
 
     if (newMeasureCount > this.state.measureCount) {
       for (i = 0; i < this.state.tracks.length; i++) {
@@ -355,6 +357,11 @@ class App extends React.Component {
         this.state.tracks[i].patterns.splice(newMeasureCount, this.state.measureCount - newMeasureCount);
       }
       this.forceUpdate();
+
+      newMaxStep = (newMeasureCount * 16) - 1;
+      if (this.state.transport.step > newMaxStep) {
+        newCurrentStep = newMaxStep;
+      }
     }
     else {
       // Should not get here
@@ -365,6 +372,7 @@ class App extends React.Component {
       measureCount: newMeasureCount,
     }, function() {
       this.syncScoreToSynthCore();
+      this.setCurrentStep(newCurrentStep);
     });
   };
 
