@@ -67,7 +67,7 @@ class TrackPatternListHeader extends React.PureComponent {
       <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "3.0rem"}}>
         <li className="sequencer-row-padding list-style-none border-box bb br"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
-        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block center h4 full-width" style={{lineHeight: "21px"}}>{measureIndex + 1}</span></li>
+        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
         )}
         <li className="flex-uniform-size list-style-none bb"></li>
       </ul>

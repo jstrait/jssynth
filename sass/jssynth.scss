@@ -266,10 +266,10 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 }
 
 .sequencer-cell-header {
-  background-image: url(images/sequencer_step.png);
+  background-image: url(images/sequencer_timeline_ticks.png);
   background-repeat: repeat-x;
   background-position: bottom left;
-  background-size: 9px 1.5rem;
+  background-size: 36px 20px;
 }
 
 .expanded {
