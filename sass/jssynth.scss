@@ -212,6 +212,7 @@ input[type='range'].sequencer-playback-header::-webkit-slider-thumb {
   background: #aaaaaaaa;
   border: 2px solid black;
   box-sizing: border-box;
+  margin-top: -0.75rem;
 }
 
 input[type='range'].sequencer-playback-header::-moz-range-thumb {
