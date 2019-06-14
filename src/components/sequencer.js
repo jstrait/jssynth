@@ -271,9 +271,9 @@ class Sequencer extends React.Component {
         <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
       <div className="flex">
-        <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl1 border-box bb height-2">
-            <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
+        <ul className={"flex flex-column mt1 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
+          <li className="list-style-none height-1 pl1 border-box bb">
+            <button className={"vertical-top button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader key={track.id}

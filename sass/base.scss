@@ -50,6 +50,7 @@
 .center { text-align: center; }
 .right  { float: right; }
 .align-right { text-align: right; }
+.vertical-top { vertical-align: top; }
 
 .round { border-radius: 50%; }
 
@@ -86,6 +87,7 @@
 .width-5 { width: $size-5; }
 .full-width { width: 100%; }
 .full-height { height: 100%; }
+.height-1 { height: $size-1; }
 .height-2 { height: $size-2; }
 .height-3 { height: $size-3; }
 
