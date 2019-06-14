@@ -39,7 +39,7 @@ class TrackHeader extends React.PureComponent {
   };
 };
 
-class TrackPatternListHeader extends React.PureComponent {
+class TimelineHeader extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -289,7 +289,7 @@ class Sequencer extends React.Component {
         <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
           <li className="inline-block list-style-none full-width border-box">
-            <TrackPatternListHeader measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} setIsTimelineElementActive={this.setIsTimelineElementActive} />
+            <TimelineHeader measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} setIsTimelineElementActive={this.setIsTimelineElementActive} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
