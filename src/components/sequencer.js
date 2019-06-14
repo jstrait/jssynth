@@ -63,8 +63,8 @@ class TimelineHeader extends React.PureComponent {
   render() {
     let baseTimelineWidth = this.props.measureCount * 16 * 9;
 
-    return <div className="relative" style={{height: "3.0rem"}}>
-      <ul className="flex ml0 pl0 no-whitespace-wrap" style={{height: "3.0rem"}}>
+    return <div className="relative">
+      <ul className="flex ml0 pl0 no-whitespace-wrap height-2">
         <li className="sequencer-row-padding list-style-none border-box bb br"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
@@ -272,7 +272,7 @@ class Sequencer extends React.Component {
       </div>
       <div className="flex">
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
-          <li className="list-style-none pl1 border-box bb" style={{height: "3.0rem"}}>
+          <li className="list-style-none pl1 border-box bb height-2">
             <button className={"button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
@@ -298,7 +298,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
-          <li className="list-style-none inline-block pr1 border-box bb" style={{height: "3.0rem"}}>&nbsp;</li>
+          <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="flex flex-align-center flex-uniform-size bg-light-gray pl-half pr-half list-style-none border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />
