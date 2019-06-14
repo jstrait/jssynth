@@ -27,7 +27,7 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
       i++;
     }
 
-    if (songPlayer.isFinishedPlaying()) {
+    if (songPlayer.isFinishedPlaying() === true) {
       stop();
       window.setTimeout(stopCallback, stepInterval * 1000);
     }
@@ -85,7 +85,7 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
   };
 
   var toggle = function() {
-    if (isPlaying) {
+    if (isPlaying === true) {
       stop();
     }
     else {

@@ -40,7 +40,7 @@ var BaseInstrument = function(config) {
 
     // Filter Envelope Release
     safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.releaseTime);
-    if (isInteractive) {
+    if (isInteractive === true) {
       noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
     }
     noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
@@ -49,7 +49,7 @@ var BaseInstrument = function(config) {
     safeMasterGainRelease = Math.max(MINIMUM_RELEASE_TIME, config.envelope.releaseTime);
     gainReleaseEndTime = gateOffTime + safeMasterGainRelease;
 
-    if (isInteractive) {
+    if (isInteractive === true) {
       // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
       // The gain value is manually set to the current gain value because `cancelScheduledValues()`
       // seems to (sometimes? all the time?) reset the gain value at 0. If the gain is 0, the

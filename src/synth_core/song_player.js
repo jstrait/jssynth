@@ -41,7 +41,7 @@ export function SongPlayer() {
 
       nextStepToSchedule += 1;
       if (nextStepToSchedule >= score.stepCount()) {
-        if (loop) {
+        if (loop === true) {
           nextStepToSchedule = 0;
         }
         else {
