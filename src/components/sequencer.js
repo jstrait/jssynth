@@ -65,11 +65,11 @@ class TimelineHeader extends React.PureComponent {
 
     return <div className="relative">
       <ul className="flex ml0 pl0 no-whitespace-wrap height-2">
-        <li className="sequencer-row-padding list-style-none border-box bb br"></li>
+        <li className="sequencer-row-left-padding list-style-none border-box bb br"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
         )}
-        <li className="flex-uniform-size list-style-none bb"></li>
+        <li className="sequencer-row-right-padding list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
         <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
@@ -85,13 +85,13 @@ class TrackPatternList extends React.Component {
 
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
-      <li className="sequencer-row-padding list-style-none border-box bb br bg-lighter-gray"></li>
+      <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       {this.props.patterns.map((pattern, index) =>
       <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
         <TrackMeasure measure={index} trackID={this.props.trackID} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
       </li>
       )}
-      <li className="flex-uniform-size list-style-none bg-lighter-gray bb"></li>
+      <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
     </ul>;
   };
 };
