@@ -59,7 +59,7 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
     var startTimeInSeconds = offlineAudioContext.currentTime;
     var finalTimeInSeconds = startTimeInSeconds + scheduleAheadTimeInSeconds;
 
-    songPlayer.reset(startTimeInSeconds);
+    songPlayer.reset(startTimeInSeconds, 0);
     songPlayer.tick(offlineMixer, notePlayer, finalTimeInSeconds, STEP_INTERVAL_IN_SECONDS, false);
 
     offlineAudioContext.startRendering();
