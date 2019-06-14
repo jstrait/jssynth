@@ -34,7 +34,7 @@ export class DownloadButton extends React.PureComponent {
   render() {
     let bodyContent;
 
-    if (this.props.enabled === true) {
+    if (this.props.isEnabled === true) {
       bodyContent = <span>
         <label className="block">File Name:</label>
         <span className="flex">
@@ -42,7 +42,7 @@ export class DownloadButton extends React.PureComponent {
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
-        <button className="button-full button-hollow mt1 right" disabled={this.props.downloadInProgress} onClick={this.beginExport}>Download</button>
+        <button className="button-full button-hollow mt1 right" disabled={this.props.isDownloadInProgress} onClick={this.beginExport}>Download</button>
       </span>;
     }
     else {

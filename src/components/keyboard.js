@@ -128,14 +128,14 @@ class Keyboard extends React.Component {
   };
 
   mouseMove(e) {
-    if (this.props.active) {
+    if (this.props.isActive) {
       this.touches[-1] = { x: e.clientX, y: e.clientY };
       this.touchHandler(this.touches);
     }
   };
 
   mouseOut(e) {
-    if (this.props.active) {
+    if (this.props.isActive) {
       this.touches[-1] = { x: e.clientX, y: e.clientY };
       this.touchHandler(this.touches);
     }
@@ -155,7 +155,7 @@ class Keyboard extends React.Component {
     if (noMouseButtonsPressed === true) {
       // Only deactivate if current active, to avoid performing a
       // no-op state change and re-rendering of unrelated components.
-      if (this.props.active) {
+      if (this.props.isActive) {
         this.props.deactivate();
       }
     }

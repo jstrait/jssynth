@@ -30,15 +30,15 @@ class App extends React.Component {
       selectedPatternID: 1,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
-      downloadEnabled: (typeof document.createElement('a').download !== "undefined"),
-      downloadInProgress: false,
+      isDownloadEnabled: (typeof document.createElement('a').download !== "undefined"),
+      isDownloadInProgress: false,
       downloadFileName: "js-130",
-      keyboardActive: false,
+      isKeyboardActive: false,
       activeKeyboardNotes: [],
       activeNoteContexts: [],
       masterAmplitude: 0.75,
       transport: {
-        playing: false,
+        isPlaying: false,
         tempo: 114,
         step: 0,
       },
@@ -282,12 +282,12 @@ class App extends React.Component {
   togglePlaying(e) {
     this.transport.toggle();
 
-    if (this.state.transport.playing) {
+    if (this.state.transport.isPlaying) {
       clearInterval(this.timeoutID);
 
       this.setState((prevState, props) => ({
         transport: Object.assign({}, prevState.transport, {
-          playing: !(prevState.transport.playing),
+          isPlaying: !(prevState.transport.isPlaying),
         }),
       }));
     }
@@ -296,7 +296,7 @@ class App extends React.Component {
 
       this.setState((prevState, props) => ({
         transport: Object.assign({}, prevState.transport, {
-          playing: !(prevState.transport.playing),
+          isPlaying: !(prevState.transport.isPlaying),
         }),
       }));
     }
@@ -869,13 +869,13 @@ class App extends React.Component {
 
   activateKeyboard() {
     this.setState({
-      keyboardActive: true
+      isKeyboardActive: true
     });
   };
 
   deactivateKeyboard() {
     this.setState({
-      keyboardActive: false
+      isKeyboardActive: false
     });
   };
 
@@ -997,7 +997,7 @@ class App extends React.Component {
 
       window.URL.revokeObjectURL(blob);
 
-      app.setState({downloadInProgress: false});
+      app.setState({isDownloadInProgress: false});
     };
 
     let offlineTransport;
@@ -1017,14 +1017,14 @@ class App extends React.Component {
                              delayFeedback: instrument.delayFeedback});
     }
 
-    this.setState({downloadInProgress: true});
+    this.setState({isDownloadInProgress: true});
 
     offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
     offlineTransport.tick();
   };
 
   onVisibilityChange(e) {
-    if (document.hidden === true && this.state.transport.playing === true) {
+    if (document.hidden === true && this.state.transport.isPlaying === true) {
       this.togglePlaying();
     }
  };
@@ -1062,13 +1062,13 @@ class App extends React.Component {
             <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
             <span className="lightText">Web Synthesizer</span>
           </div>
-          <Transport playing={this.state.transport.playing}
+          <Transport isPlaying={this.state.transport.isPlaying}
                      amplitude={this.state.masterAmplitude}
                      tempo={this.state.transport.tempo}
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton enabled={this.state.downloadEnabled} downloadInProgress={this.state.downloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
+          <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
         <Sequencer tracks={this.state.tracks}
                    trackPatternOptions={trackPatternOptions}
@@ -1101,8 +1101,8 @@ class App extends React.Component {
                      removePatternRow={this.removePatternRow}
                      setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
                      setNoteValue={this.setNoteValue}
-                     keyboardActive={this.state.keyboardActive} />
-        <Keyboard active={this.state.keyboardActive}
+                     isKeyboardActive={this.state.isKeyboardActive} />
+        <Keyboard isActive={this.state.isKeyboardActive}
                   rootNoteName={instrument.rootNoteName}
                   rootNoteOctave={instrument.rootNoteOctave}
                   activeNotes={this.state.activeKeyboardNotes}

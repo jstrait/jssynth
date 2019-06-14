@@ -36,7 +36,7 @@ class PlayButton extends React.PureComponent {
   };
 
   render() {
-    return <button className={"mr1 round button-full button-hollow" + (this.props.playing ? " button-enabled" : "")}  onClick={this.props.onClick}><span className={"play-icon" + (this.props.playing ? " play-icon-enabled" : "")}>Play</span></button>;
+    return <button className={"mr1 round button-full button-hollow" + (this.props.isPlaying ? " button-enabled" : "")}  onClick={this.props.onClick}><span className={"play-icon" + (this.props.isPlaying ? " play-icon-enabled" : "")}>Play</span></button>;
   };
 };
 
@@ -48,7 +48,7 @@ class Transport extends React.PureComponent {
   render() {
     return <div id="transport" className="flex flex-uniform-size flex-align-center">
       <div className="transport-inner flex flex-align-center">
-        <PlayButton playing={this.props.playing} onClick={this.props.togglePlaying} />
+        <PlayButton isPlaying={this.props.isPlaying} onClick={this.props.togglePlaying} />
         <span className="transport-controls flex-uniform-size inline-block">
           <TempoSlider tempo={this.props.tempo} onChange={this.props.updateTempo} />
           <AmplitudeSlider amplitude={this.props.amplitude} onChange={this.props.updateAmplitude} />
