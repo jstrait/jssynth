@@ -37,6 +37,19 @@ The song below is an example of what you can create with the JS-130, along with 
 * MIDI keyboard support (only in browsers that support Web MIDI, such as Chrome)
 * Download sequencer output to a *.wav file
 
+## Building / Running Locally
+
+* If first time building, run `yarn install`
+* Run `yarn build-dev`, which will build the app in the `dist/` folder
+* Open `dist/jssynth.html` in your browser (make sure running a local server such as MAMP)
+* To automatically rebuild when source files change, run `yarn run build-dev --watch` instead
+
+## Building Production
+
+* Run `yarn build-prod`
+* `dist/` folder will contain the files that should be deployed to production
+
+
 ## Screenshots
 
 Sequencer:
