@@ -88,7 +88,7 @@ class TrackPatternList extends React.Component {
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       {this.props.patterns.map((pattern, index) =>
       <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
-        <TrackMeasure patternID={pattern.patternID} />
+        <TrackMeasure trackID={this.props.trackID} patternID={pattern.patternID} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
       </li>
       )}
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
@@ -99,6 +99,13 @@ class TrackPatternList extends React.Component {
 class TrackMeasure extends React.Component {
   constructor(props) {
     super(props);
+
+    this.onMouseDown = this.onMouseDown.bind(this);
+  };
+
+  onMouseDown(e) {
+    this.props.setSelectedTrack(this.props.trackID);
+    this.props.setSelectedPattern(this.props.patternID);
   };
 
   render() {
@@ -106,7 +113,7 @@ class TrackMeasure extends React.Component {
       return <span></span>;
     }
 
-    return <span className="timeline-pattern">Pattern {this.props.patternID}</span>;
+    return <span className="timeline-pattern" onMouseDown={this.onMouseDown}>Pattern {this.props.patternID}</span>;
   };
 };
 
@@ -260,7 +267,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList patterns={track.patterns} />
+            <TrackPatternList trackID={track.id} patterns={track.patterns} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
           </li>
           )}
         </ul>

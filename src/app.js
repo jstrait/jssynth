@@ -1058,6 +1058,8 @@ class App extends React.Component {
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
+                   setSelectedTrack={this.setSelectedTrack}
+                   setSelectedPattern={this.setSelectedPattern}
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
                    removeTrack={this.removeTrack} />
