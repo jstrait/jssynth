@@ -88,7 +88,7 @@ class TrackPatternList extends React.Component {
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       <li className="relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
       {this.props.patterns.map((pattern, index) =>
-        <TimelinePattern key={index} trackID={this.props.trackID} patternID={pattern.patternID} startStep={pattern.startStep} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
+        <TimelinePattern key={index} trackID={this.props.trackID} patternID={pattern.patternID} index={index} startStep={pattern.startStep} timelineStepCount={this.props.measureCount * 16} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
       )}
       </li>
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
@@ -100,16 +100,58 @@ class TimelinePattern extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      dragStartPixelX: undefined,
+      dragStartStep: undefined,
+    };
+
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   };
 
   onMouseDown(e) {
     this.props.setSelectedTrack(this.props.trackID);
     this.props.setSelectedPattern(this.props.patternID);
+
+    this.setState({
+      dragStartPixelX: e.clientX,
+      dragStartStep: this.props.startStep,
+    });
+  };
+
+  onMouseMove(e) {
+    if (this.state.dragStartPixelX === undefined) {
+      return;
+    }
+
+    var dragPixelDelta = e.clientX - this.state.dragStartPixelX;
+    var dragStepCount = Math.floor(dragPixelDelta / 9);
+
+    var newStartStep = this.state.dragStartStep + dragStepCount;
+    newStartStep = Math.max(0, newStartStep);
+    newStartStep = Math.min(this.props.timelineStepCount - 16, newStartStep);
+
+    if (this.props.startStep !== newStartStep) {
+      this.props.setPatternStartStep(this.props.trackID, this.props.index, newStartStep);
+    }
+  };
+
+  onMouseUp(e) {
+    this.setState({
+      dragStartPixelX: undefined,
+      dragStartStep: undefined,
+    });
   };
 
   render() {
-    return <span className="timeline-pattern" style={{left: (this.props.startStep * 9) + "px"}} onMouseDown={this.onMouseDown}>Pattern {this.props.patternID}</span>;
+    return <span className="timeline-pattern"
+                 style={{left: (this.props.startStep * 9) + "px"}}
+                 onMouseDown={this.onMouseDown}
+                 onMouseMove={this.onMouseMove}
+                 onMouseUp={this.onMouseUp}>
+             Pattern {this.props.patternID}
+           </span>;
   };
 };
 
@@ -262,7 +304,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id} patterns={track.patterns} measureCount={this.props.measureCount} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
+            <TrackPatternList trackID={track.id} patterns={track.patterns} measureCount={this.props.measureCount} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
           </li>
           )}
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>

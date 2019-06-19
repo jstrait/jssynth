@@ -287,6 +287,10 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   border: 1px solid #2a2b2b;
   border-radius: 4px;
   background: $light-gray;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .expanded {
