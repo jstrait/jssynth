@@ -151,7 +151,7 @@ export class Serializer {
     const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
-    let i, j;
+    let i, j, k;
     let serializedPatterns;
     let serializedNotes = [];
 
@@ -160,19 +160,22 @@ export class Serializer {
     }
 
     tracks.forEach(function(track) {
-      serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
+      let serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
+      let patternRows, patternRow;
+      let startStep;
 
-      for (i = 0; i < measureCount; i++) {
-        if (track.patterns[i].patternID !== -1) {
-          let sequences = serializedPatterns[track.patterns[i].patternID];
+      for (i = 0; i < track.patterns.length; i++) {
+        startStep = track.patterns[i].startStep;
+        patternRows = serializedPatterns[track.patterns[i].patternID];
 
-          sequences.forEach(function(sequence) {
-            for (j = 0; j < sequence.length; j++) {
-              if (sequence[j] && sequence[j].name()) {
-                serializedNotes[(i * STEPS_PER_MEASURE) + j].push(new SynthCore.InstrumentNote(sequence[j], 1.0, track.id));
-              }
+        for (j = 0; j < patternRows.length; j++) {
+          patternRow = patternRows[j];
+
+          for (k = 0; k < patternRow.length; k++) {
+            if (patternRow[k] && patternRow[k].name()) {
+              serializedNotes[startStep + k].push(new SynthCore.InstrumentNote(patternRow[k], 1.0, track.id));
             }
-          });
+          }
         }
       }
     });

@@ -279,8 +279,9 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 }
 
 .timeline-pattern {
+  position: absolute;
   display: block;
-  width: 100%;
+  width: calc((16 * 9px) - 1px);
   height: 100%;
   box-sizing: border-box;
   border: 1px solid #2a2b2b;

@@ -341,31 +341,21 @@ class App extends React.Component {
     let newMaxStep;
     let newCurrentStep = this.transport.currentStep();
 
-    if (newMeasureCount > this.state.measureCount) {
-      for (i = 0; i < this.state.tracks.length; i++) {
-        extraPatterns = new Array(newMeasureCount - this.state.measureCount);
-        for (j = 0; j < extraPatterns.length; j++) {
-          extraPatterns[j] = {patternID: -1};
-        }
-        this.state.tracks[i].patterns = this.state.tracks[i].patterns.concat(extraPatterns);
-      }
-      this.forceUpdate();
-    }
-    else if (newMeasureCount < this.state.measureCount) {
-      for (i = 0; i < this.state.tracks.length; i++) {
-        this.state.tracks[i].patterns.splice(newMeasureCount, this.state.measureCount - newMeasureCount);
-      }
-      this.forceUpdate();
-
+    if (newMeasureCount < this.state.measureCount) {
       newMaxStep = (newMeasureCount * 16) - 1;
       if (this.state.transport.step > newMaxStep) {
         newCurrentStep = newMaxStep;
       }
-    }
-    else {
-      // Should not get here
-    }
 
+      for (i = 0; i < this.state.tracks.length; i++) {
+        for (j = this.state.tracks[i].patterns.length - 1; j >= 0; j--) {
+          if (this.state.tracks[i].patterns[j].startStep > (newMaxStep - 15)) {
+            this.state.tracks[i].patterns.splice(j, 1);
+          }
+        }
+      }
+      this.forceUpdate();
+    }
 
     this.setState({
       measureCount: newMeasureCount,
@@ -471,7 +461,7 @@ class App extends React.Component {
 
     let i = 0;
     for (i = 0; i < this.state.measureCount; i++) {
-      newTrack.patterns[i] = { patternID: -1, };
+      newTrack.patterns[i] = { patternID: newPattern.id, startStep: 0, };
     }
 
     this.setState((prevState, props) => ({
@@ -709,9 +699,9 @@ class App extends React.Component {
     }
 
     newTrack.patterns = track.patterns.concat([]);
-    for (i = 0; i < newTrack.patterns.length; i++) {
+    for (i = newTrack.patterns.length - 1; i >= 0; i--) {
       if (newTrack.patterns[i].patternID === pattern.id) {
-        newTrack.patterns[i].patternID = -1;
+        newTrack.patterns.splice(i, 1);
       }
     }
     newTracks[trackIndex] = newTrack;

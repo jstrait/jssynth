@@ -86,17 +86,17 @@ class TrackPatternList extends React.Component {
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
+      <li className="relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
       {this.props.patterns.map((pattern, index) =>
-      <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
-        <TrackMeasure trackID={this.props.trackID} patternID={pattern.patternID} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
-      </li>
+        <TimelinePattern key={index} trackID={this.props.trackID} patternID={pattern.patternID} startStep={pattern.startStep} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
       )}
+      </li>
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
     </ul>;
   };
 };
 
-class TrackMeasure extends React.Component {
+class TimelinePattern extends React.Component {
   constructor(props) {
     super(props);
 
@@ -109,11 +109,7 @@ class TrackMeasure extends React.Component {
   };
 
   render() {
-    if (this.props.patternID === -1) {
-      return <span></span>;
-    }
-
-    return <span className="timeline-pattern" onMouseDown={this.onMouseDown}>Pattern {this.props.patternID}</span>;
+    return <span className="timeline-pattern" style={{left: (this.props.startStep * 9) + "px"}} onMouseDown={this.onMouseDown}>Pattern {this.props.patternID}</span>;
   };
 };
 
@@ -261,15 +257,15 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
-          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
           <li className="inline-block list-style-none full-width border-box">
             <TimelineHeader measureCount={this.props.measureCount} currentStep={this.props.currentStep} setCurrentStep={this.props.setCurrentStep} setIsTimelineElementActive={this.setIsTimelineElementActive} />
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id} patterns={track.patterns} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
+            <TrackPatternList trackID={track.id} patterns={track.patterns} measureCount={this.props.measureCount} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} />
           </li>
           )}
+          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
         </ul>
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
