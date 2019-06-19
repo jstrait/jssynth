@@ -70,7 +70,6 @@ class App extends React.Component {
     this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
-    this.setTrackPattern = this.setTrackPattern.bind(this);
     this.addGenericTrack = this.addGenericTrack.bind(this);
     this.addSynthTrack = this.addSynthTrack.bind(this);
     this.addSamplerTrack = this.addSamplerTrack.bind(this);
@@ -432,13 +431,6 @@ class App extends React.Component {
       tracks: newTrackList
     });
     this.mixer.setChannelIsMuted(trackID, newIsMuted);
-  };
-
-  setTrackPattern(trackID, measure, patternID) {
-    this.trackByID(trackID).patterns[measure].patternID = patternID;
-    this.forceUpdate();
-
-    this.syncScoreToSynthCore();
   };
 
   addGenericTrack(newInstrument, newTrackName) {
@@ -1033,18 +1025,6 @@ class App extends React.Component {
     let selectedTrack = this.trackByID(this.state.selectedTrackID);
     let instrument = this.instrumentByID(selectedTrack.instrumentID);
     let patterns = this.patternsByTrackID(this.state.selectedTrackID);
-
-    let i, j;
-    let trackPatternOptions = {};
-    let trackPatterns;
-    for (i = 0; i < this.state.tracks.length; i++) {
-      trackPatterns = this.patternsByTrackID(this.state.tracks[i].id);
-      trackPatternOptions[this.state.tracks[i].id] = [];
-      for (j = 0; j < trackPatterns.length; j++) {
-        trackPatternOptions[this.state.tracks[i].id].push({id: trackPatterns[j].id, name: trackPatterns[j].name});
-      }
-    }
-
     let isLoaded = this.state.isLoaded;
 
     return <div>
@@ -1071,7 +1051,6 @@ class App extends React.Component {
           <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
         <Sequencer tracks={this.state.tracks}
-                   trackPatternOptions={trackPatternOptions}
                    measureCount={this.state.measureCount}
                    setMeasureCount={this.setMeasureCount}
                    currentStep={this.state.transport.step}
@@ -1079,7 +1058,6 @@ class App extends React.Component {
                    setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
-                   setTrackPattern={this.setTrackPattern}
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
                    removeTrack={this.removeTrack} />

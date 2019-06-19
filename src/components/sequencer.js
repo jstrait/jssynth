@@ -88,7 +88,7 @@ class TrackPatternList extends React.Component {
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       {this.props.patterns.map((pattern, index) =>
       <li key={index} className="sequencer-cell flex-uniform-size full-height list-style-none center border-box bb br">
-        <TrackMeasure measure={index} trackID={this.props.trackID} patternID={pattern.patternID} trackPatternOptions={this.props.trackPatternOptions} setTrackPattern={this.props.setTrackPattern} />
+        <TrackMeasure patternID={pattern.patternID} />
       </li>
       )}
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
@@ -99,47 +99,14 @@ class TrackPatternList extends React.Component {
 class TrackMeasure extends React.Component {
   constructor(props) {
     super(props);
-
-    this.setMeasurePattern = this.setMeasurePattern.bind(this);
-  };
-
-  setMeasurePattern(e) {
-    this.props.setTrackPattern(this.props.trackID, this.props.measure, parseInt(e.target.value, 10));
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const basicPropsChanged = this.props.trackID !== nextProps.trackID ||
-                              this.props.patternID !== nextProps.patternID ||
-                              this.props.measure !== nextProps.measure;
-    let i;
-
-    if (basicPropsChanged) {
-      return true;
-    }
-
-    if (this.props.trackPatternOptions.length !== nextProps.trackPatternOptions.length) {
-      return true;
-    }
-
-    for (i = 0; i < this.props.trackPatternOptions.length; i++) {
-      if (this.props.trackPatternOptions[i].id !== nextProps.trackPatternOptions[i].id ||
-          this.props.trackPatternOptions[i].name !== nextProps.trackPatternOptions[i].name) {
-        return true;
-      }
-    }
-
-    return false;
   };
 
   render() {
-    return <span className="flex flex-align-center full-height pl-half pr-half border-box">
-      <select className="full-width" value={this.props.patternID} onChange={this.setMeasurePattern}>
-        <option key={0} value="-1"></option>
-        {this.props.trackPatternOptions.map((trackPatternOption, index) =>
-        <option key={index + 1} value={trackPatternOption.id}>{trackPatternOption.name}</option>
-        )}
-      </select>
-    </span>;
+    if (this.props.patternID === -1) {
+      return <span></span>;
+    }
+
+    return <span className="timeline-pattern">Pattern {this.props.patternID}</span>;
   };
 };
 
@@ -293,7 +260,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id} patterns={track.patterns} trackPatternOptions={this.props.trackPatternOptions[track.id]} setTrackPattern={this.props.setTrackPattern} />
+            <TrackPatternList patterns={track.patterns} />
           </li>
           )}
         </ul>
