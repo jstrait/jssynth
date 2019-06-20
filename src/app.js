@@ -27,7 +27,7 @@ class App extends React.Component {
       loadingStatusMessage: "Loading...",
       measureCount: 8,
       selectedTrackID: 1,
-      selectedPatternID: 1,
+      selectedPatternID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
       isDownloadEnabled: (typeof document.createElement('a').download !== "undefined"),
@@ -431,36 +431,8 @@ class App extends React.Component {
       volume: 0.8,
     };
 
-    let newPattern = {
-      id: this.idGenerator.next(),
-      name: newTrack.name + " 1",
-      trackID: newTrack.id,
-      startStep: 0,
-      rows: [
-        {
-          notes: [{name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},],
-        },
-      ]
-    };
-
     this.setState((prevState, props) => ({
       instruments: prevState.instruments.concat([newInstrument]),
-      patterns: prevState.patterns.concat([newPattern]),
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
@@ -551,7 +523,6 @@ class App extends React.Component {
     let track = this.trackByID(id);
     let trackIndex = this.trackIndexByID(id);
     let newSelectedTrackID = this.state.selectedTrackID;
-    let newSelectedPatternID = this.state.selectedPatternID;
 
     let newInstruments = this.state.instruments.concat([]);
     newInstruments.splice(this.instrumentIndexByID(track.instrumentID), 1);
@@ -569,7 +540,6 @@ class App extends React.Component {
       else {
         newSelectedTrackID = this.state.tracks[trackIndex + 1].id;
       }
-      newSelectedPatternID = this.patternsByTrackID(newSelectedTrackID)[0].id;
     }
 
     let removedInstrument = this.instrumentByID(track.instrumentID);
@@ -579,7 +549,6 @@ class App extends React.Component {
 
     this.setState({
       selectedTrackID: newSelectedTrackID,
-      selectedPatternID: newSelectedPatternID,
       instruments: newInstruments,
       patterns: newPatterns,
       tracks: newTracks,
@@ -599,7 +568,6 @@ class App extends React.Component {
 
       this.setState({
         selectedTrackID: newSelectedTrackID,
-        selectedPatternID: this.patternsByTrackID(newSelectedTrackID)[0].id,
       }, function() {
         this.removeTrackInner(id);
       });

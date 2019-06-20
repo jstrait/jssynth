@@ -32,6 +32,7 @@ export class TrackEditor extends React.Component {
 
   render() {
     let instrumentEditor;
+    let patternEditor;
 
     if (this.props.instrument.type === "synth") {
       instrumentEditor = <SynthInstrumentEditor instrument={this.props.instrument}
@@ -43,14 +44,16 @@ export class TrackEditor extends React.Component {
                                                  updateInstrument={this.props.updateInstrument} />;
     }
 
-    let patternEditor = <PatternEditor selectedPattern={this.props.selectedPattern}
-                                       selectedPatternRowIndex={this.props.selectedPatternRowIndex}
-                                       selectedPatternNoteIndex={this.props.selectedPatternNoteIndex}
-                                       addPatternRow={this.props.addPatternRow}
-                                       removePatternRow={this.props.removePatternRow}
-                                       setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex}
-                                       setNoteValue={this.props.setNoteValue}
-                                       keyboardActive={this.props.keyboardActive} />;
+    if (this.props.selectedPattern !== undefined) {
+      patternEditor = <PatternEditor selectedPattern={this.props.selectedPattern}
+                                     selectedPatternRowIndex={this.props.selectedPatternRowIndex}
+                                     selectedPatternNoteIndex={this.props.selectedPatternNoteIndex}
+                                     addPatternRow={this.props.addPatternRow}
+                                     removePatternRow={this.props.removePatternRow}
+                                     setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex}
+                                     setNoteValue={this.props.setNoteValue}
+                                     keyboardActive={this.props.keyboardActive} />;
+    }
 
     let panel = (this.state.selectedTab === "instrument") ? instrumentEditor : patternEditor;
 
