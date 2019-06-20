@@ -102,25 +102,19 @@ export class Serializer {
     }
   };
 
-  static serializePatterns(patterns) {
-    let serializedPatterns = {};
+  static serializePatternRows(rows) {
+    let serializedRows = [];
 
-    patterns.forEach(function(pattern) {
-      let serializedRows = [];
+    rows.forEach(function(row) {
+      let sequence;
+      let rawSequenceString;
 
-      pattern.rows.forEach(function(row) {
-        let sequence;
-        let rawSequenceString;
-
-        rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
-        sequence = SynthCore.SequenceParser.parse(rawSequenceString);
-        serializedRows.push(sequence);
-      });
-
-      serializedPatterns[pattern.id] = serializedRows;
+      rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
+      sequence = SynthCore.SequenceParser.parse(rawSequenceString);
+      serializedRows.push(sequence);
     });
 
-    return serializedPatterns;
+    return serializedRows;
   };
 
   static instrumentByID(instruments, id) {
@@ -152,7 +146,6 @@ export class Serializer {
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
     let i, j, k;
-    let serializedPatterns;
     let serializedNotes = [];
 
     for (i = 0; i < TOTAL_STEPS; i++) {
@@ -160,13 +153,13 @@ export class Serializer {
     }
 
     tracks.forEach(function(track) {
-      let serializedPatterns = Serializer.serializePatterns(Serializer.patternsByTrackID(patterns, track.id));
+      let trackPatterns = Serializer.patternsByTrackID(patterns, track.id);
       let patternRows, patternRow;
       let startStep;
 
-      for (i = 0; i < track.patterns.length; i++) {
-        startStep = track.patterns[i].startStep;
-        patternRows = serializedPatterns[track.patterns[i].patternID];
+      for (i = 0; i < trackPatterns.length; i++) {
+        startStep = trackPatterns[i].startStep;
+        patternRows = Serializer.serializePatternRows(trackPatterns[i].rows);
 
         for (j = 0; j < patternRows.length; j++) {
           patternRow = patternRows[j];

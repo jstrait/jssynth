@@ -337,8 +337,7 @@ class App extends React.Component {
   };
 
   setMeasureCount(newMeasureCount) {
-    let i, j;
-    let extraPatterns;
+    let i;
     let newMaxStep;
     let newCurrentStep = this.transport.currentStep();
 
@@ -348,13 +347,12 @@ class App extends React.Component {
         newCurrentStep = newMaxStep;
       }
 
-      for (i = 0; i < this.state.tracks.length; i++) {
-        for (j = this.state.tracks[i].patterns.length - 1; j >= 0; j--) {
-          if (this.state.tracks[i].patterns[j].startStep > (newMaxStep - 15)) {
-            this.state.tracks[i].patterns.splice(j, 1);
-          }
+      for (i = this.state.patterns.length - 1; i >= 0; i--) {
+        if (this.state.patterns[i].startStep > (newMaxStep - 15)) {
+          this.state.patterns.splice(i, 1);
         }
       }
+
       this.forceUpdate();
     }
 
@@ -431,13 +429,13 @@ class App extends React.Component {
       instrumentID: newInstrument.id,
       muted: false,
       volume: 0.8,
-      patterns: [],
     };
 
     let newPattern = {
       id: this.idGenerator.next(),
       name: newTrack.name + " 1",
       trackID: newTrack.id,
+      startStep: 0,
       rows: [
         {
           notes: [{name: ''},
@@ -459,11 +457,6 @@ class App extends React.Component {
         },
       ]
     };
-
-    let i = 0;
-    for (i = 0; i < this.state.measureCount; i++) {
-      newTrack.patterns[i] = { patternID: newPattern.id, startStep: 0, };
-    }
 
     this.setState((prevState, props) => ({
       instruments: prevState.instruments.concat([newInstrument]),
@@ -624,6 +617,7 @@ class App extends React.Component {
       id: newPatternID,
       name: track.name + " " + (this.patternsByTrackID(trackID).length + 1),
       trackID: trackID,
+      startStep: 0,
       rows: [
         {
           notes: [{name: ''},
@@ -670,6 +664,7 @@ class App extends React.Component {
       id: newPatternID,
       name: track.name + " " + (this.patternsByTrackID(track.id).length + 1),
       trackID: track.id,
+      startStep: 0,
       rows: duplicatedRows,
     };
 
@@ -685,9 +680,6 @@ class App extends React.Component {
     let patternIndex = this.patternIndexByID(id);
     let newPatterns = this.state.patterns.concat([]);
     let track = this.trackByID(pattern.trackID);
-    let trackIndex = this.trackIndexByID(track.id);
-    let newTracks = this.state.tracks.concat([]);
-    let newTrack = Object.assign({}, track);
 
     let newSelectedPatternID = this.state.selectedPatternID;
 
@@ -699,14 +691,6 @@ class App extends React.Component {
       }
     }
 
-    newTrack.patterns = track.patterns.concat([]);
-    for (i = newTrack.patterns.length - 1; i >= 0; i--) {
-      if (newTrack.patterns[i].patternID === pattern.id) {
-        newTrack.patterns.splice(i, 1);
-      }
-    }
-    newTracks[trackIndex] = newTrack;
-
     if (newSelectedPatternID === pattern.id) {
       newSelectedPatternID = this.searchForNextPatternIDAscending(track.id, this.state.patterns, patternIndex + 1);
       if (newSelectedPatternID === undefined) {
@@ -716,7 +700,6 @@ class App extends React.Component {
 
     this.setState({
       patterns: newPatterns,
-      tracks: newTracks,
       selectedPatternID: newSelectedPatternID,
     }, function() {
       this.syncScoreToSynthCore();
@@ -799,14 +782,14 @@ class App extends React.Component {
     });
   };
 
-  setPatternStartStep(trackID, patternIndex, newStartStep) {
-    let newTrackList = this.state.tracks.concat([]);
-    let track = this.itemByID(newTrackList, trackID);
+  setPatternStartStep(patternID, newStartStep) {
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.itemByID(newPatternList, patternID);
 
-    track.patterns[patternIndex].startStep = newStartStep;
+    pattern.startStep = newStartStep;
 
     this.setState({
-      tracks: newTrackList,
+      patterns: newPatternList,
     }, function() {
       this.syncScoreToSynthCore();
     });
@@ -1028,8 +1011,14 @@ class App extends React.Component {
   render() {
     let selectedTrack = this.trackByID(this.state.selectedTrackID);
     let instrument = this.instrumentByID(selectedTrack.instrumentID);
-    let patterns = this.patternsByTrackID(this.state.selectedTrackID);
+    let selectedTrackPatterns = this.patternsByTrackID(this.state.selectedTrackID);
     let isLoaded = this.state.isLoaded;
+
+    let i;
+    let patternsByTrackID = {};
+    for (i = 0; i < this.state.tracks.length; i++) {
+      patternsByTrackID[this.state.tracks[i].id] = this.patternsByTrackID(this.state.tracks[i].id);
+    }
 
     return <div>
       {isLoaded !== true &&
@@ -1055,6 +1044,7 @@ class App extends React.Component {
           <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
         <Sequencer tracks={this.state.tracks}
+                   patternsByTrackID={patternsByTrackID}
                    measureCount={this.state.measureCount}
                    setMeasureCount={this.setMeasureCount}
                    currentStep={this.state.transport.step}
@@ -1074,7 +1064,7 @@ class App extends React.Component {
                      selectedPatternRowIndex={this.state.selectedPatternRowIndex}
                      selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
                      instrument={instrument}
-                     patterns={patterns}
+                     patterns={selectedTrackPatterns}
                      setSelectedTrack={this.setSelectedTrack}
                      updateInstrument={this.updateInstrument}
                      setBufferFromFile={this.setBufferFromFile}

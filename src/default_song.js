@@ -191,6 +191,7 @@ const patterns = [
     id: 1,
     name: "Bass Synth 1",
     trackID: 1,
+    startStep: 0,
     rows: [
       {
         notes: [{name: "G2"},
@@ -216,6 +217,7 @@ const patterns = [
     id: 2,
     name: "Bass Synth 2",
     trackID: 1,
+    startStep: 16,
     rows: [
       {
         notes: [{name: "G2"},
@@ -241,6 +243,7 @@ const patterns = [
     id: 3,
     name: "Bass Synth 3",
     trackID: 1,
+    startStep: 64,
     rows: [
       {
         notes: [{name: "A1"},
@@ -266,6 +269,7 @@ const patterns = [
     id: 4,
     name: "Bass Synth 4",
     trackID: 1,
+    startStep: 80,
     rows: [
       {
         notes: [{name: "A1"},
@@ -291,6 +295,7 @@ const patterns = [
     id: 5,
     name: "Arpeggio 1",
     trackID: 2,
+    startStep: 64,
     rows: [
       {
         notes: [{name: "A3"},
@@ -316,6 +321,7 @@ const patterns = [
     id: 6,
     name: "Arpeggio 2",
     trackID: 2,
+    startStep: 96,
     rows: [
       {
         notes: [{name: "C4"},
@@ -341,6 +347,7 @@ const patterns = [
     id: 7,
     name: "Squeal 1",
     trackID: 3,
+    startStep: 112,
     rows: [
       {
         notes: [{name: "C5"},
@@ -366,6 +373,7 @@ const patterns = [
     id: 8,
     name: "Bass Drum 1",
     trackID: 4,
+    startStep: 0,
     rows: [
       {
         notes: [{name: "A4"},
@@ -391,6 +399,7 @@ const patterns = [
     id: 9,
     name: "Bass Drum 2",
     trackID: 4,
+    startStep: 64,
     rows: [
       {
         notes: [{name: "A4"},
@@ -416,6 +425,7 @@ const patterns = [
     id: 10,
     name: "Snare Drum 1",
     trackID: 5,
+    startStep: 64,
     rows: [
       {
         notes: [{name: ""},
@@ -441,6 +451,7 @@ const patterns = [
     id: 11,
     name: "Hi-Hat 1",
     trackID: 6,
+    startStep: 0,
     rows: [
       {
         notes: [{name: "A4"},
@@ -466,6 +477,7 @@ const patterns = [
     id: 12,
     name: "Hi-Hat 2",
     trackID: 6,
+    startStep: 64,
     rows: [
       {
         notes: [{name: "A4"},
@@ -496,16 +508,6 @@ const tracks = [
     instrumentID: 1,
     muted: false,
     volume: 0.8,
-    patterns: [
-      { patternID: 1, startStep: 0, },
-      { patternID: 2, startStep: 16, },
-      { patternID: 1, startStep: 32, },
-      { patternID: 2, startStep: 48, },
-      { patternID: 3, startStep: 64, },
-      { patternID: 4, startStep: 80, },
-      { patternID: 3, startStep: 96, },
-      { patternID: 4, startStep: 112, },
-    ],
   },
   {
     id: 2,
@@ -513,10 +515,6 @@ const tracks = [
     instrumentID: 2,
     muted: false,
     volume: 0.5,
-    patterns: [
-      { patternID: 5, startStep: 64, },
-      { patternID: 6, startStep: 96, },
-    ],
   },
   {
     id: 3,
@@ -524,9 +522,6 @@ const tracks = [
     instrumentID: 3,
     muted: false,
     volume: 0.6,
-    patterns: [
-      { patternID: 7, startStep: 112, },
-    ],
   },
   {
     id: 4,
@@ -534,16 +529,6 @@ const tracks = [
     instrumentID: 4,
     muted: false,
     volume: 1.0,
-    patterns: [
-      { patternID: 8, startStep: 0, },
-      { patternID: 8, startStep: 16, },
-      { patternID: 8, startStep: 32, },
-      { patternID: 8, startStep: 48, },
-      { patternID: 9, startStep: 64, },
-      { patternID: 9, startStep: 80, },
-      { patternID: 9, startStep: 96, },
-      { patternID: 9, startStep: 112, },
-    ],
   },
   {
     id: 5,
@@ -551,12 +536,6 @@ const tracks = [
     instrumentID: 5,
     muted: false,
     volume: 0.8,
-    patterns: [
-      { patternID: 10, startStep: 64, },
-      { patternID: 10, startStep: 80, },
-      { patternID: 10, startStep: 96, },
-      { patternID: 10, startStep: 112, },
-    ],
   },
   {
     id: 6,
@@ -564,16 +543,6 @@ const tracks = [
     instrumentID: 6,
     muted: false,
     volume: 0.8,
-    patterns: [
-      { patternID: 11, startStep: 0, },
-      { patternID: 11, startStep: 16, },
-      { patternID: 11, startStep: 32, },
-      { patternID: 11, startStep: 48, },
-      { patternID: 12, startStep: 64, },
-      { patternID: 12, startStep: 80, },
-      { patternID: 12, startStep: 96, },
-      { patternID: 12, startStep: 112, },
-    ],
   },
 ];
 
