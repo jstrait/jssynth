@@ -527,9 +527,9 @@ class App extends React.Component {
     });
   };
 
-  removeTrackInner(id) {
-    let track = this.trackByID(id);
-    let trackIndex = this.trackIndexByID(id);
+  removeTrackInner(trackID) {
+    let track = this.trackByID(trackID);
+    let trackIndex = this.trackIndexByID(trackID);
     let newSelectedTrackID = this.state.selectedTrackID;
 
     let newInstruments = this.state.instruments.concat([]);
@@ -541,7 +541,7 @@ class App extends React.Component {
     let newPatterns = this.state.patterns.concat([]);
     newPatterns = newPatterns.filter(pattern => pattern.trackID !== track.id);
 
-    if (newSelectedTrackID === id && newTracks.length > 0) {
+    if (newSelectedTrackID === trackID && newTracks.length > 0) {
       if (trackIndex === this.state.tracks.length - 1) {
         newSelectedTrackID = this.state.tracks[trackIndex - 1].id;
       }
@@ -562,14 +562,14 @@ class App extends React.Component {
       patterns: newPatterns,
       tracks: newTracks,
     }, function() {
-      this.mixer.removeChannel(id);
-      this.notePlayer.removeChannel(id);
+      this.mixer.removeChannel(trackID);
+      this.notePlayer.removeChannel(trackID);
       this.syncScoreToSynthCore();
       this.syncInstrumentsToSynthCore();
     });
   };
 
-  removeTrack(id) {
+  removeTrack(trackID) {
     if (this.state.tracks.length === 1) {
       this.addSynthTrack();
 
@@ -578,11 +578,11 @@ class App extends React.Component {
       this.setState({
         selectedTrackID: newSelectedTrackID,
       }, function() {
-        this.removeTrackInner(id);
+        this.removeTrackInner(trackID);
       });
     }
     else {
-      this.removeTrackInner(id);
+      this.removeTrackInner(trackID);
     }
   };
 
@@ -652,10 +652,10 @@ class App extends React.Component {
     });
   };
 
-  removePattern(id) {
+  removePattern(patternID) {
     let i, patternCount = 1;
-    let pattern = this.patternByID(id);
-    let patternIndex = this.patternIndexByID(id);
+    let pattern = this.patternByID(patternID);
+    let patternIndex = this.patternIndexByID(patternID);
     let newPatterns = this.state.patterns.concat([]);
     let track = this.trackByID(pattern.trackID);
 
@@ -799,8 +799,8 @@ class App extends React.Component {
     this.syncScoreToSynthCore();
   };
 
-  updateInstrument(id, field, value) {
-    this.instrumentByID(id)[field] = value;
+  updateInstrument(instrumentID, field, value) {
+    this.instrumentByID(instrumentID)[field] = value;
     this.forceUpdate();
 
     this.syncInstrumentsToSynthCore();
