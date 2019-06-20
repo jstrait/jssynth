@@ -107,7 +107,6 @@ class TrackPatternList extends React.Component {
                          startStep={pattern.startStep}
                          timelineStepCount={this.props.measureCount * 16}
                          isSelected={this.props.selectedPatternID === pattern.id}
-                         setSelectedTrack={this.props.setSelectedTrack}
                          setSelectedPattern={this.props.setSelectedPattern}
                          setPatternStartStep={this.props.setPatternStartStep} />
       )}
@@ -132,7 +131,6 @@ class TimelinePattern extends React.Component {
   };
 
   onMouseDown(e) {
-    this.props.setSelectedTrack(this.props.trackID);
     this.props.setSelectedPattern(this.props.patternID);
 
     this.setState({
@@ -333,7 +331,6 @@ class Sequencer extends React.Component {
                               patterns={this.props.patternsByTrackID[track.id]}
                               measureCount={this.props.measureCount}
                               selectedPatternID={this.props.selectedPatternID}
-                              setSelectedTrack={this.props.setSelectedTrack}
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
                               addPattern={this.props.addPattern} />

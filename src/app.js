@@ -12,8 +12,10 @@ import { Serializer } from "./serializer";
 
 import { DownloadButton } from "./components/download_button";
 import { Keyboard } from "./components/keyboard";
+import { PatternEditor } from "./components/pattern_editor";
+import { SampleInstrumentEditor } from "./components/instrument_editor";
 import { Sequencer } from "./components/sequencer";
-import { TrackEditor } from "./components/track_editor";
+import { SynthInstrumentEditor } from "./components/instrument_editor";
 import { Transport } from "./components/transport";
 
 class App extends React.Component {
@@ -26,7 +28,7 @@ class App extends React.Component {
       isLoaded: false,
       loadingStatusMessage: "Loading...",
       measureCount: 8,
-      selectedTrackID: 1,
+      selectedTrackID: undefined,
       selectedPatternID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
@@ -340,6 +342,7 @@ class App extends React.Component {
     let i;
     let newMaxStep;
     let newCurrentStep = this.transport.currentStep();
+    let newSelectedPatternID = this.state.selectedPatternID;
 
     if (newMeasureCount < this.state.measureCount) {
       newMaxStep = (newMeasureCount * 16) - 1;
@@ -349,6 +352,10 @@ class App extends React.Component {
 
       for (i = this.state.patterns.length - 1; i >= 0; i--) {
         if (this.state.patterns[i].startStep > (newMaxStep - 15)) {
+          if (newSelectedPatternID === this.state.patterns[i].id) {
+            newSelectedPatternID = undefined;
+          }
+
           this.state.patterns.splice(i, 1);
         }
       }
@@ -358,6 +365,7 @@ class App extends React.Component {
 
     this.setState({
       measureCount: newMeasureCount,
+      selectedPatternID: newSelectedPatternID,
     }, function() {
       this.syncScoreToSynthCore();
       this.setCurrentStep(newCurrentStep);
@@ -548,7 +556,8 @@ class App extends React.Component {
     }
 
     this.setState({
-      selectedTrackID: newSelectedTrackID,
+      selectedTrackID: undefined,
+      selectedPatternID: undefined,
       instruments: newInstruments,
       patterns: newPatterns,
       tracks: newTracks,
@@ -610,6 +619,7 @@ class App extends React.Component {
 
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
+      selectedTrackID: undefined,
       selectedPatternID: newPattern.id,
     });
   };
@@ -733,19 +743,15 @@ class App extends React.Component {
   };
 
   setSelectedTrack(newSelectedTrackID) {
-    let newSelectedPatternID = this.state.selectedPatternID;
-    if (newSelectedTrackID !== this.state.selectedTrackID) {
-      newSelectedPatternID = this.searchForNextPatternIDAscending(newSelectedTrackID, this.state.patterns, 0);
-    }
-
     this.setState({
       selectedTrackID: newSelectedTrackID,
-      selectedPatternID: newSelectedPatternID,
+      selectedPatternID: undefined,
     });
   };
 
   setSelectedPattern(newSelectedPatternID) {
     this.setState({
+      selectedTrackID: undefined,
       selectedPatternID: newSelectedPatternID,
     });
   };
@@ -830,7 +836,20 @@ class App extends React.Component {
     let i;
     let noteContext;
     let note;
-    let currentTrack = this.trackByID(this.state.selectedTrackID);
+    let currentTrack;
+    let selectedPattern;
+
+    if (this.state.selectedTrackID !== undefined) {
+      currentTrack = this.trackByID(this.state.selectedTrackID);
+    }
+    else if (this.state.selectedPatternID !== undefined) {
+      selectedPattern = this.patternByID(this.state.selectedPatternID)
+      currentTrack = this.trackByID(selectedPattern.trackID);
+    }
+    else {
+      return;
+    }
+
     let instrumentID = currentTrack.instrumentID;
     let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.bufferCollection);
     let activeNoteSetHasChanged = false;
@@ -843,7 +862,7 @@ class App extends React.Component {
       if (!notes.includes(newActiveKeyboardNotes[i])) {
         noteContext = newActiveNoteContexts[i];
 
-        this.notePlayer.stopNote(this.state.selectedTrackID, this.mixer.audioContext(), noteContext);
+        this.notePlayer.stopNote(currentTrack.id, this.mixer.audioContext(), noteContext);
         newActiveKeyboardNotes.splice(i, 1);
         newActiveNoteContexts.splice(i, 1);
 
@@ -977,14 +996,25 @@ class App extends React.Component {
  };
 
   render() {
-    let selectedTrack = this.trackByID(this.state.selectedTrackID);
-    let instrument = this.instrumentByID(selectedTrack.instrumentID);
+    let selectedTrack;
+    let selectedPattern;
+    let instrument;
     let isLoaded = this.state.isLoaded;
 
     let i;
     let patternsByTrackID = {};
     for (i = 0; i < this.state.tracks.length; i++) {
       patternsByTrackID[this.state.tracks[i].id] = this.patternsByTrackID(this.state.tracks[i].id);
+    }
+
+    if (this.state.selectedTrackID !== undefined) {
+      selectedTrack = this.trackByID(this.state.selectedTrackID);
+      instrument = this.instrumentByID(selectedTrack.instrumentID);
+    }
+    else if (this.state.selectedPatternID !== undefined) {
+      selectedPattern = this.patternByID(this.state.selectedPatternID)
+      selectedTrack = this.trackByID(selectedPattern.trackID);
+      instrument = this.instrumentByID(selectedTrack.instrumentID);
     }
 
     return <div>
@@ -1027,20 +1057,32 @@ class App extends React.Component {
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
                    removeTrack={this.removeTrack} />
-        <TrackEditor tracks={this.state.tracks}
-                     selectedTrackID={this.state.selectedTrackID}
-                     selectedPattern={this.patternByID(this.state.selectedPatternID)}
-                     selectedPatternRowIndex={this.state.selectedPatternRowIndex}
-                     selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
-                     instrument={instrument}
-                     setSelectedTrack={this.setSelectedTrack}
-                     updateInstrument={this.updateInstrument}
-                     setBufferFromFile={this.setBufferFromFile}
-                     addPatternRow={this.addPatternRow}
-                     removePatternRow={this.removePatternRow}
-                     setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
-                     setNoteValue={this.setNoteValue}
-                     isKeyboardActive={this.state.isKeyboardActive} />
+        {this.state.selectedTrackID !== undefined && instrument.type === "synth" &&
+        <div className="mt1 pb1 pl1 pr1 border-box bt-thick">
+          <SynthInstrumentEditor instrument={instrument}
+                                 updateInstrument={this.updateInstrument} />
+        </div>
+        }
+        {this.state.selectedTrackID !== undefined && instrument.type === "sample" &&
+        <div className="mt1 pb1 pl1 pr1 border-box bt-thick">
+          <SampleInstrumentEditor instrument={instrument}
+                                  setBufferFromFile={this.setBufferFromFile}
+                                  updateInstrument={this.updateInstrument} />
+        </div>
+        }
+        {this.state.selectedPatternID !== undefined &&
+        <div className="mt1 pt1 pb1 pl1 pr1 border-box bt-thick">
+          <PatternEditor selectedPattern={selectedPattern}
+                         selectedPatternRowIndex={this.state.selectedPatternRowIndex}
+                         selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
+                         addPatternRow={this.addPatternRow}
+                         removePatternRow={this.removePatternRow}
+                         setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
+                         setNoteValue={this.setNoteValue}
+                         keyboardActive={this.keyboardActive} />
+        </div>
+        }
+        {(this.state.selectedTrackID !== undefined || this.state.selectedPatternID !== undefined) &&
         <Keyboard isActive={this.state.isKeyboardActive}
                   rootNoteName={instrument.rootNoteName}
                   rootNoteOctave={instrument.rootNoteOctave}
@@ -1048,6 +1090,7 @@ class App extends React.Component {
                   activate={this.activateKeyboard}
                   deactivate={this.deactivateKeyboard}
                   setNotes={this.setKeyboardNotes} />
+        }
         <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
           <p className="center mt1 mb1">MIDI Device(s):&nbsp;
           {this.state.midiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
