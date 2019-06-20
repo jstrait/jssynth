@@ -2,31 +2,6 @@
 
 import React from 'react';
 
-class PatternListItem extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.setSelectedPatternID = this.setSelectedPatternID.bind(this);
-    this.removePattern = this.removePattern.bind(this);
-  };
-
-  setSelectedPatternID(e) {
-    this.props.setSelectedPattern(this.props.patternID);
-  };
-
-  removePattern(e) {
-    e.stopPropagation();
-    this.props.removePattern(this.props.patternID);
-  };
-
-  render() {
-    return <li className={"flex flex-align-center flex-justify-space-between list-style-none pointer border-box mr1 " + (this.props.patternID === this.props.selectedPattern.id ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedPatternID}>
-      <span className="no-whitespace-wrap overflow-hidden-x">{this.props.patternName}</span>
-      <button className={"button-small button-hollow round ml1 pt0 pb0 pl0 pr0" + (this.props.removable ? "" : " display-none")} onClick={this.removePattern}>&nbsp;X&nbsp;</button>
-    </li>
-  };
-};
-
 class NoteBox extends React.Component {
   constructor(props) {
     super(props);
@@ -250,21 +225,11 @@ class PatternEditor extends React.Component {
       tipsAndTricksVisible: false,
     };
 
-    this.addPattern = this.addPattern.bind(this);
-    this.duplicatePattern = this.duplicatePattern.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
     this.eraseNote = this.eraseNote.bind(this);
     this.setNoteAsDash = this.setNoteAsDash.bind(this);
-  };
-
-  addPattern(e) {
-    this.props.addPattern(this.props.selectedPattern.trackID, 0);
-  };
-
-  duplicatePattern(e) {
-    this.props.duplicatePattern(this.props.selectedPattern.id, 0);
   };
 
   addPatternRow(e) {
@@ -322,16 +287,6 @@ class PatternEditor extends React.Component {
     }
 
     return <div>
-      <div className="mb2">
-        <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width">
-          {this.props.patterns.map((pattern) =>
-          <PatternListItem key={pattern.id} patternID={pattern.id} patternName={pattern.name} selectedPattern={this.props.selectedPattern} removable={this.props.patterns.length > 1} setSelectedPattern={this.props.setSelectedPattern} removePattern={this.props.removePattern} />
-          )}
-        </ul>
-        <button className="button-full button-hollow mr-half" onClick={this.addPattern}>Add Pattern</button>
-        <button className="button-full button-hollow" onClick={this.duplicatePattern}>Duplicate Pattern</button>
-      </div>
-
       <label>{this.props.selectedPattern.name}</label> &ndash; <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
       <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}

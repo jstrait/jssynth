@@ -43,15 +43,9 @@ export class TrackEditor extends React.Component {
                                                  updateInstrument={this.props.updateInstrument} />;
     }
 
-    let patternEditor = <PatternEditor patterns={this.props.patterns}
-                                       selectedPattern={this.props.selectedPattern}
+    let patternEditor = <PatternEditor selectedPattern={this.props.selectedPattern}
                                        selectedPatternRowIndex={this.props.selectedPatternRowIndex}
                                        selectedPatternNoteIndex={this.props.selectedPatternNoteIndex}
-                                       setSelectedPattern={this.props.setSelectedPattern}
-                                       setPatternName={this.props.setPatternName}
-                                       addPattern={this.props.addPattern}
-                                       duplicatePattern={this.props.duplicatePattern}
-                                       removePattern={this.props.removePattern}
                                        addPatternRow={this.props.addPatternRow}
                                        removePatternRow={this.props.removePatternRow}
                                        setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex}

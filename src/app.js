@@ -1011,7 +1011,6 @@ class App extends React.Component {
   render() {
     let selectedTrack = this.trackByID(this.state.selectedTrackID);
     let instrument = this.instrumentByID(selectedTrack.instrumentID);
-    let selectedTrackPatterns = this.patternsByTrackID(this.state.selectedTrackID);
     let isLoaded = this.state.isLoaded;
 
     let i;
@@ -1066,14 +1065,9 @@ class App extends React.Component {
                      selectedPatternRowIndex={this.state.selectedPatternRowIndex}
                      selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
                      instrument={instrument}
-                     patterns={selectedTrackPatterns}
                      setSelectedTrack={this.setSelectedTrack}
                      updateInstrument={this.updateInstrument}
                      setBufferFromFile={this.setBufferFromFile}
-                     setSelectedPattern={this.setSelectedPattern}
-                     addPattern={this.addPattern}
-                     duplicatePattern={this.duplicatePattern}
-                     removePattern={this.removePattern}
                      addPatternRow={this.addPatternRow}
                      removePatternRow={this.removePatternRow}
                      setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
