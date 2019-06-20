@@ -293,6 +293,11 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   user-select: none;
 }
 
+.timeline-pattern-selected {
+  background: $light-orange;
+  border-color: $orange;
+}
+
 .expanded {
   width: 200px;
 }

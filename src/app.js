@@ -1053,6 +1053,7 @@ class App extends React.Component {
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
                    setSelectedTrack={this.setSelectedTrack}
+                   selectedPatternID={this.state.selectedPatternID}
                    setSelectedPattern={this.setSelectedPattern}
                    setPatternStartStep={this.setPatternStartStep}
                    addSynthTrack={this.addSynthTrack}

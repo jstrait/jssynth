@@ -88,7 +88,7 @@ class TrackPatternList extends React.Component {
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       <li className="relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
       {this.props.patterns.map((pattern, index) =>
-        <TimelinePattern key={index} trackID={this.props.trackID} patternID={pattern.id} startStep={pattern.startStep} timelineStepCount={this.props.measureCount * 16} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
+        <TimelinePattern key={index} trackID={this.props.trackID} patternID={pattern.id} startStep={pattern.startStep} timelineStepCount={this.props.measureCount * 16} isSelected={this.props.selectedPatternID === pattern.id} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
       )}
       </li>
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
@@ -145,7 +145,7 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="timeline-pattern"
+    return <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
                  style={{left: (this.props.startStep * 9) + "px"}}
                  onMouseDown={this.onMouseDown}
                  onMouseMove={this.onMouseMove}
@@ -304,7 +304,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id} patterns={this.props.patternsByTrackID[track.id]} measureCount={this.props.measureCount} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
+            <TrackPatternList trackID={track.id} patterns={this.props.patternsByTrackID[track.id]} measureCount={this.props.measureCount} selectedPatternID={this.props.selectedPatternID} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
           </li>
           )}
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
