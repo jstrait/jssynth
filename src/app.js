@@ -609,7 +609,7 @@ class App extends React.Component {
     }
   };
 
-  addPattern(trackID) {
+  addPattern(trackID, startStep) {
     let track = this.trackByID(trackID);
     let newPatternID = this.idGenerator.next();
 
@@ -617,7 +617,7 @@ class App extends React.Component {
       id: newPatternID,
       name: track.name + " " + (this.patternsByTrackID(trackID).length + 1),
       trackID: trackID,
-      startStep: 0,
+      startStep: startStep,
       rows: [
         {
           notes: [{name: ''},
@@ -646,7 +646,7 @@ class App extends React.Component {
     });
   };
 
-  duplicatePattern(patternID) {
+  duplicatePattern(patternID, startStep) {
     let originalPattern = this.patternByID(patternID);
     let newPatternID = this.idGenerator.next();
     let track = this.trackByID(originalPattern.trackID);
@@ -664,7 +664,7 @@ class App extends React.Component {
       id: newPatternID,
       name: track.name + " " + (this.patternsByTrackID(track.id).length + 1),
       trackID: track.id,
-      startStep: 0,
+      startStep: startStep,
       rows: duplicatedRows,
     };
 
@@ -1058,6 +1058,7 @@ class App extends React.Component {
                    setPatternStartStep={this.setPatternStartStep}
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
+                   addPattern={this.addPattern}
                    removeTrack={this.removeTrack} />
         <TrackEditor tracks={this.state.tracks}
                      selectedTrackID={this.state.selectedTrackID}

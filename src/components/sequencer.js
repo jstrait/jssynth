@@ -81,10 +81,18 @@ class TimelineHeader extends React.PureComponent {
 class TrackPatternList extends React.Component {
   constructor(props) {
     super(props);
+
+    this.onMouseDown = this.onMouseDown.bind(this);
+  };
+
+  onMouseDown(e) {
+    if (e.metaKey === true) {
+      this.props.addPattern(this.props.trackID, 0);
+    }
   };
 
   render() {
-    return <ul className="flex full-height ml0 pl0 no-whitespace-wrap">
+    return <ul className="flex full-height ml0 pl0 no-whitespace-wrap" onMouseDown={this.onMouseDown}>
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
       <li className="relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
       {this.props.patterns.map((pattern, index) =>
@@ -304,7 +312,7 @@ class Sequencer extends React.Component {
           </li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id} patterns={this.props.patternsByTrackID[track.id]} measureCount={this.props.measureCount} selectedPatternID={this.props.selectedPatternID} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} />
+            <TrackPatternList trackID={track.id} patterns={this.props.patternsByTrackID[track.id]} measureCount={this.props.measureCount} selectedPatternID={this.props.selectedPatternID} setSelectedTrack={this.props.setSelectedTrack} setSelectedPattern={this.props.setSelectedPattern} setPatternStartStep={this.props.setPatternStartStep} addPattern={this.props.addPattern} />
           </li>
           )}
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>

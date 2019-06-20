@@ -260,11 +260,11 @@ class PatternEditor extends React.Component {
   };
 
   addPattern(e) {
-    this.props.addPattern(this.props.selectedPattern.trackID);
+    this.props.addPattern(this.props.selectedPattern.trackID, 0);
   };
 
   duplicatePattern(e) {
-    this.props.duplicatePattern(this.props.selectedPattern.id);
+    this.props.duplicatePattern(this.props.selectedPattern.id, 0);
   };
 
   addPatternRow(e) {
