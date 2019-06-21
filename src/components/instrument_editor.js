@@ -69,6 +69,7 @@ class SampleInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
+    this.close = this.close.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -92,6 +93,10 @@ class SampleInstrumentEditor extends React.Component {
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
     this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
+  };
+
+  close(e) {
+    this.props.setSelectedTrack(undefined);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -194,6 +199,8 @@ class SampleInstrumentEditor extends React.Component {
 
   render() {
     return <div>
+      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <h2 className="mt0 mb1">{this.props.instrument.name}</h2>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />
@@ -376,6 +383,7 @@ class SynthInstrumentEditor extends React.Component {
       {label: "Pink", value: "pink"},
     ];
 
+    this.close = this.close.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setOscillator1Waveform = this.setOscillator1Waveform.bind(this);
     this.setOscillator1Octave = this.setOscillator1Octave.bind(this);
@@ -406,6 +414,10 @@ class SynthInstrumentEditor extends React.Component {
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
     this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
+  };
+
+  close(e) {
+    this.props.setSelectedTrack(undefined);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -537,6 +549,8 @@ class SynthInstrumentEditor extends React.Component {
 
   render() {
     return <div>
+      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <h2 className="mt0 mb1">{this.props.instrument.name}</h2>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
         <InstrumentPaneTab label="Filter" value="filter" isSelected={this.state.selectedTab === "filter"} setSelectedTab={this.setSelectedTab} />

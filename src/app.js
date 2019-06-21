@@ -446,7 +446,6 @@ class App extends React.Component {
     function() {
       this.mixer.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
       this.syncInstrumentsToSynthCore();
-      this.setSelectedTrack(newTrack.id);
     });
   };
 
@@ -1040,6 +1039,7 @@ class App extends React.Component {
                      updateTempo={this.updateTempo} />
           <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
+        {this.state.selectedTrackID === undefined &&
         <Sequencer tracks={this.state.tracks}
                    patternsByTrackID={patternsByTrackID}
                    measureCount={this.state.measureCount}
@@ -1057,15 +1057,18 @@ class App extends React.Component {
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
                    removeTrack={this.removeTrack} />
+        }
         {this.state.selectedTrackID !== undefined && instrument.type === "synth" &&
-        <div className="mt1 pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1 pr1 border-box bt-thick">
           <SynthInstrumentEditor instrument={instrument}
+                                 setSelectedTrack={this.setSelectedTrack}
                                  updateInstrument={this.updateInstrument} />
         </div>
         }
         {this.state.selectedTrackID !== undefined && instrument.type === "sample" &&
-        <div className="mt1 pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1 pr1 border-box bt-thick">
           <SampleInstrumentEditor instrument={instrument}
+                                  setSelectedTrack={this.setSelectedTrack}
                                   setBufferFromFile={this.setBufferFromFile}
                                   updateInstrument={this.updateInstrument} />
         </div>
