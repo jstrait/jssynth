@@ -186,7 +186,7 @@ class TrackRemoveButton extends React.PureComponent {
   };
 
   render() {
-    return <button className="button-small button-hollow full-width round" onClick={this.removeTrack}>X</button>
+    return <button className="button-small button-hollow full-width round" onClick={this.removeTrack}>X</button>;
   };
 };
 
