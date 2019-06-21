@@ -99,7 +99,7 @@ class TrackPatternList extends React.Component {
   render() {
     return <ul className="flex full-height ml0 pl0 no-whitespace-wrap" onMouseDown={this.onMouseDown}>
       <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
-      <li className="relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
+      <li className="sequencer-row relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
       {this.props.patterns.map((pattern, index) =>
         <TimelinePattern key={index}
                          trackID={this.props.trackID}
