@@ -227,32 +227,6 @@ class App extends React.Component {
     return patterns;
   };
 
-  searchForNextPatternIDAscending(trackID, patterns, startIndex) {
-    let i = startIndex;
-
-    while (i < patterns.length) {
-      if (patterns[i].trackID === trackID) {
-        return patterns[i].id;
-      }
-      i++;
-    }
-
-    return undefined;
-  };
-
-  searchForNextPatternIDDescending(trackID, patterns, startIndex) {
-    let i = startIndex;
-
-    while (i >= 0) {
-      if (patterns[i].trackID === trackID) {
-        return patterns[i].id;
-      }
-      i--;
-    }
-
-    return undefined;
-  };
-
   updateTempo(e) {
     const newTempo = parseInt(e.target.value, 10);
 
@@ -650,32 +624,13 @@ class App extends React.Component {
   };
 
   removePattern(patternID) {
-    let i, patternCount = 1;
-    let pattern = this.patternByID(patternID);
     let patternIndex = this.patternIndexByID(patternID);
     let newPatterns = this.state.patterns.concat([]);
-    let track = this.trackByID(pattern.trackID);
-
-    let newSelectedPatternID = this.state.selectedPatternID;
 
     newPatterns.splice(patternIndex, 1);
-    for (i = 0; i < newPatterns.length; i++) {
-      if (newPatterns[i].trackID === track.id) {
-        newPatterns[i].name = track.name + " " + patternCount;
-        patternCount += 1;
-      }
-    }
-
-    if (newSelectedPatternID === pattern.id) {
-      newSelectedPatternID = this.searchForNextPatternIDAscending(track.id, this.state.patterns, patternIndex + 1);
-      if (newSelectedPatternID === undefined) {
-        newSelectedPatternID = this.searchForNextPatternIDDescending(track.id, this.state.patterns, patternIndex - 1);
-      }
-    }
 
     this.setState({
       patterns: newPatterns,
-      selectedPatternID: newSelectedPatternID,
     }, function() {
       this.syncScoreToSynthCore();
     });
