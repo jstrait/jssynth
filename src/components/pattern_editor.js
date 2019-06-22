@@ -272,7 +272,7 @@ class PatternEditor extends React.Component {
   };
 
   render() {
-    const tipsAndTricks = <ul className="mt0 mb0 toggleable">
+    const tipsAndTricks = <ul className="mt0 mb0">
       <li>To enter a note, select a note box, and either play a note on the on-screen keyboard or type the note name.</li>
       <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
       <li>Use &lsquo;#&rsquo; to enter a sharp, and &lsquo;@&rsquo; to enter a flat. Press twice to double sharp/flat, thrice to remove the sharp/flat.</li>
