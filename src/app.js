@@ -1037,7 +1037,7 @@ class App extends React.Component {
                      updateTempo={this.updateTempo} />
           <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
         </div>
-        {this.state.selectedTrackID === undefined &&
+        {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
         <Sequencer tracks={this.state.tracks}
                    patternsByTrackID={patternsByTrackID}
                    measureCount={this.state.measureCount}
@@ -1072,12 +1072,13 @@ class App extends React.Component {
         </div>
         }
         {this.state.selectedPatternID !== undefined &&
-        <div className="mt1 pt1 pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1 pr1 border-box bt-thick">
           <PatternEditor selectedPattern={selectedPattern}
                          selectedPatternRowIndex={this.state.selectedPatternRowIndex}
                          selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
+                         setSelectedPattern={this.setSelectedPattern}
                          setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
                          keyboardActive={this.keyboardActive} />

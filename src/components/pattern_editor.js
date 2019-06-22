@@ -225,11 +225,16 @@ class PatternEditor extends React.Component {
       tipsAndTricksVisible: false,
     };
 
+    this.close = this.close.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
     this.eraseNote = this.eraseNote.bind(this);
     this.setNoteAsDash = this.setNoteAsDash.bind(this);
+  };
+
+  close(e) {
+    this.props.setSelectedPattern(undefined);
   };
 
   addPatternRow(e) {
@@ -267,7 +272,7 @@ class PatternEditor extends React.Component {
   };
 
   render() {
-    const tipsAndTricks = <ul className="toggleable">
+    const tipsAndTricks = <ul className="mt0 mb0 toggleable">
       <li>To enter a note, select a note box, and either play a note on the on-screen keyboard or type the note name.</li>
       <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
       <li>Use &lsquo;#&rsquo; to enter a sharp, and &lsquo;@&rsquo; to enter a flat. Press twice to double sharp/flat, thrice to remove the sharp/flat.</li>
@@ -287,9 +292,13 @@ class PatternEditor extends React.Component {
     }
 
     return <div>
-      <label>{this.props.selectedPattern.name}</label> &ndash; <a href="javascript:void(0);" className="h4 helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
-      <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <div>
+        <h2 className="inline-block mt0 mb0">{this.props.selectedPattern.name}</h2>
+        <a href="javascript:void(0);" className="h4 ml-half helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
+      </div>
       {(this.state.tipsAndTricksVisible === true) ? tipsAndTricks : undefined}
+      <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
