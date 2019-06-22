@@ -109,7 +109,8 @@ class TrackPatternList extends React.Component {
                          isSelected={this.props.highlightedPatternID === pattern.id}
                          setHighlightedPattern={this.props.setHighlightedPattern}
                          setSelectedPattern={this.props.setSelectedPattern}
-                         setPatternStartStep={this.props.setPatternStartStep} />
+                         setPatternStartStep={this.props.setPatternStartStep}
+                         removePattern={this.props.removePattern} />
       )}
       </li>
       <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
@@ -127,6 +128,7 @@ class TimelinePattern extends React.Component {
     };
 
     this.enableEdit = this.enableEdit.bind(this);
+    this.remove = this.remove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -134,6 +136,10 @@ class TimelinePattern extends React.Component {
 
   enableEdit(e) {
     this.props.setSelectedPattern(this.props.patternID);
+  };
+
+  remove(e) {
+    this.props.removePattern(this.props.patternID);
   };
 
   onMouseDown(e) {
@@ -180,6 +186,7 @@ class TimelinePattern extends React.Component {
       {this.props.isSelected === true &&
       <span className="absolute" style={{top: "-2.0rem"}}>
         <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>
+        <button className="button-small button-hollow" onClick={this.remove}>Remove</button>
       </span>
       }
     </span>;
@@ -282,6 +289,7 @@ class Sequencer extends React.Component {
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
+    this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   };
@@ -301,6 +309,14 @@ class Sequencer extends React.Component {
     this.setState({
       highlightedPatternID: patternID,
     });
+  };
+
+  removePattern(patternID) {
+    this.setState({
+      highlightedPatternID: undefined,
+    });
+
+    this.props.removePattern(patternID);
   };
 
   showFileChooser(e) {
@@ -354,7 +370,8 @@ class Sequencer extends React.Component {
                               setHighlightedPattern={this.setHighlightedPattern}
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
-                              addPattern={this.props.addPattern} />
+                              addPattern={this.props.addPattern}
+                              removePattern={this.removePattern} />
           </li>
           )}
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>

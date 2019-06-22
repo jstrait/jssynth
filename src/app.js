@@ -1054,6 +1054,7 @@ class App extends React.Component {
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
+                   removePattern={this.removePattern}
                    removeTrack={this.removeTrack} />
         }
         {this.state.selectedTrackID !== undefined && instrument.type === "synth" &&
