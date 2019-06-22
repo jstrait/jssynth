@@ -618,8 +618,6 @@ class App extends React.Component {
 
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
-      selectedTrackID: undefined,
-      selectedPatternID: newPattern.id,
     });
   };
 

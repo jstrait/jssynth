@@ -106,7 +106,8 @@ class TrackPatternList extends React.Component {
                          patternID={pattern.id}
                          startStep={pattern.startStep}
                          timelineStepCount={this.props.measureCount * 16}
-                         isSelected={this.props.selectedPatternID === pattern.id}
+                         isSelected={this.props.highlightedPatternID === pattern.id}
+                         setHighlightedPattern={this.props.setHighlightedPattern}
                          setSelectedPattern={this.props.setSelectedPattern}
                          setPatternStartStep={this.props.setPatternStartStep} />
       )}
@@ -125,13 +126,18 @@ class TimelinePattern extends React.Component {
       dragStartStep: undefined,
     };
 
+    this.enableEdit = this.enableEdit.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
   };
 
-  onMouseDown(e) {
+  enableEdit(e) {
     this.props.setSelectedPattern(this.props.patternID);
+  };
+
+  onMouseDown(e) {
+    this.props.setHighlightedPattern(this.props.patternID);
 
     this.setState({
       dragStartPixelX: e.clientX,
@@ -164,13 +170,19 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-                 style={{left: (this.props.startStep * 9) + "px"}}
-                 onMouseDown={this.onMouseDown}
-                 onMouseMove={this.onMouseMove}
-                 onMouseUp={this.onMouseUp}>
-             Pattern {this.props.patternID}
-           </span>;
+    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
+      <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+            onMouseDown={this.onMouseDown}
+            onMouseMove={this.onMouseMove}
+            onMouseUp={this.onMouseUp}>
+        Pattern {this.props.patternID}
+      </span>
+      {this.props.isSelected === true &&
+      <span className="absolute" style={{top: "-2.0rem"}}>
+        <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>
+      </span>
+      }
+    </span>;
   };
 };
 
@@ -264,10 +276,12 @@ class Sequencer extends React.Component {
     this.state = {
       expanded: true,
       isTimelineElementActive: false,
+      highlightedPatternID: undefined,
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
+    this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   };
@@ -281,6 +295,12 @@ class Sequencer extends React.Component {
 
   setIsTimelineElementActive(newIsTimelineElementActive) {
     this.setState({isTimelineElementActive: newIsTimelineElementActive});
+  };
+
+  setHighlightedPattern(patternID) {
+    this.setState({
+      highlightedPatternID: patternID,
+    });
   };
 
   showFileChooser(e) {
@@ -330,7 +350,8 @@ class Sequencer extends React.Component {
             <TrackPatternList trackID={track.id}
                               patterns={this.props.patternsByTrackID[track.id]}
                               measureCount={this.props.measureCount}
-                              selectedPatternID={this.props.selectedPatternID}
+                              highlightedPatternID={this.state.highlightedPatternID}
+                              setHighlightedPattern={this.setHighlightedPattern}
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
                               addPattern={this.props.addPattern} />
