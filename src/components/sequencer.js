@@ -107,9 +107,11 @@ class TrackPatternList extends React.Component {
                          startStep={pattern.startStep}
                          timelineStepCount={this.props.measureCount * 16}
                          isSelected={this.props.highlightedPatternID === pattern.id}
+                         isPopupMenuActive={this.props.isPopupMenuActive}
                          setHighlightedPattern={this.props.setHighlightedPattern}
                          setSelectedPattern={this.props.setSelectedPattern}
                          setPatternStartStep={this.props.setPatternStartStep}
+                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
                          removePattern={this.props.removePattern} />
       )}
       </li>
@@ -143,7 +145,13 @@ class TimelinePattern extends React.Component {
   };
 
   onMouseDown(e) {
-    this.props.setHighlightedPattern(this.props.patternID);
+    if (this.props.isSelected === true) {
+      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
+    }
+    else {
+      this.props.setHighlightedPattern(this.props.patternID);
+      this.props.setIsPopupMenuActive(false);
+    }
 
     this.setState({
       dragStartPixelX: e.clientX,
@@ -166,6 +174,8 @@ class TimelinePattern extends React.Component {
     if (this.props.startStep !== newStartStep) {
       this.props.setPatternStartStep(this.props.patternID, newStartStep);
     }
+
+    this.props.setIsPopupMenuActive(false);
   };
 
   onMouseUp(e) {
@@ -183,7 +193,7 @@ class TimelinePattern extends React.Component {
             onMouseUp={this.onMouseUp}>
         Pattern {this.props.patternID}
       </span>
-      {this.props.isSelected === true &&
+      {this.props.isSelected && this.props.isPopupMenuActive === true &&
       <span className="absolute" style={{top: "calc(-5.0rem + 2px)", height: "4.5rem"}}>
         <span className="timeline-pattern-menu">
           <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>&nbsp;
@@ -290,11 +300,13 @@ class Sequencer extends React.Component {
       expanded: true,
       isTimelineElementActive: false,
       highlightedPatternID: undefined,
+      isPopupMenuActive: false,
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
+    this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -314,6 +326,12 @@ class Sequencer extends React.Component {
   setHighlightedPattern(patternID) {
     this.setState({
       highlightedPatternID: patternID,
+    });
+  };
+
+  setIsPopupMenuActive(newIsPopupMenuActive) {
+    this.setState({
+      isPopupMenuActive: newIsPopupMenuActive,
     });
   };
 
@@ -373,9 +391,11 @@ class Sequencer extends React.Component {
                               patterns={this.props.patternsByTrackID[track.id]}
                               measureCount={this.props.measureCount}
                               highlightedPatternID={this.state.highlightedPatternID}
+                              isPopupMenuActive={this.state.isPopupMenuActive}
                               setHighlightedPattern={this.setHighlightedPattern}
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
+                              setIsPopupMenuActive={this.setIsPopupMenuActive}
                               addPattern={this.props.addPattern}
                               removePattern={this.removePattern} />
           </li>
