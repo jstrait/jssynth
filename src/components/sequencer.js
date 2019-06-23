@@ -184,9 +184,15 @@ class TimelinePattern extends React.Component {
         Pattern {this.props.patternID}
       </span>
       {this.props.isSelected === true &&
-      <span className="absolute" style={{top: "-2.0rem"}}>
-        <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>
-        <button className="button-small button-hollow" onClick={this.remove}>Remove</button>
+      <span className="absolute" style={{top: "calc(-5.0rem + 2px)", height: "4.5rem"}}>
+        <span className="timeline-pattern-menu">
+          <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>&nbsp;
+          <button className="button-small button-hollow" onClick={this.remove}>Remove</button>
+        </span>
+        <span className="relative block" style={{height: "1.25rem", marginTop: "-2px"}}>
+          <span className="timeline-pattern-menu-arrow-outline"></span>
+          <span className="timeline-pattern-menu-arrow-fill"></span>
+        </span>
       </span>
       }
     </span>;

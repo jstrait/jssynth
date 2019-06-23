@@ -303,6 +303,35 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   border-color: $orange;
 }
 
+.timeline-pattern-menu {
+  display: block;
+  border: 2px solid $border-color;
+  border-radius: 10px;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  background: $lighter-gray;
+}
+
+.timeline-pattern-menu-arrow-outline {
+  position: absolute;
+  left: calc(50% - 0.75rem);
+  bottom: 0;
+  width: 0;
+  border-width: 1.25rem 1.25rem 0 1.25rem;
+  border-style: solid;
+  border-color: $border-color transparent transparent transparent;
+}
+
+.timeline-pattern-menu-arrow-fill {
+  position: absolute;
+  left: calc(50% - 0.55rem);
+  top: 0;
+  width: 0;
+  border-width: 1.1rem 1.1rem 0 1.1rem;
+  border-style: solid;
+  border-color: $lighter-gray transparent transparent transparent;
+}
+
 .expanded {
   width: 200px;
 }
