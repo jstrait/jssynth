@@ -225,10 +225,6 @@ button:disabled {
 
 /* Keyboard */
 .keyboard-outer-container {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   height: 11.0rem;
   overflow: hidden;
 }
@@ -254,10 +250,6 @@ button:disabled {
   height: 11.0rem;
   white-space: nowrap;
   font-size: 0;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .keyboard-key {

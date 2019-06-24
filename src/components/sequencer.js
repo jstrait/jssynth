@@ -186,7 +186,7 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span className="relative inline-block full-height no-user-select" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             onMouseDown={this.onMouseDown}
             onMouseMove={this.onMouseMove}
