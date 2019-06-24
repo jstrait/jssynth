@@ -978,7 +978,7 @@ class App extends React.Component {
       </div>
       }
       {isLoaded === true &&
-      <div>
+      <div className="flex flex-column flex-justify-space-between" style={{"minHeight": "100vh"}}>
         <div id="header" className="flex flex-align-center pt1 pb1 pl1 pr1 border-box full-width">
           <div id="logo-container">
             <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
@@ -1050,11 +1050,11 @@ class App extends React.Component {
                   setNotes={this.setKeyboardNotes} />
         }
         <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
-          <p className="center mt1 mb1">MIDI Device(s):&nbsp;
+          <p className="center mt1 mb0">MIDI Device(s):&nbsp;
           {this.state.midiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
           {this.state.midiEnabled === true && this.state.midiInputNames.join(", ")}
           </p>
-          <p className="center mt1 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
+          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
         </div>
       </div>
       }
