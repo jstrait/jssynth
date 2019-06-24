@@ -92,7 +92,7 @@ class TrackPatternList extends React.Component {
 
   onMouseDown(e) {
     if (e.metaKey === true) {
-      this.props.addPattern(this.props.trackID, 0);
+      this.props.addPattern(this.props.trackID, e.clientX);
     }
   };
 
@@ -307,6 +307,7 @@ class Sequencer extends React.Component {
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
+    this.addPattern = this.addPattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -333,6 +334,11 @@ class Sequencer extends React.Component {
     this.setState({
       isPopupMenuActive: newIsPopupMenuActive,
     });
+  };
+
+  addPattern(trackID, clientPixelX) {
+    let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
+    this.props.addPattern(trackID, Math.floor(containerPixelX / 9));
   };
 
   removePattern(patternID) {
@@ -378,7 +384,8 @@ class Sequencer extends React.Component {
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
         </ul>
-        <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
+        <ul ref={(el) => { this.timelineContainerEl = el; }}
+            className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
           <li className="inline-block list-style-none full-width border-box">
             <TimelineHeader measureCount={this.props.measureCount}
                             currentStep={this.props.currentStep}
@@ -396,7 +403,7 @@ class Sequencer extends React.Component {
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
                               setIsPopupMenuActive={this.setIsPopupMenuActive}
-                              addPattern={this.props.addPattern}
+                              addPattern={this.addPattern}
                               removePattern={this.removePattern} />
           </li>
           )}
