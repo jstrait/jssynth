@@ -186,7 +186,7 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="relative inline-block full-height no-user-select" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             onMouseDown={this.onMouseDown}
             onMouseMove={this.onMouseMove}
@@ -378,7 +378,7 @@ class Sequencer extends React.Component {
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
         </ul>
-        <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
+        <ul className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
           <li className="inline-block list-style-none full-width border-box">
             <TimelineHeader measureCount={this.props.measureCount}
                             currentStep={this.props.currentStep}
