@@ -423,11 +423,11 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 }
 
 /*
-The note input should be invisible, but if you actually make it fully invisible
-by using "display: none" etc., it no longer responds to key presses. This makes
-it as invisible as possible, while still not being _completely_ hidden.
+An input that should be invisible (e.g. to detect keypresses). If you actually make it
+fully invisible by using "display: none" etc., it no longer responds to key presses.
+This style makes it as invisible as possible, while still not being _completely_ hidden.
 */
-.note-input {
+.hidden-input {
   background: $white;
   height: 0;
   width: 0;

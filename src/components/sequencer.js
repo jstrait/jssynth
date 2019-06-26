@@ -450,7 +450,7 @@ class Sequencer extends React.Component {
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
-      <input className="note-input block" ref={(el) => { this.hiddenInput = el; }} type="text" readOnly={true} onBlur={this.onBlur} />
+      <input className="hidden-input block" ref={(el) => { this.hiddenInput = el; }} type="text" readOnly={true} onBlur={this.onBlur} />
     </div>;
   };
 };
