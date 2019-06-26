@@ -85,7 +85,7 @@ class App extends React.Component {
     this.patternIndexByID = this.patternIndexByID.bind(this);
     this.patternsByTrackID = this.patternsByTrackID.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
-    this.setPatternStartStep = this.setPatternStartStep.bind(this);
+    this.movePattern = this.movePattern.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
@@ -708,10 +708,11 @@ class App extends React.Component {
     });
   };
 
-  setPatternStartStep(patternID, newStartStep) {
+  movePattern(patternID, newTrackIndex, newStartStep) {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
 
+    pattern.trackID = this.state.tracks[newTrackIndex].id;
     pattern.startStep = newStartStep;
 
     this.setState({
@@ -1005,10 +1006,10 @@ class App extends React.Component {
                    setSelectedTrack={this.setSelectedTrack}
                    selectedPatternID={this.state.selectedPatternID}
                    setSelectedPattern={this.setSelectedPattern}
-                   setPatternStartStep={this.setPatternStartStep}
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
+                   movePattern={this.movePattern}
                    removePattern={this.removePattern}
                    removeTrack={this.removeTrack} />
         }

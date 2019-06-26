@@ -83,40 +83,102 @@ class TimelineHeader extends React.PureComponent {
   };
 };
 
-class TrackPatternList extends React.Component {
+class TimelineGrid extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      dragStartOffsetX: undefined,
+      dragStartStep: undefined,
+    };
+
+    this.startDrag = this.startDrag.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+  };
+
+  startDrag(clientX, startStep) {
+    let xOffset = clientX - this.containerEl.getBoundingClientRect().left;
+
+    this.setState({
+      dragStartOffsetX: xOffset,
+      dragStartStep: startStep,
+    });
   };
 
   onMouseDown(e) {
+    let yOffset
+    let trackIndex;
+
     if (e.metaKey === true) {
-      this.props.addPattern(this.props.trackID, e.clientX);
+      yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
+      trackIndex = Math.floor(yOffset / 72);
+
+      this.props.addPattern(this.props.tracks[trackIndex].id, e.clientX);
     }
   };
 
+  onMouseMove(e) {
+    if (this.state.dragStartOffsetX === undefined) {
+      return;
+    }
+
+    let containerBoundingRect = this.containerEl.getBoundingClientRect();
+    let xOffset = e.clientX - containerBoundingRect.left;
+    let yOffset = e.clientY - containerBoundingRect.top;
+
+    let dragPixelDeltaX = xOffset - this.state.dragStartOffsetX;
+    let dragStepCount = Math.floor(dragPixelDeltaX / 9);
+
+    let newStartStep = this.state.dragStartStep + dragStepCount;
+    newStartStep = Math.max(0, newStartStep);
+    newStartStep = Math.min((this.props.measureCount - 1) * 16, newStartStep);
+
+    let newTrackIndex = Math.floor(yOffset / 72);
+    newTrackIndex = Math.max(0, newTrackIndex);
+
+    if (this.props.startStep !== newStartStep) {
+      this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
+    }
+
+    this.props.setIsPopupMenuActive(false);
+  };
+
+  onMouseUp(e) {
+    this.setState({
+      dragStartOffsetX: undefined,
+      dragStartStep: undefined,
+    });
+  };
+
   render() {
-    return <ul className="flex full-height ml0 pl0 no-whitespace-wrap" onMouseDown={this.onMouseDown}>
-      <li className="sequencer-row-left-padding list-style-none border-box bb br bg-lighter-gray"></li>
-      <li className="sequencer-row relative list-style-none border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
-      {this.props.patterns.map((pattern, index) =>
-        <TimelinePattern key={index}
-                         trackID={this.props.trackID}
-                         patternID={pattern.id}
-                         startStep={pattern.startStep}
-                         timelineStepCount={this.props.measureCount * 16}
-                         isSelected={this.props.highlightedPatternID === pattern.id}
-                         isPopupMenuActive={this.props.isPopupMenuActive}
-                         hiddenInput={this.props.hiddenInput}
-                         setHighlightedPattern={this.props.setHighlightedPattern}
-                         setSelectedPattern={this.props.setSelectedPattern}
-                         setPatternStartStep={this.props.setPatternStartStep}
-                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                         removePattern={this.props.removePattern} />
-      )}
+    return <ul ref={el => {this.containerEl = el;}}
+               className="flex flex-column full-height ml0 pl0 no-whitespace-wrap"
+               onMouseDown={this.onMouseDown}
+               onMouseMove={this.onMouseMove}
+               onMouseUp={this.onMouseUp}>
+      {this.props.tracks.map((track, trackIndex) =>
+      <li key={trackIndex} className="list-style-none flex full-width height-3">
+        <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
+        <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
+          {this.props.patternsByTrackID[track.id].map((pattern, patternIndex) =>
+          <TimelinePattern key={patternIndex}
+                           patternID={pattern.id}
+                           startStep={pattern.startStep}
+                           isSelected={this.props.highlightedPatternID === pattern.id}
+                           isPopupMenuActive={this.props.isPopupMenuActive}
+                           hiddenInput={this.props.hiddenInput}
+                           startDrag={this.startDrag}
+                           setHighlightedPattern={this.props.setHighlightedPattern}
+                           setSelectedPattern={this.props.setSelectedPattern}
+                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+                           removePattern={this.props.removePattern} />
+          )}
+        </span>
+        <span className="sequencer-row-right-padding border-box bb bg-lighter-gray"></span>
       </li>
-      <li className="sequencer-row-right-padding list-style-none bb bg-lighter-gray"></li>
+      )}
     </ul>;
   };
 };
@@ -125,16 +187,9 @@ class TimelinePattern extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dragStartPixelX: undefined,
-      dragStartStep: undefined,
-    };
-
     this.enableEdit = this.enableEdit.bind(this);
     this.remove = this.remove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
     this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
   };
 
@@ -155,46 +210,23 @@ class TimelinePattern extends React.Component {
       this.props.setIsPopupMenuActive(false);
     }
 
-    this.setState({
-      dragStartPixelX: e.clientX,
-      dragStartStep: this.props.startStep,
-    });
+    this.props.startDrag(e.clientX, this.props.startStep);
 
     // Prevent onBlur from firing on hidden input, which will prevent pattern
     // box being selected
     e.preventDefault();
-  };
 
-  onMouseMove(e) {
-    if (this.state.dragStartPixelX === undefined) {
-      return;
-    }
-
-    var dragPixelDelta = e.clientX - this.state.dragStartPixelX;
-    var dragStepCount = Math.floor(dragPixelDelta / 9);
-
-    var newStartStep = this.state.dragStartStep + dragStepCount;
-    newStartStep = Math.max(0, newStartStep);
-    newStartStep = Math.min(this.props.timelineStepCount - 16, newStartStep);
-
-    if (this.props.startStep !== newStartStep) {
-      this.props.setPatternStartStep(this.props.patternID, newStartStep);
-    }
-
-    this.props.setIsPopupMenuActive(false);
-  };
-
-  onMouseUp(e) {
-    this.setState({
-      dragStartPixelX: undefined,
-      dragStartStep: undefined,
-    });
+    // Prevent click on parent pattern grid container
+    e.stopPropagation();
   };
 
   onPopupMenuMouseDown(e) {
     // Prevent onBlur from firing on hidden input, which will prevent pattern
     // box being selected
     e.preventDefault();
+
+    // Prevent click on parent pattern grid container
+    e.stopPropagation();
   };
 
   componentDidUpdate() {
@@ -204,11 +236,9 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span className="relative inline-block height-3" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            onMouseDown={this.onMouseDown}
-            onMouseMove={this.onMouseMove}
-            onMouseUp={this.onMouseUp}>
+            onMouseDown={this.onMouseDown}>
         Pattern {this.props.patternID}
       </span>
       {this.props.isSelected && this.props.isPopupMenuActive === true &&
@@ -418,22 +448,20 @@ class Sequencer extends React.Component {
                             setCurrentStep={this.props.setCurrentStep}
                             setIsTimelineElementActive={this.setIsTimelineElementActive} />
           </li>
-          {this.props.tracks.map((track) =>
-          <li key={track.id} className="list-style-none full-width height-3 border-box">
-            <TrackPatternList trackID={track.id}
-                              patterns={this.props.patternsByTrackID[track.id]}
-                              measureCount={this.props.measureCount}
-                              highlightedPatternID={this.state.highlightedPatternID}
-                              isPopupMenuActive={this.state.isPopupMenuActive}
-                              hiddenInput={this.hiddenInput}
-                              setHighlightedPattern={this.setHighlightedPattern}
-                              setSelectedPattern={this.props.setSelectedPattern}
-                              setPatternStartStep={this.props.setPatternStartStep}
-                              setIsPopupMenuActive={this.setIsPopupMenuActive}
-                              addPattern={this.addPattern}
-                              removePattern={this.removePattern} />
+          <li className="list-style-none full-width border-box">
+            <TimelineGrid tracks={this.props.tracks}
+                          patternsByTrackID={this.props.patternsByTrackID}
+                          measureCount={this.props.measureCount}
+                          highlightedPatternID={this.state.highlightedPatternID}
+                          isPopupMenuActive={this.state.isPopupMenuActive}
+                          hiddenInput={this.hiddenInput}
+                          setHighlightedPattern={this.setHighlightedPattern}
+                          setSelectedPattern={this.props.setSelectedPattern}
+                          setIsPopupMenuActive={this.setIsPopupMenuActive}
+                          addPattern={this.addPattern}
+                          movePattern={this.props.movePattern}
+                          removePattern={this.removePattern} />
           </li>
-          )}
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
         </ul>
         <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
