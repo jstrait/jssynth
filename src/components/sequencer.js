@@ -108,6 +108,7 @@ class TrackPatternList extends React.Component {
                          timelineStepCount={this.props.measureCount * 16}
                          isSelected={this.props.highlightedPatternID === pattern.id}
                          isPopupMenuActive={this.props.isPopupMenuActive}
+                         hiddenInput={this.props.hiddenInput}
                          setHighlightedPattern={this.props.setHighlightedPattern}
                          setSelectedPattern={this.props.setSelectedPattern}
                          setPatternStartStep={this.props.setPatternStartStep}
@@ -134,6 +135,7 @@ class TimelinePattern extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
   };
 
   enableEdit(e) {
@@ -157,6 +159,10 @@ class TimelinePattern extends React.Component {
       dragStartPixelX: e.clientX,
       dragStartStep: this.props.startStep,
     });
+
+    // Prevent onBlur from firing on hidden input, which will prevent pattern
+    // box being selected
+    e.preventDefault();
   };
 
   onMouseMove(e) {
@@ -185,6 +191,18 @@ class TimelinePattern extends React.Component {
     });
   };
 
+  onPopupMenuMouseDown(e) {
+    // Prevent onBlur from firing on hidden input, which will prevent pattern
+    // box being selected
+    e.preventDefault();
+  };
+
+  componentDidUpdate() {
+    if (this.props.isSelected) {
+      this.props.hiddenInput.focus();
+    }
+  };
+
   render() {
     return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
@@ -194,7 +212,7 @@ class TimelinePattern extends React.Component {
         Pattern {this.props.patternID}
       </span>
       {this.props.isSelected && this.props.isPopupMenuActive === true &&
-      <span className="absolute" style={{top: "calc(-5.0rem + 2px)", height: "4.5rem"}}>
+      <span className="absolute" style={{top: "calc(-5.0rem + 2px)", height: "4.5rem"}} onMouseDown={this.onPopupMenuMouseDown}>
         <span className="timeline-pattern-menu">
           <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>&nbsp;
           <button className="button-small button-hollow" onClick={this.remove}>Remove</button>
@@ -311,6 +329,7 @@ class Sequencer extends React.Component {
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   };
 
 
@@ -361,6 +380,13 @@ class Sequencer extends React.Component {
     this.props.addSamplerTrack(this.fileInput.files[0]);
   };
 
+  onBlur(e) {
+    this.setState({
+      highlightedPatternID: undefined,
+      isPopupMenuActive: false,
+    });
+  };
+
   render() {
     return <div className="pt1 pb1 border-box bt-thick">
       <div className="flex flex-justify-space-between">
@@ -399,6 +425,7 @@ class Sequencer extends React.Component {
                               measureCount={this.props.measureCount}
                               highlightedPatternID={this.state.highlightedPatternID}
                               isPopupMenuActive={this.state.isPopupMenuActive}
+                              hiddenInput={this.hiddenInput}
                               setHighlightedPattern={this.setHighlightedPattern}
                               setSelectedPattern={this.props.setSelectedPattern}
                               setPatternStartStep={this.props.setPatternStartStep}
@@ -423,6 +450,7 @@ class Sequencer extends React.Component {
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
+      <input className="note-input block" ref={(el) => { this.hiddenInput = el; }} type="text" readOnly={true} onBlur={this.onBlur} />
     </div>;
   };
 };
