@@ -94,7 +94,7 @@ class TimelineGrid extends React.Component {
 
     this.startDrag = this.startDrag.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onDragMove = this.onDragMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
   };
 
@@ -119,11 +119,7 @@ class TimelineGrid extends React.Component {
     }
   };
 
-  onMouseMove(e) {
-    if (this.state.dragStartOffsetX === undefined) {
-      return;
-    }
-
+  onDragMove(e) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let xOffset = e.clientX - containerBoundingRect.left;
     let yOffset = e.clientY - containerBoundingRect.top;
@@ -156,7 +152,7 @@ class TimelineGrid extends React.Component {
     return <ul ref={el => {this.containerEl = el;}}
                className="flex flex-column full-height ml0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
-               onMouseMove={this.onMouseMove}
+               onMouseMove={(this.state.dragStartOffsetX === undefined) ? undefined : this.onDragMove}
                onMouseUp={this.onMouseUp}>
       {this.props.tracks.map((track, trackIndex) =>
       <li key={trackIndex} className="list-style-none flex full-width height-3">
