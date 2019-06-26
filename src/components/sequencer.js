@@ -33,7 +33,7 @@ class TrackHeader extends React.PureComponent {
       return fullTrackName.substring(0, 4);
     };
 
-    return <li className="flex flex-column flex-uniform-size flex-justify-center bg-light-gray list-style-none pl1 pr1 border-box bb br">
+    return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr1 height-3 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.name)}</span>
       <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.name} onChange={this.setTrackName} onFocus={this.setSelectedTrack} />
       <span className="sequencer-volume-container flex flex-align-center">
@@ -69,7 +69,7 @@ class TimelineHeader extends React.PureComponent {
     let baseTimelineWidth = this.props.measureCount * 16 * 9;
 
     return <div className="relative">
-      <ul className="flex ml0 pl0 no-whitespace-wrap height-2">
+      <ul className="flex m0 pl0 no-whitespace-wrap height-2">
         <li className="sequencer-row-left-padding list-style-none border-box bb br"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
@@ -150,7 +150,7 @@ class TimelineGrid extends React.Component {
 
   render() {
     return <ul ref={el => {this.containerEl = el;}}
-               className="flex flex-column full-height ml0 pl0 no-whitespace-wrap"
+               className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
                onMouseMove={(this.state.dragStartOffsetX === undefined) ? undefined : this.onDragMove}
                onMouseUp={this.onMouseUp}>
@@ -232,7 +232,7 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="relative inline-block height-3" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             onMouseDown={this.onMouseDown}>
         Pattern {this.props.patternID}
@@ -419,8 +419,8 @@ class Sequencer extends React.Component {
         <h2 className="mt0 mb1 pl1">Sequencer</h2>
         <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
-      <div className="flex">
-        <ul className={"flex flex-column mt1 ml0 pl0 overflow-scroll-x border-box " + (this.state.expanded ? "expanded" : "contracted")}>
+      <div className="flex mb1">
+        <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.state.expanded ? "expanded" : "contracted")}>
           <li className="list-style-none height-1 pl1 border-box bb">
             <button className={"vertical-top button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
           </li>
@@ -436,34 +436,30 @@ class Sequencer extends React.Component {
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
         </ul>
-        <ul ref={(el) => { this.timelineContainerEl = el; }}
-            className={"relative flex flex-uniform-size flex-column mt0 ml0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
-          <li className="inline-block list-style-none full-width border-box">
-            <TimelineHeader measureCount={this.props.measureCount}
-                            currentStep={this.props.currentStep}
-                            setCurrentStep={this.props.setCurrentStep}
-                            setIsTimelineElementActive={this.setIsTimelineElementActive} />
-          </li>
-          <li className="list-style-none full-width border-box">
-            <TimelineGrid tracks={this.props.tracks}
-                          patternsByTrackID={this.props.patternsByTrackID}
-                          measureCount={this.props.measureCount}
-                          highlightedPatternID={this.state.highlightedPatternID}
-                          isPopupMenuActive={this.state.isPopupMenuActive}
-                          hiddenInput={this.hiddenInput}
-                          setHighlightedPattern={this.setHighlightedPattern}
-                          setSelectedPattern={this.props.setSelectedPattern}
-                          setIsPopupMenuActive={this.setIsPopupMenuActive}
-                          addPattern={this.addPattern}
-                          movePattern={this.props.movePattern}
-                          removePattern={this.removePattern} />
-          </li>
+        <div ref={(el) => { this.timelineContainerEl = el; }}
+             className={"relative flex flex-uniform-size flex-column m0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
+          <TimelineHeader measureCount={this.props.measureCount}
+                          currentStep={this.props.currentStep}
+                          setCurrentStep={this.props.setCurrentStep}
+                          setIsTimelineElementActive={this.setIsTimelineElementActive} />
+          <TimelineGrid tracks={this.props.tracks}
+                        patternsByTrackID={this.props.patternsByTrackID}
+                        measureCount={this.props.measureCount}
+                        highlightedPatternID={this.state.highlightedPatternID}
+                        isPopupMenuActive={this.state.isPopupMenuActive}
+                        hiddenInput={this.hiddenInput}
+                        setHighlightedPattern={this.setHighlightedPattern}
+                        setSelectedPattern={this.props.setSelectedPattern}
+                        setIsPopupMenuActive={this.setIsPopupMenuActive}
+                        addPattern={this.addPattern}
+                        movePattern={this.props.movePattern}
+                        removePattern={this.removePattern} />
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
-        </ul>
-        <ul className={"flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box" + (this.state.expanded ? "" : " display-none")}>
+        </div>
+        <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.state.expanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
           {this.props.tracks.map((track) =>
-          <li key={track.id} className="flex flex-align-center flex-uniform-size bg-light-gray pl-half pr-half list-style-none border-box bb bl">
+          <li key={track.id} className="flex flex-align-center bg-light-gray pl-half pr-half list-style-none height-3 border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />
           </li>
           )}
