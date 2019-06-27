@@ -253,11 +253,6 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   opacity: 0.5;
 }
 
-.sequencer-current-measure {
-  background: $light-orange;
-  color: $white;
-}
-
 .sequencer-cell {
   flex: 0 0 9.0rem;
 }
