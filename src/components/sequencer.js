@@ -159,6 +159,7 @@ class TimelineGrid extends React.Component {
           <TimelinePattern key={patternIndex}
                            patternID={pattern.id}
                            startStep={pattern.startStep}
+                           stepCount={pattern.rows[0].notes.length}
                            isSelected={this.props.highlightedPatternID === pattern.id}
                            isPopupMenuActive={this.props.isPopupMenuActive}
                            hiddenInput={this.props.hiddenInput}
@@ -231,6 +232,7 @@ class TimelinePattern extends React.Component {
   render() {
     return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+            style={{width: `calc((${this.props.stepCount} * 9px) - 1px)`}}
             onMouseDown={this.onMouseDown}>
         Pattern {this.props.patternID}
       </span>

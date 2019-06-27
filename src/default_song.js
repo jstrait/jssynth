@@ -209,18 +209,8 @@ const patterns = [
                 {name: "C2"},
                 {name: "A1"},
                 {name: "G2"},
-                {name: "-"},],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Bass Synth 2",
-    trackID: 1,
-    startStep: 16,
-    rows: [
-      {
-        notes: [{name: "G2"},
+                {name: "-"},
+                {name: "G2"},
                 {name: "A2"},
                 {name: "A1"},
                 {name: ""},
@@ -240,8 +230,8 @@ const patterns = [
     ],
   },
   {
-    id: 3,
-    name: "Bass Synth 3",
+    id: 2,
+    name: "Bass Synth 2",
     trackID: 1,
     startStep: 64,
     rows: [
@@ -261,18 +251,8 @@ const patterns = [
                 {name: "C2"},
                 {name: "-"},
                 {name: "G2"},
-                {name: "-"},],
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Bass Synth 4",
-    trackID: 1,
-    startStep: 80,
-    rows: [
-      {
-        notes: [{name: "A1"},
+                {name: "-"},
+                {name: "A1"},
                 {name: "A1"},
                 {name: ""},
                 {name: "A1"},
@@ -292,7 +272,7 @@ const patterns = [
     ],
   },
   {
-    id: 5,
+    id: 3,
     name: "Arpeggio 1",
     trackID: 2,
     startStep: 64,
@@ -318,7 +298,7 @@ const patterns = [
     ],
   },
   {
-    id: 6,
+    id: 4,
     name: "Arpeggio 2",
     trackID: 2,
     startStep: 96,
@@ -344,7 +324,7 @@ const patterns = [
     ],
   },
   {
-    id: 7,
+    id: 5,
     name: "Squeal 1",
     trackID: 3,
     startStep: 112,
@@ -370,7 +350,7 @@ const patterns = [
     ],
   },
   {
-    id: 8,
+    id: 6,
     name: "Bass Drum 1",
     trackID: 4,
     startStep: 0,
@@ -396,7 +376,7 @@ const patterns = [
     ],
   },
   {
-    id: 9,
+    id: 7,
     name: "Bass Drum 2",
     trackID: 4,
     startStep: 64,
@@ -422,7 +402,7 @@ const patterns = [
     ],
   },
   {
-    id: 10,
+    id: 8,
     name: "Snare Drum 1",
     trackID: 5,
     startStep: 64,
@@ -448,7 +428,7 @@ const patterns = [
     ],
   },
   {
-    id: 11,
+    id: 9,
     name: "Hi-Hat 1",
     trackID: 6,
     startStep: 0,
@@ -474,7 +454,7 @@ const patterns = [
     ],
   },
   {
-    id: 12,
+    id: 10,
     name: "Hi-Hat 2",
     trackID: 6,
     startStep: 64,
