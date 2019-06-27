@@ -428,7 +428,7 @@ class App extends React.Component {
     let newInstrument = {
       id:                    newInstrumentID,
       type:                  'synth',
-      name:                  'Instrument ' + newInstrumentID,
+      name:                  'Synth Track',
       oscillator1Waveform:   'sine',
       oscillator1Octave:     -1,
       oscillator1Amplitude:  1.0,
@@ -471,7 +471,7 @@ class App extends React.Component {
       let newInstrument = {
         id:                    newInstrumentID,
         type:                  'sample',
-        name:                  label,
+        name:                  'Sampler Track',
         sample:                label,
         filename:              file.name,
         loop:                  false,
