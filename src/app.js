@@ -1037,7 +1037,7 @@ class App extends React.Component {
                          setSelectedPattern={this.setSelectedPattern}
                          setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
-                         keyboardActive={this.keyboardActive} />
+                         keyboardActive={this.state.isKeyboardActive} />
         </div>
         }
         {(this.state.selectedTrackID !== undefined || this.state.selectedPatternID !== undefined) &&
