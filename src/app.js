@@ -1000,7 +1000,6 @@ class App extends React.Component {
                    setMeasureCount={this.setMeasureCount}
                    currentStep={this.state.transport.step}
                    setCurrentStep={this.setCurrentStep}
-                   setTrackName={this.setTrackName}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
                    setSelectedTrack={this.setSelectedTrack}

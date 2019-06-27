@@ -7,17 +7,12 @@ class TrackHeader extends React.PureComponent {
     super(props);
 
     this.setSelectedTrack = this.setSelectedTrack.bind(this);
-    this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
   };
 
   setSelectedTrack(e) {
     this.props.setSelectedTrack(this.props.trackID);
-  };
-
-  setTrackName(e) {
-    this.props.setTrackName(this.props.trackID, e.target.value);
   };
 
   setTrackVolume(e) {
@@ -33,9 +28,11 @@ class TrackHeader extends React.PureComponent {
       return fullTrackName.substring(0, 4);
     };
 
-    return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr1 height-3 border-box bb br">
+    return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr-half height-3 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.name)}</span>
-      <input className="underlinedInput full-width bg-light-gray" type="text" value={this.props.name} onChange={this.setTrackName} onFocus={this.setSelectedTrack} />
+      <span className="sequencer-name-container flex flex-justify-space-between">
+        {this.props.name} <button className="button-hollow button-small" onClick={this.setSelectedTrack}>Edit</button>
+      </span>
       <span className="sequencer-volume-container flex flex-align-center">
         <button className={"button-hollow button-small" + (this.props.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
         <input className="full-width" style={{marginLeft: "4px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.muted} value={this.props.volume} onChange={this.setTrackVolume} />
@@ -431,7 +428,6 @@ class Sequencer extends React.Component {
                          muted={track.muted}
                          volume={track.volume}
                          setSelectedTrack={this.props.setSelectedTrack}
-                         setTrackName={this.props.setTrackName}
                          setTrackVolume={this.props.setTrackVolume}
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}
