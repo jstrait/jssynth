@@ -28,7 +28,7 @@ export class DownloadButton extends React.PureComponent {
     }
 
     this.setState({ errorMessage: "" });
-    this.props.export();
+    this.props.export(this.hiddenDownloadLink);
   };
 
   render() {
@@ -53,7 +53,7 @@ export class DownloadButton extends React.PureComponent {
       <button className="button-full button-hollow right flex flex-align-center" onClick={this.togglePopup}>
         <span className="h3 lh-flush">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
-      <a id="hidden-download-link" className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
+      <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
       <div className={"mt3 p1 popup-box" + (this.state.isPopupVisible ? "" : " display-none")}>
         {bodyContent}
       </div>

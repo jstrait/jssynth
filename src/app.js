@@ -904,15 +904,14 @@ class App extends React.Component {
     console.log("Unexpected MIDI error");
   };
 
-  export() {
+  export(downloadTriggerLink) {
     let app = this;
 
     let exportCompleteCallback = function(blob) {
       let url = window.URL.createObjectURL(blob);
 
-      let hiddenDownloadLink = document.getElementById("hidden-download-link");
-      hiddenDownloadLink.href = url;
-      hiddenDownloadLink.click();
+      downloadTriggerLink.href = url;
+      downloadTriggerLink.click();
 
       window.URL.revokeObjectURL(blob);
 
