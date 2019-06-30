@@ -52,7 +52,7 @@ module.exports = {
       { from: 'sounds/*.wav' },
       { from: 'images/*.png' },
       { from: 'lib/*.js' },
-    ], {}),
+    ], { copyUnmodified: true }),
     new MiniCssExtractPlugin({
         filename: "jssynth.css",
     }),
