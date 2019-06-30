@@ -306,7 +306,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
           </span>
         </div>
-        <div className={"pl1 border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+        <div className={"pl1 br border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
           <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
           <span className="control">
             <label className="control-label">Attack Speed:</label>
@@ -665,7 +665,7 @@ class SynthInstrumentEditor extends React.Component {
           </span>
         </div>
 
-        <div>
+        <div className="pr1-l br-l">
           <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "pitch_wobble" ? "" : " display-none")}>
             <h2 className="h3 section-header display-none block-l">Pitch Wobble</h2>
             <span className="control">
