@@ -315,6 +315,7 @@ class App extends React.Component {
   setMeasureCount(newMeasureCount) {
     let i;
     let newMaxStep;
+    let patternFinalStep;
     let newCurrentStep = this.transport.currentStep();
     let newSelectedPatternID = this.state.selectedPatternID;
 
@@ -325,7 +326,8 @@ class App extends React.Component {
       }
 
       for (i = this.state.patterns.length - 1; i >= 0; i--) {
-        if (this.state.patterns[i].startStep > (newMaxStep - 15)) {
+        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].rows[0].notes.length - 1;
+        if (patternFinalStep > newMaxStep) {
           if (newSelectedPatternID === this.state.patterns[i].id) {
             newSelectedPatternID = undefined;
           }
