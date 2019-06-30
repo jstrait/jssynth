@@ -294,25 +294,25 @@ class MeasureCount extends React.PureComponent {
                        parsedNumber >= this.MIN_VALUE &&
                        parsedNumber <= this.MAX_VALUE;
 
-    this.setState(() => ({ isValidValue: isValidValue }));
+    this.setState({ isValidValue: isValidValue });
   };
 
   setMeasureCount(e) {
     this.props.setMeasureCount(parseInt(this.measureCountInput.value, 10));
-    this.setState(() => ({ editMode: false }));
+    this.setState({ editMode: false });
   };
 
   enableEditMode() {
-    this.setState(() => ({
+    this.setState({
       editMode: true,
       isValidValue: true,
-    }));
+    });
   };
 
   disableEditMode() {
-    this.setState(() => ({
+    this.setState({
       editMode: false,
-    }));
+    });
   };
 
   render() {
