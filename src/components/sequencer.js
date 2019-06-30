@@ -163,9 +163,7 @@ class TimelineGrid extends React.Component {
                            hiddenInput={this.props.hiddenInput}
                            startDrag={this.startDrag}
                            setHighlightedPattern={this.props.setHighlightedPattern}
-                           setSelectedPattern={this.props.setSelectedPattern}
-                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                           removePattern={this.props.removePattern} />
+                           setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
           )}
         </span>
         <span className="sequencer-row-right-padding border-box bb bg-lighter-gray"></span>
@@ -179,23 +177,12 @@ class TimelinePattern extends React.Component {
   constructor(props) {
     super(props);
 
-    this.enableEdit = this.enableEdit.bind(this);
-    this.remove = this.remove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
-  };
-
-  enableEdit(e) {
-    this.props.setSelectedPattern(this.props.patternID);
-  };
-
-  remove(e) {
-    this.props.removePattern(this.props.patternID);
   };
 
   onMouseDown(e) {
     if (this.props.isSelected === true) {
-      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
+      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive, this.patternBoxEl.offsetLeft, this.patternBoxEl.offsetTop);
     }
     else {
       this.props.setHighlightedPattern(this.props.patternID);
@@ -212,15 +199,6 @@ class TimelinePattern extends React.Component {
     e.stopPropagation();
   };
 
-  onPopupMenuMouseDown(e) {
-    // Prevent onBlur from firing on hidden input, which will prevent pattern
-    // box being selected
-    e.preventDefault();
-
-    // Prevent click on parent pattern grid container
-    e.stopPropagation();
-  };
-
   componentDidUpdate() {
     if (this.props.isSelected) {
       this.props.hiddenInput.focus();
@@ -228,24 +206,12 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             style={{width: `calc((${this.props.stepCount} * 9px) - 1px)`}}
             onMouseDown={this.onMouseDown}>
         Pattern {this.props.patternID}
       </span>
-      {this.props.isSelected && this.props.isPopupMenuActive === true &&
-      <span className="absolute" style={{top: "calc(-5.0rem + 2px)", height: "4.5rem"}} onMouseDown={this.onPopupMenuMouseDown}>
-        <span className="timeline-pattern-menu">
-          <button className="button-small button-hollow" onClick={this.enableEdit}>Edit</button>&nbsp;
-          <button className="button-small button-hollow" onClick={this.remove}>Remove</button>
-        </span>
-        <span className="relative block" style={{height: "1.25rem", marginTop: "-2px"}}>
-          <span className="timeline-pattern-menu-arrow-outline"></span>
-          <span className="timeline-pattern-menu-arrow-fill"></span>
-        </span>
-      </span>
-      }
     </span>;
   };
 };
@@ -342,6 +308,8 @@ class Sequencer extends React.Component {
       isTimelineElementActive: false,
       highlightedPatternID: undefined,
       isPopupMenuActive: false,
+      popupMenuLeft: 0,
+      popupMenuTop: 0,
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
@@ -349,10 +317,12 @@ class Sequencer extends React.Component {
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
     this.addPattern = this.addPattern.bind(this);
+    this.editPattern = this.editPattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
   };
 
 
@@ -372,9 +342,19 @@ class Sequencer extends React.Component {
     });
   };
 
-  setIsPopupMenuActive(newIsPopupMenuActive) {
+  setIsPopupMenuActive(newIsPopupMenuActive, patternBoxOffsetLeft, patternBoxOffsetTop) {
+    let newPopupMenuLeft = this.state.popupMenuLeft;
+    let newPopupMenuTop = this.state.popupMenuTop;
+
+    if (newIsPopupMenuActive === true) {
+      newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
+      newPopupMenuTop = `calc(${this.timelineContainerEl.offsetTop + patternBoxOffsetTop}px - 4.5rem)`;
+    }
+
     this.setState({
       isPopupMenuActive: newIsPopupMenuActive,
+      popupMenuLeft: newPopupMenuLeft,
+      popupMenuTop: newPopupMenuTop,
     });
   };
 
@@ -383,12 +363,16 @@ class Sequencer extends React.Component {
     this.props.addPattern(trackID, Math.floor(containerPixelX / 9));
   };
 
-  removePattern(patternID) {
+  editPattern(e) {
+    this.props.setSelectedPattern(this.state.highlightedPatternID);
+  };
+
+  removePattern(e) {
+    this.props.removePattern(this.state.highlightedPatternID);
+
     this.setState({
       highlightedPatternID: undefined,
     });
-
-    this.props.removePattern(patternID);
   };
 
   showFileChooser(e) {
@@ -410,8 +394,14 @@ class Sequencer extends React.Component {
     });
   };
 
+  onPopupMenuMouseDown(e) {
+    // Prevent onBlur from firing on hidden input, which will prevent pattern
+    // box being selected
+    e.preventDefault();
+  };
+
   render() {
-    return <div className="pt1 pb1 border-box bt-thick">
+    return <div ref={(el) => { this.sequencerContainerEl = el; }} className="relative pt1 pb1 border-box bt-thick">
       <div className="flex flex-justify-space-between">
         <h2 className="mt0 mb1 pl1">Sequencer</h2>
         <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
@@ -445,11 +435,9 @@ class Sequencer extends React.Component {
                         isPopupMenuActive={this.state.isPopupMenuActive}
                         hiddenInput={this.hiddenInput}
                         setHighlightedPattern={this.setHighlightedPattern}
-                        setSelectedPattern={this.props.setSelectedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         addPattern={this.addPattern}
-                        movePattern={this.props.movePattern}
-                        removePattern={this.removePattern} />
+                        movePattern={this.props.movePattern} />
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
         </div>
         <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.state.expanded ? "" : " display-none")}>
@@ -467,6 +455,20 @@ class Sequencer extends React.Component {
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
       <input className="hidden-input block" ref={(el) => { this.hiddenInput = el; }} type="text" readOnly={true} onBlur={this.onBlur} />
+      {this.state.highlightedPatternID !== undefined && this.state.isPopupMenuActive === true &&
+      <span className="absolute height-3"
+            style={{left: this.state.popupMenuLeft, top: this.state.popupMenuTop}}
+            onMouseDown={this.onPopupMenuMouseDown}>
+        <span className="timeline-pattern-menu">
+          <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
+          <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
+        </span>
+        <span className="relative block" style={{height: "1.0rem", marginTop: "-2px"}}>
+          <span className="timeline-pattern-menu-arrow-outline"></span>
+          <span className="timeline-pattern-menu-arrow-fill"></span>
+        </span>
+      </span>
+      }
     </div>;
   };
 };

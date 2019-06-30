@@ -304,20 +304,20 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-menu-arrow-outline {
   position: absolute;
-  left: calc(50% - 0.75rem);
+  left: calc(50% - 0.5rem);
   bottom: 0;
   width: 0;
-  border-width: 1.25rem 1.25rem 0 1.25rem;
+  border-width: 1.0rem 1.0rem 0 1.0rem;
   border-style: solid;
   border-color: $border-color transparent transparent transparent;
 }
 
 .timeline-pattern-menu-arrow-fill {
   position: absolute;
-  left: calc(50% - 0.55rem);
+  left: calc(50% - 0.35rem);
   top: 0;
   width: 0;
-  border-width: 1.1rem 1.1rem 0 1.1rem;
+  border-width: 0.85rem 0.85rem 0 0.85rem;
   border-style: solid;
   border-color: $lighter-gray transparent transparent transparent;
 }
