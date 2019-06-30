@@ -48,13 +48,13 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
-      { from: 'html/jssynth.html', to: 'dist/' },
-      { from: 'sounds/*.wav', to: 'dist/' },
-      { from: 'images/*.png', to: 'dist/' },
-      { from: 'lib/*.js', to: 'dist/' },
+      { from: 'html/jssynth.html' },
+      { from: 'sounds/*.wav' },
+      { from: 'images/*.png' },
+      { from: 'lib/*.js' },
     ], {}),
     new MiniCssExtractPlugin({
-        filename: "dist/jssynth.css",
+        filename: "jssynth.css",
     }),
     new TerserPlugin({
       terserOptions: {
@@ -64,7 +64,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'dist/jssynth.js',
-    path: path.resolve(__dirname, '.'),
+    filename: 'jssynth.js',
+    path: path.resolve(__dirname, "./dist"),
   }
 };
