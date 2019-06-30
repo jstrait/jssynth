@@ -715,6 +715,9 @@ class App extends React.Component {
     let pattern = this.itemByID(newPatternList, patternID);
 
     pattern.trackID = this.state.tracks[newTrackIndex].id;
+
+    newStartStep = Math.max(0, newStartStep);
+    newStartStep = Math.min((this.state.measureCount * 16) - pattern.rows[0].notes.length, newStartStep);
     pattern.startStep = newStartStep;
 
     this.setState({

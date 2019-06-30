@@ -125,8 +125,6 @@ class TimelineGrid extends React.Component {
     let dragStepCount = Math.floor(dragPixelDeltaX / 9);
 
     let newStartStep = this.state.dragStartStep + dragStepCount;
-    newStartStep = Math.max(0, newStartStep);
-    newStartStep = Math.min((this.props.measureCount - 1) * 16, newStartStep);
 
     let newTrackIndex = Math.floor(yOffset / 72);
     newTrackIndex = Math.max(0, newTrackIndex);
