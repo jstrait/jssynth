@@ -177,17 +177,25 @@ class TimelinePattern extends React.Component {
   constructor(props) {
     super(props);
 
+    this.highlight = this.highlight.bind(this);
+
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+  };
+
+  highlight() {
+    this.props.setHighlightedPattern(this.props.patternID, this.patternBoxEl.offsetLeft, this.patternBoxEl.offsetTop);
+
+    if (this.props.isSelected === true) {
+      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
+    }
+    else {
+      this.props.setIsPopupMenuActive(false);
+    }
   };
 
   onMouseDown(e) {
-    if (this.props.isSelected === true) {
-      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive, this.patternBoxEl.offsetLeft, this.patternBoxEl.offsetTop);
-    }
-    else {
-      this.props.setHighlightedPattern(this.props.patternID);
-      this.props.setIsPopupMenuActive(false);
-    }
+    this.highlight();
 
     this.props.startDrag(e.clientX, this.props.startStep);
 
@@ -197,6 +205,10 @@ class TimelinePattern extends React.Component {
 
     // Prevent click on parent pattern grid container
     e.stopPropagation();
+  };
+
+  onTouchStart(e) {
+    this.highlight();
   };
 
   componentDidUpdate() {
@@ -209,7 +221,8 @@ class TimelinePattern extends React.Component {
     return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             style={{width: `calc((${this.props.stepCount} * 9px) - 1px)`}}
-            onMouseDown={this.onMouseDown}>
+            onMouseDown={this.onMouseDown}
+            onTouchStart={this.onTouchStart}>
         Pattern {this.props.patternID}
       </span>
     </span>;
@@ -307,9 +320,9 @@ class Sequencer extends React.Component {
       expanded: true,
       isTimelineElementActive: false,
       highlightedPatternID: undefined,
+      highlightedPatternLeft: undefined,
+      highlightedPatternTop: undefined,
       isPopupMenuActive: false,
-      popupMenuLeft: 0,
-      popupMenuTop: 0,
     };
 
     this.toggleExpansion = this.toggleExpansion.bind(this);
@@ -336,25 +349,20 @@ class Sequencer extends React.Component {
     this.setState({isTimelineElementActive: newIsTimelineElementActive});
   };
 
-  setHighlightedPattern(patternID) {
+  setHighlightedPattern(patternID, patternBoxOffsetLeft, patternBoxOffsetTop) {
+    let newHighlightedPatternLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
+    let newHighlightedPatternTop = this.timelineContainerEl.offsetTop + patternBoxOffsetTop;
+
     this.setState({
       highlightedPatternID: patternID,
+      highlightedPatternLeft: newHighlightedPatternLeft,
+      highlightedPatternTop: newHighlightedPatternTop,
     });
   };
 
-  setIsPopupMenuActive(newIsPopupMenuActive, patternBoxOffsetLeft, patternBoxOffsetTop) {
-    let newPopupMenuLeft = this.state.popupMenuLeft;
-    let newPopupMenuTop = this.state.popupMenuTop;
-
-    if (newIsPopupMenuActive === true) {
-      newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
-      newPopupMenuTop = `calc(${this.timelineContainerEl.offsetTop + patternBoxOffsetTop}px - 4.5rem)`;
-    }
-
+  setIsPopupMenuActive(newIsPopupMenuActive) {
     this.setState({
       isPopupMenuActive: newIsPopupMenuActive,
-      popupMenuLeft: newPopupMenuLeft,
-      popupMenuTop: newPopupMenuTop,
     });
   };
 
@@ -454,10 +462,14 @@ class Sequencer extends React.Component {
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
-      <input className="hidden-input block" ref={(el) => { this.hiddenInput = el; }} type="text" readOnly={true} onBlur={this.onBlur} />
+      <input ref={(el) => { this.hiddenInput = el; }}
+             className="absolute hidden-input block"
+             style={{left: this.state.highlightedPatternLeft, top: this.state.highlightedPatternTop}}
+             type="text" readOnly={true}
+             onBlur={this.onBlur} />
       {this.state.highlightedPatternID !== undefined && this.state.isPopupMenuActive === true &&
       <span className="absolute height-3"
-            style={{left: this.state.popupMenuLeft, top: this.state.popupMenuTop}}
+            style={{left: this.state.highlightedPatternLeft, top: `calc(${this.state.highlightedPatternTop}px - 4.5rem)`}}
             onMouseDown={this.onPopupMenuMouseDown}>
         <span className="timeline-pattern-menu">
           <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
