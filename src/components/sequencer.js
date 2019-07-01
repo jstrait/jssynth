@@ -93,6 +93,7 @@ class TimelineGrid extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onDragMove = this.onDragMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
   };
 
   startDrag(clientX, startStep) {
@@ -101,6 +102,13 @@ class TimelineGrid extends React.Component {
     this.setState({
       dragStartOffsetX: xOffset,
       dragStartStep: startStep,
+    });
+  };
+
+  endDrag() {
+    this.setState({
+      dragStartOffsetX: undefined,
+      dragStartStep: undefined,
     });
   };
 
@@ -137,10 +145,13 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseUp(e) {
-    this.setState({
-      dragStartOffsetX: undefined,
-      dragStartStep: undefined,
-    });
+    this.endDrag();
+  };
+
+  onMouseOver(e) {
+    if (e.buttons === 0) {
+      this.endDrag();
+    }
   };
 
   render() {
@@ -148,7 +159,8 @@ class TimelineGrid extends React.Component {
                className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
                onMouseMove={(this.state.dragStartOffsetX === undefined) ? undefined : this.onDragMove}
-               onMouseUp={this.onMouseUp}>
+               onMouseUp={this.onMouseUp}
+               onMouseOver={this.onMouseOver}>
       {this.props.tracks.map((track, trackIndex) =>
       <li key={trackIndex} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
