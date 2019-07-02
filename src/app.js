@@ -713,11 +713,29 @@ class App extends React.Component {
   movePattern(patternID, newTrackIndex, newStartStep) {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
-
-    pattern.trackID = this.state.tracks[newTrackIndex].id;
+    let newTrackID = this.state.tracks[newTrackIndex].id;
+    let patternsInNewTrack = this.patternsByTrackID(newTrackID);
+    let newEndStep;
+    let otherPatternStartStep;
+    let otherPatternEndStep;
+    let i;
 
     newStartStep = Math.max(0, newStartStep);
     newStartStep = Math.min((this.state.measureCount * 16) - pattern.rows[0].notes.length, newStartStep);
+    newEndStep = newStartStep + pattern.rows[0].notes.length;
+
+    // Check for overlap with other existing patterns
+    for (i = 0; i < patternsInNewTrack.length; i++) {
+      otherPatternStartStep = patternsInNewTrack[i].startStep;
+      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].rows[0].notes.length;
+
+      if (pattern.id !== patternsInNewTrack[i].id &&
+          !((newEndStep <= otherPatternStartStep) || (newStartStep >= otherPatternEndStep))) {
+        return;
+      }
+    }
+
+    pattern.trackID = newTrackID;
     pattern.startStep = newStartStep;
 
     this.setState({
