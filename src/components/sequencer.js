@@ -85,8 +85,7 @@ class TimelineGrid extends React.Component {
     super(props);
 
     this.state = {
-      dragStartOffsetX: undefined,
-      dragStartStep: undefined,
+      isDragInProgress: false,
     };
 
     this.startDrag = this.startDrag.bind(this);
@@ -97,18 +96,14 @@ class TimelineGrid extends React.Component {
   };
 
   startDrag(clientX, startStep) {
-    let xOffset = clientX - this.containerEl.getBoundingClientRect().left;
-
     this.setState({
-      dragStartOffsetX: xOffset,
-      dragStartStep: startStep,
+      isDragInProgress: true,
     });
   };
 
   endDrag() {
     this.setState({
-      dragStartOffsetX: undefined,
-      dragStartStep: undefined,
+      isDragInProgress: false,
     });
   };
 
@@ -126,13 +121,11 @@ class TimelineGrid extends React.Component {
 
   onDragMove(e) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
-    let xOffset = e.clientX - containerBoundingRect.left;
+    let xOffset = e.clientX - containerBoundingRect.left - 16;
     let yOffset = e.clientY - containerBoundingRect.top;
 
-    let dragPixelDeltaX = xOffset - this.state.dragStartOffsetX;
-    let dragStepCount = Math.floor(dragPixelDeltaX / 9);
-
-    let newStartStep = this.state.dragStartStep + dragStepCount;
+    let stepUnderCursor = Math.floor(xOffset / 9);
+    let newStartStep = Math.floor(stepUnderCursor / 16) * 16;
 
     let newTrackIndex = Math.floor(yOffset / 72);
     newTrackIndex = Math.max(0, newTrackIndex);
@@ -158,7 +151,7 @@ class TimelineGrid extends React.Component {
     return <ul ref={el => {this.containerEl = el;}}
                className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
-               onMouseMove={(this.state.dragStartOffsetX === undefined) ? undefined : this.onDragMove}
+               onMouseMove={(this.state.isDragInProgress === true) ? this.onDragMove : undefined}
                onMouseUp={this.onMouseUp}
                onMouseOver={this.onMouseOver}>
       {this.props.tracks.map((track, trackIndex) =>
