@@ -2,6 +2,10 @@
 
 import React from 'react';
 
+const STEP_WIDTH_IN_PIXELS = 9;
+const TRACK_HEIGHT_IN_PIXELS = 72;
+const STEPS_PER_MEASURE = 16;
+
 class TrackHeader extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -63,7 +67,7 @@ class TimelineHeader extends React.PureComponent {
   };
 
   render() {
-    let baseTimelineWidth = this.props.measureCount * 16 * 9;
+    let baseTimelineWidth = this.props.measureCount * STEPS_PER_MEASURE * STEP_WIDTH_IN_PIXELS;
 
     return <div className="relative">
       <ul className="flex m0 pl0 no-whitespace-wrap height-2">
@@ -74,7 +78,7 @@ class TimelineHeader extends React.PureComponent {
         <li className="sequencer-row-right-padding list-style-none bb"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - 9px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * 16) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
+        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * STEPS_PER_MEASURE) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
       </div>
     </div>;
   };
@@ -113,7 +117,7 @@ class TimelineGrid extends React.Component {
 
     if (e.metaKey === true) {
       yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
-      trackIndex = Math.floor(yOffset / 72);
+      trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
 
       this.props.addPattern(this.props.tracks[trackIndex].id, e.clientX);
     }
@@ -124,10 +128,10 @@ class TimelineGrid extends React.Component {
     let xOffset = e.clientX - containerBoundingRect.left - 16;
     let yOffset = e.clientY - containerBoundingRect.top;
 
-    let stepUnderCursor = Math.floor(xOffset / 9);
-    let newStartStep = Math.floor(stepUnderCursor / 16) * 16;
+    let stepUnderCursor = Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
+    let newStartStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
 
-    let newTrackIndex = Math.floor(yOffset / 72);
+    let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
     newTrackIndex = Math.max(0, newTrackIndex);
 
     if (this.props.startStep !== newStartStep) {
@@ -157,7 +161,7 @@ class TimelineGrid extends React.Component {
       {this.props.tracks.map((track, trackIndex) =>
       <li key={trackIndex} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
-        <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * 16 * 9) + "px"}}>
+        <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * STEPS_PER_MEASURE * STEP_WIDTH_IN_PIXELS) + "px"}}>
           {this.props.patternsByTrackID[track.id].map((pattern, patternIndex) =>
           <TimelinePattern key={patternIndex}
                            patternID={pattern.id}
@@ -223,9 +227,9 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
-    return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * 9) + "px"}}>
+    return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px"}}>
       <span className={"timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            style={{width: `calc((${this.props.stepCount} * 9px) - 1px)`}}
+            style={{width: `calc((${this.props.stepCount} * ${STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
             onMouseDown={this.onMouseDown}
             onTouchStart={this.onTouchStart}>
         Pattern {this.props.patternID}
@@ -373,7 +377,7 @@ class Sequencer extends React.Component {
 
   addPattern(trackID, clientPixelX) {
     let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
-    this.props.addPattern(trackID, Math.floor(containerPixelX / 9));
+    this.props.addPattern(trackID, Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS));
   };
 
   editPattern(e) {
@@ -451,7 +455,7 @@ class Sequencer extends React.Component {
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         addPattern={this.addPattern}
                         movePattern={this.props.movePattern} />
-          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * 9}px + 1.0rem - 3px)`}}></span>
+          <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * STEP_WIDTH_IN_PIXELS}px + 1.0rem - 3px)`}}></span>
         </div>
         <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.state.expanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
