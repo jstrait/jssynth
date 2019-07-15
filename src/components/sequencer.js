@@ -112,7 +112,7 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDown(e) {
-    let yOffset
+    let yOffset;
     let trackIndex;
 
     if (e.metaKey === true) {
