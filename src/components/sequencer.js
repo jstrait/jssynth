@@ -374,7 +374,10 @@ class Sequencer extends React.Component {
 
   addPattern(trackID, clientPixelX) {
     let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
-    this.props.addPattern(trackID, Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS));
+    let stepUnderCursor = Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS);
+    let startStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+
+    this.props.addPattern(trackID, startStep);
   };
 
   editPattern(e) {
