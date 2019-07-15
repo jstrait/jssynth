@@ -724,6 +724,10 @@ class App extends React.Component {
     newStartStep = Math.min((this.state.measureCount * 16) - pattern.rows[0].notes.length, newStartStep);
     newEndStep = newStartStep + pattern.rows[0].notes.length;
 
+    if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
+      return;
+    }
+
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInNewTrack.length; i++) {
       otherPatternStartStep = patternsInNewTrack[i].startStep;

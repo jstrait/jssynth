@@ -134,10 +134,7 @@ class TimelineGrid extends React.Component {
     let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
     newTrackIndex = Math.max(0, newTrackIndex);
 
-    if (this.props.startStep !== newStartStep) {
-      this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
-    }
-
+    this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
     this.props.setIsPopupMenuActive(false);
   };
 
