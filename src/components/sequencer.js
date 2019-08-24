@@ -89,8 +89,6 @@ class TimelineGrid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.timelineWidthInPixels = this.props.measureCount * MEASURE_WIDTH_IN_PIXELS;
-
     this.state = {
       isDragInProgress: false,
     };
@@ -126,7 +124,7 @@ class TimelineGrid extends React.Component {
     // will have a different value depending on how wide the window is, because
     // the container automatically expands to fill the available space.
     xOffset = Math.max(0, xOffset);
-    xOffset = Math.min(xOffset, this.timelineWidthInPixels - 1);
+    xOffset = Math.min(xOffset, (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) - 1);
 
     // Unlike xOffset, the container always has the same height regardless of the
     // height of the window, so we can use it for clamping.
@@ -210,7 +208,7 @@ class TimelineGrid extends React.Component {
       {this.props.tracks.map((track, trackIndex) =>
       <li key={trackIndex} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
-        <span className="sequencer-row border-box bb br" style={{minWidth: this.timelineWidthInPixels + "px"}}>
+        <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
           {this.props.patternsByTrackID[track.id].map((pattern, patternIndex) =>
           <TimelinePattern key={patternIndex}
                            patternID={pattern.id}
