@@ -720,8 +720,6 @@ class App extends React.Component {
     let otherPatternEndStep;
     let i;
 
-    newStartStep = Math.max(0, newStartStep);
-    newStartStep = Math.min((this.state.measureCount * 16) - pattern.rows[0].notes.length, newStartStep);
     newEndStep = newStartStep + pattern.rows[0].notes.length;
 
     if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
