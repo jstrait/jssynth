@@ -5,6 +5,7 @@ import React from 'react';
 const STEP_WIDTH_IN_PIXELS = 9;
 const TRACK_HEIGHT_IN_PIXELS = 72;
 const STEPS_PER_MEASURE = 16;
+const MEASURE_WIDTH_IN_PIXELS = STEP_WIDTH_IN_PIXELS * STEPS_PER_MEASURE;
 
 class TrackHeader extends React.PureComponent {
   constructor(props) {
@@ -67,7 +68,7 @@ class TimelineHeader extends React.PureComponent {
   };
 
   render() {
-    let baseTimelineWidth = this.props.measureCount * STEPS_PER_MEASURE * STEP_WIDTH_IN_PIXELS;
+    let baseTimelineWidth = this.props.measureCount * MEASURE_WIDTH_IN_PIXELS;
 
     return <div className="relative">
       <ul className="flex m0 pl0 no-whitespace-wrap height-2">
@@ -88,7 +89,7 @@ class TimelineGrid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.timelineWidthInPixels = this.props.measureCount * STEPS_PER_MEASURE * STEP_WIDTH_IN_PIXELS;
+    this.timelineWidthInPixels = this.props.measureCount * MEASURE_WIDTH_IN_PIXELS;
 
     this.state = {
       isDragInProgress: false,
