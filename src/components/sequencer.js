@@ -95,10 +95,13 @@ class TimelineGrid extends React.Component {
     };
 
     this.startDrag = this.startDrag.bind(this);
+    this.dragMove = this.dragMove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onDragMove = this.onDragMove.bind(this);
+    this.onMouseDrag = this.onMouseDrag.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
   };
 
   startDrag(clientX, startStep) {
@@ -113,22 +116,10 @@ class TimelineGrid extends React.Component {
     });
   };
 
-  onMouseDown(e) {
-    let yOffset;
-    let trackIndex;
-
-    if (e.metaKey === true) {
-      yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
-      trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
-
-      this.props.addPattern(this.props.tracks[trackIndex].id, e.clientX);
-    }
-  };
-
-  onDragMove(e) {
+  dragMove(clientX, clientY) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
-    let xOffset = e.clientX - containerBoundingRect.left - 16;
-    let yOffset = e.clientY - containerBoundingRect.top;
+    let xOffset = clientX - containerBoundingRect.left - 16;
+    let yOffset = clientY - containerBoundingRect.top;
 
     // We can't use `this.containerEl.width` to check the bounds, because it
     // will have a different value depending on how wide the window is, because
@@ -151,6 +142,22 @@ class TimelineGrid extends React.Component {
     this.props.setIsPopupMenuActive(false);
   };
 
+  onMouseDown(e) {
+    let yOffset;
+    let trackIndex;
+
+    if (e.metaKey === true) {
+      yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
+      trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
+
+      this.props.addPattern(this.props.tracks[trackIndex].id, e.clientX);
+    }
+  };
+
+  onMouseDrag(e) {
+    this.dragMove(e.clientX, e.clientY);
+  };
+
   onMouseUp(e) {
     this.endDrag();
   };
@@ -161,13 +168,44 @@ class TimelineGrid extends React.Component {
     }
   };
 
+  onTouchMove(e) {
+    if (this.state.isDragInProgress === true) {
+      this.dragMove(e.touches[0].clientX, e.touches[0].clientY);
+
+      // Prevent container or page from scrolling while dragging pattern
+      e.preventDefault();
+    }
+  };
+
+  onTouchEnd(e) {
+    this.endDrag();
+  };
+
+  componentDidMount() {
+    // This event handler is added manually to the actual DOM element, instead of using the
+    // normal React way of attaching events because React seems to have a bug that prevents
+    // preventDefault() from working correctly in a "touchmove" handler (as of v16.8.6).
+    // The preventDefault() is needed to prevent the container element from scrolling while
+    // a touch drag is active on iOS.
+    // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
+    // https://github.com/facebook/react/issues/9809.
+    this.containerEl.addEventListener("touchmove", this.onTouchMove, false);
+  };
+
+  componentWillUnmount() {
+    const eventRemover = this.containerEl.removeEventListener || this.containerEl.detachEvent;
+    eventRemover("touchmove", this.onTouchMove);
+  };
+
   render() {
     return <ul ref={el => {this.containerEl = el;}}
                className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
-               onMouseMove={(this.state.isDragInProgress === true) ? this.onDragMove : undefined}
+               onMouseMove={(this.state.isDragInProgress === true) ? this.onMouseDrag : undefined}
                onMouseUp={this.onMouseUp}
-               onMouseOver={this.onMouseOver}>
+               onMouseOver={this.onMouseOver}
+               onTouchMove={this.onTouchMove}
+               onTouchEnd={this.onTouchEnd}>
       {this.props.tracks.map((track, trackIndex) =>
       <li key={trackIndex} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
@@ -228,6 +266,7 @@ class TimelinePattern extends React.Component {
 
   onTouchStart(e) {
     this.highlight();
+    this.props.startDrag(e.touches[0].clientX, this.props.startStep);
   };
 
   componentDidUpdate() {
