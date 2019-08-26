@@ -98,7 +98,7 @@ class TimelineGrid extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseDrag = this.onMouseDrag.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
@@ -161,7 +161,7 @@ class TimelineGrid extends React.Component {
     this.endDrag();
   };
 
-  onMouseOver(e) {
+  onMouseEnter(e) {
     if (e.buttons === 0) {
       this.endDrag();
     }
@@ -202,7 +202,7 @@ class TimelineGrid extends React.Component {
                onMouseDown={this.onMouseDown}
                onMouseMove={(this.state.isDragInProgress === true) ? this.onMouseDrag : undefined}
                onMouseUp={this.onMouseUp}
-               onMouseOver={this.onMouseOver}
+               onMouseEnter={this.onMouseEnter}
                onTouchMove={this.onTouchMove}
                onTouchEnd={this.onTouchEnd}>
       {this.props.tracks.map((track, trackIndex) =>
