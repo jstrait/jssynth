@@ -713,6 +713,7 @@ class App extends React.Component {
   movePattern(patternID, newTrackIndex, newStartStep) {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
+    let patternStepCount = pattern.rows[0].notes.length;
     let newTrackID = this.state.tracks[newTrackIndex].id;
     let patternsInNewTrack = this.patternsByTrackID(newTrackID);
     let newEndStep;
@@ -720,8 +721,8 @@ class App extends React.Component {
     let otherPatternEndStep;
     let i;
 
-    newStartStep = Math.min((this.state.measureCount * 16) - pattern.rows[0].notes.length, newStartStep);
-    newEndStep = newStartStep + pattern.rows[0].notes.length;
+    newStartStep = Math.min((this.state.measureCount * 16) - patternStepCount, newStartStep);
+    newEndStep = newStartStep + patternStepCount;
 
     if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
       return;
