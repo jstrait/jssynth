@@ -205,12 +205,12 @@ class TimelineGrid extends React.Component {
                onMouseEnter={this.onMouseEnter}
                onTouchMove={this.onTouchMove}
                onTouchEnd={this.onTouchEnd}>
-      {this.props.tracks.map((track, trackIndex) =>
-      <li key={trackIndex} className="list-style-none flex full-width height-3">
+      {this.props.tracks.map((track) =>
+      <li key={track.id} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
         <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
-          {this.props.patternsByTrackID[track.id].map((pattern, patternIndex) =>
-          <TimelinePattern key={patternIndex}
+          {this.props.patternsByTrackID[track.id].map((pattern) =>
+          <TimelinePattern key={pattern.id}
                            patternID={pattern.id}
                            startStep={pattern.startStep}
                            stepCount={pattern.rows[0].notes.length}
