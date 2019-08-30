@@ -103,7 +103,7 @@ class TimelineGrid extends React.Component {
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
 
-  startDrag(clientX, startStep) {
+  startDrag() {
     this.setState({
       isDragInProgress: true,
     });
@@ -253,7 +253,7 @@ class TimelinePattern extends React.Component {
   onMouseDown(e) {
     this.highlight();
 
-    this.props.startDrag(e.clientX, this.props.startStep);
+    this.props.startDrag();
 
     // Prevent onBlur from firing on hidden input, which will prevent pattern
     // box being selected
@@ -265,7 +265,7 @@ class TimelinePattern extends React.Component {
 
   onTouchStart(e) {
     this.highlight();
-    this.props.startDrag(e.touches[0].clientX, this.props.startStep);
+    this.props.startDrag();
   };
 
   componentDidUpdate() {
