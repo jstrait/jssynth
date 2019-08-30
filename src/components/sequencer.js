@@ -213,7 +213,7 @@ class TimelineGrid extends React.Component {
           <TimelinePattern key={pattern.id}
                            patternID={pattern.id}
                            startStep={pattern.startStep}
-                           stepCount={pattern.rows[0].notes.length}
+                           stepCount={pattern.stepCount}
                            isSelected={this.props.highlightedPatternID === pattern.id}
                            isPopupMenuActive={this.props.isPopupMenuActive}
                            hiddenInput={this.props.hiddenInput}

@@ -281,7 +281,7 @@ class PatternEditor extends React.Component {
       <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows.</li>
     </ul>;
 
-    const PATTERN_LENGTH = this.props.selectedPattern.rows[0].notes.length;
+    const PATTERN_LENGTH = this.props.selectedPattern.stepCount;
 
     let noteName;
     if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
@@ -313,7 +313,7 @@ class PatternEditor extends React.Component {
           {this.props.selectedPattern.rows.map((patternRow, rowIndex) =>
           <li key={rowIndex} className="inline-block list-style-none full-width">
             <ul className="flex ml0 pl0 no-whitespace-wrap">
-              {patternRow.notes.map((note, noteIndex) =>
+              {patternRow.notes.slice(0, PATTERN_LENGTH).map((note, noteIndex) =>
               <li key={noteIndex} className="list-style-none inline-block note-container">
                 <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} />
                </li>

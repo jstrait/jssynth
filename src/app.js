@@ -326,7 +326,7 @@ class App extends React.Component {
       }
 
       for (i = this.state.patterns.length - 1; i >= 0; i--) {
-        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].rows[0].notes.length - 1;
+        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].stepCount - 1;
         if (patternFinalStep > newMaxStep) {
           if (newSelectedPatternID === this.state.patterns[i].id) {
             newSelectedPatternID = undefined;
@@ -570,6 +570,7 @@ class App extends React.Component {
       name: track.name + " " + (this.patternsByTrackID(trackID).length + 1),
       trackID: trackID,
       startStep: startStep,
+      stepCount: 16,
       rows: [
         {
           notes: [{name: ''},
@@ -616,6 +617,7 @@ class App extends React.Component {
       name: track.name + " " + (this.patternsByTrackID(track.id).length + 1),
       trackID: track.id,
       startStep: startStep,
+      stepCount: originalPattern.stepCount,
       rows: duplicatedRows,
     };
 
@@ -639,26 +641,16 @@ class App extends React.Component {
   };
 
   addPatternRow(patternID) {
-    let newRow = {
-      notes: [{name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''},
-              {name: ''}],
-    };
-
     let pattern = this.patternByID(patternID);
+
+    let i;
+    let notesArray = Array(pattern.stepCount);
+    let newRow = { notes: notesArray };
+
+    for (i = 0; i < notesArray.length; i++) {
+      notesArray[i] = {name: ""};
+    }
+
     pattern.rows.push(newRow);
     this.forceUpdate();
   };
@@ -667,25 +659,22 @@ class App extends React.Component {
     let patternIndex = this.patternIndexByID(patternID);
 
     let newPatterns = this.state.patterns.concat([]);
+
+    let i;
+    let pattern;
+    let notesArray;
+
     newPatterns[patternIndex].rows.splice(rowIndex, 1);
     if (newPatterns[patternIndex].rows.length === 0) {
+      pattern = this.patternByID(patternID);
+      notesArray = Array(pattern.stepCount);
+
+      for (i = 0; i < notesArray.length; i++) {
+        notesArray[i] = {name: ""};
+      }
+
       newPatterns[patternIndex].rows.push({
-        notes: [{name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''},
-                {name: ''}],
+        notes: notesArray,
       });
     }
 
@@ -713,7 +702,7 @@ class App extends React.Component {
   movePattern(patternID, newTrackIndex, newStartStep) {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
-    let patternStepCount = pattern.rows[0].notes.length;
+    let patternStepCount = pattern.stepCount;
     let newTrackID = this.state.tracks[newTrackIndex].id;
     let patternsInNewTrack = this.patternsByTrackID(newTrackID);
     let newEndStep;
@@ -731,7 +720,7 @@ class App extends React.Component {
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInNewTrack.length; i++) {
       otherPatternStartStep = patternsInNewTrack[i].startStep;
-      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].rows[0].notes.length;
+      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].stepCount;
 
       if (pattern.id !== patternsInNewTrack[i].id &&
           !((newEndStep <= otherPatternStartStep) || (newStartStep >= otherPatternEndStep))) {

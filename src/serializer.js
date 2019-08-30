@@ -102,14 +102,14 @@ export class Serializer {
     }
   };
 
-  static serializePatternRows(rows) {
+  static serializePatternRows(stepCount, rows) {
     let serializedRows = [];
 
     rows.forEach(function(row) {
       let sequence;
       let rawSequenceString;
 
-      rawSequenceString = row.notes.map(function(note) { return note.name; }).join(' ');
+      rawSequenceString = row.notes.slice(0, stepCount).map(function(note) { return note.name; }).join(' ');
       sequence = SynthCore.SequenceParser.parse(rawSequenceString);
       serializedRows.push(sequence);
     });
@@ -159,7 +159,7 @@ export class Serializer {
 
       for (i = 0; i < trackPatterns.length; i++) {
         startStep = trackPatterns[i].startStep;
-        patternRows = Serializer.serializePatternRows(trackPatterns[i].rows);
+        patternRows = Serializer.serializePatternRows(trackPatterns[i].stepCount, trackPatterns[i].rows);
 
         for (j = 0; j < patternRows.length; j++) {
           patternRow = patternRows[j];

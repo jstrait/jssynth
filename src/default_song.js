@@ -192,6 +192,7 @@ const patterns = [
     name: "Bass Synth 1",
     trackID: 1,
     startStep: 0,
+    stepCount: 32,
     rows: [
       {
         notes: [{name: "G2"},
@@ -234,6 +235,7 @@ const patterns = [
     name: "Bass Synth 2",
     trackID: 1,
     startStep: 64,
+    stepCount: 32,
     rows: [
       {
         notes: [{name: "A1"},
@@ -276,6 +278,7 @@ const patterns = [
     name: "Arpeggio 1",
     trackID: 2,
     startStep: 64,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "A3"},
@@ -302,6 +305,7 @@ const patterns = [
     name: "Arpeggio 2",
     trackID: 2,
     startStep: 96,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "C4"},
@@ -328,6 +332,7 @@ const patterns = [
     name: "Squeal 1",
     trackID: 3,
     startStep: 112,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "C5"},
@@ -354,6 +359,7 @@ const patterns = [
     name: "Bass Drum 1",
     trackID: 4,
     startStep: 0,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "A4"},
@@ -380,6 +386,7 @@ const patterns = [
     name: "Bass Drum 2",
     trackID: 4,
     startStep: 64,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "A4"},
@@ -406,6 +413,7 @@ const patterns = [
     name: "Snare Drum 1",
     trackID: 5,
     startStep: 64,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: ""},
@@ -432,6 +440,7 @@ const patterns = [
     name: "Hi-Hat 1",
     trackID: 6,
     startStep: 0,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "A4"},
@@ -458,6 +467,7 @@ const patterns = [
     name: "Hi-Hat 2",
     trackID: 6,
     startStep: 64,
+    stepCount: 16,
     rows: [
       {
         notes: [{name: "A4"},
