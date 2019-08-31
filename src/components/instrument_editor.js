@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React from "react";
 
 class TabStrip extends React.PureComponent {
   constructor(props) {

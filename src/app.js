@@ -1,7 +1,7 @@
 "use strict";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
 import * as SynthCore from "./synth_core";
 import * as DefaultSong from "./default_song";
@@ -32,7 +32,7 @@ class App extends React.Component {
       selectedPatternID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
-      isDownloadEnabled: (typeof document.createElement('a').download !== "undefined"),
+      isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isDownloadInProgress: false,
       downloadFileName: "js-130",
       isKeyboardActive: false,
@@ -430,23 +430,23 @@ class App extends React.Component {
     let newInstrumentID = this.idGenerator.next();
     let newInstrument = {
       id:                    newInstrumentID,
-      type:                  'synth',
-      name:                  'Synth Track',
-      oscillator1Waveform:   'sine',
+      type:                  "synth",
+      name:                  "Synth Track",
+      oscillator1Waveform:   "sine",
       oscillator1Octave:     -1,
       oscillator1Amplitude:  1.0,
-      oscillator2Waveform:   'sine',
+      oscillator2Waveform:   "sine",
       oscillator2Detune:     0,
       oscillator2Octave:     1,
       oscillator2Amplitude:  1.0,
       noiseAmplitude:        0.0,
-      noiseType:             'pink',
-      lfoWaveform:           'sine',
+      noiseType:             "pink",
+      lfoWaveform:           "sine",
       lfoFrequency:          5,
       lfoAmplitude:          0,
       filterCutoff:          9950,
       filterResonance:       0,
-      filterLFOWaveform:     'sine',
+      filterLFOWaveform:     "sine",
       filterLFOFrequency:    5,
       filterLFOAmplitude:    0,
       filterEnvelopeAmount:  1500,
@@ -468,13 +468,13 @@ class App extends React.Component {
 
   addSamplerTrack(file) {
     let newInstrumentID = this.idGenerator.next();
-    let label = 'Instrument ' + newInstrumentID;
+    let label = "Instrument " + newInstrumentID;
 
     this.bufferCollection.addBufferFromFile(label, file, () => {
       let newInstrument = {
         id:                    newInstrumentID,
-        type:                  'sample',
-        name:                  'Sampler Track',
+        type:                  "sample",
+        name:                  "Sampler Track",
         sample:                label,
         filename:              file.name,
         loop:                  false,
@@ -482,7 +482,7 @@ class App extends React.Component {
         rootNoteOctave:        4,
         filterCutoff:          9950,
         filterResonance:       0,
-        filterLFOWaveform:     'sine',
+        filterLFOWaveform:     "sine",
         filterLFOFrequency:    5,
         filterLFOAmplitude:    0,
         filterEnvelopeAmount:  1500,
@@ -574,22 +574,22 @@ class App extends React.Component {
       stepCount: 16,
       rows: [
         {
-          notes: [{name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},
-                  {name: ''},],
+          notes: [{name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},
+                  {name: ""},],
         },
       ]
     };
@@ -1117,4 +1117,4 @@ class App extends React.Component {
   };
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

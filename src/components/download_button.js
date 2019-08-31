@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React from "react";
 
 export class DownloadButton extends React.PureComponent {
   constructor(props) {

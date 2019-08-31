@@ -109,7 +109,7 @@ export class Serializer {
       let sequence;
       let rawSequenceString;
 
-      rawSequenceString = row.notes.slice(0, stepCount).map(function(note) { return note.name; }).join(' ');
+      rawSequenceString = row.notes.slice(0, stepCount).map(function(note) { return note.name; }).join(" ");
       sequence = SynthCore.SequenceParser.parse(rawSequenceString);
       serializedRows.push(sequence);
     });

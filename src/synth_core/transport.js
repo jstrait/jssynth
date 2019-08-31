@@ -47,7 +47,7 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
     //
     // This fixes this by detecting if the AudioContext is in suspended state,
     // and manually forcing it to resume.
-    if (audioContext.state === 'suspended') {
+    if (audioContext.state === "suspended") {
       if (audioContext.resume) {
         audioContext.resume();
       }

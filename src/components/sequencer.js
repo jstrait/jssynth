@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React from "react";
 
 const STEP_WIDTH_IN_PIXELS = 9;
 const TRACK_HEIGHT_IN_PIXELS = 72;

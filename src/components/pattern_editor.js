@@ -1,6 +1,6 @@
 "use strict";
 
-import React from 'react';
+import React from "react";
 
 class NoteBox extends React.Component {
   constructor(props) {
