@@ -572,6 +572,7 @@ class App extends React.Component {
       trackID: trackID,
       startStep: startStep,
       stepCount: 16,
+      playbackStepCount: 16,
       rows: [
         {
           notes: [{name: ""},
@@ -619,6 +620,7 @@ class App extends React.Component {
       trackID: track.id,
       startStep: startStep,
       stepCount: originalPattern.stepCount,
+      playbackStepCount: originalPattern.playbackStepCount,
       rows: duplicatedRows,
     };
 

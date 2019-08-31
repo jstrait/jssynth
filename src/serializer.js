@@ -102,14 +102,27 @@ export class Serializer {
     }
   };
 
-  static serializePatternRows(stepCount, rows) {
+  static serializePatternRows(stepCount, playbackStepCount, rows) {
     let serializedRows = [];
 
     rows.forEach(function(row) {
+      let baseNoteSequence = row.notes.slice(0, stepCount).map(function(note) { return note.name; });
+      let fullNoteSequence = [];
+      let i;
+      let baseNoteIndex = 0;
       let sequence;
       let rawSequenceString;
 
-      rawSequenceString = row.notes.slice(0, stepCount).map(function(note) { return note.name; }).join(" ");
+      for (i = 0; i < playbackStepCount; i++) {
+        fullNoteSequence.push(baseNoteSequence[baseNoteIndex]);
+
+        baseNoteIndex += 1;
+        if (baseNoteIndex >= baseNoteSequence.length) {
+          baseNoteIndex = 0;
+        }
+      }
+
+      rawSequenceString = fullNoteSequence.join(" ");
       sequence = SynthCore.SequenceParser.parse(rawSequenceString);
       serializedRows.push(sequence);
     });
@@ -159,7 +172,7 @@ export class Serializer {
 
       for (i = 0; i < trackPatterns.length; i++) {
         startStep = trackPatterns[i].startStep;
-        patternRows = Serializer.serializePatternRows(trackPatterns[i].stepCount, trackPatterns[i].rows);
+        patternRows = Serializer.serializePatternRows(trackPatterns[i].stepCount, trackPatterns[i].playbackStepCount, trackPatterns[i].rows);
 
         for (j = 0; j < patternRows.length; j++) {
           patternRow = patternRows[j];
