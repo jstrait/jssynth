@@ -97,6 +97,8 @@ class TimelineGrid extends React.Component {
 
     this.startDrag = this.startDrag.bind(this);
     this.startResize = this.startResize.bind(this);
+    this.stepUnderCursor = this.stepUnderCursor.bind(this);
+    this.trackUnderCursor = this.trackUnderCursor.bind(this);
     this.dragMove = this.dragMove.bind(this);
     this.dragResize = this.dragResize.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -130,10 +132,8 @@ class TimelineGrid extends React.Component {
     });
   };
 
-  dragMove(clientX, clientY) {
-    let containerBoundingRect = this.containerEl.getBoundingClientRect();
+  stepUnderCursor(containerBoundingRect, clientX) {
     let xOffset = clientX - containerBoundingRect.left - 16;
-    let yOffset = clientY - containerBoundingRect.top;
 
     // We can't use `this.containerEl.width` to check the bounds, because it
     // will have a different value depending on how wide the window is, because
@@ -141,16 +141,27 @@ class TimelineGrid extends React.Component {
     xOffset = Math.max(0, xOffset);
     xOffset = Math.min(xOffset, (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) - 1);
 
+    return Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
+  };
+
+  trackUnderCursor(containerBoundingRect, clientY) {
+    let yOffset = clientY - containerBoundingRect.top;
+
     // Unlike xOffset, the container always has the same height regardless of the
     // height of the window, so we can use it for clamping.
     yOffset = Math.max(0, yOffset);
     yOffset = Math.min(yOffset, containerBoundingRect.height - 1);
 
-    let stepUnderCursor = Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
+    let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
+    return Math.max(0, newTrackIndex);
+  };
+
+  dragMove(clientX, clientY) {
+    let containerBoundingRect = this.containerEl.getBoundingClientRect();
+    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newStartStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
 
-    let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
-    newTrackIndex = Math.max(0, newTrackIndex);
+    let newTrackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
     this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
     this.props.setIsPopupMenuActive(false);
@@ -158,16 +169,7 @@ class TimelineGrid extends React.Component {
 
   dragResize(clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
-    let xOffset = clientX - containerBoundingRect.left - 16;
-
-    // We can't use `this.containerEl.width` to check the bounds, because it
-    // will have a different value depending on how wide the window is, because
-    // the container automatically expands to fill the available space.
-    xOffset = Math.max(0, xOffset);
-    xOffset = Math.min(xOffset, (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) - 1);
-
-    let stepUnderCursor = Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
-
+    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     newStepCount = Math.max(STEPS_PER_MEASURE, newStepCount);
 
