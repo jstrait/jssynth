@@ -86,6 +86,7 @@ class App extends React.Component {
     this.patternsByTrackID = this.patternsByTrackID.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
+    this.resizePattern = this.resizePattern.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
@@ -738,6 +739,44 @@ class App extends React.Component {
     });
   };
 
+  resizePattern(patternID, newStepCount) {
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.itemByID(newPatternList, patternID);
+    let patternsInTrack = this.patternsByTrackID(pattern.trackID);
+    let newEndStep;
+    let otherPatternStartStep;
+    let i, j;
+
+    newEndStep = pattern.startStep + newStepCount - 1;
+
+    // Check for overlap with other existing patterns
+    for (i = 0; i < patternsInTrack.length; i++) {
+      otherPatternStartStep = patternsInTrack[i].startStep;
+
+      if (pattern.id !== patternsInTrack[i].id &&
+          pattern.startStep < otherPatternStartStep && newEndStep >= otherPatternStartStep) {
+        return;
+      }
+    }
+
+    // Add extra steps to each pattern row, if necessary
+    if (newStepCount > pattern.stepCount) {
+      for (i = 0; i < pattern.rows.length; i++) {
+        for (j = 0; j <= (newEndStep - pattern.stepCount); j++) {
+          pattern.rows[i].notes.push({name: ""});
+        }
+      }
+    }
+
+    pattern.stepCount = newStepCount;
+
+    this.setState({
+      patterns: newPatternList,
+    }, function() {
+      this.syncScoreToSynthCore();
+    });
+  };
+
   setSelectedPatternNoteIndex(rowIndex, noteIndex) {
     this.setState({ selectedPatternRowIndex: rowIndex, selectedPatternNoteIndex: noteIndex });
   };
@@ -1024,6 +1063,7 @@ class App extends React.Component {
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
                    movePattern={this.movePattern}
+                   resizePattern={this.resizePattern}
                    removePattern={this.removePattern}
                    removeTrack={this.removeTrack} />
         }
