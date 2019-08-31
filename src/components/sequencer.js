@@ -97,6 +97,7 @@ class TimelineGrid extends React.Component {
 
     this.startDrag = this.startDrag.bind(this);
     this.startResize = this.startResize.bind(this);
+    this.endDrag = this.endDrag.bind(this);
     this.stepUnderCursor = this.stepUnderCursor.bind(this);
     this.trackUnderCursor = this.trackUnderCursor.bind(this);
     this.dragMove = this.dragMove.bind(this);
