@@ -93,10 +93,13 @@ class TimelineGrid extends React.Component {
       isDragInProgress: false,
       isResizeInProgress: false,
       resizeStartStep: undefined,
+      isLoopChangeInProgress: false,
+      minPlaybackStepCount: undefined,
     };
 
     this.startDrag = this.startDrag.bind(this);
     this.startResize = this.startResize.bind(this);
+    this.startLoopChange = this.startLoopChange.bind(this);
     this.endDrag = this.endDrag.bind(this);
     this.stepUnderCursor = this.stepUnderCursor.bind(this);
     this.trackUnderCursor = this.trackUnderCursor.bind(this);
@@ -115,6 +118,8 @@ class TimelineGrid extends React.Component {
       isDragInProgress: true,
       isResizeInProgress: false,
       resizeStartStep: undefined,
+      isLoopChangeInProgress: false,
+      minPlaybackStepCount: undefined,
     });
   };
 
@@ -123,6 +128,18 @@ class TimelineGrid extends React.Component {
       isDragInProgress: false,
       isResizeInProgress: true,
       resizeStartStep: startStep,
+      isLoopChangeInProgress: false,
+      minPlaybackStepCount: undefined,
+    });
+  };
+
+  startLoopChange(startStep, baseStepCount) {
+    this.setState({
+      isDragInProgress: false,
+      isResizeInProgress: false,
+      resizeStartStep: startStep,
+      isLoopChangeInProgress: true,
+      minPlaybackStepCount: baseStepCount,
     });
   };
 
@@ -130,6 +147,7 @@ class TimelineGrid extends React.Component {
     this.setState({
       isDragInProgress: false,
       isResizeInProgress: false,
+      isLoopChangeInProgress: false,
     });
   };
 
@@ -178,6 +196,16 @@ class TimelineGrid extends React.Component {
     this.props.setIsPopupMenuActive(false);
   };
 
+  dragLoopChange(clientX) {
+    let containerBoundingRect = this.containerEl.getBoundingClientRect();
+    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
+    let newPlaybackStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    newPlaybackStepCount = Math.max(this.state.minPlaybackStepCount, newPlaybackStepCount);
+
+    this.props.changePatternPlaybackStepCount(this.props.highlightedPatternID, newPlaybackStepCount);
+    this.props.setIsPopupMenuActive(false);
+  };
+
   onMouseDown(e) {
     let yOffset;
     let trackIndex;
@@ -196,6 +224,9 @@ class TimelineGrid extends React.Component {
     }
     else if (this.state.isResizeInProgress === true) {
       this.dragResize(e.clientX);
+    }
+    else if (this.state.isLoopChangeInProgress === true) {
+      this.dragLoopChange(e.clientX);
     }
   };
 
@@ -218,6 +249,12 @@ class TimelineGrid extends React.Component {
     }
     else if (this.state.isResizeInProgress === true) {
       this.dragResize(e.touches[0].clientX);
+
+      // Prevent container or page from scrolling while dragging pattern
+      e.preventDefault();
+    }
+    else if (this.state.isLoopChangeInProgress === true) {
+      this.dragLoopChange(e.touches[0].clientX);
 
       // Prevent container or page from scrolling while dragging pattern
       e.preventDefault();
@@ -248,7 +285,7 @@ class TimelineGrid extends React.Component {
     return <ul ref={el => {this.containerEl = el;}}
                className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
-               onMouseMove={(this.state.isDragInProgress === true || this.state.isResizeInProgress === true) ? this.onMouseDrag : undefined}
+               onMouseMove={(this.state.isDragInProgress === true || this.state.isResizeInProgress === true || this.state.isLoopChangeInProgress === true) ? this.onMouseDrag : undefined}
                onMouseUp={this.onMouseUp}
                onMouseEnter={this.onMouseEnter}
                onTouchMove={this.onTouchMove}
@@ -268,6 +305,7 @@ class TimelineGrid extends React.Component {
                            hiddenInput={this.props.hiddenInput}
                            startDrag={this.startDrag}
                            startResize={this.startResize}
+                           startLoopChange={this.startLoopChange}
                            setHighlightedPattern={this.props.setHighlightedPattern}
                            setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
           )}
@@ -288,6 +326,7 @@ class TimelinePattern extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onStartResize = this.onStartResize.bind(this);
+    this.onStartLoopChange = this.onStartLoopChange.bind(this);
   };
 
   highlight() {
@@ -332,6 +371,19 @@ class TimelinePattern extends React.Component {
     e.stopPropagation();
   };
 
+  onStartLoopChange(e) {
+    this.highlight();
+
+    this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
+
+    // Prevent onBlur from firing on hidden input, which will prevent pattern
+    // box being selected
+    e.preventDefault();
+
+    // Prevent a drag start occuring on parent
+    e.stopPropagation();
+  };
+
   componentDidUpdate() {
     if (this.props.isSelected) {
       this.props.hiddenInput.focus();
@@ -353,7 +405,10 @@ class TimelinePattern extends React.Component {
             onTouchStart={this.onTouchStart}>
         {index === 0 && `Pattern ${this.props.patternID}`}
         {index === (SUB_PATTERN_LENGTHS.length - 1) &&
-        <span className="full-height right bg-gray" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>Ex</span>
+        <span className="flex flex-column full-height right bg-gray">
+          <span className="flex-uniform-size" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>Lo</span>
+          {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>Ex</span>}
+        </span>
         }
       </span>
       )}
@@ -581,7 +636,8 @@ class Sequencer extends React.Component {
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         addPattern={this.addPattern}
                         movePattern={this.props.movePattern}
-                        resizePattern={this.props.resizePattern} />
+                        resizePattern={this.props.resizePattern}
+                        changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * STEP_WIDTH_IN_PIXELS}px + 1.0rem - 3px)`}}></span>
         </div>
         <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.state.expanded ? "" : " display-none")}>

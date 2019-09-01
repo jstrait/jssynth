@@ -87,6 +87,7 @@ class App extends React.Component {
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
     this.resizePattern = this.resizePattern.bind(this);
+    this.changePatternPlaybackStepCount = this.changePatternPlaybackStepCount.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
@@ -780,6 +781,35 @@ class App extends React.Component {
     });
   };
 
+  changePatternPlaybackStepCount(patternID, newPlaybackStepCount) {
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.itemByID(newPatternList, patternID);
+    let patternsInTrack = this.patternsByTrackID(pattern.trackID);
+    let newEndStep;
+    let otherPatternStartStep;
+    let i;
+
+    newEndStep = pattern.startStep + newPlaybackStepCount - 1;
+
+    // Check for overlap with other existing patterns
+    for (i = 0; i < patternsInTrack.length; i++) {
+      otherPatternStartStep = patternsInTrack[i].startStep;
+
+      if (pattern.id !== patternsInTrack[i].id &&
+          pattern.startStep < otherPatternStartStep && newEndStep >= otherPatternStartStep) {
+        return;
+      }
+    }
+
+    pattern.playbackStepCount = newPlaybackStepCount;
+
+    this.setState({
+      patterns: newPatternList,
+    }, function() {
+      this.syncScoreToSynthCore();
+    });
+  };
+
   setSelectedPatternNoteIndex(rowIndex, noteIndex) {
     this.setState({ selectedPatternRowIndex: rowIndex, selectedPatternNoteIndex: noteIndex });
   };
@@ -1067,6 +1097,7 @@ class App extends React.Component {
                    addPattern={this.addPattern}
                    movePattern={this.movePattern}
                    resizePattern={this.resizePattern}
+                   changePatternPlaybackStepCount={this.changePatternPlaybackStepCount}
                    removePattern={this.removePattern}
                    removeTrack={this.removeTrack} />
         }
