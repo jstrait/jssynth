@@ -771,6 +771,7 @@ class App extends React.Component {
     }
 
     pattern.stepCount = newStepCount;
+    pattern.playbackStepCount = newStepCount;
 
     this.setState({
       patterns: newPatternList,
