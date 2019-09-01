@@ -261,7 +261,8 @@ class TimelineGrid extends React.Component {
           <TimelinePattern key={pattern.id}
                            patternID={pattern.id}
                            startStep={pattern.startStep}
-                           stepCount={pattern.stepCount}
+                           baseStepCount={pattern.stepCount}
+                           fullStepCount={pattern.playbackStepCount}
                            isSelected={this.props.highlightedPatternID === pattern.id}
                            isPopupMenuActive={this.props.isPopupMenuActive}
                            hiddenInput={this.props.hiddenInput}
@@ -338,14 +339,24 @@ class TimelinePattern extends React.Component {
   };
 
   render() {
+    const FULL_SUB_PATTERN_COUNT = Math.floor(this.props.fullStepCount / this.props.baseStepCount);
+    const SUB_PATTERN_LENGTHS = Array(FULL_SUB_PATTERN_COUNT).fill(this.props.baseStepCount);
+    if (this.props.fullStepCount / this.props.baseStepCount !== FULL_SUB_PATTERN_COUNT) {
+      SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
+    }
+
     return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px"}}>
-      <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            style={{width: `calc((${this.props.stepCount} * ${STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
+      {SUB_PATTERN_LENGTHS.map((_, index) =>
+      <span key={index} className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
             onMouseDown={this.onMouseDown}
             onTouchStart={this.onTouchStart}>
-        Pattern {this.props.patternID}
+        {index === 0 && `Pattern ${this.props.patternID}`}
+        {index === (SUB_PATTERN_LENGTHS.length - 1) &&
         <span className="full-height right bg-gray" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>Ex</span>
+        }
       </span>
+      )}
     </span>;
   };
 };
