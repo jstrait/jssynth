@@ -193,7 +193,7 @@ const patterns = [
     trackID: 1,
     startStep: 0,
     stepCount: 32,
-    playbackStepCount: 32,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "G2"},
@@ -237,7 +237,7 @@ const patterns = [
     trackID: 1,
     startStep: 64,
     stepCount: 32,
-    playbackStepCount: 32,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "A1"},
@@ -365,7 +365,7 @@ const patterns = [
     trackID: 4,
     startStep: 0,
     stepCount: 16,
-    playbackStepCount: 16,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "A4"},
@@ -393,7 +393,7 @@ const patterns = [
     trackID: 4,
     startStep: 64,
     stepCount: 16,
-    playbackStepCount: 16,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "A4"},
@@ -421,7 +421,7 @@ const patterns = [
     trackID: 5,
     startStep: 64,
     stepCount: 16,
-    playbackStepCount: 16,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: ""},
@@ -449,7 +449,7 @@ const patterns = [
     trackID: 6,
     startStep: 0,
     stepCount: 16,
-    playbackStepCount: 16,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "A4"},
@@ -477,7 +477,7 @@ const patterns = [
     trackID: 6,
     startStep: 64,
     stepCount: 16,
-    playbackStepCount: 16,
+    playbackStepCount: 64,
     rows: [
       {
         notes: [{name: "A4"},
