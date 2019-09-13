@@ -304,9 +304,7 @@ class PatternEditor extends React.Component {
           <li className="inline-block list-style-none full-width">
             <ul className="flex ml0 pl0 center no-whitespace-wrap">
               {Array(PATTERN_LENGTH).fill(undefined).map((_, noteIndex) =>
-              <li key={noteIndex + 1} className="list-style-none inline-block note-container">
-                <span className="h4 note-column-header">{noteIndex + 1}</span>
-              </li>
+              <li key={noteIndex + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + 1}</li>
               )}
             </ul>
           </li>
