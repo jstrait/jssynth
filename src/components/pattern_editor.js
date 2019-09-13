@@ -274,12 +274,12 @@ class PatternEditor extends React.Component {
   render() {
     const PATTERN_LENGTH = this.props.selectedPattern.stepCount;
 
-    let noteName;
+    let selectedNote;
     if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      noteName = this.props.selectedPattern.rows[this.props.selectedPatternRowIndex].notes[this.props.selectedPatternNoteIndex];
+      selectedNote = this.props.selectedPattern.rows[this.props.selectedPatternRowIndex].notes[this.props.selectedPatternNoteIndex];
     }
     else {
-      noteName = { name: "" };
+      selectedNote = { name: "" };
     }
 
     return <div>
@@ -298,7 +298,7 @@ class PatternEditor extends React.Component {
         <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows.</li>
       </ul>
       }
-      <NoteInput note={noteName} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      <NoteInput note={selectedNote} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
