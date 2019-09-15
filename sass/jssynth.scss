@@ -70,9 +70,23 @@ a.disabled {
   border-color: transparent transparent transparent $white;
 }
 
+.rewind-icon {
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 0.5rem 1.0rem 0.5rem 0.0rem;
+  border-color: transparent $black transparent transparent;
+}
+
 @media (hover) {
   .button-full:hover .play-icon {
     border-color: transparent transparent transparent $orange;
+  }
+
+  .button-full:hover .rewind-icon {
+    border-color: transparent $orange transparent transparent;
   }
 }
 

@@ -59,6 +59,7 @@ class App extends React.Component {
     this.songPlayer = SynthCore.SongPlayer();
     this.offlineSongPlayer = SynthCore.SongPlayer();
 
+    this.rewindTransport = this.rewindTransport.bind(this);
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
     this.updateTempo = this.updateTempo.bind(this);
@@ -255,6 +256,10 @@ class App extends React.Component {
         step: newStep,
       }),
     }));
+  };
+
+  rewindTransport(e) {
+    this.setCurrentStep(0);
   };
 
   togglePlaying(e) {
@@ -1075,6 +1080,7 @@ class App extends React.Component {
           <Transport isPlaying={this.state.transport.isPlaying}
                      amplitude={this.state.masterAmplitude}
                      tempo={this.state.transport.tempo}
+                     rewindTransport={this.rewindTransport}
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
