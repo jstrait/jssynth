@@ -1110,6 +1110,9 @@ class App extends React.Component {
         {this.state.selectedTrackID !== undefined && instrument.type === "synth" &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SynthInstrumentEditor instrument={instrument}
+                                 trackID={selectedTrack.id}
+                                 trackName={selectedTrack.name}
+                                 setTrackName={this.setTrackName}
                                  setSelectedTrack={this.setSelectedTrack}
                                  updateInstrument={this.updateInstrument} />
         </div>
@@ -1117,6 +1120,9 @@ class App extends React.Component {
         {this.state.selectedTrackID !== undefined && instrument.type === "sample" &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SampleInstrumentEditor instrument={instrument}
+                                  trackID={selectedTrack.id}
+                                  trackName={selectedTrack.name}
+                                  setTrackName={this.setTrackName}
                                   setSelectedTrack={this.setSelectedTrack}
                                   setBufferFromFile={this.setBufferFromFile}
                                   updateInstrument={this.updateInstrument} />
