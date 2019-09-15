@@ -207,14 +207,15 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDown(e) {
-    let yOffset;
-    let trackIndex;
+    let yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
+    let trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
+    let trackID = this.props.tracks[trackIndex].id;
 
     if (e.metaKey === true) {
-      yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
-      trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
-
-      this.props.addPattern(this.props.tracks[trackIndex].id, e.clientX);
+      this.props.addPattern(trackID, e.clientX);
+    }
+    else if (e.altKey === true) {
+      this.props.duplicateCopiedPattern(trackID, e.clientX);
     }
   };
 
@@ -517,6 +518,8 @@ class Sequencer extends React.Component {
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
     this.addPattern = this.addPattern.bind(this);
+    this.copyPattern = this.copyPattern.bind(this);
+    this.duplicateCopiedPattern = this.duplicateCopiedPattern.bind(this);
     this.editPattern = this.editPattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
@@ -559,6 +562,22 @@ class Sequencer extends React.Component {
     let startStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
 
     this.props.addPattern(trackID, startStep);
+  };
+
+  copyPattern(e) {
+    this.props.setCopiedPattern(this.state.highlightedPatternID);
+  };
+
+  duplicateCopiedPattern(trackID, clientPixelX) {
+    let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
+    let stepUnderCursor = Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS);
+    let startStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+
+    if (this.props.copiedPatternID === undefined) {
+      return;
+    }
+
+    this.props.duplicatePattern(trackID, this.props.copiedPatternID, startStep);
   };
 
   editPattern(e) {
@@ -635,6 +654,7 @@ class Sequencer extends React.Component {
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         addPattern={this.addPattern}
+                        duplicateCopiedPattern={this.duplicateCopiedPattern}
                         movePattern={this.props.movePattern}
                         resizePattern={this.props.resizePattern}
                         changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
@@ -664,6 +684,7 @@ class Sequencer extends React.Component {
             style={{left: this.state.highlightedPatternLeft, top: `calc(${this.state.highlightedPatternTop}px - 4.5rem)`}}
             onMouseDown={this.onPopupMenuMouseDown}>
         <span className="timeline-pattern-menu">
+          <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
           <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
           <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
         </span>

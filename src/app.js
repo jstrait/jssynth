@@ -32,6 +32,7 @@ class App extends React.Component {
       selectedPatternID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
+      copiedPatternID: undefined,
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isDownloadInProgress: false,
       downloadFileName: "js-130",
@@ -86,6 +87,7 @@ class App extends React.Component {
     this.patternIndexByID = this.patternIndexByID.bind(this);
     this.patternsByTrackID = this.patternsByTrackID.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
+    this.setCopiedPattern = this.setCopiedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
     this.resizePattern = this.resizePattern.bind(this);
     this.changePatternPlaybackStepCount = this.changePatternPlaybackStepCount.bind(this);
@@ -606,10 +608,10 @@ class App extends React.Component {
     });
   };
 
-  duplicatePattern(patternID, startStep) {
+  duplicatePattern(trackID, patternID, startStep) {
     let originalPattern = this.patternByID(patternID);
     let newPatternID = this.idGenerator.next();
-    let track = this.trackByID(originalPattern.trackID);
+    let track = this.trackByID(trackID);
     let duplicatedRows = [];
     let i, j;
 
@@ -632,7 +634,8 @@ class App extends React.Component {
 
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
-      selectedPatternID: newPattern.id,
+    }, function() {
+      this.syncScoreToSynthCore();
     });
   };
 
@@ -705,6 +708,12 @@ class App extends React.Component {
     this.setState({
       selectedTrackID: undefined,
       selectedPatternID: newSelectedPatternID,
+    });
+  };
+
+  setCopiedPattern(newCopiedPatternID) {
+    this.setState({
+      copiedPatternID: newCopiedPatternID,
     });
   };
 
@@ -1098,9 +1107,12 @@ class App extends React.Component {
                    setSelectedTrack={this.setSelectedTrack}
                    selectedPatternID={this.state.selectedPatternID}
                    setSelectedPattern={this.setSelectedPattern}
+                   copiedPatternID={this.state.copiedPatternID}
+                   setCopiedPattern={this.setCopiedPattern}
                    addSynthTrack={this.addSynthTrack}
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
+                   duplicatePattern={this.duplicatePattern}
                    movePattern={this.movePattern}
                    resizePattern={this.resizePattern}
                    changePatternPlaybackStepCount={this.changePatternPlaybackStepCount}
