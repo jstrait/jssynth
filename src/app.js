@@ -612,6 +612,10 @@ class App extends React.Component {
     let originalPattern = this.patternByID(patternID);
     let newPatternID = this.idGenerator.next();
     let track = this.trackByID(trackID);
+    let patternsInNewTrack = this.patternsByTrackID(trackID);
+    let newEndStep;
+    let otherPatternStartStep;
+    let otherPatternEndStep;
     let duplicatedRows = [];
     let i, j;
 
@@ -631,6 +635,18 @@ class App extends React.Component {
       playbackStepCount: originalPattern.playbackStepCount,
       rows: duplicatedRows,
     };
+    newEndStep = startStep + originalPattern.playbackStepCount;
+
+    // Check for overlap with other existing patterns
+    for (i = 0; i < patternsInNewTrack.length; i++) {
+      otherPatternStartStep = patternsInNewTrack[i].startStep;
+      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].playbackStepCount;
+
+      if (newPattern.id !== patternsInNewTrack[i].id &&
+          !((newEndStep <= otherPatternStartStep) || (newPattern.startStep >= otherPatternEndStep))) {
+        return;
+      }
+    }
 
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
