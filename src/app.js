@@ -624,7 +624,13 @@ class App extends React.Component {
     let track = this.trackByID(trackID);
     let patternsInNewTrack = this.patternsByTrackID(trackID);
     let duplicatedRows = [];
+    let newEndStep = startStep + originalPattern.playbackStepCount - 1;
+    let songMaxStep = (this.state.measureCount * 16) - 1;
     let i, j;
+
+    if (newEndStep > songMaxStep) {
+      return;
+    }
 
     for (i = 0; i < originalPattern.rows.length; i++) {
       duplicatedRows.push({ notes: [] });
