@@ -86,6 +86,7 @@ class App extends React.Component {
     this.patternByID = this.patternByID.bind(this);
     this.patternIndexByID = this.patternIndexByID.bind(this);
     this.patternsByTrackID = this.patternsByTrackID.bind(this);
+    this.isPatternsOverlapping = this.isPatternsOverlapping.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.setCopiedPattern = this.setCopiedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
@@ -230,6 +231,15 @@ class App extends React.Component {
     }
 
     return patterns;
+  };
+
+  isPatternsOverlapping(pattern, otherPattern) {
+    const patternEndStep = pattern.startStep + pattern.playbackStepCount - 1;
+    const otherPatternEndStep = otherPattern.startStep + otherPattern.playbackStepCount - 1;
+
+    return pattern.trackID === otherPattern.trackID &&
+           pattern.id !== otherPattern.id &&
+           !((patternEndStep <= otherPattern.startStep) || (pattern.startStep >= otherPatternEndStep))
   };
 
   updateTempo(e) {
@@ -613,9 +623,6 @@ class App extends React.Component {
     let newPatternID = this.idGenerator.next();
     let track = this.trackByID(trackID);
     let patternsInNewTrack = this.patternsByTrackID(trackID);
-    let newEndStep;
-    let otherPatternStartStep;
-    let otherPatternEndStep;
     let duplicatedRows = [];
     let i, j;
 
@@ -635,15 +642,10 @@ class App extends React.Component {
       playbackStepCount: originalPattern.playbackStepCount,
       rows: duplicatedRows,
     };
-    newEndStep = startStep + originalPattern.playbackStepCount;
 
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInNewTrack.length; i++) {
-      otherPatternStartStep = patternsInNewTrack[i].startStep;
-      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].playbackStepCount;
-
-      if (newPattern.id !== patternsInNewTrack[i].id &&
-          !((newEndStep <= otherPatternStartStep) || (newPattern.startStep >= otherPatternEndStep))) {
+      if (this.isPatternsOverlapping(newPattern, patternsInNewTrack[i]) === true) {
         return;
       }
     }
@@ -739,31 +741,28 @@ class App extends React.Component {
     let patternStepCount = pattern.playbackStepCount;
     let newTrackID = this.state.tracks[newTrackIndex].id;
     let patternsInNewTrack = this.patternsByTrackID(newTrackID);
-    let newEndStep;
-    let otherPatternStartStep;
-    let otherPatternEndStep;
+    let originalTrackID = pattern.trackID;
+    let originalStartStep = pattern.startStep;
     let i;
 
     newStartStep = Math.min((this.state.measureCount * 16) - patternStepCount, newStartStep);
-    newEndStep = newStartStep + patternStepCount;
 
     if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
       return;
     }
 
+    pattern.trackID = newTrackID;
+    pattern.startStep = newStartStep;
+
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInNewTrack.length; i++) {
-      otherPatternStartStep = patternsInNewTrack[i].startStep;
-      otherPatternEndStep = patternsInNewTrack[i].startStep + patternsInNewTrack[i].playbackStepCount;
+      if (this.isPatternsOverlapping(pattern, patternsInNewTrack[i]) === true) {
+        pattern.trackID = originalTrackID;
+        pattern.startStep = originalStartStep;
 
-      if (pattern.id !== patternsInNewTrack[i].id &&
-          !((newEndStep <= otherPatternStartStep) || (newStartStep >= otherPatternEndStep))) {
         return;
       }
     }
-
-    pattern.trackID = newTrackID;
-    pattern.startStep = newStartStep;
 
     this.setState({
       patterns: newPatternList,
@@ -776,33 +775,33 @@ class App extends React.Component {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
     let patternsInTrack = this.patternsByTrackID(pattern.trackID);
+    let originalStepCount = pattern.stepCount;
+    let originalPlaybackStepCount = pattern.playbackStepCount;
     let newEndStep;
-    let otherPatternStartStep;
     let i, j;
 
+    pattern.stepCount = newStepCount;
+    pattern.playbackStepCount = newStepCount;
     newEndStep = pattern.startStep + newStepCount - 1;
 
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInTrack.length; i++) {
-      otherPatternStartStep = patternsInTrack[i].startStep;
+      if (this.isPatternsOverlapping(pattern, patternsInTrack[i]) === true) {
+        pattern.stepCount = originalStepCount;
+        pattern.playbackStepCount = originalPlaybackStepCount;
 
-      if (pattern.id !== patternsInTrack[i].id &&
-          pattern.startStep < otherPatternStartStep && newEndStep >= otherPatternStartStep) {
         return;
       }
     }
 
     // Add extra steps to each pattern row, if necessary
-    if (newStepCount > pattern.stepCount) {
+    if (newStepCount > originalStepCount) {
       for (i = 0; i < pattern.rows.length; i++) {
-        for (j = 0; j <= (newEndStep - pattern.stepCount); j++) {
+        for (j = 0; j <= (newEndStep - originalStepCount); j++) {
           pattern.rows[i].notes.push({name: ""});
         }
       }
     }
-
-    pattern.stepCount = newStepCount;
-    pattern.playbackStepCount = newStepCount;
 
     this.setState({
       patterns: newPatternList,
@@ -815,23 +814,19 @@ class App extends React.Component {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
     let patternsInTrack = this.patternsByTrackID(pattern.trackID);
-    let newEndStep;
-    let otherPatternStartStep;
+    let originalPlaybackStepCount = pattern.playbackStepCount;
     let i;
 
-    newEndStep = pattern.startStep + newPlaybackStepCount - 1;
+    pattern.playbackStepCount = newPlaybackStepCount;
 
     // Check for overlap with other existing patterns
     for (i = 0; i < patternsInTrack.length; i++) {
-      otherPatternStartStep = patternsInTrack[i].startStep;
+      if (this.isPatternsOverlapping(pattern, patternsInTrack[i]) === true) {
+        pattern.playbackStepCount = originalPlaybackStepCount;
 
-      if (pattern.id !== patternsInTrack[i].id &&
-          pattern.startStep < otherPatternStartStep && newEndStep >= otherPatternStartStep) {
         return;
       }
     }
-
-    pattern.playbackStepCount = newPlaybackStepCount;
 
     this.setState({
       patterns: newPatternList,
