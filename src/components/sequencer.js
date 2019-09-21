@@ -508,8 +508,8 @@ class Sequencer extends React.Component {
       expanded: true,
       isTimelineElementActive: false,
       highlightedPatternID: undefined,
-      highlightedPatternLeft: undefined,
-      highlightedPatternTop: undefined,
+      popupMenuLeft: undefined,
+      popupMenuBottom: undefined,
       isPopupMenuActive: false,
     };
 
@@ -540,13 +540,13 @@ class Sequencer extends React.Component {
   };
 
   setHighlightedPattern(patternID, patternBoxOffsetLeft, patternBoxOffsetTop) {
-    let newHighlightedPatternLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
-    let newHighlightedPatternTop = this.timelineContainerEl.offsetTop + patternBoxOffsetTop;
+    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
+    let newPopupMenuBottom = this.timelineContainerEl.offsetTop + patternBoxOffsetTop;
 
     this.setState({
       highlightedPatternID: patternID,
-      highlightedPatternLeft: newHighlightedPatternLeft,
-      highlightedPatternTop: newHighlightedPatternTop,
+      popupMenuLeft: newPopupMenuLeft,
+      popupMenuBottom: newPopupMenuBottom,
     });
   };
 
@@ -676,12 +676,12 @@ class Sequencer extends React.Component {
       </div>
       <input ref={(el) => { this.hiddenInput = el; }}
              className="absolute hidden-input block"
-             style={{left: this.state.highlightedPatternLeft, top: this.state.highlightedPatternTop}}
+             style={{left: this.state.popupMenuLeft, top: this.state.popupMenuBottom}}
              type="text" readOnly={true}
              onBlur={this.onBlur} />
       {this.state.highlightedPatternID !== undefined && this.state.isPopupMenuActive === true &&
       <span className="absolute height-3"
-            style={{left: this.state.highlightedPatternLeft, top: `calc(${this.state.highlightedPatternTop}px - 4.5rem)`}}
+            style={{left: this.state.popupMenuLeft, top: `calc(${this.state.popupMenuBottom}px - 4.5rem)`}}
             onMouseDown={this.onPopupMenuMouseDown}>
         <span className="timeline-pattern-menu">
           <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
