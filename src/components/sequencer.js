@@ -500,6 +500,24 @@ class MeasureCount extends React.PureComponent {
   };
 };
 
+class PopupMenu extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    return <span className="absolute height-3"
+            style={{left: this.props.popupMenuLeft, top: `calc(${this.props.popupMenuBottom}px - 4.5rem)`}}
+            onMouseDown={this.props.onPopupMenuMouseDown}>
+      <span className="timeline-pattern-menu">{this.props.content}</span>
+      <span className="relative block" style={{height: "1.0rem", marginTop: "-2px"}}>
+        <span className="timeline-pattern-menu-arrow-outline"></span>
+        <span className="timeline-pattern-menu-arrow-fill"></span>
+      </span>
+    </span>;
+  };
+};
+
 class Sequencer extends React.Component {
   constructor(props) {
     super(props);
@@ -680,19 +698,15 @@ class Sequencer extends React.Component {
              type="text" readOnly={true}
              onBlur={this.onBlur} />
       {this.state.highlightedPatternID !== undefined && this.state.isPopupMenuActive === true &&
-      <span className="absolute height-3"
-            style={{left: this.state.popupMenuLeft, top: `calc(${this.state.popupMenuBottom}px - 4.5rem)`}}
-            onMouseDown={this.onPopupMenuMouseDown}>
-        <span className="timeline-pattern-menu">
-          <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
-          <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
-          <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
-        </span>
-        <span className="relative block" style={{height: "1.0rem", marginTop: "-2px"}}>
-          <span className="timeline-pattern-menu-arrow-outline"></span>
-          <span className="timeline-pattern-menu-arrow-fill"></span>
-        </span>
-      </span>
+      <PopupMenu popupMenuLeft={this.state.popupMenuLeft}
+                 popupMenuBottom={this.state.popupMenuBottom}
+                 onPopupMenuMouseDown={this.onPopupMenuMouseDown}
+                 content={<React.Fragment>
+                            <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
+                            <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
+                            <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
+                          </React.Fragment>}
+                 />
       }
     </div>;
   };
