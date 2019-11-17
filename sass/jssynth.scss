@@ -319,7 +319,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-menu-arrow-outline {
   position: absolute;
-  left: calc(50% - 0.5rem);
+  left: calc(50% - 1.0rem);
   bottom: 0;
   width: 0;
   border-width: 1.0rem 1.0rem 0 1.0rem;
@@ -329,7 +329,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-menu-arrow-fill {
   position: absolute;
-  left: calc(50% - 0.35rem);
+  left: calc(50% - 0.85rem);
   top: 0;
   width: 0;
   border-width: 0.85rem 0.85rem 0 0.85rem;
