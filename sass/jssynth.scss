@@ -7,6 +7,7 @@ $white: #fff;
 $border-color: #ddd;
 $light-gray: #f1f1f1;
 $lighter-gray: #fafafa;
+$link-color: #0af;
 
 $size-half: 0.75rem;
 $size-1: 1.5rem;
@@ -35,7 +36,7 @@ body {
 }
 
 a {
-  color: #0af;
+  color: $link-color;
 }
 
 a.disabled {
@@ -464,10 +465,6 @@ This style makes it as invisible as possible, while still not being _completely_
 }
 
 @media (max-width: 480px) {
-  .helperToggle {
-    display: inline-block;
-  }
-
   .indented {
     padding-left: 0;
   }

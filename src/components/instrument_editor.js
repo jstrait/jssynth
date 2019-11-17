@@ -204,7 +204,7 @@ class SampleInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <h2 className="mt0 mb1"><input type="text" value={this.props.trackName} onChange={this.setTrackName} /></h2>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
@@ -217,7 +217,7 @@ class SampleInstrumentEditor extends React.Component {
           <h2 className="h3 section-header display-none block-l">Sound File</h2>
           <label className="inline-block control-label">Sound file:</label>
           <span>{this.props.instrument.filename}</span>&nbsp;
-          <a href="javascript:void(0);" className="h4" onClick={this.showFileChooser}>change</a>
+          <button className="button-link" onClick={this.showFileChooser}>change</button>
           <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
           <span className="control">
             <label className="control-label">Root Note:</label>
@@ -557,7 +557,7 @@ class SynthInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <h2 className="mt0 mb1"><input type="text" value={this.props.trackName} onChange={this.setTrackName} /></h2>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />

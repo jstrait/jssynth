@@ -283,10 +283,10 @@ class PatternEditor extends React.Component {
     }
 
     return <div>
-      <a href="javascript:void(0);" className="inline-block h4 lh-flush" onClick={this.close}>&larr; Sequencer</a>
+      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <div>
         <h2 className="inline-block mt0 mb0">{this.props.selectedPattern.name}</h2>
-        <a href="javascript:void(0);" className="h4 ml-half helperToggle" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</a>
+        <button className="ml-half button-link" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
       </div>
       {(this.state.tipsAndTricksVisible === true) &&
       <ul className="mt0 mb0">

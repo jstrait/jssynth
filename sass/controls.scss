@@ -145,6 +145,17 @@ button:disabled {
   color: $white;
 }
 
+.button-link {
+  background: none;
+  color: $link-color;
+  border: 0;
+  font-size: 1.0rem;
+  font-weight: 300;
+  text-decoration: underline;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .underlinedInput {
   outline: none;
   border: solid $black;
