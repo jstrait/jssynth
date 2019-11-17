@@ -607,6 +607,7 @@ class Sequencer extends React.Component {
 
     this.setState({
       highlightedPatternID: undefined,
+      isPopupMenuActive: false,
     });
   };
 
@@ -697,7 +698,7 @@ class Sequencer extends React.Component {
              style={{left: this.state.popupMenuLeft, top: this.state.popupMenuBottom}}
              type="text" readOnly={true}
              onBlur={this.onBlur} />
-      {this.state.highlightedPatternID !== undefined && this.state.isPopupMenuActive === true &&
+      {this.state.isPopupMenuActive === true &&
       <PopupMenu left={this.state.popupMenuLeft}
                  bottom={this.state.popupMenuBottom}
                  onMouseDown={this.onPopupMenuMouseDown}
