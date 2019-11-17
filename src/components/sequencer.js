@@ -103,6 +103,7 @@ class TimelineGrid extends React.Component {
     this.endDrag = this.endDrag.bind(this);
     this.stepUnderCursor = this.stepUnderCursor.bind(this);
     this.trackUnderCursor = this.trackUnderCursor.bind(this);
+    this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.dragMove = this.dragMove.bind(this);
     this.dragResize = this.dragResize.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -173,6 +174,12 @@ class TimelineGrid extends React.Component {
 
     let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
     return Math.max(0, newTrackIndex);
+  };
+
+  setHighlightedPattern(patternID, clientX, patternBoxOffsetTop) {
+    let stepIndex = this.stepUnderCursor(this.containerEl.getBoundingClientRect(), clientX);
+
+    this.props.setHighlightedPattern(patternID, stepIndex, patternBoxOffsetTop);
   };
 
   dragMove(clientX, clientY) {
@@ -307,7 +314,7 @@ class TimelineGrid extends React.Component {
                            startDrag={this.startDrag}
                            startResize={this.startResize}
                            startLoopChange={this.startLoopChange}
-                           setHighlightedPattern={this.props.setHighlightedPattern}
+                           setHighlightedPattern={this.setHighlightedPattern}
                            setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
           )}
         </span>
@@ -330,8 +337,8 @@ class TimelinePattern extends React.Component {
     this.onStartLoopChange = this.onStartLoopChange.bind(this);
   };
 
-  highlight() {
-    this.props.setHighlightedPattern(this.props.patternID, this.patternBoxEl.offsetLeft, this.patternBoxEl.offsetTop);
+  highlight(clientX) {
+    this.props.setHighlightedPattern(this.props.patternID, clientX, this.patternBoxEl.offsetTop);
 
     if (this.props.isSelected === true) {
       this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
@@ -342,7 +349,7 @@ class TimelinePattern extends React.Component {
   };
 
   onMouseDown(e) {
-    this.highlight();
+    this.highlight(e.clientX);
 
     this.props.startDrag();
 
@@ -355,12 +362,12 @@ class TimelinePattern extends React.Component {
   };
 
   onTouchStart(e) {
-    this.highlight();
+    this.highlight(e.touches[0].clientX);
     this.props.startDrag();
   };
 
   onStartResize(e) {
-    this.highlight();
+    this.highlight(0);
 
     this.props.startResize(this.props.startStep);
 
@@ -373,7 +380,7 @@ class TimelinePattern extends React.Component {
   };
 
   onStartLoopChange(e) {
-    this.highlight();
+    this.highlight(0);
 
     this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
 
@@ -505,8 +512,16 @@ class PopupMenu extends React.Component {
     super(props);
   };
 
+  componentDidMount() {
+    // This must happen after the component is rendered, so that we can get the element width.
+    // This is not possible with CSS, because the popup menu can have an arbitrary size, due
+    // to the menu having arbitrary inner content.
+    this.el.style.marginLeft = `-${(this.el.clientWidth / 2) - ((STEP_WIDTH_IN_PIXELS / 2) + 1)}px`;
+  };
+
   render() {
-    return <span className="absolute height-3"
+    return <span ref={el => {this.el = el;}}
+            className="absolute height-3"
             style={{left: this.props.left, top: `calc(${this.props.bottom}px - 4.5rem)`}}
             onMouseDown={this.props.onMouseDown}>
       <span className="timeline-pattern-menu">{this.props.content}</span>
@@ -557,8 +572,8 @@ class Sequencer extends React.Component {
     this.setState({isTimelineElementActive: newIsTimelineElementActive});
   };
 
-  setHighlightedPattern(patternID, patternBoxOffsetLeft, patternBoxOffsetTop) {
-    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + patternBoxOffsetLeft;
+  setHighlightedPattern(patternID, stepIndex, patternBoxOffsetTop) {
+    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + (stepIndex * STEP_WIDTH_IN_PIXELS) + 15;
     let newPopupMenuBottom = this.timelineContainerEl.offsetTop + patternBoxOffsetTop;
 
     this.setState({
