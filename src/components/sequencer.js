@@ -103,7 +103,7 @@ class TimelineGrid extends React.Component {
     this.endDrag = this.endDrag.bind(this);
     this.stepUnderCursor = this.stepUnderCursor.bind(this);
     this.trackUnderCursor = this.trackUnderCursor.bind(this);
-    this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
+    this.setPopupMenuPosition = this.setPopupMenuPosition.bind(this);
     this.dragMove = this.dragMove.bind(this);
     this.dragResize = this.dragResize.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -176,12 +176,12 @@ class TimelineGrid extends React.Component {
     return Math.max(0, newTrackIndex);
   };
 
-  setHighlightedPattern(patternID, clientX, clientY) {
+  setPopupMenuPosition(clientX, clientY) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepIndex = this.stepUnderCursor(containerBoundingRect, clientX);
     let trackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
-    this.props.setHighlightedPattern(patternID, stepIndex, trackIndex);
+    this.props.setPopupMenuPosition(stepIndex, trackIndex);
   };
 
   dragMove(clientX, clientY) {
@@ -316,8 +316,9 @@ class TimelineGrid extends React.Component {
                            startDrag={this.startDrag}
                            startResize={this.startResize}
                            startLoopChange={this.startLoopChange}
-                           setHighlightedPattern={this.setHighlightedPattern}
-                           setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
+                           setHighlightedPattern={this.props.setHighlightedPattern}
+                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+                           setPopupMenuPosition={this.setPopupMenuPosition} />
           )}
         </span>
         <span className="sequencer-row-right-padding border-box bb bg-lighter-gray"></span>
@@ -332,6 +333,7 @@ class TimelinePattern extends React.Component {
     super(props);
 
     this.highlight = this.highlight.bind(this);
+    this.togglePopupMenu = this.togglePopupMenu.bind(this);
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
@@ -339,8 +341,12 @@ class TimelinePattern extends React.Component {
     this.onStartLoopChange = this.onStartLoopChange.bind(this);
   };
 
-  highlight(clientX, clientY) {
-    this.props.setHighlightedPattern(this.props.patternID, clientX, clientY);
+  highlight() {
+    this.props.setHighlightedPattern(this.props.patternID);
+  };
+
+  togglePopupMenu(clientX, clientY) {
+    this.props.setPopupMenuPosition(clientX, clientY);
 
     if (this.props.isSelected === true) {
       this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
@@ -351,7 +357,8 @@ class TimelinePattern extends React.Component {
   };
 
   onMouseDown(e) {
-    this.highlight(e.clientX, e.clientY);
+    this.highlight();
+    this.togglePopupMenu(e.clientX, e.clientY);
 
     this.props.startDrag();
 
@@ -364,12 +371,13 @@ class TimelinePattern extends React.Component {
   };
 
   onTouchStart(e) {
-    this.highlight(e.touches[0].clientX, e.touches[0].clientY);
+    this.highlight();
+    this.togglePopupMenu(e.touches[0].clientX, e.touches[0].clientY);
     this.props.startDrag();
   };
 
   onStartResize(e) {
-    this.highlight(0, 0);
+    this.highlight();
 
     this.props.startResize(this.props.startStep);
 
@@ -382,7 +390,7 @@ class TimelinePattern extends React.Component {
   };
 
   onStartLoopChange(e) {
-    this.highlight(0, 0);
+    this.highlight();
 
     this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
 
@@ -552,6 +560,7 @@ class Sequencer extends React.Component {
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setHighlightedPattern = this.setHighlightedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
+    this.setPopupMenuPosition = this.setPopupMenuPosition.bind(this);
     this.addPattern = this.addPattern.bind(this);
     this.copyPattern = this.copyPattern.bind(this);
     this.duplicateCopiedPattern = this.duplicateCopiedPattern.bind(this);
@@ -574,20 +583,25 @@ class Sequencer extends React.Component {
     this.setState({isTimelineElementActive: newIsTimelineElementActive});
   };
 
-  setHighlightedPattern(patternID, stepIndex, trackIndex) {
-    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + (stepIndex * STEP_WIDTH_IN_PIXELS) + 15;
-    let newPopupMenuBottom = this.timelineContainerEl.offsetTop + (trackIndex * TRACK_HEIGHT_IN_PIXELS);
-
+  setHighlightedPattern(patternID) {
     this.setState({
       highlightedPatternID: patternID,
-      popupMenuLeft: newPopupMenuLeft,
-      popupMenuBottom: newPopupMenuBottom,
     });
   };
 
   setIsPopupMenuActive(newIsPopupMenuActive) {
     this.setState({
       isPopupMenuActive: newIsPopupMenuActive,
+    });
+  };
+
+  setPopupMenuPosition(stepIndex, trackIndex) {
+    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + (stepIndex * STEP_WIDTH_IN_PIXELS) + 15;
+    let newPopupMenuBottom = this.timelineContainerEl.offsetTop + (trackIndex * TRACK_HEIGHT_IN_PIXELS);
+
+    this.setState({
+      popupMenuLeft: newPopupMenuLeft,
+      popupMenuBottom: newPopupMenuBottom,
     });
   };
 
@@ -689,6 +703,7 @@ class Sequencer extends React.Component {
                         hiddenInput={this.hiddenInput}
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
+                        setPopupMenuPosition={this.setPopupMenuPosition}
                         addPattern={this.addPattern}
                         duplicateCopiedPattern={this.duplicateCopiedPattern}
                         movePattern={this.props.movePattern}
