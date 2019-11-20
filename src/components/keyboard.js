@@ -222,7 +222,7 @@ class Keyboard extends React.Component {
 
     // This event handler is added manually to the actual DOM element, instead of using the
     // normal React way of attaching events because React seems to have a bug that prevents
-    // preventDefault() from working correctly in a "touchmove" handler (as of v16.8.6).
+    // preventDefault() from working correctly in a "touchmove" handler (as of v16.12.0).
     // The preventDefault() is needed to prevent the "pinch zoom into page" gesture from
     // activating when using the keyboard on iOS.
     // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
