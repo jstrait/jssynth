@@ -290,7 +290,6 @@ class TimelineGrid extends React.Component {
                onMouseMove={(this.state.isDragInProgress === true || this.state.isResizeInProgress === true || this.state.isLoopChangeInProgress === true) ? this.onMouseDrag : undefined}
                onMouseUp={this.onMouseUp}
                onMouseEnter={this.onMouseEnter}
-               onTouchMove={this.onTouchMove}
                onTouchEnd={this.onTouchEnd}>
       {this.props.tracks.map((track) =>
       <li key={track.id} className="list-style-none flex full-width height-3">
