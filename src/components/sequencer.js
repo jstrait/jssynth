@@ -619,11 +619,11 @@ class Sequencer extends React.Component {
     let startStep = Math.floor(this.state.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     let trackID = this.props.tracks[this.state.popupMenuTrackIndex].id;
 
-    if (this.props.copiedPatternID === undefined) {
+    if (this.props.copiedPattern === undefined) {
       return;
     }
 
-    this.props.duplicatePattern(trackID, this.props.copiedPatternID, startStep);
+    this.props.duplicatePattern(trackID, this.props.copiedPattern, startStep);
 
     this.setState({
       isPopupMenuActive: false,
