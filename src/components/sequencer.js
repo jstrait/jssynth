@@ -216,16 +216,8 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDown(e) {
-    let yOffset = e.clientY - this.containerEl.getBoundingClientRect().top;
-    let trackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
-    let trackID = this.props.tracks[trackIndex].id;
-
-    if (e.metaKey === true) {
-      this.props.addPattern(trackID, e.clientX);
-    }
-    else if (e.altKey === true) {
-      this.props.duplicateCopiedPattern(trackID, e.clientX);
-    }
+    this.setPopupMenuPosition(e.clientX, e.clientY);
+    this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
   };
 
   onMouseDrag(e) {
@@ -551,6 +543,8 @@ class Sequencer extends React.Component {
       expanded: true,
       isTimelineElementActive: false,
       highlightedPatternID: undefined,
+      popupMenuStepIndex: undefined,
+      popupMenuTrackIndex: undefined,
       popupMenuLeft: undefined,
       popupMenuBottom: undefined,
       isPopupMenuActive: false,
@@ -600,33 +594,41 @@ class Sequencer extends React.Component {
     let newPopupMenuBottom = this.timelineContainerEl.offsetTop + (trackIndex * TRACK_HEIGHT_IN_PIXELS);
 
     this.setState({
+      popupMenuStepIndex: stepIndex,
+      popupMenuTrackIndex: trackIndex,
       popupMenuLeft: newPopupMenuLeft,
       popupMenuBottom: newPopupMenuBottom,
     });
   };
 
-  addPattern(trackID, clientPixelX) {
-    let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
-    let stepUnderCursor = Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS);
-    let startStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+  addPattern(e) {
+    let startStep = Math.floor(this.state.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let trackID = this.props.tracks[this.state.popupMenuTrackIndex].id;
 
     this.props.addPattern(trackID, startStep);
+
+    this.setState({
+      isPopupMenuActive: false,
+    });
   };
 
   copyPattern(e) {
     this.props.setCopiedPattern(this.state.highlightedPatternID);
   };
 
-  duplicateCopiedPattern(trackID, clientPixelX) {
-    let containerPixelX = (this.timelineContainerEl.scrollLeft + clientPixelX) - this.timelineContainerEl.offsetLeft - 15;
-    let stepUnderCursor = Math.floor(containerPixelX / STEP_WIDTH_IN_PIXELS);
-    let startStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+  duplicateCopiedPattern(e) {
+    let startStep = Math.floor(this.state.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let trackID = this.props.tracks[this.state.popupMenuTrackIndex].id;
 
     if (this.props.copiedPatternID === undefined) {
       return;
     }
 
     this.props.duplicatePattern(trackID, this.props.copiedPatternID, startStep);
+
+    this.setState({
+      isPopupMenuActive: false,
+    });
   };
 
   editPattern(e) {
@@ -668,6 +670,23 @@ class Sequencer extends React.Component {
   };
 
   render() {
+    let popupMenuContent = undefined;
+    if (this.state.isPopupMenuActive === true) {
+      if (this.state.highlightedPatternID === undefined) {
+        popupMenuContent = <React.Fragment>
+                             <button className="button-small button-hollow" onClick={this.addPattern}>Add</button>&nbsp;
+                             <button className="button-small button-hollow" onClick={this.duplicateCopiedPattern}>Paste</button>&nbsp;
+                           </React.Fragment>;
+      }
+      else {
+        popupMenuContent = <React.Fragment>
+                             <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
+                             <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
+                             <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
+                           </React.Fragment>;
+      }
+    }
+
     return <div ref={(el) => { this.sequencerContainerEl = el; }} className="relative pt1 pb1 border-box bt-thick">
       <div className="flex flex-justify-space-between">
         <h2 className="mt0 mb1 pl1">Sequencer</h2>
@@ -704,8 +723,6 @@ class Sequencer extends React.Component {
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         setPopupMenuPosition={this.setPopupMenuPosition}
-                        addPattern={this.addPattern}
-                        duplicateCopiedPattern={this.duplicateCopiedPattern}
                         movePattern={this.props.movePattern}
                         resizePattern={this.props.resizePattern}
                         changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
@@ -734,12 +751,7 @@ class Sequencer extends React.Component {
       <PopupMenu left={this.state.popupMenuLeft}
                  bottom={this.state.popupMenuBottom}
                  onMouseDown={this.onPopupMenuMouseDown}
-                 content={<React.Fragment>
-                            <button className="button-small button-hollow" onClick={this.copyPattern}>Copy</button>&nbsp;
-                            <button className="button-small button-hollow" onClick={this.editPattern}>Edit</button>&nbsp;
-                            <button className="button-small button-hollow" onClick={this.removePattern}>Remove</button>
-                          </React.Fragment>}
-                 />
+                 content={popupMenuContent} />
       }
     </div>;
   };
