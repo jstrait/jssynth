@@ -662,6 +662,11 @@ class Sequencer extends React.Component {
     }
 
     this.props.addSamplerTrack(this.fileInput.files[0]);
+
+    // Since file uploads are triggered by the "onchange" event, you won't be able to add
+    // two consecutive tracks using the same sound file unless the file input is manually
+    // reset after each upload.
+    this.fileInput.value = "";
   };
 
   onBlur(e) {
