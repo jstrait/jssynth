@@ -36,7 +36,8 @@ class TrackHeader extends React.PureComponent {
     return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr-half height-3 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.name)}</span>
       <span className="sequencer-name-container flex flex-justify-space-between">
-        {this.props.name} <button className="button-hollow button-small" onClick={this.setSelectedTrack}>Edit</button>
+        <span className="overflow-hidden no-whitespace-wrap overflow-ellipsis">{this.props.name}</span>
+        <button className="button-hollow button-small" onClick={this.setSelectedTrack}>Edit</button>
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
         <button className={"button-hollow button-small" + (this.props.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
