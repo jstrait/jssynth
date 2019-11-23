@@ -514,21 +514,30 @@ class PopupMenu extends React.Component {
   };
 
   componentDidMount() {
-    // This must happen after the component is rendered, so that we can get the element width.
-    // This is not possible with CSS, because the popup menu can have an arbitrary size, due
-    // to the menu having arbitrary inner content.
-    this.el.style.marginLeft = `-${(this.el.clientWidth / 2) - ((STEP_WIDTH_IN_PIXELS / 2) + 1)}px`;
+    // Positioning the popup menu must happen after the component is rendered, so that we can
+    // get the element width. This is not possible with vanilla CSS, because the popup menu can
+    // have an arbitrary width, due to the menu having arbitrary inner content.
+
+    let stepAlignedTargetX = this.props.targetX + ((STEP_WIDTH_IN_PIXELS / 2) + 1);
+
+    let containerLeft = stepAlignedTargetX - (this.containerEl.clientWidth / 2);
+    containerLeft = Math.min(containerLeft, window.innerWidth - this.containerEl.clientWidth);
+    containerLeft = Math.max(containerLeft, 0);
+
+    this.containerEl.style.left = `${containerLeft}px`;
+    this.arrowOutlineEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 1.0rem)`;
+    this.arrowFillEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 0.85rem)`;
   };
 
   render() {
-    return <span ref={el => {this.el = el;}}
+    return <span ref={el => {this.containerEl = el;}}
             className="absolute height-3"
-            style={{left: this.props.targetX, top: `calc(${this.props.targetY}px - 1.5rem)`}}
+            style={{top: `calc(${this.props.targetY}px - 1.5rem)`}}
             onMouseDown={this.props.onMouseDown}>
       <span className="timeline-pattern-menu">{this.props.content}</span>
       <span className="relative block" style={{height: "1.0rem", marginTop: "-2px"}}>
-        <span className="timeline-pattern-menu-arrow-outline"></span>
-        <span className="timeline-pattern-menu-arrow-fill"></span>
+        <span ref={el => {this.arrowOutlineEl = el;}} className="timeline-pattern-menu-arrow-outline"></span>
+        <span ref={el => {this.arrowFillEl = el;}} className="timeline-pattern-menu-arrow-fill"></span>
       </span>
     </span>;
   };
