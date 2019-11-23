@@ -98,6 +98,7 @@ class NoteInput extends React.Component {
     const A = 65;
     const G = 71;
     const DASH = 189;
+    const DASH_FIREFOX = 173;  // Firefox has a different keycode from the "-" key than other browsers
     const LEFT_ARROW = 37;
     const RIGHT_ARROW = 39;
     const UP_ARROW = 38;
@@ -163,7 +164,7 @@ class NoteInput extends React.Component {
 
       this.setNoteValue(String.fromCharCode(e.keyCode) + noteParts.modifier + noteParts.octave);
     }
-    else if (e.keyCode === DASH && !e.shiftKey) {
+    else if ((e.keyCode === DASH || e.keyCode === DASH_FIREFOX) && !e.shiftKey) {
       this.setNoteValue("-");
     }
     else if (e.keyCode === LEFT_ARROW) {
