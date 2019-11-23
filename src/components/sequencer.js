@@ -523,7 +523,7 @@ class PopupMenu extends React.Component {
   render() {
     return <span ref={el => {this.el = el;}}
             className="absolute height-3"
-            style={{left: this.props.left, top: `calc(${this.props.bottom}px - 1.5rem)`}}
+            style={{left: this.props.targetX, top: `calc(${this.props.targetY}px - 1.5rem)`}}
             onMouseDown={this.props.onMouseDown}>
       <span className="timeline-pattern-menu">{this.props.content}</span>
       <span className="relative block" style={{height: "1.0rem", marginTop: "-2px"}}>
@@ -544,8 +544,8 @@ class Sequencer extends React.Component {
       highlightedPatternID: undefined,
       popupMenuStepIndex: undefined,
       popupMenuTrackIndex: undefined,
-      popupMenuLeft: undefined,
-      popupMenuBottom: undefined,
+      popupMenuTargetX: undefined,
+      popupMenuTargetY: undefined,
       isPopupMenuActive: false,
     };
 
@@ -589,14 +589,14 @@ class Sequencer extends React.Component {
   };
 
   setPopupMenuPosition(stepIndex, trackIndex) {
-    let newPopupMenuLeft = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + (stepIndex * STEP_WIDTH_IN_PIXELS) + 15;
-    let newPopupMenuBottom = this.timelineContainerEl.offsetTop + (trackIndex * TRACK_HEIGHT_IN_PIXELS);
+    let newPopupMenuTargetX = this.timelineContainerEl.offsetLeft - this.timelineContainerEl.scrollLeft + (stepIndex * STEP_WIDTH_IN_PIXELS) + 15;
+    let newPopupMenuTargetY = this.timelineContainerEl.offsetTop + (trackIndex * TRACK_HEIGHT_IN_PIXELS);
 
     this.setState({
       popupMenuStepIndex: stepIndex,
       popupMenuTrackIndex: trackIndex,
-      popupMenuLeft: newPopupMenuLeft,
-      popupMenuBottom: newPopupMenuBottom,
+      popupMenuTargetX: newPopupMenuTargetX,
+      popupMenuTargetY: newPopupMenuTargetY,
     });
   };
 
@@ -743,12 +743,12 @@ class Sequencer extends React.Component {
       </div>
       <input ref={(el) => { this.hiddenInput = el; }}
              className="absolute hidden-input block"
-             style={{left: this.state.popupMenuLeft, top: this.state.popupMenuBottom}}
+             style={{left: this.state.popupMenuTargetX, bottom: this.state.popupMenuTargetY}}
              type="text" readOnly={true}
              onBlur={this.onBlur} />
       {this.state.isPopupMenuActive === true &&
-      <PopupMenu left={this.state.popupMenuLeft}
-                 bottom={this.state.popupMenuBottom}
+      <PopupMenu targetX={this.state.popupMenuTargetX}
+                 targetY={this.state.popupMenuTargetY}
                  onMouseDown={this.onPopupMenuMouseDown}
                  content={popupMenuContent} />
       }
