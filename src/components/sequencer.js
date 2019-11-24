@@ -573,6 +573,7 @@ class Sequencer extends React.Component {
     this.uploadFile = this.uploadFile.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   };
 
 
@@ -683,6 +684,14 @@ class Sequencer extends React.Component {
     e.preventDefault();
   };
 
+  onScroll(e) {
+    if (this.state.isPopupMenuActive === true) {
+      this.setState({
+        isPopupMenuActive: false,
+      });
+    }
+  };
+
   render() {
     let popupMenuContent = undefined;
     if (this.state.isPopupMenuActive === true) {
@@ -723,7 +732,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <div ref={(el) => { this.timelineContainerEl = el; }}
-             className={"relative flex flex-uniform-size flex-column m0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}>
+             className={"relative flex flex-uniform-size flex-column m0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")} onScroll={this.onScroll}>
           <TimelineHeader measureCount={this.props.measureCount}
                           currentStep={this.props.currentStep}
                           setCurrentStep={this.props.setCurrentStep}
