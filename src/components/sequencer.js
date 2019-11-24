@@ -624,6 +624,10 @@ class Sequencer extends React.Component {
 
   copyPattern(e) {
     this.props.setCopiedPattern(this.state.highlightedPatternID);
+
+    this.setState({
+      isPopupMenuActive: false,
+    });
   };
 
   duplicateCopiedPattern(e) {
