@@ -698,7 +698,7 @@ class Sequencer extends React.Component {
       if (this.state.highlightedPatternID === undefined) {
         popupMenuContent = <React.Fragment>
                              <button className="button-small button-hollow" onClick={this.addPattern}>Add</button>&nbsp;
-                             <button className="button-small button-hollow" onClick={this.duplicateCopiedPattern}>Paste</button>
+                             <button className="button-small button-hollow" onClick={this.duplicateCopiedPattern} disabled={this.props.copiedPattern === undefined}>Paste</button>
                            </React.Fragment>;
       }
       else {
