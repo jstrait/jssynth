@@ -156,12 +156,6 @@ class TimelineGrid extends React.Component {
   stepUnderCursor(containerBoundingRect, clientX) {
     let xOffset = clientX - containerBoundingRect.left - 16;
 
-    // We can't use `this.containerEl.width` to check the bounds, because it
-    // will have a different value depending on how wide the window is, because
-    // the container automatically expands to fill the available space.
-    xOffset = Math.max(0, xOffset);
-    xOffset = Math.min(xOffset, (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) - 1);
-
     return Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
   };
 
@@ -182,13 +176,22 @@ class TimelineGrid extends React.Component {
     let stepIndex = this.stepUnderCursor(containerBoundingRect, clientX);
     let trackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
-    this.props.setPopupMenuPosition(stepIndex, trackIndex);
+    if (stepIndex >= 0 && stepIndex < (this.props.measureCount * STEPS_PER_MEASURE)) {
+      this.props.setPopupMenuPosition(stepIndex, trackIndex);
+      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
+    }
+    else {
+      this.props.setIsPopupMenuActive(false);
+    }
   };
 
   dragMove(clientX, clientY) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newStartStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+
+    newStartStep = Math.max(0, newStartStep);
+    newStartStep = Math.min(newStartStep, (this.props.measureCount - 1) * STEPS_PER_MEASURE);
 
     let newTrackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
@@ -200,7 +203,9 @@ class TimelineGrid extends React.Component {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
-    newStepCount = Math.max(STEPS_PER_MEASURE, newStepCount);
+
+    newStepCount = Math.max(newStepCount, STEPS_PER_MEASURE);
+    newStepCount = Math.min(newStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
 
     this.props.resizePattern(this.props.highlightedPatternID, newStepCount);
     this.props.setIsPopupMenuActive(false);
@@ -210,7 +215,9 @@ class TimelineGrid extends React.Component {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newPlaybackStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
-    newPlaybackStepCount = Math.max(this.state.minPlaybackStepCount, newPlaybackStepCount);
+
+    newPlaybackStepCount = Math.max(newPlaybackStepCount, this.state.minPlaybackStepCount);
+    newPlaybackStepCount = Math.min(newPlaybackStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
 
     this.props.changePatternPlaybackStepCount(this.props.highlightedPatternID, newPlaybackStepCount);
     this.props.setIsPopupMenuActive(false);
@@ -218,7 +225,6 @@ class TimelineGrid extends React.Component {
 
   onMouseDown(e) {
     this.setPopupMenuPosition(e.clientX, e.clientY);
-    this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
   };
 
   onMouseDrag(e) {
