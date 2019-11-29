@@ -345,7 +345,7 @@ class App extends React.Component {
       }
 
       for (i = this.state.patterns.length - 1; i >= 0; i--) {
-        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].stepCount - 1;
+        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].playbackStepCount - 1;
         if (patternFinalStep > newMaxStep) {
           if (newSelectedPatternID === this.state.patterns[i].id) {
             newSelectedPatternID = undefined;
