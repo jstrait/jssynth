@@ -413,7 +413,7 @@ class TimelinePattern extends React.Component {
       SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
     }
 
-    return <span ref={el => {this.patternBoxEl = el;}} className="relative inline-block full-height" style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px"}}>
+    return <span ref={el => {this.patternBoxEl = el;}} className="relative block left full-height" style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px"}}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <span key={index} className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
             style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
