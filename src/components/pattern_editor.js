@@ -227,6 +227,7 @@ class PatternEditor extends React.Component {
     };
 
     this.close = this.close.bind(this);
+    this.setPatternName = this.setPatternName.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
@@ -236,6 +237,10 @@ class PatternEditor extends React.Component {
 
   close(e) {
     this.props.setSelectedPattern(undefined);
+  };
+
+  setPatternName(e) {
+    this.props.setPatternName(this.props.selectedPattern.id, e.target.value);
   };
 
   addPatternRow(e) {
@@ -286,7 +291,7 @@ class PatternEditor extends React.Component {
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <div>
-        <h2 className="inline-block mt0 mb0">{this.props.selectedPattern.name}</h2>
+        <h2 className="inline-block mt0 mb0"><input type="text" value={this.props.selectedPattern.name} onChange={this.setPatternName} /></h2>
         <button className="ml-half button-link" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
       </div>
       {(this.state.tipsAndTricksVisible === true) &&

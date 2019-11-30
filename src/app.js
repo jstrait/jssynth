@@ -97,6 +97,7 @@ class App extends React.Component {
     this.addPattern = this.addPattern.bind(this);
     this.duplicatePattern = this.duplicatePattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
+    this.setPatternName = this.setPatternName.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setSelectedPatternNoteIndex = this.setSelectedPatternNoteIndex.bind(this);
@@ -664,6 +665,17 @@ class App extends React.Component {
     });
   };
 
+  setPatternName(patternID, newPatternName) {
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.itemByID(newPatternList, patternID);
+
+    pattern.name = newPatternName;
+
+    this.setState({
+      patterns: newPatternList,
+    });
+  };
+
   addPatternRow(patternID) {
     let pattern = this.patternByID(patternID);
 
@@ -1171,6 +1183,7 @@ class App extends React.Component {
           <PatternEditor selectedPattern={selectedPattern}
                          selectedPatternRowIndex={this.state.selectedPatternRowIndex}
                          selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
+                         setPatternName={this.setPatternName}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
                          setSelectedPattern={this.setSelectedPattern}
