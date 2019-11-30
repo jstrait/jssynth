@@ -378,24 +378,13 @@ class App extends React.Component {
   };
 
   setTrackName(trackID, newTrackName) {
-    let i;
-    let patternIndex = 1;
     let newTrackList = this.state.tracks.concat([]);
-    let newPatternList = this.state.patterns.concat([]);
-
     let track = this.itemByID(newTrackList, trackID);
-    track.name = newTrackName;
 
-    for (i = 0; i < newPatternList.length; i++) {
-      if (newPatternList[i].trackID == trackID) {
-        newPatternList[i].name = newTrackName + " " + patternIndex;
-        patternIndex += 1;
-      }
-    }
+    track.name = newTrackName;
 
     this.setState({
       tracks: newTrackList,
-      patterns: newPatternList,
     });
   };
 
