@@ -575,7 +575,7 @@ class App extends React.Component {
 
     let newPattern = {
       id: newPatternID,
-      name: track.name + " " + (this.patternsByTrackID(trackID).length + 1),
+      name: track.name,
       trackID: trackID,
       startStep: startStep,
       stepCount: 16,
@@ -629,7 +629,7 @@ class App extends React.Component {
 
     let newPattern = {
       id: newPatternID,
-      name: track.name + " " + (this.patternsByTrackID(track.id).length + 1),
+      name: track.name,
       trackID: track.id,
       startStep: startStep,
       stepCount: originalPattern.stepCount,
