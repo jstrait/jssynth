@@ -179,11 +179,6 @@ a.disabled {
     flex: 1;
   }
 
-  .transport-error {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
   #download-container {
     -webkit-order: 2;
     order: 2;
@@ -383,11 +378,6 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 /* Pattern editor */
 
-.paneTab {
-  color: $black;
-  text-decoration: none;
-}
-
 .paneTabUnselected {
   padding-bottom: 2px;
   border-bottom: 2px solid $border-color;
@@ -456,11 +446,6 @@ This style makes it as invisible as possible, while still not being _completely_
 }
 
 .lightText { color: #aaa; }
-
-.selectedOption {
-  border: $border-color 2px solid;
-  background: #ddd;
-}
 
 @media (max-width: 480px) {
   .indented {
