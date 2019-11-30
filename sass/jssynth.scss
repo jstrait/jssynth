@@ -378,12 +378,12 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 /* Pattern editor */
 
-.paneTabUnselected {
+.pane-tab-unselected {
   padding-bottom: 2px;
   border-bottom: 2px solid $border-color;
 }
 
-.paneTabSelected {
+.pane-tab-selected {
   border-bottom: 4px solid $orange;
 }
 

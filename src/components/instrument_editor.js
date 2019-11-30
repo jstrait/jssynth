@@ -44,7 +44,7 @@ class InstrumentPaneTab extends React.PureComponent {
   };
 
   render() {
-    return <li style={{"flexShrink": 0}} className={"list-style-none pointer mr1 border-box " + (this.props.isSelected ? "paneTabSelected" : "paneTabUnselected")} onClick={this.setSelectedTab}>{this.props.label}</li>;
+    return <li style={{"flexShrink": 0}} className={"list-style-none pointer mr1 border-box " + (this.props.isSelected ? "pane-tab-selected" : "pane-tab-unselected")} onClick={this.setSelectedTab}>{this.props.label}</li>;
   };
 };
 
