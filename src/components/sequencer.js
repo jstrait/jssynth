@@ -305,6 +305,7 @@ class TimelineGrid extends React.Component {
           {this.props.patternsByTrackID[track.id].map((pattern) =>
           <TimelinePattern key={pattern.id}
                            patternID={pattern.id}
+                           patternName={pattern.name}
                            startStep={pattern.startStep}
                            baseStepCount={pattern.stepCount}
                            fullStepCount={pattern.playbackStepCount}
@@ -419,7 +420,7 @@ class TimelinePattern extends React.Component {
             style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
             onMouseDown={this.onMouseDown}
             onTouchStart={this.onTouchStart}>
-        {index === 0 && `Pattern ${this.props.patternID}`}
+        {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
         {index === (SUB_PATTERN_LENGTHS.length - 1) &&
         <span className="flex flex-column full-height right bg-gray">
           <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
