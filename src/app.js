@@ -571,12 +571,11 @@ class App extends React.Component {
   };
 
   addPattern(trackID, startStep) {
-    let track = this.trackByID(trackID);
     let newPatternID = this.idGenerator.next();
 
     let newPattern = {
       id: newPatternID,
-      name: track.name,
+      name: "",
       trackID: trackID,
       startStep: startStep,
       stepCount: 16,
