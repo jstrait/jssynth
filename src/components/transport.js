@@ -30,23 +30,16 @@ class AmplitudeSlider extends React.PureComponent {
   };
 };
 
-class RewindButton extends React.PureComponent {
+class Controls extends React.PureComponent {
   constructor(props) {
     super(props);
   };
 
   render() {
-    return <button className="mr-half round button-full button-hollow" onClick={this.props.onClick}><span className="rewind-icon">Rewind</span></button>;
-  };
-};
-
-class PlayButton extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  };
-
-  render() {
-    return <button className={"mr1 round button-full button-hollow" + (this.props.isPlaying ? " button-enabled" : "")}  onClick={this.props.onClick}><span className={"play-icon" + (this.props.isPlaying ? " play-icon-enabled" : "")}>Play</span></button>;
+    return <span className="no-whitespace-wrap">
+      <button className="button-tab-list button-hollow" onClick={this.props.onRewind}><span className="rewind-icon">Rewind</span></button>
+      <button className={"mr-half mr1-l button-tab-list button-hollow" + (this.props.isPlaying ? " button-enabled" : "")}  onClick={this.props.onTogglePlayback}><span className={"play-icon" + (this.props.isPlaying ? " play-icon-enabled" : "")}>Play</span></button>
+    </span>;
   };
 };
 
@@ -58,8 +51,7 @@ class Transport extends React.PureComponent {
   render() {
     return <div id="transport" className="flex flex-uniform-size flex-align-center">
       <div className="transport-inner flex flex-align-center">
-        <RewindButton onClick={this.props.rewindTransport} />
-        <PlayButton isPlaying={this.props.isPlaying} onClick={this.props.togglePlaying} />
+        <Controls isPlaying={this.props.isPlaying} onRewind={this.props.rewindTransport} onTogglePlayback={this.props.togglePlaying} />
         <span className="transport-controls flex-uniform-size inline-block">
           <TempoSlider tempo={this.props.tempo} onChange={this.props.updateTempo} />
           <AmplitudeSlider amplitude={this.props.amplitude} onChange={this.props.updateAmplitude} />

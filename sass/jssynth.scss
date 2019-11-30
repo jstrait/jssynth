@@ -82,11 +82,11 @@ a.disabled {
 }
 
 @media (hover) {
-  .button-full:hover .play-icon {
+  .button-tab-list:hover .play-icon {
     border-color: transparent transparent transparent $orange;
   }
 
-  .button-full:hover .rewind-icon {
+  .button-tab-list:hover .rewind-icon {
     border-color: transparent $orange transparent transparent;
   }
 }
