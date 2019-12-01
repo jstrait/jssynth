@@ -293,7 +293,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   display: block;
   height: 100%;
   box-sizing: border-box;
-  border: 1px solid #2a2b2b;
+  border: 1px solid $black;
   border-radius: 4px;
   background: $light-gray;
 }
