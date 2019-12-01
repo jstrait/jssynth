@@ -422,7 +422,7 @@ class TimelinePattern extends React.Component {
                  onTouchStart={this.onTouchStart}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <span key={index} className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}>
+            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}>
         {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
         {index === (SUB_PATTERN_LENGTHS.length - 1) &&
         <span className="flex flex-column full-height right bg-gray">
