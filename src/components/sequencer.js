@@ -421,16 +421,21 @@ class TimelinePattern extends React.Component {
                  onMouseDown={this.onMouseDown}
                  onTouchStart={this.onTouchStart}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
-      <span key={index} className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}>
-        {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
-        {index === (SUB_PATTERN_LENGTHS.length - 1) &&
-        <span className="flex flex-column full-height right bg-gray">
-          <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
-          {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>&harr;</span>}
+      <React.Fragment key={index}>
+        <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+              style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - ((index === 0) ? 0 : 1)) + "px",
+                      width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1 + ((index > 0) ? 1 : 0) + ((index < (SUB_PATTERN_LENGTHS.length - 1)) ? 1 : 0)) + "px"}}>
+          {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
+          {index === (SUB_PATTERN_LENGTHS.length - 1) &&
+          <span className="flex flex-column full-height right bg-gray">
+            <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
+            {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>&harr;</span>}
+          </span>
+          }
         </span>
-        }
-      </span>
+        {index > 0 && <span className={"absolute timeline-pattern-divider" + ((this.props.isSelected === true) ? " timeline-pattern-divider-selected" : "")}
+                            style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - 1) + "px"}}></span>}
+      </React.Fragment>
       )}
     </span>;
   };
