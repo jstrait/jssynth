@@ -301,7 +301,7 @@ class TimelineGrid extends React.Component {
       {this.props.tracks.map((track) =>
       <li key={track.id} className="list-style-none flex full-width height-3">
         <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
-        <span className="sequencer-row border-box bb br" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
+        <span className="sequencer-row relative border-box bb br" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
           {this.props.patternsByTrackID[track.id].map((pattern) =>
           <TimelinePattern key={pattern.id}
                            patternID={pattern.id}
@@ -414,12 +414,15 @@ class TimelinePattern extends React.Component {
       SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
     }
 
-    return <span ref={el => {this.patternBoxEl = el;}} className="relative block left full-height" style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px"}}>
+    return <span ref={el => {this.patternBoxEl = el;}}
+                 className="absolute block left full-height"
+                 style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
+                         width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}
+                 onMouseDown={this.onMouseDown}
+                 onTouchStart={this.onTouchStart}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <span key={index} className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}
-            onMouseDown={this.onMouseDown}
-            onTouchStart={this.onTouchStart}>
+            style={{left: (this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) + "px", width: `calc((${SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS}px) - 1px)`}}>
         {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
         {index === (SUB_PATTERN_LENGTHS.length - 1) &&
         <span className="flex flex-column full-height right bg-gray">
