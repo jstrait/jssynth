@@ -415,7 +415,7 @@ class TimelinePattern extends React.Component {
     }
 
     return <span ref={el => {this.patternBoxEl = el;}}
-                 className="absolute block left full-height"
+                 className="absolute block left full-height overflow-hidden"
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
                          width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}
                  onMouseDown={this.onMouseDown}
@@ -425,7 +425,6 @@ class TimelinePattern extends React.Component {
         <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
               style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - ((index === 0) ? 0 : 1)) + "px",
                       width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1 + ((index > 0) ? 1 : 0) + ((index < (SUB_PATTERN_LENGTHS.length - 1)) ? 1 : 0)) + "px"}}>
-          {index === 0 && <span>&nbsp;{this.props.patternName}</span>}
           {index === (SUB_PATTERN_LENGTHS.length - 1) &&
           <span className="flex flex-column full-height right bg-gray">
             <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
@@ -437,6 +436,7 @@ class TimelinePattern extends React.Component {
                             style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - 1) + "px"}}></span>}
       </React.Fragment>
       )}
+      <span className={"timeline-pattern-name" + ((this.props.isSelected === true) ? " timeline-pattern-name-selected" : "")}>{this.props.patternName}</span>
     </span>;
   };
 };

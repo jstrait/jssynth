@@ -319,6 +319,18 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   border-color: $orange;
 }
 
+.timeline-pattern-name {
+  position: absolute;
+  background: $light-gray;
+  margin-left: 0.5rem;
+  margin-top: 0.25rem;
+  line-height: 1.5rem;
+}
+
+.timeline-pattern-name-selected {
+  background: $light-orange;
+}
+
 .timeline-pattern-menu {
   display: block;
   border: 2px solid $border-color;
