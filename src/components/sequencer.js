@@ -438,9 +438,9 @@ class TimelinePattern extends React.Component {
               style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - ((index === 0) ? 0 : 1)) + "px",
                       width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1 + ((index > 0) ? 1 : 0) + ((index < (SUB_PATTERN_LENGTHS.length - 1)) ? 1 : 0)) + "px"}}>
           {index === (SUB_PATTERN_LENGTHS.length - 1) &&
-          <span className="flex flex-column full-height right bg-gray">
-            <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
-            {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size width-1 h4 center" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>&harr;</span>}
+          <span className="flex flex-column width-1 full-height right bg-gray">
+            <span className="flex-uniform-size h4 center" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
+            {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size h4 center" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>&harr;</span>}
           </span>
           }
         </span>
