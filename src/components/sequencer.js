@@ -115,9 +115,14 @@ class TimelineGrid extends React.Component {
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
 
-  startDrag() {
+  startDrag(patternStartStep, clientX) {
+    let containerBoundingRect = this.containerEl.getBoundingClientRect();
+    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
+
     this.setState({
       isDragInProgress: true,
+      dragPatternOriginalStartStep: patternStartStep,
+      dragStartStep: stepUnderCursor,
       isResizeInProgress: false,
       resizeStartStep: undefined,
       isLoopChangeInProgress: false,
@@ -128,6 +133,8 @@ class TimelineGrid extends React.Component {
   startResize(startStep) {
     this.setState({
       isDragInProgress: false,
+      dragPatternOriginalStartStep: undefined,
+      dragStartStep: undefined,
       isResizeInProgress: true,
       resizeStartStep: startStep,
       isLoopChangeInProgress: false,
@@ -138,6 +145,8 @@ class TimelineGrid extends React.Component {
   startLoopChange(startStep, baseStepCount) {
     this.setState({
       isDragInProgress: false,
+      dragPatternOriginalStartStep: undefined,
+      dragStartStep: undefined,
       isResizeInProgress: false,
       resizeStartStep: startStep,
       isLoopChangeInProgress: true,
@@ -188,7 +197,10 @@ class TimelineGrid extends React.Component {
   dragMove(clientX, clientY) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-    let newStartStep = Math.floor(stepUnderCursor / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+
+    let dragStartMeasure = Math.floor(this.state.dragStartStep / STEPS_PER_MEASURE);
+    let measureUnderCursor = Math.floor(stepUnderCursor / STEPS_PER_MEASURE);
+    let newStartStep = this.state.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
 
     newStartStep = Math.max(0, newStartStep);
     newStartStep = Math.min(newStartStep, (this.props.measureCount - 1) * STEPS_PER_MEASURE);
@@ -359,7 +371,7 @@ class TimelinePattern extends React.Component {
     this.highlight();
     this.togglePopupMenu(e.clientX, e.clientY);
 
-    this.props.startDrag();
+    this.props.startDrag(this.props.startStep, e.clientX);
 
     // Prevent onBlur from firing on hidden input, which will prevent pattern
     // box being selected
@@ -372,7 +384,7 @@ class TimelinePattern extends React.Component {
   onTouchStart(e) {
     this.highlight();
     this.togglePopupMenu(e.touches[0].clientX, e.touches[0].clientY);
-    this.props.startDrag();
+    this.props.startDrag(this.props.startStep, e.touches[0].clientX);
   };
 
   onStartResize(e) {
