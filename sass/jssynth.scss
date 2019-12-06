@@ -325,6 +325,9 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   margin-left: 0.5rem;
   margin-top: 0.25rem;
   line-height: 1.5rem;
+  max-width: calc(100% - 1.5rem - 0.5rem - 1px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .timeline-pattern-name-selected {
