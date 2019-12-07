@@ -208,7 +208,9 @@ class TimelineGrid extends React.Component {
     let newTrackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
     this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
-    this.props.setIsPopupMenuActive(false);
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
   };
 
   dragResize(clientX) {
@@ -220,7 +222,9 @@ class TimelineGrid extends React.Component {
     newStepCount = Math.min(newStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
 
     this.props.resizePattern(this.props.highlightedPatternID, newStepCount);
-    this.props.setIsPopupMenuActive(false);
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
   };
 
   dragLoopChange(clientX) {
@@ -232,7 +236,9 @@ class TimelineGrid extends React.Component {
     newPlaybackStepCount = Math.min(newPlaybackStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
 
     this.props.changePatternPlaybackStepCount(this.props.highlightedPatternID, newPlaybackStepCount);
-    this.props.setIsPopupMenuActive(false);
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
   };
 
   onMouseDown(e) {

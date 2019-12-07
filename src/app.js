@@ -806,6 +806,10 @@ class App extends React.Component {
     let newEndStep;
     let i, j;
 
+    if (originalStepCount === newStepCount) {
+      return;
+    }
+
     pattern.stepCount = newStepCount;
     pattern.playbackStepCount = newStepCount;
     newEndStep = pattern.startStep + newStepCount - 1;
@@ -842,6 +846,10 @@ class App extends React.Component {
     let patternsInTrack = this.patternsByTrackID(pattern.trackID);
     let originalPlaybackStepCount = pattern.playbackStepCount;
     let i;
+
+    if (originalPlaybackStepCount === newPlaybackStepCount) {
+      return;
+    }
 
     pattern.playbackStepCount = newPlaybackStepCount;
 
