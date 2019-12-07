@@ -291,8 +291,8 @@ class PatternEditor extends React.Component {
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <div>
-        <h2 className="inline-block mt0 mb0"><input type="text" value={this.props.selectedPattern.name} onChange={this.setPatternName} /></h2>
-        <button className="ml-half button-link" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
+        <label className="bold">Name:</label><input className="input-underlined" type="text" value={this.props.selectedPattern.name} onChange={this.setPatternName} />
+        <button className="button-link block inline-l ml-half-l" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
       </div>
       {(this.state.tipsAndTricksVisible === true) &&
       <ul className="mt0 mb0">

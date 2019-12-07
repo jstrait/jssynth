@@ -111,8 +111,10 @@
 
 @media (min-width: 769px) {
   .block-l { display: block; }
+  .inline-l { display: inline; }
   .display-none-l { display: none; }
 
+  .ml-half-l { margin-left: $size-half; }
   .mr1-l { margin-right: $size-1; }
 
   .pr1-l { padding-right: $size-1; }
