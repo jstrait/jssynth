@@ -256,7 +256,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .sequencer-playback-line {
   position: absolute;
-  top: 3.0rem;
+  top: calc(3.0rem - 1px);
   bottom: 0;
   width: 5px;
   background: $orange;
