@@ -68,7 +68,7 @@ a.disabled {
 }
 
 .play-icon-enabled {
-  border-color: transparent transparent transparent $white;
+  border-color: $white;
 }
 
 .rewind-icon {
@@ -96,6 +96,10 @@ a.disabled {
 @media (hover) {
   .button-tab-list:hover .play-icon {
     border-color: transparent transparent transparent $orange;
+  }
+
+  .button-tab-list:hover .play-icon-enabled {
+    border-color: $orange;
   }
 
   .button-tab-list:hover .rewind-icon {
