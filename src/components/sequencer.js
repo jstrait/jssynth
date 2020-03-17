@@ -458,12 +458,21 @@ class TimelinePattern extends React.Component {
 class TimelinePatternSidebar extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this.noOp = this.noOp.bind(this);
+  };
+
+  noOp(e) {
+    // Prevent a drag start/popup menu occuring on parent
+    e.stopPropagation();
   };
 
   render() {
+    const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
+
     return <span className="flex flex-column width-1 full-height right bg-gray">
       <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
-      {this.props.isResizeable && <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartResize} onTouchStart={this.props.onStartResize}>&harr;</span>}
+      <span className={"flex-uniform-size h4 center cursor-default" + ((this.props.isResizeable === true) ? "" : " lightText")} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
     </span>;
   };
 };
