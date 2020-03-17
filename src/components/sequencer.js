@@ -395,6 +395,9 @@ class TimelinePattern extends React.Component {
 
   onStartResize(e) {
     this.highlight();
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
 
     this.props.startResize(this.props.startStep);
 
@@ -408,6 +411,9 @@ class TimelinePattern extends React.Component {
 
   onStartLoopChange(e) {
     this.highlight();
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
 
     this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
 
