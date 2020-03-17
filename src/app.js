@@ -1187,7 +1187,7 @@ class App extends React.Component {
         }
         {this.state.selectedPatternID !== undefined &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
-          <PatternEditor selectedPattern={selectedPattern}
+          <PatternEditor pattern={selectedPattern}
                          selectedPatternRowIndex={this.state.selectedPatternRowIndex}
                          selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
                          setPatternName={this.setPatternName}

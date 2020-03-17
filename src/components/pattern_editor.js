@@ -276,7 +276,7 @@ class PatternEditor extends React.Component {
   };
 
   addPatternRow(e) {
-    this.props.addPatternRow(this.props.selectedPattern.id);
+    this.props.addPatternRow(this.props.pattern.id);
   };
 
   removePatternRow(e) {
@@ -285,7 +285,7 @@ class PatternEditor extends React.Component {
 
   eraseNote(e) {
     if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      this.props.setNoteValue("", this.props.selectedPattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+      this.props.setNoteValue("", this.props.pattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -295,7 +295,7 @@ class PatternEditor extends React.Component {
 
   setNoteAsDash(e) {
     if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      this.props.setNoteValue("-", this.props.selectedPattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+      this.props.setNoteValue("-", this.props.pattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -304,11 +304,11 @@ class PatternEditor extends React.Component {
   };
 
   render() {
-    const PATTERN_LENGTH = this.props.selectedPattern.stepCount;
+    const PATTERN_LENGTH = this.props.pattern.stepCount;
 
     let selectedNote;
     if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      selectedNote = this.props.selectedPattern.rows[this.props.selectedPatternRowIndex].notes[this.props.selectedPatternNoteIndex];
+      selectedNote = this.props.pattern.rows[this.props.selectedPatternRowIndex].notes[this.props.selectedPatternNoteIndex];
     }
     else {
       selectedNote = { name: "" };
@@ -316,8 +316,8 @@ class PatternEditor extends React.Component {
 
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
-      <PatternHeader patternID={this.props.selectedPattern.id} patternName={this.props.selectedPattern.name} setPatternName={this.props.setPatternName} />
-      <NoteInput note={selectedNote} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      <PatternHeader patternID={this.props.pattern.id} patternName={this.props.pattern.name} setPatternName={this.props.setPatternName} />
+      <NoteInput note={selectedNote} patternID={this.props.pattern.id} rowCount={this.props.pattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
@@ -327,7 +327,7 @@ class PatternEditor extends React.Component {
               )}
             </ul>
           </li>
-          {this.props.selectedPattern.rows.map((patternRow, rowIndex) =>
+          {this.props.pattern.rows.map((patternRow, rowIndex) =>
           <li key={rowIndex} className="inline-block list-style-none full-width">
             <ul className="flex ml0 pl0 no-whitespace-wrap">
               {patternRow.notes.slice(0, PATTERN_LENGTH).map((note, noteIndex) =>
@@ -341,9 +341,9 @@ class PatternEditor extends React.Component {
         </ul>
         <ul className="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="list-style-none flex-uniform-size">&nbsp;</li>
-          {this.props.selectedPattern.rows.map((patternRow, rowIndex) =>
+          {this.props.pattern.rows.map((patternRow, rowIndex) =>
           <li key={rowIndex} className="list-style-none flex-uniform-size">
-            <PatternRowRemoveButton patternID={this.props.selectedPattern.id} rowIndex={rowIndex} removePatternRow={this.props.removePatternRow} />
+            <PatternRowRemoveButton patternID={this.props.pattern.id} rowIndex={rowIndex} removePatternRow={this.props.removePatternRow} />
           </li>
           )}
         </ul>
