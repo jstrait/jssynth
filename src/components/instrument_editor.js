@@ -206,7 +206,7 @@ class SampleInstrumentEditor extends React.Component {
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <div className="mb1">
-        <label className="bold">Name:</label><input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
+        <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
       </div>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
@@ -561,7 +561,7 @@ class SynthInstrumentEditor extends React.Component {
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <div className="mb1">
-        <label className="bold">Name:</label><input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
+        <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
       </div>
       <ul className="flex pl0 mt0 mb1 overflow-scroll-x full-width display-none-l">
         <InstrumentPaneTab label="Base Sound" value="base_sound" isSelected={this.state.selectedTab === "base_sound"} setSelectedTab={this.setSelectedTab} />
