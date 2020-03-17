@@ -444,17 +444,26 @@ class TimelinePattern extends React.Component {
               style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - ((index === 0) ? 0 : 1)) + "px",
                       width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1 + ((index > 0) ? 1 : 0) + ((index < (SUB_PATTERN_LENGTHS.length - 1)) ? 1 : 0)) + "px"}}>
           {index === (SUB_PATTERN_LENGTHS.length - 1) &&
-          <span className="flex flex-column width-1 full-height right bg-gray">
-            <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.onStartLoopChange} onTouchStart={this.onStartLoopChange}>&#8635;</span>
-            {this.props.baseStepCount === this.props.fullStepCount && <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.onStartResize} onTouchStart={this.onStartResize}>&harr;</span>}
-          </span>
-          }
+          <TimelinePatternSidebar isResizeable={this.props.baseStepCount === this.props.fullStepCount} onStartLoopChange={this.onStartLoopChange} onStartResize={this.onStartResize} />}
         </span>
         {index > 0 && <span className={"absolute timeline-pattern-divider" + ((this.props.isSelected === true) ? " timeline-pattern-divider-selected" : "")}
                             style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - 1) + "px"}}></span>}
       </React.Fragment>
       )}
       <span className={"timeline-pattern-name" + ((this.props.isSelected === true) ? " timeline-pattern-name-selected" : "")}>{this.props.patternName}</span>
+    </span>;
+  };
+};
+
+class TimelinePatternSidebar extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    return <span className="flex flex-column width-1 full-height right bg-gray">
+      <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
+      {this.props.isResizeable && <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartResize} onTouchStart={this.props.onStartResize}>&harr;</span>}
     </span>;
   };
 };
