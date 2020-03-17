@@ -2,6 +2,48 @@
 
 import React from "react";
 
+class PatternHeader extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tipsAndTricksVisible: false,
+    };
+
+    this.setPatternName = this.setPatternName.bind(this);
+    this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
+  };
+
+  setPatternName(e) {
+    this.props.setPatternName(this.props.patternID, e.target.value);
+  };
+
+  setTipsAndTricksVisible(e) {
+    this.setState((prevState, props) => ({
+      tipsAndTricksVisible: !prevState.tipsAndTricksVisible,
+    }));
+  };
+
+  render() {
+    return <React.Fragment>
+      <div>
+        <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.patternName} onChange={this.setPatternName} />
+        <button className="button-link block inline-l ml-half-l" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
+      </div>
+      {(this.state.tipsAndTricksVisible === true) &&
+      <ul className="mt0 mb0">
+        <li>To enter a note, select a note box, and either play a note on the on-screen keyboard or type the note name.</li>
+        <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
+        <li>Use &lsquo;#&rsquo; to enter a sharp, and &lsquo;@&rsquo; to enter a flat. Press twice to double sharp/flat, thrice to remove the sharp/flat.</li>
+        <li>Use &mdash; to lengthen a note. For example, &lsquo;A4 &mdash; &mdash; &mdash;&rsquo; will last for 4 steps, while &lsquo;A4 &mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
+        <li>Press <code>SPACE</code>, <code>DELETE</code>, or <code>BACKSPACE</code> to clear the current note.</li>
+        <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows.</li>
+      </ul>
+      }
+    </React.Fragment>;
+  };
+};
+
 class NoteBox extends React.Component {
   constructor(props) {
     super(props);
@@ -222,15 +264,9 @@ class PatternEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      tipsAndTricksVisible: false,
-    };
-
     this.close = this.close.bind(this);
-    this.setPatternName = this.setPatternName.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
-    this.setTipsAndTricksVisible = this.setTipsAndTricksVisible.bind(this);
     this.eraseNote = this.eraseNote.bind(this);
     this.setNoteAsDash = this.setNoteAsDash.bind(this);
   };
@@ -239,22 +275,12 @@ class PatternEditor extends React.Component {
     this.props.setSelectedPattern(undefined);
   };
 
-  setPatternName(e) {
-    this.props.setPatternName(this.props.selectedPattern.id, e.target.value);
-  };
-
   addPatternRow(e) {
     this.props.addPatternRow(this.props.selectedPattern.id);
   };
 
   removePatternRow(e) {
     this.props.removePatternRow();
-  };
-
-  setTipsAndTricksVisible(e) {
-    this.setState((prevState, props) => ({
-      tipsAndTricksVisible: !prevState.tipsAndTricksVisible,
-    }));
   };
 
   eraseNote(e) {
@@ -290,20 +316,7 @@ class PatternEditor extends React.Component {
 
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
-      <div>
-        <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.selectedPattern.name} onChange={this.setPatternName} />
-        <button className="button-link block inline-l ml-half-l" onClick={this.setTipsAndTricksVisible}>Tips and Tricks</button>
-      </div>
-      {(this.state.tipsAndTricksVisible === true) &&
-      <ul className="mt0 mb0">
-        <li>To enter a note, select a note box, and either play a note on the on-screen keyboard or type the note name.</li>
-        <li>A note is a letter between A and G plus an octave between 0 and 7. For example: <b>A3</b>, <b>C♯4</b>, <b>E♭2</b></li>
-        <li>Use &lsquo;#&rsquo; to enter a sharp, and &lsquo;@&rsquo; to enter a flat. Press twice to double sharp/flat, thrice to remove the sharp/flat.</li>
-        <li>Use &mdash; to lengthen a note. For example, &lsquo;A4 &mdash; &mdash; &mdash;&rsquo; will last for 4 steps, while &lsquo;A4 &mdash;&rsquo; will last for two, and &lsquo;A4&rsquo; will last for one.</li>
-        <li>Press <code>SPACE</code>, <code>DELETE</code>, or <code>BACKSPACE</code> to clear the current note.</li>
-        <li>Use the left/right arrow keys to move between notes, and the up/down arrow keys to move between rows.</li>
-      </ul>
-      }
+      <PatternHeader patternID={this.props.selectedPattern.id} patternName={this.props.selectedPattern.name} setPatternName={this.props.setPatternName} />
       <NoteInput note={selectedNote} patternID={this.props.selectedPattern.id} rowCount={this.props.selectedPattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
