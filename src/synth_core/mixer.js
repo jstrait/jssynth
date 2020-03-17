@@ -201,10 +201,28 @@ function Mixer(audioContext) {
   };
 
   var setClipDetectionEnabled = function(isEnabled) {
+    // This following if/else is set up to handle differences between Chrome, Safari
+    // and Firefox.
+    //
+    // Chrome 80: For clip detection to work, the master gain has to be connected to
+    //   clip detector, and the clip detector must be connected to audio context
+    //   destination. However, `detectClipping()` will continuously fire if the clip
+    //   detector is connected to audio context destination outside of song playback.
+    //
+    // Safari 13: Same as Chrome, but master gain must be re-connected to the audio
+    //   context destination after the clip detector is disconnected, or there will
+    //   be no audio.
+    //
+    // Firefox 74: Only the master gain needs to be connected to clip detector for
+    //   clip detection to work, but `detectClipping()` will fire continuously if it
+    //   is connected outside of song playback.
     if (isEnabled === true) {
+      masterGain.connect(clipDetector);
       clipDetector.connect(audioContext.destination);
     }
     else {
+      masterGain.disconnect();
+      masterGain.connect(audioContext.destination);
       clipDetector.disconnect(audioContext.destination);
     }
   };
@@ -216,7 +234,6 @@ function Mixer(audioContext) {
 
     masterGain = audioContext.createGain();
     masterGain.connect(audioContext.destination);
-    masterGain.connect(clipDetector);
 
     channelCollection = MixerChannelCollection(audioContext, masterGain);
   }
