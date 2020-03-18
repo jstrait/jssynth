@@ -1188,13 +1188,13 @@ class App extends React.Component {
         {this.state.selectedPatternID !== undefined &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <PatternEditor pattern={selectedPattern}
-                         selectedPatternRowIndex={this.state.selectedPatternRowIndex}
-                         selectedPatternNoteIndex={this.state.selectedPatternNoteIndex}
+                         selectedRowIndex={this.state.selectedPatternRowIndex}
+                         selectedNoteIndex={this.state.selectedPatternNoteIndex}
                          setPatternName={this.setPatternName}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
                          setSelectedPattern={this.setSelectedPattern}
-                         setSelectedPatternNoteIndex={this.setSelectedPatternNoteIndex}
+                         setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
                          keyboardActive={this.state.isKeyboardActive} />
         </div>

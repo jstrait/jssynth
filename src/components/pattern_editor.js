@@ -55,12 +55,12 @@ class NoteBox extends React.Component {
   };
 
   onMouseDown(e) {
-    this.props.setSelectedPatternNoteIndex(this.props.rowIndex, this.props.noteIndex);
+    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
     e.preventDefault();
   };
 
   onTouchStart(e) {
-    this.props.setSelectedPatternNoteIndex(this.props.rowIndex, this.props.noteIndex);
+    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
   };
 
   noteIsValid(rawNoteString) {
@@ -82,8 +82,8 @@ class NoteBox extends React.Component {
 
   render() {
     let formattedNoteName = this.formatNote(this.props.note.name);
-    let noteIsSelected = this.props.selectedPatternRowIndex === this.props.rowIndex &&
-                         this.props.selectedPatternNoteIndex === this.props.noteIndex;
+    let noteIsSelected = this.props.selectedRowIndex === this.props.rowIndex &&
+                         this.props.selectedNoteIndex === this.props.noteIndex;
     let noteIsValid = noteIsSelected || this.noteIsValid(this.props.note.name);
 
     return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + (noteIsSelected ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>
@@ -101,7 +101,7 @@ class NoteInput extends React.Component {
   };
 
   setNoteValue(newNoteValue) {
-    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
   };
 
   extractNoteParts(noteString) {
@@ -123,7 +123,7 @@ class NoteInput extends React.Component {
 
   onBlur(e) {
     if (!this.props.keyboardActive) {
-      this.props.setSelectedPatternNoteIndex(undefined, undefined);
+      this.props.setSelectedNoteIndex(undefined, undefined);
     }
   };
 
@@ -183,10 +183,10 @@ class NoteInput extends React.Component {
       this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === FOUR && e.shiftKey) {
-      this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex, this.props.noteCount - 1);
+      this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.noteCount - 1);
     }
      else if (e.keyCode === SIX && e.shiftKey) {
-      this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex, 0);
+      this.props.setSelectedNoteIndex(this.props.selectedRowIndex, 0);
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(this.props.note.name);
@@ -210,23 +210,23 @@ class NoteInput extends React.Component {
       this.setNoteValue("-");
     }
     else if (e.keyCode === LEFT_ARROW) {
-      if (this.props.selectedPatternNoteIndex > 0) {
-        this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex - 1);
+      if (this.props.selectedNoteIndex > 0) {
+        this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.selectedNoteIndex - 1);
       }
     }
     else if (e.keyCode === RIGHT_ARROW) {
-      if (this.props.selectedPatternNoteIndex < this.props.noteCount - 1) {
-        this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex + 1);
+      if (this.props.selectedNoteIndex < this.props.noteCount - 1) {
+        this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.selectedNoteIndex + 1);
       }
     }
     else if (e.keyCode === UP_ARROW) {
-      if (this.props.selectedPatternRowIndex > 0) {
-        this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex - 1, this.props.selectedPatternNoteIndex);
+      if (this.props.selectedRowIndex > 0) {
+        this.props.setSelectedNoteIndex(this.props.selectedRowIndex - 1, this.props.selectedNoteIndex);
       }
     }
     else if (e.keyCode === DOWN_ARROW) {
-      if (this.props.selectedPatternRowIndex < this.props.rowCount - 1) {
-        this.props.setSelectedPatternNoteIndex(this.props.selectedPatternRowIndex + 1, this.props.selectedPatternNoteIndex);
+      if (this.props.selectedRowIndex < this.props.rowCount - 1) {
+        this.props.setSelectedNoteIndex(this.props.selectedRowIndex + 1, this.props.selectedNoteIndex);
       }
     }
 
@@ -234,7 +234,7 @@ class NoteInput extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
       this.noteInput.focus();
     }
   };
@@ -284,8 +284,8 @@ class PatternEditor extends React.Component {
   };
 
   eraseNote(e) {
-    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      this.props.setNoteValue("", this.props.pattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
+      this.props.setNoteValue("", this.props.pattern.id, this.props.selectedRowIndex, this.props.selectedNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -294,8 +294,8 @@ class PatternEditor extends React.Component {
   };
 
   setNoteAsDash(e) {
-    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      this.props.setNoteValue("-", this.props.pattern.id, this.props.selectedPatternRowIndex, this.props.selectedPatternNoteIndex);
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
+      this.props.setNoteValue("-", this.props.pattern.id, this.props.selectedRowIndex, this.props.selectedNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -307,8 +307,8 @@ class PatternEditor extends React.Component {
     const PATTERN_LENGTH = this.props.pattern.stepCount;
 
     let selectedNote;
-    if (this.props.selectedPatternRowIndex !== undefined && this.props.selectedPatternNoteIndex !== undefined) {
-      selectedNote = this.props.pattern.rows[this.props.selectedPatternRowIndex].notes[this.props.selectedPatternNoteIndex];
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
+      selectedNote = this.props.pattern.rows[this.props.selectedRowIndex].notes[this.props.selectedNoteIndex];
     }
     else {
       selectedNote = { name: "" };
@@ -317,7 +317,7 @@ class PatternEditor extends React.Component {
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <PatternHeader patternID={this.props.pattern.id} patternName={this.props.pattern.name} setPatternName={this.props.setPatternName} />
-      <NoteInput note={selectedNote} patternID={this.props.pattern.id} rowCount={this.props.pattern.rows.length} noteCount={PATTERN_LENGTH} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      <NoteInput note={selectedNote} patternID={this.props.pattern.id} rowCount={this.props.pattern.rows.length} noteCount={PATTERN_LENGTH} selectedRowIndex={this.props.selectedRowIndex} selectedNoteIndex={this.props.selectedNoteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
       <div className="flex">
         <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
           <li className="inline-block list-style-none full-width">
@@ -332,7 +332,7 @@ class PatternEditor extends React.Component {
             <ul className="flex ml0 pl0 no-whitespace-wrap">
               {patternRow.notes.slice(0, PATTERN_LENGTH).map((note, noteIndex) =>
               <li key={noteIndex} className="list-style-none inline-block note-container">
-                <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} selectedPatternRowIndex={this.props.selectedPatternRowIndex} selectedPatternNoteIndex={this.props.selectedPatternNoteIndex} setSelectedPatternNoteIndex={this.props.setSelectedPatternNoteIndex} />
+                <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} selectedRowIndex={this.props.selectedRowIndex} selectedNoteIndex={this.props.selectedNoteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
                </li>
               )}
             </ul>
@@ -351,8 +351,8 @@ class PatternEditor extends React.Component {
       <div className="flex flex-justify-space-between">
         <button className="button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
         <span>
-          <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedPatternRowIndex === undefined || this.props.selectedPatternNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
-          <button className="inline-block button-full button-hollow" disabled={this.props.selectedPatternRowIndex === undefined || this.props.selectedPatternNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
+          <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
+          <button className="inline-block button-full button-hollow" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
         </span>
       </div>
     </div>;
