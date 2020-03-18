@@ -44,6 +44,45 @@ class PatternHeader extends React.PureComponent {
   };
 };
 
+class PatternNotes extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    return <div className="flex">
+      <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li className="inline-block list-style-none full-width">
+          <ul className="flex ml0 pl0 center no-whitespace-wrap">
+            {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
+            <li key={noteIndex + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + 1}</li>
+            )}
+          </ul>
+        </li>
+        {this.props.rows.map((patternRow, rowIndex) =>
+        <li key={rowIndex} className="inline-block list-style-none full-width">
+          <ul className="flex ml0 pl0 no-whitespace-wrap">
+            {patternRow.notes.slice(0, this.props.stepCount).map((note, noteIndex) =>
+            <li key={noteIndex} className="list-style-none inline-block note-container">
+              <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === noteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+             </li>
+            )}
+          </ul>
+        </li>
+        )}
+      </ul>
+      <ul className="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+        <li className="list-style-none flex-uniform-size">&nbsp;</li>
+        {this.props.rows.map((patternRow, rowIndex) =>
+        <li key={rowIndex} className="list-style-none flex-uniform-size">
+          <PatternRowRemoveButton patternID={this.props.patternID} rowIndex={rowIndex} removePatternRow={this.props.removePatternRow} />
+        </li>
+        )}
+      </ul>
+    </div>;
+  };
+};
+
 class NoteBox extends React.Component {
   constructor(props) {
     super(props);
@@ -328,36 +367,13 @@ class PatternEditor extends React.Component {
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
       <PatternHeader patternID={this.props.pattern.id} patternName={this.props.pattern.name} setPatternName={this.props.setPatternName} />
       <NoteInput note={selectedNote} patternID={this.props.pattern.id} rowCount={this.props.pattern.rows.length} noteCount={PATTERN_LENGTH} selectedRowIndex={this.props.selectedRowIndex} selectedNoteIndex={this.props.selectedNoteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
-      <div className="flex">
-        <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
-          <li className="inline-block list-style-none full-width">
-            <ul className="flex ml0 pl0 center no-whitespace-wrap">
-              {Array(PATTERN_LENGTH).fill(undefined).map((_, noteIndex) =>
-              <li key={noteIndex + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + 1}</li>
-              )}
-            </ul>
-          </li>
-          {this.props.pattern.rows.map((patternRow, rowIndex) =>
-          <li key={rowIndex} className="inline-block list-style-none full-width">
-            <ul className="flex ml0 pl0 no-whitespace-wrap">
-              {patternRow.notes.slice(0, PATTERN_LENGTH).map((note, noteIndex) =>
-              <li key={noteIndex} className="list-style-none inline-block note-container">
-                <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === noteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
-               </li>
-              )}
-            </ul>
-          </li>
-          )}
-        </ul>
-        <ul className="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
-          <li className="list-style-none flex-uniform-size">&nbsp;</li>
-          {this.props.pattern.rows.map((patternRow, rowIndex) =>
-          <li key={rowIndex} className="list-style-none flex-uniform-size">
-            <PatternRowRemoveButton patternID={this.props.pattern.id} rowIndex={rowIndex} removePatternRow={this.props.removePatternRow} />
-          </li>
-          )}
-        </ul>
-      </div>
+      <PatternNotes patternID={this.props.pattern.id}
+                    stepCount={this.props.pattern.stepCount}
+                    rows={this.props.pattern.rows}
+                    selectedRowIndex={this.props.selectedRowIndex}
+                    selectedNoteIndex={this.props.selectedNoteIndex}
+                    setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                    removePatternRow={this.props.removePatternRow} />
       <PatternFooter patternID={this.props.pattern.id}
                      selectedRowIndex={this.props.selectedRowIndex}
                      selectedNoteIndex={this.props.selectedNoteIndex}
