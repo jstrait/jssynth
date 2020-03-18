@@ -307,15 +307,10 @@ class PatternEditor extends React.Component {
     super(props);
 
     this.close = this.close.bind(this);
-    this.removePatternRow = this.removePatternRow.bind(this);
   };
 
   close(e) {
     this.props.setSelectedPattern(undefined);
-  };
-
-  removePatternRow(e) {
-    this.props.removePatternRow();
   };
 
   render() {
