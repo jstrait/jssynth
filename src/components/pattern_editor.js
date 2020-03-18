@@ -260,32 +260,22 @@ class PatternRowRemoveButton extends React.PureComponent {
   };
 };
 
-class PatternEditor extends React.Component {
+class PatternFooter extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.close = this.close.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
-    this.removePatternRow = this.removePatternRow.bind(this);
     this.eraseNote = this.eraseNote.bind(this);
     this.setNoteAsDash = this.setNoteAsDash.bind(this);
   };
 
-  close(e) {
-    this.props.setSelectedPattern(undefined);
-  };
-
   addPatternRow(e) {
-    this.props.addPatternRow(this.props.pattern.id);
-  };
-
-  removePatternRow(e) {
-    this.props.removePatternRow();
+    this.props.addPatternRow(this.props.patternID);
   };
 
   eraseNote(e) {
     if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      this.props.setNoteValue("", this.props.pattern.id, this.props.selectedRowIndex, this.props.selectedNoteIndex);
+      this.props.setNoteValue("", this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -295,12 +285,39 @@ class PatternEditor extends React.Component {
 
   setNoteAsDash(e) {
     if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      this.props.setNoteValue("-", this.props.pattern.id, this.props.selectedRowIndex, this.props.selectedNoteIndex);
+      this.props.setNoteValue("-", this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
       e.preventDefault();
     }
+  };
+
+  render() {
+    return <div className="flex flex-justify-space-between">
+      <button className="button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
+      <span>
+        <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
+        <button className="inline-block button-full button-hollow" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
+      </span>
+    </div>;
+  };
+};
+
+class PatternEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.close = this.close.bind(this);
+    this.removePatternRow = this.removePatternRow.bind(this);
+  };
+
+  close(e) {
+    this.props.setSelectedPattern(undefined);
+  };
+
+  removePatternRow(e) {
+    this.props.removePatternRow();
   };
 
   render() {
@@ -348,13 +365,11 @@ class PatternEditor extends React.Component {
           )}
         </ul>
       </div>
-      <div className="flex flex-justify-space-between">
-        <button className="button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
-        <span>
-          <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
-          <button className="inline-block button-full button-hollow" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
-        </span>
-      </div>
+      <PatternFooter patternID={this.props.pattern.id}
+                     selectedRowIndex={this.props.selectedRowIndex}
+                     selectedNoteIndex={this.props.selectedNoteIndex}
+                     addPatternRow={this.props.addPatternRow}
+                     setNoteValue={this.props.setNoteValue} />
     </div>;
   };
 };
