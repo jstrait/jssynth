@@ -50,28 +50,38 @@ class PatternNotes extends React.Component {
   };
 
   render() {
+    const measureLength = 16;
+    const measureCount = Math.ceil(this.props.stepCount / measureLength);
+
+    let measures = [];
+    let measure = undefined;
+    let i, j;
+    let startStep;
+
+    for (i = 0; i < measureCount; i++) {
+      measure = [];
+      startStep = i * measureLength;
+
+      for (j = 0; j < this.props.rows.length; j++) {
+        measure.push(this.props.rows[j].notes.slice(startStep, startStep + measureLength));
+      }
+
+      measures.push(measure);
+    }
+
     return <div className="flex">
-      <ul className="flex flex-column flex-uniform-size mt0 ml0 pl0 overflow-scroll-x border-box">
-        <li className="inline-block list-style-none full-width">
-          <ul className="flex ml0 pl0 center no-whitespace-wrap">
-            {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
-            <li key={noteIndex + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + 1}</li>
-            )}
-          </ul>
-        </li>
-        {this.props.rows.map((patternRow, rowIndex) =>
-        <li key={rowIndex} className="inline-block list-style-none full-width">
-          <ul className="flex ml0 pl0 no-whitespace-wrap">
-            {patternRow.notes.slice(0, this.props.stepCount).map((note, noteIndex) =>
-            <li key={noteIndex} className="list-style-none inline-block note-container">
-              <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === noteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
-             </li>
-            )}
-          </ul>
-        </li>
+      <div className="flex flex-uniform-size overflow-scroll-x">
+        {measures.map((measure, measureIndex) =>
+        <PatternMeasure key={measureIndex}
+                        startStep={measureIndex * measureLength}
+                        stepCount={measureLength}
+                        rows={measure}
+                        selectedRowIndex={this.props.selectedRowIndex}
+                        selectedNoteIndex={this.props.selectedNoteIndex}
+                        setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
         )}
-      </ul>
-      <ul className="flex flex-column mt0 ml0 pl0 overflow-scroll-x border-box">
+      </div>
+      <ul className="flex flex-column mt0 mb1 ml0 pl0 overflow-scroll-x border-box">
         <li className="list-style-none flex-uniform-size">&nbsp;</li>
         {this.props.rows.map((patternRow, rowIndex) =>
         <li key={rowIndex} className="list-style-none flex-uniform-size">
@@ -80,6 +90,38 @@ class PatternNotes extends React.Component {
         )}
       </ul>
     </div>;
+  };
+};
+
+class PatternMeasure extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    const leftPaddingStyle = (this.props.startStep === 0) ? " pl0" : " pl-half";
+    const leftBorderStyle = (this.props.startStep === 0) ? "" : " bl";
+
+    return <ul className={"flex flex-uniform-size flex-column mt0 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
+      <li className="inline-block list-style-none full-width">
+        <ul className="flex ml0 pl0 center no-whitespace-wrap">
+          {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
+          <li key={noteIndex + this.props.startStep + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + this.props.startStep + 1}</li>
+          )}
+        </ul>
+      </li>
+      {this.props.rows.map((patternRow, rowIndex) =>
+      <li key={rowIndex} className="inline-block list-style-none full-width">
+        <ul className="flex ml0 pl0 no-whitespace-wrap">
+          {patternRow.slice(0, this.props.stepCount).map((note, noteIndex) =>
+          <li key={this.props.startStep + noteIndex} className="list-style-none inline-block note-container">
+            <NoteBox note={note} rowIndex={rowIndex} noteIndex={this.props.startStep + noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === (this.props.startStep + noteIndex)} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+           </li>
+          )}
+        </ul>
+      </li>
+      )}
+    </ul>;
   };
 };
 
