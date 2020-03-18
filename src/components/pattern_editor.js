@@ -82,11 +82,9 @@ class NoteBox extends React.Component {
 
   render() {
     let formattedNoteName = this.formatNote(this.props.note.name);
-    let noteIsSelected = this.props.selectedRowIndex === this.props.rowIndex &&
-                         this.props.selectedNoteIndex === this.props.noteIndex;
-    let noteIsValid = noteIsSelected || this.noteIsValid(this.props.note.name);
+    let noteIsValid = (this.props.isSelected === true) || this.noteIsValid(this.props.note.name);
 
-    return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + (noteIsSelected ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>
+    return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>
   };
 };
 
@@ -349,7 +347,7 @@ class PatternEditor extends React.Component {
             <ul className="flex ml0 pl0 no-whitespace-wrap">
               {patternRow.notes.slice(0, PATTERN_LENGTH).map((note, noteIndex) =>
               <li key={noteIndex} className="list-style-none inline-block note-container">
-                <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} selectedRowIndex={this.props.selectedRowIndex} selectedNoteIndex={this.props.selectedNoteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+                <NoteBox note={note} rowIndex={rowIndex} noteIndex={noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === noteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
                </li>
               )}
             </ul>
