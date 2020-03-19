@@ -7,6 +7,11 @@ const TRACK_HEIGHT_IN_PIXELS = 72;
 const STEPS_PER_MEASURE = 16;
 const MEASURE_WIDTH_IN_PIXELS = STEP_WIDTH_IN_PIXELS * STEPS_PER_MEASURE;
 
+const TIMELINE_DRAG_NONE = 1;
+const TIMELINE_DRAG_MOVE_PATTERN = 2;
+const TIMELINE_DRAG_RESIZE_PATTERN = 3;
+const TIMELINE_DRAG_LOOP_PATTERN = 4;
+
 class TrackHeader extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -91,10 +96,8 @@ class TimelineGrid extends React.Component {
     super(props);
 
     this.state = {
-      isDragInProgress: false,
-      isResizeInProgress: false,
+      dragType: TIMELINE_DRAG_NONE,
       resizeStartStep: undefined,
-      isLoopChangeInProgress: false,
       minPlaybackStepCount: undefined,
     };
 
@@ -120,45 +123,37 @@ class TimelineGrid extends React.Component {
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
 
     this.setState({
-      isDragInProgress: true,
+      dragType: TIMELINE_DRAG_MOVE_PATTERN,
       dragPatternOriginalStartStep: patternStartStep,
       dragStartStep: stepUnderCursor,
-      isResizeInProgress: false,
       resizeStartStep: undefined,
-      isLoopChangeInProgress: false,
       minPlaybackStepCount: undefined,
     });
   };
 
   startResize(startStep) {
     this.setState({
-      isDragInProgress: false,
+      dragType: TIMELINE_DRAG_RESIZE_PATTERN,
       dragPatternOriginalStartStep: undefined,
       dragStartStep: undefined,
-      isResizeInProgress: true,
       resizeStartStep: startStep,
-      isLoopChangeInProgress: false,
       minPlaybackStepCount: undefined,
     });
   };
 
   startLoopChange(startStep, baseStepCount) {
     this.setState({
-      isDragInProgress: false,
+      dragType: TIMELINE_DRAG_LOOP_PATTERN,
       dragPatternOriginalStartStep: undefined,
       dragStartStep: undefined,
-      isResizeInProgress: false,
       resizeStartStep: startStep,
-      isLoopChangeInProgress: true,
       minPlaybackStepCount: baseStepCount,
     });
   };
 
   endDrag() {
     this.setState({
-      isDragInProgress: false,
-      isResizeInProgress: false,
-      isLoopChangeInProgress: false,
+      dragType: TIMELINE_DRAG_NONE,
     });
   };
 
@@ -246,13 +241,13 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDrag(e) {
-    if (this.state.isDragInProgress === true) {
+    if (this.state.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
       this.dragMove(e.clientX, e.clientY);
     }
-    else if (this.state.isResizeInProgress === true) {
+    else if (this.state.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
       this.dragResize(e.clientX);
     }
-    else if (this.state.isLoopChangeInProgress === true) {
+    else if (this.state.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
       this.dragLoopChange(e.clientX);
     }
   };
@@ -268,19 +263,19 @@ class TimelineGrid extends React.Component {
   };
 
   onTouchMove(e) {
-    if (this.state.isDragInProgress === true) {
+    if (this.state.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
       this.dragMove(e.touches[0].clientX, e.touches[0].clientY);
 
       // Prevent container or page from scrolling while dragging pattern
       e.preventDefault();
     }
-    else if (this.state.isResizeInProgress === true) {
+    else if (this.state.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
       this.dragResize(e.touches[0].clientX);
 
       // Prevent container or page from scrolling while dragging pattern
       e.preventDefault();
     }
-    else if (this.state.isLoopChangeInProgress === true) {
+    else if (this.state.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
       this.dragLoopChange(e.touches[0].clientX);
 
       // Prevent container or page from scrolling while dragging pattern
@@ -312,7 +307,7 @@ class TimelineGrid extends React.Component {
     return <ul ref={el => {this.containerEl = el;}}
                className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
                onMouseDown={this.onMouseDown}
-               onMouseMove={(this.state.isDragInProgress === true || this.state.isResizeInProgress === true || this.state.isLoopChangeInProgress === true) ? this.onMouseDrag : undefined}
+               onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
                onMouseUp={this.onMouseUp}
                onMouseEnter={this.onMouseEnter}
                onTouchEnd={this.onTouchEnd}>
