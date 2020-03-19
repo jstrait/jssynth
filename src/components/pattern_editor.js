@@ -399,8 +399,6 @@ class PatternEditor extends React.Component {
   };
 
   render() {
-    const PATTERN_LENGTH = this.props.pattern.stepCount;
-
     let selectedNote;
     if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
       selectedNote = this.props.pattern.rows[this.props.selectedRowIndex].notes[this.props.selectedNoteIndex];
@@ -417,7 +415,7 @@ class PatternEditor extends React.Component {
       <NoteInput note={selectedNote}
                  patternID={this.props.pattern.id}
                  rowCount={this.props.pattern.rows.length}
-                 noteCount={PATTERN_LENGTH}
+                 noteCount={this.props.pattern.stepCount}
                  selectedRowIndex={this.props.selectedRowIndex}
                  selectedNoteIndex={this.props.selectedNoteIndex}
                  setSelectedNoteIndex={this.props.setSelectedNoteIndex}
