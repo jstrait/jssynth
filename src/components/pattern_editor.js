@@ -115,7 +115,11 @@ class PatternMeasure extends React.Component {
         <ul className="flex ml0 pl0 no-whitespace-wrap">
           {patternRow.slice(0, this.props.stepCount).map((note, noteIndex) =>
           <li key={this.props.startStep + noteIndex} className="list-style-none inline-block note-container">
-            <NoteBox note={note} rowIndex={rowIndex} noteIndex={this.props.startStep + noteIndex} isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === (this.props.startStep + noteIndex)} setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+            <NoteBox note={note}
+                     rowIndex={rowIndex}
+                     noteIndex={this.props.startStep + noteIndex}
+                     isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === (this.props.startStep + noteIndex)}
+                     setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
            </li>
           )}
         </ul>
@@ -407,8 +411,18 @@ class PatternEditor extends React.Component {
 
     return <div>
       <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
-      <PatternHeader patternID={this.props.pattern.id} patternName={this.props.pattern.name} setPatternName={this.props.setPatternName} />
-      <NoteInput note={selectedNote} patternID={this.props.pattern.id} rowCount={this.props.pattern.rows.length} noteCount={PATTERN_LENGTH} selectedRowIndex={this.props.selectedRowIndex} selectedNoteIndex={this.props.selectedNoteIndex} setSelectedNoteIndex={this.props.setSelectedNoteIndex} setNoteValue={this.props.setNoteValue} keyboardActive={this.props.keyboardActive} />
+      <PatternHeader patternID={this.props.pattern.id}
+                     patternName={this.props.pattern.name}
+                     setPatternName={this.props.setPatternName} />
+      <NoteInput note={selectedNote}
+                 patternID={this.props.pattern.id}
+                 rowCount={this.props.pattern.rows.length}
+                 noteCount={PATTERN_LENGTH}
+                 selectedRowIndex={this.props.selectedRowIndex}
+                 selectedNoteIndex={this.props.selectedNoteIndex}
+                 setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                 setNoteValue={this.props.setNoteValue}
+                 keyboardActive={this.props.keyboardActive} />
       <PatternNotes patternID={this.props.pattern.id}
                     stepCount={this.props.pattern.stepCount}
                     rows={this.props.pattern.rows}
