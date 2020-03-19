@@ -1213,7 +1213,7 @@ class App extends React.Component {
           {this.state.midiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
           {this.state.midiEnabled === true && this.state.midiInputNames.join(", ")}
           </p>
-          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-19</p>
+          <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-20</p>
         </div>
       </div>
       }
