@@ -345,7 +345,7 @@ class TimelineGrid extends React.Component {
   };
 };
 
-class TimelinePattern extends React.Component {
+class TimelinePattern extends React.PureComponent {
   constructor(props) {
     super(props);
 
