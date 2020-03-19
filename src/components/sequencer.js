@@ -97,6 +97,8 @@ class TimelineGrid extends React.Component {
 
     this.state = {
       dragType: TIMELINE_DRAG_NONE,
+      dragPatternOriginalStartStep: undefined,
+      dragStartStep: undefined,
       resizeStartStep: undefined,
       minPlaybackStepCount: undefined,
     };
