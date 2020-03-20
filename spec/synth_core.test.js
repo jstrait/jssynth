@@ -67,8 +67,8 @@ describe("SynthCore.SequenceParser", function() {
     var rawSequence = ["A4", "B@2", "", "C#5", ""];
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(5);
-    expect(Object.keys(parsedSequence)).toEqual(["0", "1", "2", "3", "4"]);
+    expect(parsedSequence.length).toEqual(4);
+    expect(Object.keys(parsedSequence)).toEqual(["0", "1", "3"]);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
@@ -78,17 +78,11 @@ describe("SynthCore.SequenceParser", function() {
     expect(parsedSequence[1].octave()).toEqual(2);
     expect(parsedSequence[1].stepCount()).toEqual(1);
 
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toBe(NaN);
-    expect(parsedSequence[2].stepCount()).toEqual(1);
+    expect(parsedSequence[2]).toBe(undefined);
 
     expect(parsedSequence[3].name()).toEqual("C#");
     expect(parsedSequence[3].octave()).toEqual(5);
     expect(parsedSequence[3].stepCount()).toEqual(1);
-
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toBe(NaN);
-    expect(parsedSequence[4].stepCount()).toEqual(1);
   });
 
   it("should properly parse a sequence containing ties", function() {
@@ -160,28 +154,12 @@ describe("SynthCore.SequenceParser", function() {
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toBe(7);
-    expect(Object.keys(parsedSequence)).toEqual(["0", "4", "5", "6"]);
+    expect(parsedSequence.length).toBe(1);
+    expect(Object.keys(parsedSequence)).toEqual(["0"]);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepCount()).toEqual(4);
-
-    expect(parsedSequence[1]).toBe(undefined);
-    expect(parsedSequence[2]).toBe(undefined);
-    expect(parsedSequence[3]).toBe(undefined);
-
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toBe(NaN);
-    expect(parsedSequence[4].stepCount()).toEqual(1);
-
-    expect(parsedSequence[5].name()).toEqual("");
-    expect(parsedSequence[5].octave()).toBe(NaN);
-    expect(parsedSequence[5].stepCount()).toEqual(1);
-
-    expect(parsedSequence[6].name()).toEqual("");
-    expect(parsedSequence[6].octave()).toBe(NaN);
-    expect(parsedSequence[6].stepCount()).toEqual(1);
   });
 
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
@@ -190,18 +168,14 @@ describe("SynthCore.SequenceParser", function() {
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(6);
-    expect(Object.keys(parsedSequence)).toEqual(["0", "2", "5"]);
+    expect(Object.keys(parsedSequence)).toEqual(["0", "5"]);
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
     expect(parsedSequence[0].stepCount()).toEqual(2);
 
     expect(parsedSequence[1]).toBe(undefined);
-
-    expect(parsedSequence[2].name()).toEqual("");
-    expect(parsedSequence[2].octave()).toBe(NaN);
-    expect(parsedSequence[2].stepCount()).toEqual(3);
-
+    expect(parsedSequence[2]).toBe(undefined);
     expect(parsedSequence[3]).toBe(undefined);
     expect(parsedSequence[4]).toBe(undefined);
 

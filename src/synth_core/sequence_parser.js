@@ -17,7 +17,7 @@ export var SequenceParser = {
       if (noteString === "-") {
         noteDuration += 1;
       }
-      else if (noteString === " ") {
+      else if (noteString === "") {
         noteDuration = 1;
       }
       else {
