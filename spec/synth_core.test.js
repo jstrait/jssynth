@@ -4,7 +4,7 @@ import * as SynthCore from "./../src/synth_core";
 
 describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
-    var note = new SynthCore.Note('A', 3, 1);
+    var note = SynthCore.Note('A', 3, 1);
 
     expect(note.name()).toEqual('A');
     expect(note.octave()).toEqual(3);
@@ -13,7 +13,7 @@ describe("SynthCore.Note", function() {
   });
 
   it("should construct a Note properly", function() {
-    var note = new SynthCore.Note('V', 3, 1);
+    var note = SynthCore.Note('V', 3, 1);
 
     expect(note.name()).toEqual('V');
     expect(note.octave()).toEqual(3);
@@ -22,9 +22,9 @@ describe("SynthCore.Note", function() {
   });
 
   it("should handle enharmonic equivalents properly", function() {
-    var note1 = new SynthCore.Note("D#", 3, 1);
-    var note2 = new SynthCore.Note("E@", 3, 1);
-    var note3 = new SynthCore.Note("F@@", 3, 1);
+    var note1 = SynthCore.Note("D#", 3, 1);
+    var note2 = SynthCore.Note("E@", 3, 1);
+    var note3 = SynthCore.Note("F@@", 3, 1);
 
     expect(note1.name()).toEqual('D#');
     expect(note1.octave()).toEqual(3);
@@ -43,7 +43,7 @@ describe("SynthCore.Note", function() {
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = new SynthCore.Note('A', '3', '2');
+    var note = SynthCore.Note('A', '3', '2');
 
     expect(note.name()).toEqual('A');
     expect(note.octave()).toEqual(3);
@@ -52,7 +52,7 @@ describe("SynthCore.Note", function() {
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = new SynthCore.Note('', '', '');
+    var note = SynthCore.Note('', '', '');
 
     expect(note.name()).toEqual('');
     expect(note.octave()).toEqual(NaN);
@@ -65,7 +65,7 @@ describe("SynthCore.Note", function() {
 describe("SynthCore.SequenceParser", function() {
   it("should properly parse a valid sequence", function() {
     var rawSequence = ["A4", "B@2", "", "C#5", ""];
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(4);
     expect(Object.keys(parsedSequence)).toEqual(["0", "1", "3"]);
@@ -88,7 +88,7 @@ describe("SynthCore.SequenceParser", function() {
   it("should properly parse a sequence containing ties", function() {
     var rawSequence = ["A4", "-", "-", "-", "C2", "-", "D4", "G3", "-", "-"];
 
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(8);
     expect(Object.keys(parsedSequence)).toEqual(["0", "4", "6", "7"]);
@@ -119,7 +119,7 @@ describe("SynthCore.SequenceParser", function() {
   it("should properly parse a sequence with bad note names", function() {
     var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A"];
 
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(8);
     expect(Object.keys(parsedSequence)).toEqual(["0", "4", "5", "6", "7"]);
@@ -152,7 +152,7 @@ describe("SynthCore.SequenceParser", function() {
   it("should properly parse a sequence containing trailing spaces", function() {
     var rawSequence = ["A4", "-", "-", "-", "", "", ""];
 
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toBe(1);
     expect(Object.keys(parsedSequence)).toEqual(["0"]);
@@ -165,7 +165,7 @@ describe("SynthCore.SequenceParser", function() {
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
     var rawSequence = ["A4", "-", "", "-", "-", "C2"];
 
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(6);
     expect(Object.keys(parsedSequence)).toEqual(["0", "5"]);
@@ -187,7 +187,7 @@ describe("SynthCore.SequenceParser", function() {
   it("should properly parse a sequence with leading sustain characters ('-')", function() {
     var rawSequence = ["-", "-", "-", "-"];
 
-    var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
+    var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence).toEqual([]);
     expect(parsedSequence.length).toEqual(0);
