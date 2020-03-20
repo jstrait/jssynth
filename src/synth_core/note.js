@@ -68,8 +68,7 @@ export function Note(newNoteName, newOctave, newStepCount) {
   var MIDDLE_OCTAVE = 4;
   var MIDDLE_A_FREQUENCY = 440.0;
 
-  var calculateFrequency = function(noteName, octave) {
-    var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
+  var calculateFrequency = function(normalizedNoteName, octave) {
     var octaveExponent = octave - MIDDLE_OCTAVE;
     var octaveMultiplier;
 
@@ -84,9 +83,22 @@ export function Note(newNoteName, newOctave, newStepCount) {
   };
 
   var noteName = newNoteName;
-  var octave = parseInt(newOctave, 10);
-  var stepCount = parseInt(newStepCount, 10);
-  var frequency = calculateFrequency(noteName, octave);
+  var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
+  var octave = newOctave;
+  var stepCount = newStepCount;
+  var frequency;
+
+  if (normalizedNoteName === undefined) {
+    throw TypeError("Invalid note name: \"" + noteName + "\"");
+  }
+  else if (!(Number.isInteger(octave) && (octave >= 0 ) && (octave <= 7))) {
+    throw TypeError("Invalid octave: \"" + octave + "\"");
+  }
+  else if (!(Number.isInteger(stepCount) && (stepCount >= 0 ))) {
+    throw TypeError("Invalid step count: \"" + stepCount + "\"");
+  }
+
+  frequency = calculateFrequency(normalizedNoteName, octave);
 
 
   return {

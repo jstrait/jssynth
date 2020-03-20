@@ -174,7 +174,7 @@ export class Serializer {
           patternRow = patternRows[j];
 
           for (k = 0; k < patternRow.length; k++) {
-            if (patternRow[k] && patternRow[k].name()) {
+            if (patternRow[k] !== undefined) {
               serializedNotes[startStep + k].push(new SynthCore.InstrumentNote(patternRow[k], 1.0, track.id));
             }
           }

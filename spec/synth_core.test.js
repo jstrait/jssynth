@@ -5,20 +5,47 @@ import * as SynthCore from "./../src/synth_core";
 describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
     var note = SynthCore.Note("A", 3, 1);
-
     expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(3);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(220.0);
   });
 
-  it("should construct a Note properly", function() {
-    var note = SynthCore.Note("V", 3, 1);
+  it("should raise an error if the note name is not valid", function() {
+    expect(function() { SynthCore.Note("a", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("V", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A!", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("@", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A@@@", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A###", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A@#", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(" ", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("", 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(0, 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(undefined, 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(null, 3, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(true, 3, 1) }).toThrowError(TypeError);
 
-    expect(note.name()).toEqual("V");
-    expect(note.octave()).toEqual(3);
-    expect(note.stepCount()).toEqual(1);
-    expect(note.frequency()).toEqual(NaN);
+    expect(function() { SynthCore.Note("A", "", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", "Q", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", "3", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", -1, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 8, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 2.1, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", NaN, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", undefined, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", null, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", true, 1) }).toThrowError(TypeError);
+
+    expect(function() { SynthCore.Note("A", 3, "") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, "1") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, "A") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, -1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.2) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, NaN) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, undefined) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, null) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, true) }).toThrowError(TypeError);
   });
 
   it("should handle enharmonic equivalents properly", function() {
@@ -40,24 +67,6 @@ describe("SynthCore.Note", function() {
     expect(note3.octave()).toEqual(3);
     expect(note3.stepCount()).toEqual(1);
     expect(note3.frequency()).toEqual(155.56349186104046);
-  });
-
-  it("should convert string values to numbers where appropriate", function() {
-    var note = SynthCore.Note("A", "3", "2");
-
-    expect(note.name()).toEqual("A");
-    expect(note.octave()).toEqual(3);
-    expect(note.stepCount()).toEqual(2);
-    expect(note.frequency()).toEqual(220.0);
-  });
-
-  it("should convert string values to numbers where appropriate", function() {
-    var note = SynthCore.Note("", "", "");
-
-    expect(note.name()).toEqual("");
-    expect(note.octave()).toEqual(NaN);
-    expect(note.stepCount()).toEqual(NaN);
-    expect(note.frequency()).toEqual(NaN);
   });
 });
 
@@ -117,36 +126,25 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence with bad note names", function() {
-    var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A"];
+    var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A", "C2"];
 
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
-    expect(parsedSequence.length).toEqual(8);
-    expect(Object.keys(parsedSequence)).toEqual(["0", "4", "5", "6", "7"]);
+    expect(parsedSequence.length).toEqual(9);
+    expect(Object.keys(parsedSequence)).toEqual(["8"]);
 
-    expect(parsedSequence[0].name()).toEqual("V");
-    expect(parsedSequence[0].octave()).toEqual(3);
-    expect(parsedSequence[0].stepCount()).toEqual(4);
-
+    expect(parsedSequence[0]).toBe(undefined);
     expect(parsedSequence[1]).toBe(undefined);
     expect(parsedSequence[2]).toBe(undefined);
     expect(parsedSequence[3]).toBe(undefined);
+    expect(parsedSequence[4]).toBe(undefined);
+    expect(parsedSequence[5]).toBe(undefined);
+    expect(parsedSequence[6]).toBe(undefined);
+    expect(parsedSequence[7]).toBe(undefined);
 
-    expect(parsedSequence[4].name()).toEqual("");
-    expect(parsedSequence[4].octave()).toEqual(4);
-    expect(parsedSequence[4].stepCount()).toEqual(1);
-
-    expect(parsedSequence[5].name()).toEqual("");
-    expect(parsedSequence[5].octave()).toBe(NaN);
-    expect(parsedSequence[5].stepCount()).toEqual(1);
-
-    expect(parsedSequence[6].name()).toEqual("@");
-    expect(parsedSequence[6].octave()).toBe(5);
-    expect(parsedSequence[6].stepCount()).toEqual(1);
-
-    expect(parsedSequence[7].name()).toEqual("3");
-    expect(parsedSequence[7].octave()).toBe(NaN);
-    expect(parsedSequence[7].stepCount()).toEqual(1);
+    expect(parsedSequence[8].name()).toEqual("C");
+    expect(parsedSequence[8].octave()).toBe(2);
+    expect(parsedSequence[8].stepCount()).toEqual(1);
   });
 
   it("should properly parse a sequence containing trailing spaces", function() {
