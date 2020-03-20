@@ -435,8 +435,7 @@ class TimelinePattern extends React.PureComponent {
       SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
     }
 
-    return <span ref={el => {this.patternBoxEl = el;}}
-                 className="absolute block left full-height overflow-hidden"
+    return <span className="absolute block left full-height overflow-hidden"
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
                          width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}
                  onMouseDown={this.onMouseDown}
