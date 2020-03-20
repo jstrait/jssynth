@@ -3,17 +3,16 @@
 import { Note } from "./note";
 
 export var SequenceParser = {
-  parse: function(rawNotes) {
+  parse: function(noteStrings) {
     var sequence = [];
-    var splitNotes = rawNotes.split(" ");
     var noteString;
     var i;
     var noteName;
     var octave;
     var noteDuration = 1;
 
-    for (i = splitNotes.length - 1; i >= 0; i--) {
-      noteString = splitNotes[i];
+    for (i = noteStrings.length - 1; i >= 0; i--) {
+      noteString = noteStrings[i];
 
       if (noteString === "-") {
         noteDuration += 1;

@@ -110,8 +110,6 @@ export class Serializer {
       let fullNoteSequence = [];
       let i;
       let baseNoteIndex = 0;
-      let sequence;
-      let rawSequenceString;
 
       for (i = 0; i < playbackStepCount; i++) {
         fullNoteSequence.push(baseNoteSequence[baseNoteIndex]);
@@ -122,9 +120,7 @@ export class Serializer {
         }
       }
 
-      rawSequenceString = fullNoteSequence.join(" ");
-      sequence = SynthCore.SequenceParser.parse(rawSequenceString);
-      serializedRows.push(sequence);
+      serializedRows.push(SynthCore.SequenceParser.parse(fullNoteSequence));
     });
 
     return serializedRows;

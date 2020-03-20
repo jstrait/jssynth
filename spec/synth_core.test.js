@@ -64,7 +64,7 @@ describe("SynthCore.Note", function() {
 
 describe("SynthCore.SequenceParser", function() {
   it("should properly parse a valid sequence", function() {
-    var rawSequence = "A4 B@2  C#5 ";
+    var rawSequence = ["A4", "B@2", "", "C#5", ""];
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(5);
@@ -92,7 +92,7 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence containing ties", function() {
-    var rawSequence = "A4 - - - C2 - D4 G3 - -";
+    var rawSequence = ["A4", "-", "-", "-", "C2", "-", "D4", "G3", "-", "-"];
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
@@ -123,7 +123,7 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence with bad note names", function() {
-    var rawSequence = "V3 - - - 4 A @5 3A";
+    var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A"];
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
@@ -156,7 +156,7 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence containing trailing spaces", function() {
-    var rawSequence = "A4 - - -   ";
+    var rawSequence = ["A4", "-", "-", "-", "", "", ""];
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
@@ -185,7 +185,7 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
-    var rawSequence = "A4 -  - - C2";
+    var rawSequence = ["A4", "-", "", "-", "-", "C2"];
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
@@ -211,7 +211,7 @@ describe("SynthCore.SequenceParser", function() {
   });
 
   it("should properly parse a sequence with leading sustain characters ('-')", function() {
-    var rawSequence = "- - - -";
+    var rawSequence = ["-", "-", "-", "-"];
 
     var parsedSequence = new SynthCore.SequenceParser.parse(rawSequence);
 
