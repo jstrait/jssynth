@@ -4,18 +4,18 @@ import * as SynthCore from "./../src/synth_core";
 
 describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
-    var note = SynthCore.Note('A', 3, 1);
+    var note = SynthCore.Note("A", 3, 1);
 
-    expect(note.name()).toEqual('A');
+    expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(3);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(220.0);
   });
 
   it("should construct a Note properly", function() {
-    var note = SynthCore.Note('V', 3, 1);
+    var note = SynthCore.Note("V", 3, 1);
 
-    expect(note.name()).toEqual('V');
+    expect(note.name()).toEqual("V");
     expect(note.octave()).toEqual(3);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(NaN);
@@ -26,35 +26,35 @@ describe("SynthCore.Note", function() {
     var note2 = SynthCore.Note("E@", 3, 1);
     var note3 = SynthCore.Note("F@@", 3, 1);
 
-    expect(note1.name()).toEqual('D#');
+    expect(note1.name()).toEqual("D#");
     expect(note1.octave()).toEqual(3);
     expect(note1.stepCount()).toEqual(1);
     expect(note1.frequency()).toEqual(155.56349186104046);
 
-    expect(note2.name()).toEqual('E@');
+    expect(note2.name()).toEqual("E@");
     expect(note2.octave()).toEqual(3);
     expect(note2.stepCount()).toEqual(1);
     expect(note2.frequency()).toEqual(155.56349186104046);
 
-    expect(note3.name()).toEqual('F@@');
+    expect(note3.name()).toEqual("F@@");
     expect(note3.octave()).toEqual(3);
     expect(note3.stepCount()).toEqual(1);
     expect(note3.frequency()).toEqual(155.56349186104046);
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = SynthCore.Note('A', '3', '2');
+    var note = SynthCore.Note("A", "3", "2");
 
-    expect(note.name()).toEqual('A');
+    expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(3);
     expect(note.stepCount()).toEqual(2);
     expect(note.frequency()).toEqual(220.0);
   });
 
   it("should convert string values to numbers where appropriate", function() {
-    var note = SynthCore.Note('', '', '');
+    var note = SynthCore.Note("", "", "");
 
-    expect(note.name()).toEqual('');
+    expect(note.name()).toEqual("");
     expect(note.octave()).toEqual(NaN);
     expect(note.stepCount()).toEqual(NaN);
     expect(note.frequency()).toEqual(NaN);
