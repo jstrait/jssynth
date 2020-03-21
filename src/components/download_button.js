@@ -9,9 +9,11 @@ export class DownloadButton extends React.PureComponent {
     this.state = {
       isPopupVisible: false,
       errorMessage: "",
+      fileName: "js-130",
     };
 
     this.togglePopup = this.togglePopup.bind(this);
+    this.setFileName = this.setFileName.bind(this);
     this.beginExport = this.beginExport.bind(this);
   };
 
@@ -21,8 +23,12 @@ export class DownloadButton extends React.PureComponent {
     }));
   };
 
+  setFileName(e) {
+    this.setState({ fileName: e.target.value });
+  };
+
   beginExport(e) {
-    if (this.props.downloadFileName === "") {
+    if (this.state.fileName === "") {
       this.setState({ errorMessage: "Please give a file name", });
       return;
     }
@@ -38,7 +44,7 @@ export class DownloadButton extends React.PureComponent {
       bodyContent = <span>
         <label className="block">File Name:</label>
         <span className="flex">
-          <input className="input-underlined flex-uniform-size" style={{minWidth: "1px"}} type="text" value={this.props.downloadFileName} onChange={this.props.setDownloadFileName} />
+          <input className="input-underlined flex-uniform-size" style={{minWidth: "1px"}} type="text" value={this.state.fileName} onChange={this.setFileName} />
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
@@ -53,7 +59,7 @@ export class DownloadButton extends React.PureComponent {
       <button className="button-full button-hollow right flex flex-align-center" onClick={this.togglePopup}>
         <span className="h3 lh-flush">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
-      <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.props.downloadFileName + ".wav"} href="#"></a>
+      <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.state.fileName + ".wav"} href="#"></a>
       <div className={"mt3 p1 popup-box" + (this.state.isPopupVisible ? "" : " display-none")}>
         {bodyContent}
       </div>

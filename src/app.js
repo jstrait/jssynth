@@ -35,7 +35,6 @@ class App extends React.Component {
       copiedPattern: undefined,
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isDownloadInProgress: false,
-      downloadFileName: "js-130",
       isKeyboardActive: false,
       activeKeyboardNotes: [],
       activeNoteContexts: [],
@@ -64,7 +63,6 @@ class App extends React.Component {
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
     this.updateTempo = this.updateTempo.bind(this);
-    this.setDownloadFileName = this.setDownloadFileName.bind(this);
     this.export = this.export.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
 
@@ -916,10 +914,6 @@ class App extends React.Component {
     });
   };
 
-  setDownloadFileName(e) {
-    this.setState({ downloadFileName: e.target.value });
-  };
-
   activateKeyboard() {
     this.setState({
       isKeyboardActive: true
@@ -1138,7 +1132,7 @@ class App extends React.Component {
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} downloadFileName={this.state.downloadFileName} setDownloadFileName={this.setDownloadFileName} export={this.export} />
+          <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} export={this.export} />
         </div>
         {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
         <Sequencer tracks={this.state.tracks}
