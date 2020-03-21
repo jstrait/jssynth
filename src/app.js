@@ -62,7 +62,7 @@ class App extends React.Component {
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
     this.updateTempo = this.updateTempo.bind(this);
-    this.export = this.export.bind(this);
+    this.exportToWav = this.exportToWav.bind(this);
     this.onVisibilityChange = this.onVisibilityChange.bind(this);
 
     // Sequencer
@@ -1044,7 +1044,7 @@ class App extends React.Component {
     console.log("Unexpected MIDI error");
   };
 
-  export(onExportComplete) {
+  exportToWav(onExportComplete) {
     let offlineTransport;
 
     let i;
@@ -1116,7 +1116,7 @@ class App extends React.Component {
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton isEnabled={this.state.isDownloadEnabled} export={this.export} />
+          <DownloadButton isEnabled={this.state.isDownloadEnabled} onRequestDownload={this.exportToWav} />
         </div>
         {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
         <Sequencer tracks={this.state.tracks}

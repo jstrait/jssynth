@@ -16,7 +16,7 @@ export class DownloadButton extends React.PureComponent {
     this.togglePopup = this.togglePopup.bind(this);
     this.setFileName = this.setFileName.bind(this);
     this.beginExport = this.beginExport.bind(this);
-    this.exportCompleteCallback = this.exportCompleteCallback.bind(this);
+    this.downloadCompleteCallback = this.downloadCompleteCallback.bind(this);
   };
 
   togglePopup(e) {
@@ -39,10 +39,10 @@ export class DownloadButton extends React.PureComponent {
       errorMessage: "",
       isDownloadInProgress: true,
     });
-    this.props.export(this.exportCompleteCallback);
+    this.props.onRequestDownload(this.downloadCompleteCallback);
   };
 
-  exportCompleteCallback(blob) {
+  downloadCompleteCallback(blob) {
     let url = window.URL.createObjectURL(blob);
 
     this.hiddenDownloadLink.href = url;
