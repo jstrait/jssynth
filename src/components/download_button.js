@@ -8,6 +8,7 @@ export class DownloadButton extends React.PureComponent {
 
     this.state = {
       isPopupVisible: false,
+      isDownloadInProgress: false,
       errorMessage: "",
       fileName: "js-130",
     };
@@ -15,6 +16,7 @@ export class DownloadButton extends React.PureComponent {
     this.togglePopup = this.togglePopup.bind(this);
     this.setFileName = this.setFileName.bind(this);
     this.beginExport = this.beginExport.bind(this);
+    this.exportCompleteCallback = this.exportCompleteCallback.bind(this);
   };
 
   togglePopup(e) {
@@ -33,8 +35,22 @@ export class DownloadButton extends React.PureComponent {
       return;
     }
 
-    this.setState({ errorMessage: "" });
-    this.props.export(this.hiddenDownloadLink);
+    this.setState({
+      errorMessage: "",
+      isDownloadInProgress: true,
+    });
+    this.props.export(this.exportCompleteCallback);
+  };
+
+  exportCompleteCallback(blob) {
+    let url = window.URL.createObjectURL(blob);
+
+    this.hiddenDownloadLink.href = url;
+    this.hiddenDownloadLink.click();
+
+    window.URL.revokeObjectURL(blob);
+
+    this.setState({isDownloadInProgress: false});
   };
 
   render() {
@@ -48,7 +64,7 @@ export class DownloadButton extends React.PureComponent {
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
-        <button className="button-full button-hollow mt1 right" disabled={this.props.isDownloadInProgress} onClick={this.beginExport}>Download</button>
+        <button className="button-full button-hollow mt1 right" disabled={this.state.isDownloadInProgress} onClick={this.beginExport}>Download</button>
       </span>;
     }
     else {

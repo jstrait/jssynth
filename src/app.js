@@ -34,7 +34,6 @@ class App extends React.Component {
       selectedPatternNoteIndex: undefined,
       copiedPattern: undefined,
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
-      isDownloadInProgress: false,
       isKeyboardActive: false,
       activeKeyboardNotes: [],
       activeNoteContexts: [],
@@ -1045,20 +1044,7 @@ class App extends React.Component {
     console.log("Unexpected MIDI error");
   };
 
-  export(downloadTriggerLink) {
-    let app = this;
-
-    let exportCompleteCallback = function(blob) {
-      let url = window.URL.createObjectURL(blob);
-
-      downloadTriggerLink.href = url;
-      downloadTriggerLink.click();
-
-      window.URL.revokeObjectURL(blob);
-
-      app.setState({isDownloadInProgress: false});
-    };
-
+  export(onExportComplete) {
     let offlineTransport;
 
     let i;
@@ -1076,9 +1062,7 @@ class App extends React.Component {
                              delayFeedback: instrument.delayFeedback});
     }
 
-    this.setState({isDownloadInProgress: true});
-
-    offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, exportCompleteCallback);
+    offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, onExportComplete);
     offlineTransport.tick();
   };
 
@@ -1132,7 +1116,7 @@ class App extends React.Component {
                      togglePlaying={this.togglePlaying}
                      updateAmplitude={this.updateMasterAmplitude}
                      updateTempo={this.updateTempo} />
-          <DownloadButton isEnabled={this.state.isDownloadEnabled} isDownloadInProgress={this.state.isDownloadInProgress} export={this.export} />
+          <DownloadButton isEnabled={this.state.isDownloadEnabled} export={this.export} />
         </div>
         {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
         <Sequencer tracks={this.state.tracks}
