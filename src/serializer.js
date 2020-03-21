@@ -126,17 +126,6 @@ export class Serializer {
     return serializedRows;
   };
 
-  static instrumentByID(instruments, id) {
-    let i;
-    for (i = 0; i < instruments.length; i++) {
-      if (instruments[i].id === id) {
-        return instruments[i];
-      }
-    }
-
-    return undefined;
-  };
-
   static patternsByTrackID(allPatterns, trackID) {
     let i;
     let patterns = [];
