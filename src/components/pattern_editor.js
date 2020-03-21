@@ -169,7 +169,7 @@ class NoteBox extends React.Component {
     let formattedNoteName = this.formatNote(this.props.note.name);
     let noteIsValid = (this.props.isSelected === true) || this.noteIsValid(this.props.note.name);
 
-    return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>
+    return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>;
   };
 };
 
@@ -323,7 +323,7 @@ class NoteInput extends React.Component {
   };
 
   render() {
-    return <input ref={(input) => { this.noteInput = input; }} className="hidden-input" type="text" readOnly={true} onKeyDown={this.onKeyDown} onBlur={this.onBlur} />
+    return <input ref={(input) => { this.noteInput = input; }} className="hidden-input" type="text" readOnly={true} onKeyDown={this.onKeyDown} onBlur={this.onBlur} />;
   };
 };
 

@@ -237,7 +237,7 @@ class App extends React.Component {
 
     return pattern.trackID === otherPattern.trackID &&
            pattern.id !== otherPattern.id &&
-           !((patternEndStep <= otherPattern.startStep) || (pattern.startStep >= otherPatternEndStep))
+           !((patternEndStep <= otherPattern.startStep) || (pattern.startStep >= otherPatternEndStep));
   };
 
   updateTempo(e) {
@@ -936,7 +936,7 @@ class App extends React.Component {
       currentTrack = this.trackByID(this.state.selectedTrackID);
     }
     else if (this.state.selectedPatternID !== undefined) {
-      selectedPattern = this.patternByID(this.state.selectedPatternID)
+      selectedPattern = this.patternByID(this.state.selectedPatternID);
       currentTrack = this.trackByID(selectedPattern.trackID);
     }
     else {
@@ -1050,7 +1050,7 @@ class App extends React.Component {
     let i;
     let serializedTracks = [];
     let track, instrument;
-    for(i = 0; i < this.state.tracks.length; i++) {
+    for (i = 0; i < this.state.tracks.length; i++) {
       track = this.state.tracks[i];
       instrument = this.instrumentByID(track.instrumentID);
       serializedTracks.push({id: track.id,
@@ -1070,7 +1070,7 @@ class App extends React.Component {
     if (document.hidden === true && this.state.transport.isPlaying === true) {
       this.togglePlaying();
     }
- };
+  };
 
   render() {
     let selectedTrack;
@@ -1089,7 +1089,7 @@ class App extends React.Component {
       instrument = this.instrumentByID(selectedTrack.instrumentID);
     }
     else if (this.state.selectedPatternID !== undefined) {
-      selectedPattern = this.patternByID(this.state.selectedPatternID)
+      selectedPattern = this.patternByID(this.state.selectedPatternID);
       selectedTrack = this.trackByID(selectedPattern.trackID);
       instrument = this.instrumentByID(selectedTrack.instrumentID);
     }
