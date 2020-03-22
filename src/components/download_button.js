@@ -17,6 +17,7 @@ export class DownloadButton extends React.PureComponent {
     this.setFileName = this.setFileName.bind(this);
     this.beginExport = this.beginExport.bind(this);
     this.downloadCompleteCallback = this.downloadCompleteCallback.bind(this);
+    this.onDownloadError = this.onDownloadError.bind(this);
   };
 
   togglePopup(e) {
@@ -39,7 +40,13 @@ export class DownloadButton extends React.PureComponent {
       errorMessage: "",
       isDownloadInProgress: true,
     });
-    this.props.onRequestDownload(this.downloadCompleteCallback);
+
+    try {
+      this.props.onRequestDownload(this.downloadCompleteCallback);
+    }
+    catch(e) {
+      this.onDownloadError();
+    }
   };
 
   downloadCompleteCallback(blob) {
@@ -51,6 +58,13 @@ export class DownloadButton extends React.PureComponent {
     window.URL.revokeObjectURL(blob);
 
     this.setState({isDownloadInProgress: false});
+  };
+
+  onDownloadError() {
+    this.setState({
+      errorMessage: "An error occurred",
+      isDownloadInProgress: false,
+    });
   };
 
   render() {
