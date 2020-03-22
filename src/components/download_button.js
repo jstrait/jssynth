@@ -15,7 +15,7 @@ export class DownloadButton extends React.PureComponent {
 
     this.togglePopup = this.togglePopup.bind(this);
     this.setFileName = this.setFileName.bind(this);
-    this.beginExport = this.beginExport.bind(this);
+    this.beginDownload = this.beginDownload.bind(this);
     this.downloadCompleteCallback = this.downloadCompleteCallback.bind(this);
     this.onDownloadError = this.onDownloadError.bind(this);
   };
@@ -30,7 +30,7 @@ export class DownloadButton extends React.PureComponent {
     this.setState({ fileName: e.target.value });
   };
 
-  beginExport(e) {
+  beginDownload(e) {
     if (this.state.fileName === "") {
       this.setState({ errorMessage: "Please give a file name", });
       return;
@@ -78,7 +78,7 @@ export class DownloadButton extends React.PureComponent {
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
-        <button className="button-full button-hollow mt1 right" disabled={this.state.isDownloadInProgress} onClick={this.beginExport}>Download</button>
+        <button className="button-full button-hollow mt1 right" disabled={this.state.isDownloadInProgress} onClick={this.beginDownload}>Download</button>
       </span>;
     }
     else {
