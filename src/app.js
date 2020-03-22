@@ -1062,7 +1062,7 @@ class App extends React.Component {
                              delayFeedback: instrument.delayFeedback});
     }
 
-    offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, onExportComplete);
+    offlineTransport = new SynthCore.OfflineTransport(serializedTracks, this.offlineSongPlayer, this.notePlayer, this.state.transport.tempo, this.state.masterAmplitude, this.mixer.audioContext().sampleRate, onExportComplete);
     offlineTransport.tick();
   };
 

@@ -5,9 +5,8 @@ import { Mixer } from "./mixer";
 import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
-export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAmplitude, completeCallback) {
+export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAmplitude, sampleRate, completeCallback) {
   var NUM_CHANNELS = 1;
-  var SAMPLE_RATE = 44100;
   var SIXTEENTHS_PER_MINUTE = tempo * 4;
   var STEP_INTERVAL_IN_SECONDS = 60.0 / SIXTEENTHS_PER_MINUTE;
   var FADE_OUT_TIME_IN_SECONDS = 1.5;
@@ -20,11 +19,11 @@ export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAm
   };
 
   var buildOfflineAudioContext = function(playbackTimeInSeconds) {
-    var sampleCount = SAMPLE_RATE * playbackTimeInSeconds;
-    var offlineAudioContext = AudioContextBuilder.buildOfflineAudioContext(NUM_CHANNELS, sampleCount, SAMPLE_RATE);
+    var sampleCount = sampleRate * playbackTimeInSeconds;
+    var offlineAudioContext = AudioContextBuilder.buildOfflineAudioContext(NUM_CHANNELS, sampleCount, sampleRate);
 
     offlineAudioContext.oncomplete = function(e) {
-      var waveWriter = WaveWriter();
+      var waveWriter = WaveWriter(sampleRate);
 
       var sampleData = e.renderedBuffer.getChannelData(0);
       var outputView = waveWriter.write(sampleData);

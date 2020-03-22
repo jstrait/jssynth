@@ -1,16 +1,15 @@
 "use strict";
 
-export function WaveWriter() {
+export function WaveWriter(sampleRate) {
   var LITTLE_ENDIAN = true;
   var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
   var NUM_CHANNELS = 1;
   var BITS_PER_SAMPLE = 16;
   var BYTES_PER_SAMPLE = 2;
-  var SAMPLE_RATE = 44100;
   var MAX_SAMPLE_VALUE = 32767;
 
   var BLOCK_ALIGN = BYTES_PER_SAMPLE * NUM_CHANNELS;
-  var BYTE_RATE = BLOCK_ALIGN * SAMPLE_RATE;
+  var BYTE_RATE = BLOCK_ALIGN * sampleRate;
 
   var WAVEFILE_HEADER_BYTE_COUNT = 44;
   var RIFF_CHUNK_BODY_BYTE_COUNT_MINIMUM = 36;
@@ -40,7 +39,7 @@ export function WaveWriter() {
     outputView.setUint32(16, FORMAT_CHUNK_BODY_BYTE_COUNT, LITTLE_ENDIAN);
     outputView.setUint16(20, AUDIO_FORMAT_CODE, LITTLE_ENDIAN);
     outputView.setUint16(22, NUM_CHANNELS, LITTLE_ENDIAN);
-    outputView.setUint32(24, SAMPLE_RATE, LITTLE_ENDIAN);
+    outputView.setUint32(24, sampleRate, LITTLE_ENDIAN);
     outputView.setUint32(28, BYTE_RATE, LITTLE_ENDIAN);
     outputView.setUint16(32, BLOCK_ALIGN, LITTLE_ENDIAN);
     outputView.setUint16(34, BITS_PER_SAMPLE, LITTLE_ENDIAN);
