@@ -20,6 +20,7 @@ export function WaveWriter() {
     var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
     var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
+    var sampleByteOffset;
     var constrainedSample;
     var i;
 
@@ -49,11 +50,15 @@ export function WaveWriter() {
     outputView.setUint8( 39, "a".charCodeAt(0), LITTLE_ENDIAN);
     outputView.setUint32(40, sampleDataByteCount, LITTLE_ENDIAN);
 
+    sampleByteOffset = WAVEFILE_HEADER_BYTE_COUNT;
+
     // Float32Array doesn't appear to support forEach() in Safari 9
     for (i = 0; i < rawFloat32SampleData.length; i++) {
       // Should this round?
       constrainedSample = Math.max(Math.min(rawFloat32SampleData[i], 1.0), -1.0);
-      outputView.setInt16(WAVEFILE_HEADER_BYTE_COUNT + (i * BYTES_PER_SAMPLE), constrainedSample * MAX_SAMPLE_VALUE, LITTLE_ENDIAN);
+      outputView.setInt16(sampleByteOffset, constrainedSample * MAX_SAMPLE_VALUE, LITTLE_ENDIAN);
+
+      sampleByteOffset += BYTES_PER_SAMPLE;
     }
 
     return outputView;
