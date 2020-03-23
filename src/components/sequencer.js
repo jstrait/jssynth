@@ -633,6 +633,7 @@ class Sequencer extends React.Component {
   toggleExpansion() {
     this.setState((prevState, props) => ({
       expanded: !prevState.expanded,
+      isPopupMenuActive: false,
     }));
   };
 
