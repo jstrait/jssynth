@@ -943,10 +943,7 @@ class App extends React.Component {
       return;
     }
 
-    let instrumentID = currentTrack.instrumentID;
-    let instrument = Serializer.serializeInstrument(this.instrumentByID(instrumentID), this.bufferCollection);
     let activeNoteSetHasChanged = false;
-
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
     let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
 
