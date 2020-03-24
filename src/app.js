@@ -1146,6 +1146,7 @@ class App extends React.Component {
                                  trackName={selectedTrack.name}
                                  setTrackName={this.setTrackName}
                                  setSelectedTrack={this.setSelectedTrack}
+                                 setKeyboardNotes={this.setKeyboardNotes}
                                  updateInstrument={this.updateInstrument} />
         </div>
         }
@@ -1157,6 +1158,7 @@ class App extends React.Component {
                                   setTrackName={this.setTrackName}
                                   setSelectedTrack={this.setSelectedTrack}
                                   setBufferFromFile={this.setBufferFromFile}
+                                  setKeyboardNotes={this.setKeyboardNotes}
                                   updateInstrument={this.updateInstrument} />
         </div>
         }
@@ -1171,7 +1173,8 @@ class App extends React.Component {
                          setSelectedPattern={this.setSelectedPattern}
                          setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
-                         keyboardActive={this.state.isKeyboardActive} />
+                         keyboardActive={this.state.isKeyboardActive}
+                         setKeyboardNotes={this.setKeyboardNotes} />
         </div>
         }
         {(this.state.selectedTrackID !== undefined || this.state.selectedPatternID !== undefined) &&

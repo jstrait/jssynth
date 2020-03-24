@@ -97,6 +97,7 @@ class SampleInstrumentEditor extends React.Component {
   };
 
   close(e) {
+    this.props.setKeyboardNotes([]);
     this.props.setSelectedTrack(undefined);
   };
 
@@ -423,6 +424,7 @@ class SynthInstrumentEditor extends React.Component {
   };
 
   close(e) {
+    this.props.setKeyboardNotes([]);
     this.props.setSelectedTrack(undefined);
   };
 
