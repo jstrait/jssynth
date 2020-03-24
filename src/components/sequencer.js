@@ -544,17 +544,19 @@ class MeasureCount extends React.PureComponent {
 
   render() {
     if (this.state.editMode === true) {
-      return <span className="pr1 align-right">
-        <label>Measures:</label>&nbsp;
-        <input type="text" className={"width-1" + (this.state.isValidValue ? "" : " note-box-invalid")} maxLength="2" defaultValue={this.props.measureCount} onChange={this.validateValue} ref={input => {this.measureCountInput = input;}} />
-        <span className="block">
+      return <span className="flex flex-column flex-align-end pr1">
+        <span>
+          <label>Measures:</label>&nbsp;
+          <input type="text" className={"width-1" + (this.state.isValidValue ? "" : " note-box-invalid")} maxLength="2" defaultValue={this.props.measureCount} onChange={this.validateValue} ref={input => {this.measureCountInput = input;}} />
+        </span>
+        <span>
           <button className="button-link" onClick={this.disableEditMode}>cancel</button>&nbsp;
           <button className="button-small button-hollow" disabled={!this.state.isValidValue} onClick={this.setMeasureCount}>Save</button>
         </span>
       </span>;
     }
     else {
-      return <span className="pr1 align-right">
+      return <span className="flex flex-column flex-align-end pr1">
         <label>Measures: {this.props.measureCount}</label>
         <button className="block button-link" onClick={this.enableEditMode}>change</button>
       </span>;
