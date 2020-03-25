@@ -290,18 +290,28 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   flex: 0 0 9.0rem;
 }
 
-.sequencer-row-left-padding {
+.sequencer-body-left-padding {
   flex: 0 0 1.0rem;
+  background-image: url(images/sequencer_row_background.png);
+  background-size: 144px 72px;
+  background-position: bottom right;
+  image-rendering: pixelated;
 }
 
-.sequencer-row {
-  background-image: url(images/sequencer_barline.png);
-  background-size: 144px 1px;
+.sequencer-body {
+  background-image: url(images/sequencer_row_background.png);
+  background-size: 144px 72px;
+  background-position: bottom right;
+  image-rendering: pixelated;
 }
 
-.sequencer-row-right-padding {
+.sequencer-body-right-padding {
   flex: 1;
   min-width: 1.0rem;
+  background-image: url(images/sequencer_row_background.png);
+  background-size: 1px 72px;
+  background-position: bottom;
+  image-rendering: pixelated;  /* Prevent blurry/hidden image in Chrome */
 }
 
 .sequencer-cell-header {

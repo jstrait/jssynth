@@ -78,11 +78,11 @@ class TimelineHeader extends React.PureComponent {
 
     return <div className="relative">
       <ul className="flex m0 pl0 no-whitespace-wrap height-2">
-        <li className="sequencer-row-left-padding list-style-none border-box bb br"></li>
+        <li className="sequencer-body-left-padding list-style-none border-box"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
         )}
-        <li className="sequencer-row-right-padding list-style-none bb"></li>
+        <li className="sequencer-body-right-padding list-style-none"></li>
       </ul>
       <div className="sequencer-step-timeline">
         <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * STEPS_PER_MEASURE) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
@@ -306,39 +306,36 @@ class TimelineGrid extends React.Component {
   };
 
   render() {
-    return <ul ref={el => {this.containerEl = el;}}
-               className="flex flex-column full-height m0 pl0 no-whitespace-wrap"
-               onMouseDown={this.onMouseDown}
-               onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
-               onMouseUp={this.onMouseUp}
-               onMouseEnter={this.onMouseEnter}
-               onTouchEnd={this.onTouchEnd}>
-      {this.props.tracks.map((track) =>
-      <li key={track.id} className="list-style-none flex full-width height-3">
-        <span className="sequencer-row-left-padding border-box bb br bg-lighter-gray"></span>
-        <span className="sequencer-row relative border-box bb br" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
-          {this.props.patternsByTrackID[track.id].map((pattern) =>
-          <TimelinePattern key={pattern.id}
-                           patternID={pattern.id}
-                           patternName={pattern.name}
-                           startStep={pattern.startStep}
-                           baseStepCount={pattern.stepCount}
-                           fullStepCount={pattern.playbackStepCount}
-                           isSelected={this.props.highlightedPatternID === pattern.id}
-                           isPopupMenuActive={this.props.isPopupMenuActive}
-                           hiddenInput={this.props.hiddenInput}
-                           startDrag={this.startDrag}
-                           startResize={this.startResize}
-                           startLoopChange={this.startLoopChange}
-                           setHighlightedPattern={this.props.setHighlightedPattern}
-                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                           setPopupMenuPosition={this.setPopupMenuPosition} />
-          )}
-        </span>
-        <span className="sequencer-row-right-padding border-box bb bg-lighter-gray"></span>
-      </li>
+    return <div ref={el => {this.containerEl = el;}}
+                className="flex full-height no-whitespace-wrap"
+                onMouseDown={this.onMouseDown}
+                onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
+                onMouseUp={this.onMouseUp}
+                onMouseEnter={this.onMouseEnter}
+                onTouchEnd={this.onTouchEnd}>
+      <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
+      <span className="sequencer-body relative border-box" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
+      {this.props.patternViews.map((patternView) =>
+        <TimelinePattern key={patternView.pattern.id}
+                         trackIndex={patternView.trackIndex}
+                         patternID={patternView.pattern.id}
+                         patternName={patternView.pattern.name}
+                         startStep={patternView.pattern.startStep}
+                         baseStepCount={patternView.pattern.stepCount}
+                         fullStepCount={patternView.pattern.playbackStepCount}
+                         isSelected={this.props.highlightedPatternID === patternView.pattern.id}
+                         isPopupMenuActive={this.props.isPopupMenuActive}
+                         hiddenInput={this.props.hiddenInput}
+                         startDrag={this.startDrag}
+                         startResize={this.startResize}
+                         startLoopChange={this.startLoopChange}
+                         setHighlightedPattern={this.props.setHighlightedPattern}
+                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+                         setPopupMenuPosition={this.setPopupMenuPosition} />
       )}
-    </ul>;
+      </span>
+      <span className="sequencer-body-right-padding border-box bg-lighter-gray"></span>
+    </div>;
   };
 };
 
@@ -437,7 +434,9 @@ class TimelinePattern extends React.PureComponent {
 
     return <span className="absolute block left full-height overflow-hidden"
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
-                         width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px"}}
+                         top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
+                         width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px",
+                         height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px"}}
                  onMouseDown={this.onMouseDown}
                  onTouchStart={this.onTouchStart}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
@@ -798,7 +797,7 @@ class Sequencer extends React.Component {
                           setCurrentStep={this.props.setCurrentStep}
                           setIsTimelineElementActive={this.setIsTimelineElementActive} />
           <TimelineGrid tracks={this.props.tracks}
-                        patternsByTrackID={this.props.patternsByTrackID}
+                        patternViews={this.props.patternViews}
                         measureCount={this.props.measureCount}
                         highlightedPatternID={this.state.highlightedPatternID}
                         isPopupMenuActive={this.state.isPopupMenuActive}
