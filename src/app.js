@@ -18,6 +18,15 @@ import { Sequencer } from "./components/sequencer";
 import { SynthInstrumentEditor } from "./components/instrument_editor";
 import { Transport } from "./components/transport";
 
+
+const VIEW_UNKNOWN = -1;
+const VIEW_LOADING = 1;
+const VIEW_SEQUENCER = 2;
+const VIEW_INSTRUMENT_SYNTH = 3;
+const VIEW_INSTRUMENT_SAMPLER = 4;
+const VIEW_PATTERN_EDITOR = 5;
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -1073,27 +1082,49 @@ class App extends React.Component {
     let selectedTrack;
     let selectedPattern;
     let instrument;
-    let isLoaded = this.state.isLoaded;
 
-    if (this.state.selectedTrackID !== undefined) {
-      selectedTrack = this.trackByID(this.state.selectedTrackID);
-      instrument = this.instrumentByID(selectedTrack.instrumentID);
+    let view = VIEW_UNKNOWN;
+
+    if (this.state.isLoaded !== true) {
+      view = VIEW_LOADING;
     }
-    else if (this.state.selectedPatternID !== undefined) {
-      selectedPattern = this.patternByID(this.state.selectedPatternID);
-      selectedTrack = this.trackByID(selectedPattern.trackID);
-      instrument = this.instrumentByID(selectedTrack.instrumentID);
+    else {
+      if (this.state.selectedPatternID !== undefined) {
+        view = VIEW_PATTERN_EDITOR;
+
+        selectedPattern = this.patternByID(this.state.selectedPatternID);
+        selectedTrack = this.trackByID(selectedPattern.trackID);
+        instrument = this.instrumentByID(selectedTrack.instrumentID);
+      }
+      else if (this.state.selectedTrackID !== undefined) {
+        selectedTrack = this.trackByID(this.state.selectedTrackID);
+        instrument = this.instrumentByID(selectedTrack.instrumentID);
+
+        if (instrument.type === "synth") {
+          view = VIEW_INSTRUMENT_SYNTH;
+        }
+        else if (instrument.type === "sample") {
+          view = VIEW_INSTRUMENT_SAMPLER;
+        }
+        else {
+          view = VIEW_UNKNOWN;
+        }
+      }
+      else {
+        view = VIEW_SEQUENCER;
+      }
     }
+
 
     return <div>
-      {isLoaded !== true &&
+      {view === VIEW_LOADING &&
       <div className="full-width flex flex-column flex-align-center flex-justify-center" style={{"minHeight": "100vh"}}>
         <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
         <span className="lightText">Web Synthesizer</span>
         <span className="mt1 ml1 mr1">{this.state.loadingStatusMessage}</span>
       </div>
       }
-      {isLoaded === true &&
+      {view !== VIEW_LOADING &&
       <div className="flex flex-column flex-justify-space-between" style={{"minHeight": "100vh"}}>
         <div id="header" className="flex flex-align-center pt1 pb1 pl1 pr1 border-box full-width">
           <div id="logo-container">
@@ -1109,7 +1140,7 @@ class App extends React.Component {
                      updateTempo={this.updateTempo} />
           <DownloadButton isEnabled={this.state.isDownloadEnabled} onRequestDownload={this.exportToWav} />
         </div>
-        {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
+        {view === VIEW_SEQUENCER &&
         <Sequencer tracks={this.state.tracks}
                    patterns={this.state.patterns}
                    measureCount={this.state.measureCount}
@@ -1133,7 +1164,7 @@ class App extends React.Component {
                    removePattern={this.removePattern}
                    removeTrack={this.removeTrack} />
         }
-        {this.state.selectedTrackID !== undefined && instrument.type === "synth" &&
+        {view === VIEW_INSTRUMENT_SYNTH &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SynthInstrumentEditor instrument={instrument}
                                  trackID={selectedTrack.id}
@@ -1144,7 +1175,7 @@ class App extends React.Component {
                                  updateInstrument={this.updateInstrument} />
         </div>
         }
-        {this.state.selectedTrackID !== undefined && instrument.type === "sample" &&
+        {view === VIEW_INSTRUMENT_SAMPLER &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SampleInstrumentEditor instrument={instrument}
                                   trackID={selectedTrack.id}
@@ -1156,7 +1187,7 @@ class App extends React.Component {
                                   updateInstrument={this.updateInstrument} />
         </div>
         }
-        {this.state.selectedPatternID !== undefined &&
+        {view === VIEW_PATTERN_EDITOR &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <PatternEditor pattern={selectedPattern}
                          selectedRowIndex={this.state.selectedPatternRowIndex}
@@ -1171,7 +1202,7 @@ class App extends React.Component {
                          setKeyboardNotes={this.setKeyboardNotes} />
         </div>
         }
-        {(this.state.selectedTrackID !== undefined || this.state.selectedPatternID !== undefined) &&
+        {(view === VIEW_PATTERN_EDITOR || view === VIEW_INSTRUMENT_SYNTH || view === VIEW_INSTRUMENT_SAMPLER) &&
         <Keyboard isActive={this.state.isKeyboardActive}
                   rootNoteName={instrument.rootNoteName}
                   rootNoteOctave={instrument.rootNoteOctave}
