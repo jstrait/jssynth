@@ -31,8 +31,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.idGenerator = new IDGenerator(100);
-
     this.state = {
       isLoaded: false,
       loadingStatusMessage: "Loading...",
@@ -61,12 +59,13 @@ class App extends React.Component {
 
     this.itemByID = this.itemByID.bind(this);
     this.indexByID = this.indexByID.bind(this);
+    this.trackByID = this.trackByID.bind(this);
+    this.instrumentByID = this.instrumentByID.bind(this);
+    this.patternByID = this.patternByID.bind(this);
+    this.patternIndexByID = this.patternIndexByID.bind(this);
+    this.patternsByTrackID = this.patternsByTrackID.bind(this);
 
     // Transport
-    this.timeoutID = undefined;
-    this.songPlayer = SynthCore.SongPlayer();
-    this.offlineSongPlayer = SynthCore.SongPlayer();
-
     this.rewindTransport = this.rewindTransport.bind(this);
     this.togglePlaying = this.togglePlaying.bind(this);
     this.updateMasterAmplitude = this.updateMasterAmplitude.bind(this);
@@ -77,32 +76,29 @@ class App extends React.Component {
     // Sequencer
     this.setMeasureCount = this.setMeasureCount.bind(this);
     this.setCurrentStep = this.setCurrentStep.bind(this);
-    this.setTrackName = this.setTrackName.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
     this.addGenericTrack = this.addGenericTrack.bind(this);
     this.addSynthTrack = this.addSynthTrack.bind(this);
     this.addSamplerTrack = this.addSamplerTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
-
-    // Track Editor
     this.setSelectedTrack = this.setSelectedTrack.bind(this);
-    this.trackByID = this.trackByID.bind(this);
-    this.instrumentByID = this.instrumentByID.bind(this);
-    this.patternByID = this.patternByID.bind(this);
-    this.patternIndexByID = this.patternIndexByID.bind(this);
-    this.patternsByTrackID = this.patternsByTrackID.bind(this);
     this.isPatternsOverlapping = this.isPatternsOverlapping.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.setCopiedPattern = this.setCopiedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
     this.resizePattern = this.resizePattern.bind(this);
     this.changePatternPlaybackStepCount = this.changePatternPlaybackStepCount.bind(this);
-    this.updateInstrument = this.updateInstrument.bind(this);
-    this.setBufferFromFile = this.setBufferFromFile.bind(this);
     this.addPattern = this.addPattern.bind(this);
     this.duplicatePattern = this.duplicatePattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
+
+    // Instrument Editor
+    this.setTrackName = this.setTrackName.bind(this);
+    this.updateInstrument = this.updateInstrument.bind(this);
+    this.setBufferFromFile = this.setBufferFromFile.bind(this);
+
+    // Pattern Editor
     this.setPatternName = this.setPatternName.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
@@ -118,9 +114,6 @@ class App extends React.Component {
     this.onMIDIStateChange = this.onMIDIStateChange.bind(this);
     this.onMIDIMessage = this.onMIDIMessage.bind(this);
     this.onMIDIError = this.onMIDIError.bind(this);
-    this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
-
-    document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
     this.initialize();
   };
@@ -139,17 +132,26 @@ class App extends React.Component {
       return;
     }
 
+    this.idGenerator = new IDGenerator(100);
+
     this.mixer = SynthCore.Mixer(audioContext);
+    this.timeoutID = undefined;
+    this.songPlayer = SynthCore.SongPlayer();
+    this.offlineSongPlayer = SynthCore.SongPlayer();
     this.notePlayer = SynthCore.NotePlayer();
 
     this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
     this.transport.setTempo(this.state.transport.tempo);
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
 
+    this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
+
     this.bufferCollection = SynthCore.BufferCollection(audioContext);
     this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(audioContext));
     this.bufferCollection.addBuffer("pink-noise", BufferGenerator.generatePinkNoise(audioContext));
     this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(audioContext));
+
+    document.addEventListener("visibilitychange", this.onVisibilityChange, false);
 
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
