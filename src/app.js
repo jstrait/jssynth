@@ -1075,17 +1075,6 @@ class App extends React.Component {
     let instrument;
     let isLoaded = this.state.isLoaded;
 
-    let i, j;
-    let patternViews = [];
-    let patternsInTrack;
-    for (i = 0; i < this.state.tracks.length; i++) {
-      patternsInTrack = this.patternsByTrackID(this.state.tracks[i].id);
-
-      for (j = 0; j < patternsInTrack.length; j++) {
-        patternViews.push({trackIndex: i, pattern: patternsInTrack[j]});
-      }
-    }
-
     if (this.state.selectedTrackID !== undefined) {
       selectedTrack = this.trackByID(this.state.selectedTrackID);
       instrument = this.instrumentByID(selectedTrack.instrumentID);
@@ -1122,7 +1111,7 @@ class App extends React.Component {
         </div>
         {this.state.selectedTrackID === undefined && this.state.selectedPatternID === undefined &&
         <Sequencer tracks={this.state.tracks}
-                   patternViews={patternViews}
+                   patterns={this.state.patterns}
                    measureCount={this.state.measureCount}
                    setMeasureCount={this.setMeasureCount}
                    currentStep={this.state.transport.step}

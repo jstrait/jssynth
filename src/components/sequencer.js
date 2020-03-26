@@ -306,6 +306,20 @@ class TimelineGrid extends React.Component {
   };
 
   render() {
+    let i;
+    let trackIndices = {};
+    let patternsByTrackIndex = [];
+    let pattern;
+
+    for (i = 0; i < this.props.tracks.length; i++) {
+      trackIndices[this.props.tracks[i].id] = i;
+    }
+
+    for (i = 0; i < this.props.patterns.length; i++) {
+      pattern = this.props.patterns[i];
+      patternsByTrackIndex.push({trackIndex: trackIndices[pattern.trackID], pattern: pattern});
+    }
+
     return <div ref={el => {this.containerEl = el;}}
                 className="flex full-height no-whitespace-wrap"
                 onMouseDown={this.onMouseDown}
@@ -315,7 +329,7 @@ class TimelineGrid extends React.Component {
                 onTouchEnd={this.onTouchEnd}>
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
       <span className="sequencer-body relative border-box" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
-      {this.props.patternViews.map((patternView) =>
+      {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
                          trackIndex={patternView.trackIndex}
                          patternID={patternView.pattern.id}
@@ -781,7 +795,7 @@ class Sequencer extends React.Component {
                           setCurrentStep={this.props.setCurrentStep}
                           setIsTimelineElementActive={this.setIsTimelineElementActive} />
           <TimelineGrid tracks={this.props.tracks}
-                        patternViews={this.props.patternViews}
+                        patterns={this.props.patterns}
                         measureCount={this.props.measureCount}
                         highlightedPatternID={this.state.highlightedPatternID}
                         isPopupMenuActive={this.state.isPopupMenuActive}
