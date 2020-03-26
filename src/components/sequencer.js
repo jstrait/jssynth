@@ -325,7 +325,6 @@ class TimelineGrid extends React.Component {
                          fullStepCount={patternView.pattern.playbackStepCount}
                          isSelected={this.props.highlightedPatternID === patternView.pattern.id}
                          isPopupMenuActive={this.props.isPopupMenuActive}
-                         hiddenInput={this.props.hiddenInput}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
                          startLoopChange={this.startLoopChange}
@@ -350,9 +349,11 @@ class TimelinePattern extends React.PureComponent {
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onStartResize = this.onStartResize.bind(this);
     this.onStartLoopChange = this.onStartLoopChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   };
 
   highlight() {
+    this.el.focus();
     this.props.setHighlightedPattern(this.props.patternID);
   };
 
@@ -373,10 +374,6 @@ class TimelinePattern extends React.PureComponent {
 
     this.props.startDrag(this.props.startStep, e.clientX);
 
-    // Prevent onBlur from firing on hidden input, which will prevent pattern
-    // box being selected
-    e.preventDefault();
-
     // Prevent click on parent pattern grid container
     e.stopPropagation();
   };
@@ -395,10 +392,6 @@ class TimelinePattern extends React.PureComponent {
 
     this.props.startResize(this.props.startStep);
 
-    // Prevent onBlur from firing on hidden input, which will prevent pattern
-    // box being selected
-    e.preventDefault();
-
     // Prevent a drag start occuring on parent
     e.stopPropagation();
   };
@@ -411,17 +404,14 @@ class TimelinePattern extends React.PureComponent {
 
     this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
 
-    // Prevent onBlur from firing on hidden input, which will prevent pattern
-    // box being selected
-    e.preventDefault();
-
     // Prevent a drag start occuring on parent
     e.stopPropagation();
   };
 
-  componentDidUpdate() {
-    if (this.props.isSelected) {
-      this.props.hiddenInput.focus();
+  onBlur(e) {
+    this.props.setHighlightedPattern(undefined);
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
     }
   };
 
@@ -432,13 +422,16 @@ class TimelinePattern extends React.PureComponent {
       SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
     }
 
-    return <span className="absolute block left full-height overflow-hidden"
+    return <span ref={(el) => { this.el = el; }}
+                 tabIndex="-1"
+                 className="absolute block left full-height overflow-hidden outline-none"
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
                          top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
                          width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px",
                          height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px"}}
                  onMouseDown={this.onMouseDown}
-                 onTouchStart={this.onTouchStart}>
+                 onTouchStart={this.onTouchStart}
+                 onBlur={this.onBlur}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <React.Fragment key={index}>
         <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
@@ -625,7 +618,6 @@ class Sequencer extends React.Component {
     this.removePattern = this.removePattern.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
-    this.onBlur = this.onBlur.bind(this);
     this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
     this.onScroll = this.onScroll.bind(this);
   };
@@ -730,16 +722,8 @@ class Sequencer extends React.Component {
     this.fileInput.value = "";
   };
 
-  onBlur(e) {
-    this.setState({
-      highlightedPatternID: undefined,
-      isPopupMenuActive: false,
-    });
-  };
-
   onPopupMenuMouseDown(e) {
-    // Prevent onBlur from firing on hidden input, which will prevent pattern
-    // box being selected
+    // Prevent the pattern box from losing focus
     e.preventDefault();
   };
 
@@ -801,7 +785,6 @@ class Sequencer extends React.Component {
                         measureCount={this.props.measureCount}
                         highlightedPatternID={this.state.highlightedPatternID}
                         isPopupMenuActive={this.state.isPopupMenuActive}
-                        hiddenInput={this.hiddenInput}
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         setPopupMenuPosition={this.setPopupMenuPosition}
@@ -824,11 +807,6 @@ class Sequencer extends React.Component {
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
-      <input ref={(el) => { this.hiddenInput = el; }}
-             className="absolute hidden-input block"
-             style={{left: this.state.popupMenuTargetX, bottom: this.state.popupMenuTargetY}}
-             type="text" readOnly={true}
-             onBlur={this.onBlur} />
       {this.state.isPopupMenuActive === true &&
       <PopupMenu targetX={this.state.popupMenuTargetX}
                  targetY={this.state.popupMenuTargetY}
