@@ -129,7 +129,7 @@ class PatternMeasure extends React.Component {
   };
 };
 
-class NoteBox extends React.Component {
+class NoteBox extends React.PureComponent {
   constructor(props) {
     super(props);
 

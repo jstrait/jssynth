@@ -887,19 +887,19 @@ class App extends React.Component {
     let patternRowNotes = pattern.rows[rowIndex].notes;
     let previousValue = patternRowNotes[noteIndex].name;
 
-    patternRowNotes[noteIndex].name = noteValue;
+    patternRowNotes[noteIndex] = {name: noteValue};
 
     if (noteValue === "-") {
       i = noteIndex - 1;
       while (i >= 0 && patternRowNotes[i].name === "") {
-        patternRowNotes[i].name = "-";
+        patternRowNotes[i] = {name: "-"};
         i -= 1;
       }
     }
     else if (noteValue === "" || previousValue === "-") {
       i = noteIndex + 1;
       while (i < patternRowNotes.length && patternRowNotes[i].name === "-") {
-        patternRowNotes[i].name = "";
+        patternRowNotes[i] = {name: ""};
         i += 1;
       }
     }
