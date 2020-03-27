@@ -884,21 +884,22 @@ class App extends React.Component {
   setNoteValue(noteValue, patternID, rowIndex, noteIndex) {
     let i;
     let pattern = this.patternByID(patternID);
-    let previousValue = pattern.rows[rowIndex].notes[noteIndex].name;
+    let patternRowNotes = pattern.rows[rowIndex].notes;
+    let previousValue = patternRowNotes[noteIndex].name;
 
-    pattern.rows[rowIndex].notes[noteIndex].name = noteValue;
+    patternRowNotes[noteIndex].name = noteValue;
 
     if (noteValue === "-") {
       i = noteIndex - 1;
-      while (i >= 0 && pattern.rows[rowIndex].notes[i].name === "") {
-        pattern.rows[rowIndex].notes[i].name = "-";
+      while (i >= 0 && patternRowNotes[i].name === "") {
+        patternRowNotes[i].name = "-";
         i -= 1;
       }
     }
     else if (noteValue === "" || previousValue === "-") {
       i = noteIndex + 1;
-      while (i < pattern.rows[rowIndex].notes.length && pattern.rows[rowIndex].notes[i].name === "-") {
-        pattern.rows[rowIndex].notes[i].name = "";
+      while (i < patternRowNotes.length && patternRowNotes[i].name === "-") {
+        patternRowNotes[i].name = "";
         i += 1;
       }
     }
