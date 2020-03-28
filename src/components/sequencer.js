@@ -583,9 +583,16 @@ class PopupMenu extends React.Component {
 
     let stepAlignedTargetX = this.props.targetX + ((STEP_WIDTH_IN_PIXELS / 2) + 1);
 
-    let containerLeft = stepAlignedTargetX - (this.containerEl.clientWidth / 2);
-    containerLeft = Math.min(containerLeft, window.innerWidth - this.containerEl.clientWidth);
+    // `.getBoundingClientRect()` is used because it returns a fractional value, whereas
+    // `.clientWidth` rounds to an integer. If the inner content width is fractional,
+    // rounding the width to an integer can result in the popup menu being placed too
+    // close the window's right edge, causing the popup menu content to wrap.
+    let containerWidth = this.containerEl.getBoundingClientRect().width;
+    let containerLeft = stepAlignedTargetX - (containerWidth / 2);
+
+    // Clamp position to window's left/right edges
     containerLeft = Math.max(containerLeft, 0);
+    containerLeft = Math.min(containerLeft, window.innerWidth - containerWidth);
 
     this.containerEl.style.left = `${containerLeft}px`;
     this.arrowOutlineEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 1.0rem)`;
