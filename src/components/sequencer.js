@@ -160,7 +160,7 @@ class TimelineGrid extends React.Component {
   };
 
   stepUnderCursor(containerBoundingRect, clientX) {
-    let xOffset = clientX - containerBoundingRect.left - 16;
+    let xOffset = clientX - containerBoundingRect.left;
 
     return Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
   };
@@ -320,15 +320,16 @@ class TimelineGrid extends React.Component {
       patternsByTrackIndex.push({trackIndex: trackIndices[pattern.trackID], pattern: pattern});
     }
 
-    return <div ref={el => {this.containerEl = el;}}
-                className="flex full-height no-whitespace-wrap"
-                onMouseDown={this.onMouseDown}
-                onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
-                onMouseUp={this.onMouseUp}
-                onMouseEnter={this.onMouseEnter}
-                onTouchEnd={this.onTouchEnd}>
+    return <div className="flex full-height no-whitespace-wrap">
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
-      <span className="sequencer-body relative border-box" style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}>
+      <span ref={el => {this.containerEl = el;}}
+            className="sequencer-body relative border-box"
+            style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}
+            onMouseDown={this.onMouseDown}
+            onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
+            onMouseUp={this.onMouseUp}
+            onMouseEnter={this.onMouseEnter}
+            onTouchEnd={this.onTouchEnd}>
       {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
                          trackIndex={patternView.trackIndex}
