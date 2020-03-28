@@ -342,7 +342,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   height: calc(100% - (5px * 2));
   width: 0;
   margin-top: 5px;
-  border-width: 0 0.5px;
+  border-width: 0 0 0 1px;
   border-color: $black;
   border-style: dashed;
 }
