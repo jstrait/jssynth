@@ -441,8 +441,8 @@ class TimelinePattern extends React.PureComponent {
                  className="absolute block left full-height overflow-hidden outline-none"
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
                          top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
-                         width: ((this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) - 1) + "px",
-                         height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px"}}
+                         width: (this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) + "px",
+                         height: TRACK_HEIGHT_IN_PIXELS + "px"}}
                  onMouseDown={this.onMouseDown}
                  onTouchStart={this.onTouchStart}
                  onBlur={this.onBlur}>
