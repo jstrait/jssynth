@@ -119,13 +119,8 @@ class App extends React.Component {
   };
 
   initialize() {
-    const bufferConfigs = [
-      { label: "Instrument 4", url: "sounds/bass.wav", },
-      { label: "Instrument 5", url: "sounds/snare.wav", },
-      { label: "Instrument 6", url: "sounds/hihat.wav", },
-    ];
-
     const audioContext = SynthCore.AudioContextBuilder.buildAudioContext();
+    let bufferConfigs;
 
     if (audioContext === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
@@ -152,6 +147,13 @@ class App extends React.Component {
     this.bufferCollection.addBuffer("reverb", BufferGenerator.generateReverbImpulseResponse(audioContext));
 
     document.addEventListener("visibilitychange", this.onVisibilityChange, false);
+
+    bufferConfigs = [];
+    DefaultSong.instruments.map(function(instrument) {
+      if (instrument.type === "sample") {
+        bufferConfigs.push({label: "Instrument " + instrument.id, url: instrument.filename});
+      }
+    });
 
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
