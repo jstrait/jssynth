@@ -59,7 +59,7 @@ export class Serializer {
 
   static serializeSampleInstrument(instrument, bufferCollection) {
     let serializedConfig = {
-      sample: instrument.sample,
+      audioBuffer: bufferCollection.getBuffer(instrument.sample),
       loop: instrument.loop,
       rootNoteName: instrument.rootNoteName,
       rootNoteOctave: instrument.rootNoteOctave,
@@ -87,7 +87,7 @@ export class Serializer {
       },
     };
 
-    return new SynthCore.SampleInstrument(serializedConfig, bufferCollection);
+    return new SynthCore.SampleInstrument(serializedConfig);
   };
 
   static serializeInstrument(instrument, bufferCollection) {

@@ -95,14 +95,13 @@ var BaseInstrument = function(config) {
 };
 
 
-function SampleInstrument(config, bufferCollection) {
+function SampleInstrument(config) {
   var BASE_FREQUENCY = Note(config.rootNoteName, config.rootNoteOctave, 1).frequency();
-  var audioBuffer = bufferCollection.getBuffer(config.sample);
   var sampleInstrument = BaseInstrument(config);
 
   var buildBufferSourceNode = function(audioContext, target, note) {
     var audioBufferSourceNode = audioContext.createBufferSource();
-    audioBufferSourceNode.buffer = audioBuffer;
+    audioBufferSourceNode.buffer = config.audioBuffer;
     audioBufferSourceNode.playbackRate.value = note.frequency() / BASE_FREQUENCY;
     audioBufferSourceNode.loop = config.loop;
     audioBufferSourceNode.connect(target);
