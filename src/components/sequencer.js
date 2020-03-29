@@ -448,19 +448,55 @@ class TimelinePattern extends React.PureComponent {
                  onTouchStart={this.onTouchStart}
                  onBlur={this.onBlur}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
-      <React.Fragment key={index}>
-        <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
-              style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - ((index === 0) ? 0 : 1)) + "px",
-                      width: ((SUB_PATTERN_LENGTHS[index] * STEP_WIDTH_IN_PIXELS) - 1 + ((index > 0) ? 1 : 0) + ((index < (SUB_PATTERN_LENGTHS.length - 1)) ? 1 : 0)) + "px"}}>
-          {index === (SUB_PATTERN_LENGTHS.length - 1) &&
-          <TimelinePatternSidebar isResizeable={this.props.baseStepCount === this.props.fullStepCount} onStartLoopChange={this.onStartLoopChange} onStartResize={this.onStartResize} />}
-        </span>
-        {index > 0 && <span className={"absolute timeline-pattern-divider" + ((this.props.isSelected === true) ? " timeline-pattern-divider-selected" : "")}
-                            style={{left: ((this.props.baseStepCount * STEP_WIDTH_IN_PIXELS * index) - 1) + "px"}}></span>}
-      </React.Fragment>
+      <TimelinePatternSegment
+        key={index}
+        isSelected={this.props.isSelected}
+        startStep={this.props.baseStepCount * index}
+        stepCount={SUB_PATTERN_LENGTHS[index]}
+        isFirstSegment={index === 0}
+        isLastSegment={index === (SUB_PATTERN_LENGTHS.length - 1)}
+        isResizeable={this.props.baseStepCount === this.props.fullStepCount}
+        onStartLoopChange={this.onStartLoopChange}
+        onStartResize={this.onStartResize}
+      />
       )}
       <span className={"timeline-pattern-name" + ((this.props.isSelected === true) ? " timeline-pattern-name-selected" : "")}>{this.props.patternName}</span>
     </span>;
+  };
+};
+
+class TimelinePatternSegment extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    let leftPixel = this.props.startStep * STEP_WIDTH_IN_PIXELS;
+    let widthInPixels = (this.props.stepCount * STEP_WIDTH_IN_PIXELS) - 1;
+
+    if (this.props.isFirstSegment !== true) {
+      leftPixel -= 1;
+      widthInPixels += 1;
+    }
+    if (this.props.isLastSegment !== true) {
+      widthInPixels += 1;
+    }
+
+    return <React.Fragment>
+      <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+            style={{left: leftPixel + "px", width: widthInPixels + "px"}}>
+        {this.props.isLastSegment === true &&
+        <TimelinePatternSidebar
+          isResizeable={this.props.isResizeable === true}
+          onStartLoopChange={this.props.onStartLoopChange}
+          onStartResize={this.props.onStartResize}
+        />
+        }
+      </span>
+      {this.props.isFirstSegment !== true &&
+        <span className={"absolute timeline-pattern-divider" + ((this.props.isSelected === true) ? " timeline-pattern-divider-selected" : "")}
+              style={{left: leftPixel + "px"}}></span>}
+    </React.Fragment>;
   };
 };
 
