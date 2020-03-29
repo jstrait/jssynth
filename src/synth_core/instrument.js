@@ -248,15 +248,7 @@ function SynthInstrument(config, whiteNoiseBuffer, pinkNoiseBuffer) {
     // Noise
     noiseGain = synthInstrument.buildGain(audioContext, config.noise.amplitude);
     noise = audioContext.createBufferSource();
-    if (config.noise.type === "white") {
-      noise.buffer = whiteNoiseBuffer;
-    }
-    else if (config.noise.type === "pink") {
-      noise.buffer = pinkNoiseBuffer;
-    }
-    else {
-      console.log("Error: Invalid noise type '" + config.noise.type + "'");
-    }
+    noise.buffer = config.noise.audioBuffer;
     noise.loop = true;
     noise.connect(noiseGain);
     noiseGain.connect(filter);

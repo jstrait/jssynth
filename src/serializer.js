@@ -6,6 +6,18 @@ export class Serializer {
   constructor() {};
 
   static serializeSynthInstrument(instrument, bufferCollection) {
+    let noiseAudioBuffer;
+
+    if (instrument.noiseType === "white") {
+      noiseAudioBuffer = bufferCollection.getBuffer("white-noise");
+    }
+    else if (instrument.noiseType === "pink") {
+      noiseAudioBuffer = bufferCollection.getBuffer("pink-noise");
+    }
+    else {
+      console.log("Error: Invalid noise type '" + instrument.noiseType + "'");
+    }
+
     let serializedConfig = {
       oscillators: [
         {
@@ -22,8 +34,8 @@ export class Serializer {
         }
       ],
       noise: {
+        audioBuffer: noiseAudioBuffer,
         amplitude: instrument.noiseAmplitude,
-        type: instrument.noiseType,
       },
       lfo: {
         waveform:  instrument.lfoWaveform,
@@ -54,7 +66,7 @@ export class Serializer {
       },
     };
 
-    return new SynthCore.SynthInstrument(serializedConfig, bufferCollection.getBuffer("white-noise"), bufferCollection.getBuffer("pink-noise"));
+    return new SynthCore.SynthInstrument(serializedConfig);
   };
 
   static serializeSampleInstrument(instrument, bufferCollection) {
