@@ -399,6 +399,11 @@ class TimelinePattern extends React.PureComponent {
     this.props.startDrag(this.props.startStep, e.touches[0].clientX);
   };
 
+  onTouchEnd(e) {
+    // Prevent `mousedown` event from firing
+    e.preventDefault();
+  };
+
   onStartResize(e) {
     this.highlight();
     if (this.props.isPopupMenuActive === true) {
@@ -446,6 +451,7 @@ class TimelinePattern extends React.PureComponent {
                          height: TRACK_HEIGHT_IN_PIXELS + "px"}}
                  onMouseDown={this.onMouseDown}
                  onTouchStart={this.onTouchStart}
+                 onTouchEnd={this.onTouchEnd}
                  onBlur={this.onBlur}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <TimelinePatternSegment
