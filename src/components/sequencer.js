@@ -95,13 +95,14 @@ class TimelineGrid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dragType: TIMELINE_DRAG_NONE,
-      dragPatternOriginalStartStep: undefined,
-      dragStartStep: undefined,
-      resizeStartStep: undefined,
-      minPlaybackStepCount: undefined,
-    };
+    // These do not directly affect the rendered state of the component
+    // so they are not part of component state. This avoids unnecessary
+    // renders when their values change.
+    this.dragType = TIMELINE_DRAG_NONE;
+    this.dragPatternOriginalStartStep = undefined;
+    this.dragStartStep = undefined;
+    this.resizeStartStep = undefined;
+    this.minPlaybackStepCount = undefined;
 
     this.startDrag = this.startDrag.bind(this);
     this.startResize = this.startResize.bind(this);
@@ -124,39 +125,31 @@ class TimelineGrid extends React.Component {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
 
-    this.setState({
-      dragType: TIMELINE_DRAG_MOVE_PATTERN,
-      dragPatternOriginalStartStep: patternStartStep,
-      dragStartStep: stepUnderCursor,
-      resizeStartStep: undefined,
-      minPlaybackStepCount: undefined,
-    });
+    this.dragType = TIMELINE_DRAG_MOVE_PATTERN;
+    this.dragPatternOriginalStartStep = patternStartStep;
+    this.dragStartStep = stepUnderCursor;
+    this.resizeStartStep = undefined;
+    this.minPlaybackStepCount = undefined;
   };
 
   startResize(startStep) {
-    this.setState({
-      dragType: TIMELINE_DRAG_RESIZE_PATTERN,
-      dragPatternOriginalStartStep: undefined,
-      dragStartStep: undefined,
-      resizeStartStep: startStep,
-      minPlaybackStepCount: undefined,
-    });
+    this.dragType = TIMELINE_DRAG_RESIZE_PATTERN;
+    this.dragPatternOriginalStartStep = undefined;
+    this.dragStartStep = undefined;
+    this.resizeStartStep = startStep;
+    this.minPlaybackStepCount = undefined;
   };
 
   startLoopChange(startStep, baseStepCount) {
-    this.setState({
-      dragType: TIMELINE_DRAG_LOOP_PATTERN,
-      dragPatternOriginalStartStep: undefined,
-      dragStartStep: undefined,
-      resizeStartStep: startStep,
-      minPlaybackStepCount: baseStepCount,
-    });
+    this.dragType = TIMELINE_DRAG_LOOP_PATTERN;
+    this.dragPatternOriginalStartStep = undefined;
+    this.dragStartStep = undefined;
+    this.resizeStartStep = startStep;
+    this.minPlaybackStepCount = baseStepCount;
   };
 
   endDrag() {
-    this.setState({
-      dragType: TIMELINE_DRAG_NONE,
-    });
+    this.dragType = TIMELINE_DRAG_NONE;
   };
 
   stepUnderCursor(containerBoundingRect, clientX) {
@@ -195,9 +188,9 @@ class TimelineGrid extends React.Component {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
 
-    let dragStartMeasure = Math.floor(this.state.dragStartStep / STEPS_PER_MEASURE);
+    let dragStartMeasure = Math.floor(this.dragStartStep / STEPS_PER_MEASURE);
     let measureUnderCursor = Math.floor(stepUnderCursor / STEPS_PER_MEASURE);
-    let newStartStep = this.state.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
+    let newStartStep = this.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
 
     newStartStep = Math.max(0, newStartStep);
     newStartStep = Math.min(newStartStep, (this.props.measureCount - 1) * STEPS_PER_MEASURE);
@@ -213,10 +206,10 @@ class TimelineGrid extends React.Component {
   dragResize(clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-    let newStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let newStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
 
     newStepCount = Math.max(newStepCount, STEPS_PER_MEASURE);
-    newStepCount = Math.min(newStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
+    newStepCount = Math.min(newStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.resizeStartStep);
 
     this.props.resizePattern(this.props.highlightedPatternID, newStepCount);
     if (this.props.isPopupMenuActive === true) {
@@ -227,10 +220,10 @@ class TimelineGrid extends React.Component {
   dragLoopChange(clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-    let newPlaybackStepCount = Math.ceil((stepUnderCursor - this.state.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let newPlaybackStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
 
-    newPlaybackStepCount = Math.max(newPlaybackStepCount, this.state.minPlaybackStepCount);
-    newPlaybackStepCount = Math.min(newPlaybackStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.resizeStartStep);
+    newPlaybackStepCount = Math.max(newPlaybackStepCount, this.minPlaybackStepCount);
+    newPlaybackStepCount = Math.min(newPlaybackStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.resizeStartStep);
 
     this.props.changePatternPlaybackStepCount(this.props.highlightedPatternID, newPlaybackStepCount);
     if (this.props.isPopupMenuActive === true) {
@@ -243,13 +236,13 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDrag(e) {
-    if (this.state.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
+    if (this.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
       this.dragMove(e.clientX, e.clientY);
     }
-    else if (this.state.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
+    else if (this.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
       this.dragResize(e.clientX);
     }
-    else if (this.state.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
+    else if (this.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
       this.dragLoopChange(e.clientX);
     }
   };
@@ -265,19 +258,19 @@ class TimelineGrid extends React.Component {
   };
 
   onTouchMove(e) {
-    if (this.state.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
+    if (this.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
       this.dragMove(e.touches[0].clientX, e.touches[0].clientY);
 
       // Prevent container or page from scrolling while dragging pattern
       e.preventDefault();
     }
-    else if (this.state.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
+    else if (this.dragType === TIMELINE_DRAG_RESIZE_PATTERN) {
       this.dragResize(e.touches[0].clientX);
 
       // Prevent container or page from scrolling while dragging pattern
       e.preventDefault();
     }
-    else if (this.state.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
+    else if (this.dragType === TIMELINE_DRAG_LOOP_PATTERN) {
       this.dragLoopChange(e.touches[0].clientX);
 
       // Prevent container or page from scrolling while dragging pattern
@@ -326,7 +319,7 @@ class TimelineGrid extends React.Component {
             className="sequencer-body relative border-box"
             style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}
             onMouseDown={this.onMouseDown}
-            onMouseMove={(this.state.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
+            onMouseMove={(this.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
             onMouseUp={this.onMouseUp}
             onMouseEnter={this.onMouseEnter}
             onTouchEnd={this.onTouchEnd}>
