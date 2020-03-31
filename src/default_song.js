@@ -546,4 +546,7 @@ const tracks = [
   },
 ];
 
-export { instruments, patterns, tracks };
+const measureCount = 8;
+const tempo = 114;
+
+export { measureCount, tempo, instruments, patterns, tracks };

@@ -34,7 +34,7 @@ class App extends React.Component {
     this.state = {
       isLoaded: false,
       loadingStatusMessage: "Loading...",
-      measureCount: 8,
+      measureCount: 1,
       selectedTrackID: undefined,
       selectedPatternID: undefined,
       selectedPatternRowIndex: undefined,
@@ -47,12 +47,12 @@ class App extends React.Component {
       masterAmplitude: 0.75,
       transport: {
         isPlaying: false,
-        tempo: 114,
+        tempo: 100,
         step: 0,
       },
-      instruments: DefaultSong.instruments,
-      patterns: DefaultSong.patterns,
-      tracks: DefaultSong.tracks,
+      instruments: [],
+      patterns: [],
+      tracks: [],
       midiEnabled: false,
       midiInputNames: ["None"],
     };
@@ -136,7 +136,6 @@ class App extends React.Component {
     this.notePlayer = SynthCore.NotePlayer();
 
     this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
-    this.transport.setTempo(this.state.transport.tempo);
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
 
     this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
@@ -162,7 +161,19 @@ class App extends React.Component {
         let channelID;
         let instrument;
 
-        this.setState({isLoaded: true, midiEnabled: this.midiController.enabled()});
+        this.setState((prevState, props) => ({
+          isLoaded: true,
+          measureCount: DefaultSong.measureCount,
+          transport: Object.assign({}, prevState.transport, {
+            tempo: DefaultSong.tempo,
+          }),
+          instruments: DefaultSong.instruments,
+          patterns: DefaultSong.patterns,
+          tracks: DefaultSong.tracks,
+          midiEnabled: this.midiController.enabled(),
+        }));
+
+        this.transport.setTempo(this.state.transport.tempo);
 
         for (i = 0; i < this.state.tracks.length; i++) {
           channelID = this.state.tracks[i].id;
