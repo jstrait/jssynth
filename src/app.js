@@ -26,6 +26,7 @@ const VIEW_INSTRUMENT_SYNTH = 3;
 const VIEW_INSTRUMENT_SAMPLER = 4;
 const VIEW_PATTERN_EDITOR = 5;
 
+const STEPS_PER_MEASURE = 16;
 
 class App extends React.Component {
   constructor(props) {
@@ -352,7 +353,7 @@ class App extends React.Component {
     let newSelectedPatternID = this.state.selectedPatternID;
 
     if (newMeasureCount < this.state.measureCount) {
-      newMaxStep = (newMeasureCount * 16) - 1;
+      newMaxStep = (newMeasureCount * STEPS_PER_MEASURE) - 1;
       if (this.state.transport.step > newMaxStep) {
         newCurrentStep = newMaxStep;
       }
@@ -590,8 +591,8 @@ class App extends React.Component {
       name: "",
       trackID: trackID,
       startStep: startStep,
-      stepCount: 16,
-      playbackStepCount: 16,
+      stepCount: STEPS_PER_MEASURE,
+      playbackStepCount: STEPS_PER_MEASURE,
       rows: [
         {
           notes: [{name: ""},
@@ -843,7 +844,7 @@ class App extends React.Component {
     let otherPattern;
     let otherPatternEndStep;
 
-    if (startStep < 0 || endStep >= (this.state.measureCount * 16)) {
+    if (startStep < 0 || endStep >= (this.state.measureCount * STEPS_PER_MEASURE)) {
       return false;
     }
 
