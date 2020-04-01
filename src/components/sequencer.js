@@ -392,7 +392,7 @@ class TimelineGrid extends React.Component {
                          baseStepCount={ghostPattern.stepCount}
                          fullStepCount={ghostPattern.playbackStepCount}
                          isSelected={true}
-                         isError={this.props.isPatternMoveable(ghostPattern.id, ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount) !== true}
+                         isError={this.props.isSpaceForPatternInTrack(ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount, ghostPattern.id) !== true}
                          isTransparent={true}
                          isPopupMenuActive={this.props.isPopupMenuActive}
                          startDrag={this.startDrag}
@@ -936,7 +936,7 @@ class Sequencer extends React.Component {
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         setPopupMenuPosition={this.setPopupMenuPosition}
-                        isPatternMoveable={this.props.isPatternMoveable}
+                        isSpaceForPatternInTrack={this.props.isSpaceForPatternInTrack}
                         movePattern={this.props.movePattern}
                         resizePattern={this.props.resizePattern}
                         changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
