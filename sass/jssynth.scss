@@ -2,6 +2,7 @@ $font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", helvetica, ar
 $orange: orange;
 $light-orange: papayawhip;
 $red: #c00;
+$light-red: #faa;
 $black: #130f30;
 $white: #fff;
 $border-color: #ddd;
@@ -331,9 +332,18 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   background: $light-gray;
 }
 
+.timeline-pattern-transparent {
+  opacity: 50%;
+}
+
 .timeline-pattern-selected {
   background: $light-orange;
   border-color: $orange;
+}
+
+.timeline-pattern-error {
+  background: $light-red;
+  border-color: $red;
 }
 
 .timeline-pattern-divider {
@@ -352,6 +362,11 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   border-color: $orange;
 }
 
+.timeline-pattern-divider-error {
+  background: $light-red;
+  border-color: $red;
+}
+
 .timeline-pattern-name {
   position: absolute;
   background: $light-gray;
@@ -365,6 +380,10 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-name-selected {
   background: $light-orange;
+}
+
+.timeline-pattern-name-error {
+  background: $light-red;
 }
 
 .timeline-pattern-menu {

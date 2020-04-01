@@ -95,6 +95,13 @@ class TimelineGrid extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      ghostPatternID: undefined,
+      ghostPatternTrackIndex: undefined,
+      ghostPatternStartStep: undefined,
+      ghostPatternPlaybackStepCount: undefined,
+    };
+
     // These do not directly affect the rendered state of the component
     // so they are not part of component state. This avoids unnecessary
     // renders when their values change.
@@ -121,7 +128,7 @@ class TimelineGrid extends React.Component {
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
 
-  startDrag(patternStartStep, clientX) {
+  startDrag(patternID, patternTrackIndex, patternStartStep, patternPlaybackStepCount, clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
 
@@ -130,6 +137,13 @@ class TimelineGrid extends React.Component {
     this.dragStartStep = stepUnderCursor;
     this.resizeStartStep = undefined;
     this.minPlaybackStepCount = undefined;
+
+    this.setState({
+      ghostPatternID: patternID,
+      ghostPatternTrackIndex: patternTrackIndex,
+      ghostPatternStartStep: patternStartStep,
+      ghostPatternPlaybackStepCount: patternPlaybackStepCount,
+    });
   };
 
   startResize(startStep) {
@@ -149,6 +163,17 @@ class TimelineGrid extends React.Component {
   };
 
   endDrag() {
+    if (this.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
+      this.props.movePattern(this.state.ghostPatternID, this.state.ghostPatternTrackIndex, this.state.ghostPatternStartStep);
+
+      this.setState({
+        ghostPatternID: undefined,
+        ghostPatternTrackIndex: undefined,
+        ghostPatternStartStep: undefined,
+        ghostPatternPlaybackStepCount: undefined,
+      });
+    }
+
     this.dragType = TIMELINE_DRAG_NONE;
   };
 
@@ -193,11 +218,17 @@ class TimelineGrid extends React.Component {
     let newStartStep = this.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
 
     newStartStep = Math.max(0, newStartStep);
-    newStartStep = Math.min(newStartStep, (this.props.measureCount - 1) * STEPS_PER_MEASURE);
+    newStartStep = Math.min(newStartStep, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.ghostPatternPlaybackStepCount);
 
     let newTrackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
 
-    this.props.movePattern(this.props.highlightedPatternID, newTrackIndex, newStartStep);
+    if (this.state.ghostPatternTrackIndex !== newTrackIndex || this.state.ghostPatternStartStep !== newStartStep) {
+      this.setState({
+        ghostPatternTrackIndex: newTrackIndex,
+        ghostPatternStartStep: newStartStep,
+      });
+    }
+
     if (this.props.isPopupMenuActive === true) {
       this.props.setIsPopupMenuActive(false);
     }
@@ -303,6 +334,8 @@ class TimelineGrid extends React.Component {
     let trackIndices = {};
     let patternsByTrackIndex = [];
     let pattern;
+    let ghostPattern;
+    let ghostPatternTrackID;
 
     for (i = 0; i < this.props.tracks.length; i++) {
       trackIndices[this.props.tracks[i].id] = i;
@@ -311,6 +344,14 @@ class TimelineGrid extends React.Component {
     for (i = 0; i < this.props.patterns.length; i++) {
       pattern = this.props.patterns[i];
       patternsByTrackIndex.push({trackIndex: trackIndices[pattern.trackID], pattern: pattern});
+
+      if (pattern.id === this.state.ghostPatternID) {
+        ghostPattern = pattern;
+      }
+    }
+
+    if (this.state.ghostPatternID !== undefined) {
+      ghostPatternTrackID = this.props.tracks[this.state.ghostPatternTrackIndex].id;
     }
 
     return <div className="flex full-height no-whitespace-wrap">
@@ -323,7 +364,7 @@ class TimelineGrid extends React.Component {
             onMouseUp={this.onMouseUp}
             onMouseEnter={this.onMouseEnter}
             onTouchEnd={this.onTouchEnd}>
-      {patternsByTrackIndex.map((patternView) =>
+        {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
                          trackIndex={patternView.trackIndex}
                          patternID={patternView.pattern.id}
@@ -332,6 +373,8 @@ class TimelineGrid extends React.Component {
                          baseStepCount={patternView.pattern.stepCount}
                          fullStepCount={patternView.pattern.playbackStepCount}
                          isSelected={this.props.highlightedPatternID === patternView.pattern.id}
+                         isError={false}
+                         isTransparent={patternView.pattern.id === this.state.ghostPatternID}
                          isPopupMenuActive={this.props.isPopupMenuActive}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
@@ -339,7 +382,26 @@ class TimelineGrid extends React.Component {
                          setHighlightedPattern={this.props.setHighlightedPattern}
                          setIsPopupMenuActive={this.props.setIsPopupMenuActive}
                          setPopupMenuPosition={this.setPopupMenuPosition} />
-      )}
+        )}
+        {ghostPattern !== undefined &&
+        <TimelinePattern key={-1}
+                         trackIndex={this.state.ghostPatternTrackIndex}
+                         patternID={ghostPattern.id}
+                         patternName={ghostPattern.name}
+                         startStep={this.state.ghostPatternStartStep}
+                         baseStepCount={ghostPattern.stepCount}
+                         fullStepCount={ghostPattern.playbackStepCount}
+                         isSelected={true}
+                         isError={this.props.isPatternMoveable(ghostPattern.id, ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount) !== true}
+                         isTransparent={true}
+                         isPopupMenuActive={this.props.isPopupMenuActive}
+                         startDrag={this.startDrag}
+                         startResize={this.startResize}
+                         startLoopChange={this.startLoopChange}
+                         setHighlightedPattern={this.props.setHighlightedPattern}
+                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+                         setPopupMenuPosition={this.setPopupMenuPosition} />
+        }
       </span>
       <span className="sequencer-body-right-padding border-box bg-lighter-gray"></span>
     </div>;
@@ -380,7 +442,7 @@ class TimelinePattern extends React.PureComponent {
     this.highlight();
     this.togglePopupMenu(e.clientX, e.clientY);
 
-    this.props.startDrag(this.props.startStep, e.clientX);
+    this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.clientX);
 
     // Prevent click on parent pattern grid container
     e.stopPropagation();
@@ -389,7 +451,7 @@ class TimelinePattern extends React.PureComponent {
   onTouchStart(e) {
     this.highlight();
     this.togglePopupMenu(e.touches[0].clientX, e.touches[0].clientY);
-    this.props.startDrag(this.props.startStep, e.touches[0].clientX);
+    this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.touches[0].clientX);
   };
 
   onTouchEnd(e) {
@@ -429,6 +491,20 @@ class TimelinePattern extends React.PureComponent {
   };
 
   render() {
+    let extraContainerCSS = "";
+    let extraPatternNameCSS = "";
+
+    if (this.props.isTransparent === true) {
+      extraContainerCSS = " timeline-pattern-transparent";
+    }
+
+    if (this.props.isError === true) {
+      extraPatternNameCSS += " timeline-pattern-name-error";
+    }
+    else if (this.props.isSelected === true) {
+      extraPatternNameCSS += " timeline-pattern-name-selected";
+    }
+
     const FULL_SUB_PATTERN_COUNT = Math.floor(this.props.fullStepCount / this.props.baseStepCount);
     const SUB_PATTERN_LENGTHS = Array(FULL_SUB_PATTERN_COUNT).fill(this.props.baseStepCount);
     if (this.props.fullStepCount / this.props.baseStepCount !== FULL_SUB_PATTERN_COUNT) {
@@ -437,7 +513,7 @@ class TimelinePattern extends React.PureComponent {
 
     return <span ref={(el) => { this.el = el; }}
                  tabIndex="-1"
-                 className="absolute block left full-height overflow-hidden outline-none"
+                 className={"absolute block left full-height overflow-hidden outline-none" + extraContainerCSS}
                  style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
                          top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
                          width: (this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) + "px",
@@ -450,6 +526,7 @@ class TimelinePattern extends React.PureComponent {
       <TimelinePatternSegment
         key={index}
         isSelected={this.props.isSelected}
+        isError={this.props.isError}
         startStep={this.props.baseStepCount * index}
         stepCount={SUB_PATTERN_LENGTHS[index]}
         isFirstSegment={index === 0}
@@ -459,7 +536,7 @@ class TimelinePattern extends React.PureComponent {
         onStartResize={this.onStartResize}
       />
       )}
-      <span className={"timeline-pattern-name" + ((this.props.isSelected === true) ? " timeline-pattern-name-selected" : "")}>{this.props.patternName}</span>
+      <span className={"timeline-pattern-name" + extraPatternNameCSS}>{this.props.patternName}</span>
     </span>;
   };
 };
@@ -472,6 +549,8 @@ class TimelinePatternSegment extends React.PureComponent {
   render() {
     let leftPixel = this.props.startStep * STEP_WIDTH_IN_PIXELS;
     let widthInPixels = (this.props.stepCount * STEP_WIDTH_IN_PIXELS) - 1;
+    let extraSegmentStyles = "";
+    let extraDividerStyles = "";
 
     if (this.props.isFirstSegment !== true) {
       leftPixel -= 1;
@@ -481,11 +560,21 @@ class TimelinePatternSegment extends React.PureComponent {
       widthInPixels += 1;
     }
 
+    if (this.props.isError === true) {
+      extraSegmentStyles += " timeline-pattern-error";
+      extraDividerStyles += " timeline-pattern-divider-error";
+    }
+    else if (this.props.isSelected === true) {
+      extraSegmentStyles += " timeline-pattern-selected";
+      extraDividerStyles += " timeline-pattern-divider-selected";
+    }
+
     return <React.Fragment>
-      <span className={"overflow-hidden timeline-pattern" + ((this.props.isSelected === true) ? " timeline-pattern-selected" : "")}
+      <span className={"overflow-hidden timeline-pattern" + extraSegmentStyles}
             style={{left: leftPixel + "px", width: widthInPixels + "px"}}>
         {this.props.isLastSegment === true &&
         <TimelinePatternSidebar
+          isError={this.props.isError}
           isResizeable={this.props.isResizeable === true}
           onStartLoopChange={this.props.onStartLoopChange}
           onStartResize={this.props.onStartResize}
@@ -493,7 +582,7 @@ class TimelinePatternSegment extends React.PureComponent {
         }
       </span>
       {this.props.isFirstSegment !== true &&
-        <span className={"absolute timeline-pattern-divider" + ((this.props.isSelected === true) ? " timeline-pattern-divider-selected" : "")}
+        <span className={"absolute timeline-pattern-divider" + extraDividerStyles}
               style={{left: leftPixel + "px"}}></span>}
     </React.Fragment>;
   };
@@ -512,11 +601,13 @@ class TimelinePatternSidebar extends React.PureComponent {
   };
 
   render() {
+    const backgroundColorStyle = (this.props.isError === true) ? "bg-red" : "bg-gray";
+    const resizeButtonBackgroundColorStyle = ((this.props.isResizeable === true || this.props.isError === true) ? "" : " lightText");
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
-    return <span className="flex flex-column width-1 full-height right bg-gray">
+    return <span className={"flex flex-column width-1 full-height right " + backgroundColorStyle}>
       <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
-      <span className={"flex-uniform-size h4 center cursor-default" + ((this.props.isResizeable === true) ? "" : " lightText")} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
+      <span className={"flex-uniform-size h4 center cursor-default" + resizeButtonBackgroundColorStyle} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
     </span>;
   };
 };
@@ -845,6 +936,7 @@ class Sequencer extends React.Component {
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         setPopupMenuPosition={this.setPopupMenuPosition}
+                        isPatternMoveable={this.props.isPatternMoveable}
                         movePattern={this.props.movePattern}
                         resizePattern={this.props.resizePattern}
                         changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />

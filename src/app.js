@@ -89,6 +89,7 @@ class App extends React.Component {
     this.movePattern = this.movePattern.bind(this);
     this.resizePattern = this.resizePattern.bind(this);
     this.changePatternPlaybackStepCount = this.changePatternPlaybackStepCount.bind(this);
+    this.isPatternMoveable = this.isPatternMoveable.bind(this);
     this.addPattern = this.addPattern.bind(this);
     this.duplicatePattern = this.duplicatePattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
@@ -785,31 +786,14 @@ class App extends React.Component {
   movePattern(patternID, newTrackIndex, newStartStep) {
     let newPatternList = this.state.patterns.concat([]);
     let pattern = this.itemByID(newPatternList, patternID);
-    let patternStepCount = pattern.playbackStepCount;
     let newTrackID = this.state.tracks[newTrackIndex].id;
-    let patternsInNewTrack = this.patternsByTrackID(newTrackID);
-    let originalTrackID = pattern.trackID;
-    let originalStartStep = pattern.startStep;
-    let i;
 
-    newStartStep = Math.min((this.state.measureCount * 16) - patternStepCount, newStartStep);
-
-    if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
+    if (this.isPatternMoveable(patternID, newTrackID, newStartStep, pattern.playbackStepCount) !== true) {
       return;
     }
 
     pattern.trackID = newTrackID;
     pattern.startStep = newStartStep;
-
-    // Check for overlap with other existing patterns
-    for (i = 0; i < patternsInNewTrack.length; i++) {
-      if (this.isPatternsOverlapping(pattern, patternsInNewTrack[i]) === true) {
-        pattern.trackID = originalTrackID;
-        pattern.startStep = originalStartStep;
-
-        return;
-      }
-    }
 
     this.setState({
       patterns: newPatternList,
@@ -888,6 +872,27 @@ class App extends React.Component {
     }, function() {
       this.syncScoreToSynthCore();
     });
+  };
+
+  isPatternMoveable(patternID, targetTrackID, targetStartStep, targetPlaybackStepCount) {
+    const targetEndStep = targetStartStep + targetPlaybackStepCount - 1;
+    let patternsInTargetTrack;
+    let otherPattern;
+    let otherPatternEndStep;
+
+    if (targetStartStep < 0 || targetEndStep >= (this.state.measureCount * 16)) {
+      return false;
+    }
+
+    patternsInTargetTrack = this.patternsByTrackID(targetTrackID);
+    for (otherPattern of patternsInTargetTrack) {
+      otherPatternEndStep = otherPattern.startStep + otherPattern.playbackStepCount - 1;
+      if (patternID !== otherPattern.id && !((targetEndStep <= otherPattern.startStep) || (targetStartStep >= otherPatternEndStep))) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   setSelectedPatternNoteIndex(rowIndex, noteIndex) {
@@ -1174,6 +1179,7 @@ class App extends React.Component {
                    addSamplerTrack={this.addSamplerTrack}
                    addPattern={this.addPattern}
                    duplicatePattern={this.duplicatePattern}
+                   isPatternMoveable={this.isPatternMoveable}
                    movePattern={this.movePattern}
                    resizePattern={this.resizePattern}
                    changePatternPlaybackStepCount={this.changePatternPlaybackStepCount}
