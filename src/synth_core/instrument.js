@@ -173,7 +173,7 @@ function SampleInstrument(config) {
   return sampleInstrument;
 };
 
-function SynthInstrument(config, whiteNoiseBuffer, pinkNoiseBuffer) {
+function SynthInstrument(config) {
   var synthInstrument = BaseInstrument(config);
 
   synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
