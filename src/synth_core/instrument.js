@@ -58,7 +58,7 @@ var BaseInstrument = function(config) {
       // of having a release fade. As mentioned above, using `cancelAndHoldAtTime()` would be
       // another way to solve this problem.
       noteContext.masterGain.gain.cancelScheduledValues(gateOffTime);
-      masterGainAtReleaseStart = Envelope(noteContext.amplitude, config.envelope, noteContext.gateOnTime, gateOffTime).valueAtTime(gateOffTime);
+      masterGainAtReleaseStart = Envelope(noteContext.amplitude, config.envelope, noteContext.gateOnTime, gateOffTime).valueAtTime(gateOffTime, gateOffTime);
       noteContext.masterGain.gain.setValueAtTime(masterGainAtReleaseStart, gateOffTime);
     }
 
