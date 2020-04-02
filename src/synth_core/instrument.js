@@ -35,13 +35,17 @@ var BaseInstrument = function(config) {
 
   var gateOff = function(noteContext, gateOffTime, isInteractive) {
     var MINIMUM_RELEASE_TIME = 0.005;
-    var masterGainAtReleaseStart, safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
+    var cutoffFrequencyAtReleaseStart, masterGainAtReleaseStart, safeMasterGainRelease, gainReleaseEndTime, releaseEndTime;
     var safeFilterRelease;
 
     // Filter Envelope Release
     safeFilterRelease = Math.max(MINIMUM_RELEASE_TIME, config.filter.envelope.releaseTime);
     if (isInteractive === true) {
+      // Simulate `cancelAndHoldAtTime()`, which is not present in all browsers.
+      // See comment below for the master gain node for more info.
       noteContext.filter.frequency.cancelScheduledValues(gateOffTime);
+      cutoffFrequencyAtReleaseStart = config.filter.cutoff + Envelope(config.filter.envelope.amount, config.filter.envelope, noteContext.gateOnTime, gateOffTime).valueAtTime(gateOffTime, gateOffTime);
+      noteContext.filter.frequency.setValueAtTime(cutoffFrequencyAtReleaseStart, gateOffTime);
     }
     noteContext.filter.frequency.setTargetAtTime(config.filter.cutoff, gateOffTime, safeFilterRelease / 5);
 
