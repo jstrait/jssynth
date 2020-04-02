@@ -524,10 +524,9 @@ class App extends React.Component {
     });
   };
 
-  removeTrackInner(trackID) {
+  removeTrack(trackID) {
     let track = this.trackByID(trackID);
     let trackIndex = this.trackIndexByID(trackID);
-    let newSelectedTrackID = this.state.selectedTrackID;
 
     let newInstruments = this.state.instruments.concat([]);
     newInstruments.splice(this.instrumentIndexByID(track.instrumentID), 1);
@@ -537,15 +536,6 @@ class App extends React.Component {
 
     let newPatterns = this.state.patterns.concat([]);
     newPatterns = newPatterns.filter(pattern => pattern.trackID !== track.id);
-
-    if (newSelectedTrackID === trackID && newTracks.length > 0) {
-      if (trackIndex === this.state.tracks.length - 1) {
-        newSelectedTrackID = this.state.tracks[trackIndex - 1].id;
-      }
-      else {
-        newSelectedTrackID = this.state.tracks[trackIndex + 1].id;
-      }
-    }
 
     let removedInstrument = this.instrumentByID(track.instrumentID);
     if (removedInstrument.type === "sample") {
@@ -563,24 +553,11 @@ class App extends React.Component {
       this.notePlayer.removeChannel(trackID);
       this.syncScoreToSynthCore();
       this.syncInstrumentsToSynthCore();
+
+      if (this.state.tracks.length === 0) {
+        this.addSynthTrack();
+      }
     });
-  };
-
-  removeTrack(trackID) {
-    if (this.state.tracks.length === 1) {
-      this.addSynthTrack();
-
-      let newSelectedTrackID = this.state.tracks[this.state.tracks.length - 1].id;
-
-      this.setState({
-        selectedTrackID: newSelectedTrackID,
-      }, function() {
-        this.removeTrackInner(trackID);
-      });
-    }
-    else {
-      this.removeTrackInner(trackID);
-    }
   };
 
   addPattern(trackID, startStep) {
