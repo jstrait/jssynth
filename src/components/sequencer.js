@@ -722,7 +722,7 @@ class PopupMenu extends React.Component {
 
     this.containerEl.style.left = `${containerLeft}px`;
     this.arrowOutlineEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 1.0rem)`;
-    this.arrowFillEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 0.85rem)`;
+    this.arrowFillEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 0.8125rem)`;
   };
 
   render() {
