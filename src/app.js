@@ -151,7 +151,8 @@ class App extends React.Component {
     bufferConfigs = [];
     DefaultSong.instruments.map(function(instrument) {
       if (instrument.type === "sample") {
-        bufferConfigs.push({label: "Instrument " + instrument.id, url: instrument.filename});
+        instrument.bufferID = "Instrument " + instrument.id;
+        bufferConfigs.push({label: instrument.bufferID, url: instrument.filename});
       }
     });
 
