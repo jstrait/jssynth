@@ -71,7 +71,7 @@ export class Serializer {
 
   static serializeSampleInstrument(instrument, bufferCollection) {
     let serializedConfig = {
-      audioBuffer: bufferCollection.getBuffer(instrument.sample),
+      audioBuffer: bufferCollection.getBuffer(instrument.bufferID),
       loop: instrument.loop,
       rootNoteName: instrument.rootNoteName,
       rootNoteOctave: instrument.rootNoteOctave,

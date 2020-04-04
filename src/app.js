@@ -496,7 +496,7 @@ class App extends React.Component {
         id:                    newInstrumentID,
         type:                  "sample",
         name:                  "Sampler Track",
-        sample:                label,
+        bufferID:              label,
         filename:              file.name,
         loop:                  false,
         rootNoteName:          "A",
@@ -539,7 +539,7 @@ class App extends React.Component {
 
     let removedInstrument = this.instrumentByID(track.instrumentID);
     if (removedInstrument.type === "sample") {
-      this.bufferCollection.removeBuffer(removedInstrument.sample);
+      this.bufferCollection.removeBuffer(removedInstrument.bufferID);
     }
 
     this.setState({
@@ -877,7 +877,7 @@ class App extends React.Component {
 
   setBufferFromFile(instrumentID, file) {
     let instrument = this.instrumentByID(instrumentID);
-    let label = instrument.sample;
+    let label = instrument.bufferID;
 
     this.bufferCollection.addBufferFromFile(label, file, () => {
       this.updateInstrument(instrumentID, "filename", file.name);
