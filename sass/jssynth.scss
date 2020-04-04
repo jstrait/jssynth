@@ -386,6 +386,12 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   background: $light-red;
 }
 
+.timeline-pattern-menu-container {
+  position: absolute;
+  height: $size-3;
+  pointer-events: none;
+}
+
 .timeline-pattern-menu {
   display: block;
   border: 2px solid $border-color;
@@ -393,6 +399,16 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   padding: 0.75rem;
   box-sizing: border-box;
   background: $lighter-gray;
+  pointer-events: auto;
+}
+
+.timeline-pattern-menu-arrow-container {
+  position: relative;
+  display: block;
+  width: 2.0rem;
+  height: 1.0rem;
+  margin-top: -2px;
+  pointer-events: auto;
 }
 
 .timeline-pattern-menu-arrow-outline {
@@ -407,6 +423,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 .timeline-pattern-menu-arrow-fill {
   position: absolute;
   top: 0;
+  left: 3px;
   width: 0;
   border-width: 0.8125rem 0.8125rem 0 0.8125rem;
   border-style: solid;
