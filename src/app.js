@@ -1113,7 +1113,6 @@ class App extends React.Component {
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
                    setSelectedTrack={this.setSelectedTrack}
-                   selectedPatternID={this.state.selectedPatternID}
                    setSelectedPattern={this.setSelectedPattern}
                    copiedPattern={this.state.copiedPattern}
                    setCopiedPattern={this.setCopiedPattern}
