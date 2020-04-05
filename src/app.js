@@ -349,7 +349,9 @@ class App extends React.Component {
   setMeasureCount(newMeasureCount) {
     let i;
     let newMaxStep;
-    let patternFinalStep;
+    let pattern;
+    let patternFinalBaseStep;
+    let patternFinalPlaybackStep;
     let newCurrentStep = this.transport.currentStep();
     let newPatternList = this.state.patterns.concat([]);
 
@@ -360,9 +362,19 @@ class App extends React.Component {
       }
 
       for (i = newPatternList.length - 1; i >= 0; i--) {
-        patternFinalStep = newPatternList[i].startStep + newPatternList[i].playbackStepCount - 1;
-        if (patternFinalStep > newMaxStep) {
+        pattern = newPatternList[i];
+        patternFinalBaseStep = pattern.startStep + pattern.stepCount - 1;
+        patternFinalPlaybackStep = pattern.startStep + pattern.playbackStepCount - 1;
+
+        if (pattern.startStep > newMaxStep) {
           newPatternList.splice(i, 1);
+        }
+        else if (patternFinalPlaybackStep > newMaxStep) {
+          pattern.playbackStepCount = newMaxStep - pattern.startStep + 1;
+
+          if (patternFinalBaseStep > newMaxStep) {
+            pattern.stepCount = pattern.playbackStepCount;
+          }
         }
       }
     }
