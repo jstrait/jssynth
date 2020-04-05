@@ -351,6 +351,7 @@ class App extends React.Component {
     let newMaxStep;
     let patternFinalStep;
     let newCurrentStep = this.transport.currentStep();
+    let newPatternList = this.state.patterns.concat([]);
 
     if (newMeasureCount < this.state.measureCount) {
       newMaxStep = (newMeasureCount * STEPS_PER_MEASURE) - 1;
@@ -358,18 +359,17 @@ class App extends React.Component {
         newCurrentStep = newMaxStep;
       }
 
-      for (i = this.state.patterns.length - 1; i >= 0; i--) {
-        patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].playbackStepCount - 1;
+      for (i = newPatternList.length - 1; i >= 0; i--) {
+        patternFinalStep = newPatternList[i].startStep + newPatternList[i].playbackStepCount - 1;
         if (patternFinalStep > newMaxStep) {
-          this.state.patterns.splice(i, 1);
+          newPatternList.splice(i, 1);
         }
       }
-
-      this.forceUpdate();
     }
 
     this.setState({
       measureCount: newMeasureCount,
+      patterns: newPatternList,
     }, function() {
       this.syncScoreToSynthCore();
       this.setCurrentStep(newCurrentStep);
@@ -650,9 +650,9 @@ class App extends React.Component {
   };
 
   addPatternRow(patternID) {
-    let pattern = this.patternByID(patternID);
-
     let i;
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.patternByID(patternID);
     let notesArray = Array(pattern.stepCount);
     let newRow = { notes: notesArray };
 
@@ -661,7 +661,10 @@ class App extends React.Component {
     }
 
     pattern.rows.push(newRow);
-    this.forceUpdate();
+
+    this.setState({
+      patterns: newPatternList,
+    });
   };
 
   removePatternRow(patternID, rowIndex) {
