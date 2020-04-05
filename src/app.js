@@ -351,7 +351,6 @@ class App extends React.Component {
     let newMaxStep;
     let patternFinalStep;
     let newCurrentStep = this.transport.currentStep();
-    let newSelectedPatternID = this.state.selectedPatternID;
 
     if (newMeasureCount < this.state.measureCount) {
       newMaxStep = (newMeasureCount * STEPS_PER_MEASURE) - 1;
@@ -362,10 +361,6 @@ class App extends React.Component {
       for (i = this.state.patterns.length - 1; i >= 0; i--) {
         patternFinalStep = this.state.patterns[i].startStep + this.state.patterns[i].playbackStepCount - 1;
         if (patternFinalStep > newMaxStep) {
-          if (newSelectedPatternID === this.state.patterns[i].id) {
-            newSelectedPatternID = undefined;
-          }
-
           this.state.patterns.splice(i, 1);
         }
       }
@@ -375,7 +370,6 @@ class App extends React.Component {
 
     this.setState({
       measureCount: newMeasureCount,
-      selectedPatternID: newSelectedPatternID,
     }, function() {
       this.syncScoreToSynthCore();
       this.setCurrentStep(newCurrentStep);
