@@ -74,7 +74,7 @@ export class DownloadButton extends React.PureComponent {
       bodyContent = <span>
         <label className="block">File Name:</label>
         <span className="flex">
-          <input className="input-underlined flex-uniform-size" style={{minWidth: "1px"}} type="text" value={this.state.fileName} onChange={this.setFileName} />
+          <input className="input-underlined flex-uniform-size" style={{minWidth: "1px"}} type="text" value={this.state.fileName} disabled={this.state.isDownloadInProgress} onChange={this.setFileName} />
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>

@@ -6,6 +6,11 @@ input[type='text'] {
   padding: 0;
 }
 
+input[type='text']:disabled {
+  color: $border-color;
+  background: $white;   /* Prevent gray background in Firefox */
+}
+
 input[type='range'] {
   -webkit-appearance: none;
   height: 1.5rem;
@@ -176,6 +181,10 @@ button:disabled {
   border: solid $black;
   border-width: 0 0 1px 0;
   border-radius: 0;  /* For iOS */
+}
+
+.input-underlined:disabled {
+  border-color: $border-color;
 }
 
 .control {
