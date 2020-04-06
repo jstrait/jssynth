@@ -524,7 +524,12 @@ class TimelinePattern extends React.PureComponent {
                  onBlur={this.onBlur}>
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <TimelinePatternSegment
-        key={index}
+        key={SUB_PATTERN_LENGTHS.length - index - 1}   /* Keys are defined in reverse order so that the rightmost pattern is always 0.
+                                                          This ensures that the segment with the sidebar always has the same key,
+                                                          regardless of how many segments there are. This allows drag looping to work
+                                                          correctly when used with touch events. Otherwise, the DOM element for the
+                                                          segment with the sidebar can be removed, causing the touch event that
+                                                          originated off it to be cancelled mid-drag. */
         isSelected={this.props.isSelected}
         isError={this.props.isError}
         startStep={this.props.baseStepCount * index}
