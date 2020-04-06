@@ -124,6 +124,7 @@ class TimelineGrid extends React.Component {
     this.onMouseDrag = this.onMouseDrag.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
@@ -164,7 +165,9 @@ class TimelineGrid extends React.Component {
 
   endDrag() {
     if (this.dragType === TIMELINE_DRAG_MOVE_PATTERN) {
-      this.props.movePattern(this.state.ghostPatternID, this.state.ghostPatternTrackIndex, this.state.ghostPatternStartStep);
+      if (this.state.ghostPatternTrackIndex !== undefined) {
+        this.props.movePattern(this.state.ghostPatternID, this.state.ghostPatternTrackIndex, this.state.ghostPatternStartStep);
+      }
 
       this.setState({
         ghostPatternID: undefined,
@@ -179,20 +182,24 @@ class TimelineGrid extends React.Component {
 
   stepUnderCursor(containerBoundingRect, clientX) {
     let xOffset = clientX - containerBoundingRect.left;
+    let newStepIndex = Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
 
-    return Math.floor((xOffset / STEP_WIDTH_IN_PIXELS));
+    if (newStepIndex < 0 || newStepIndex > ((this.props.measureCount * STEPS_PER_MEASURE) - 1)) {
+      newStepIndex = undefined;
+    }
+
+    return newStepIndex;
   };
 
   trackUnderCursor(containerBoundingRect, clientY) {
     let yOffset = clientY - containerBoundingRect.top;
-
-    // Unlike xOffset, the container always has the same height regardless of the
-    // height of the window, so we can use it for clamping.
-    yOffset = Math.max(0, yOffset);
-    yOffset = Math.min(yOffset, containerBoundingRect.height - 1);
-
     let newTrackIndex = Math.floor(yOffset / TRACK_HEIGHT_IN_PIXELS);
-    return Math.max(0, newTrackIndex);
+
+    if (newTrackIndex < 0 || newTrackIndex > this.props.tracks.length - 1) {
+      newTrackIndex = undefined;
+    }
+
+    return newTrackIndex;
   };
 
   setPopupMenuPosition(clientX, clientY) {
@@ -211,16 +218,23 @@ class TimelineGrid extends React.Component {
 
   dragMove(clientX, clientY) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
-    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-
-    let dragStartMeasure = Math.floor(this.dragStartStep / STEPS_PER_MEASURE);
-    let measureUnderCursor = Math.floor(stepUnderCursor / STEPS_PER_MEASURE);
-    let newStartStep = this.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
-
-    newStartStep = Math.max(0, newStartStep);
-    newStartStep = Math.min(newStartStep, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.ghostPatternPlaybackStepCount);
-
     let newTrackIndex = this.trackUnderCursor(containerBoundingRect, clientY);
+    let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
+    let dragStartMeasure;
+    let measureUnderCursor;
+    let newStartStep;
+
+    if (stepUnderCursor !== undefined) {
+      dragStartMeasure = Math.floor(this.dragStartStep / STEPS_PER_MEASURE);
+      measureUnderCursor = Math.floor(stepUnderCursor / STEPS_PER_MEASURE);
+      newStartStep = this.dragPatternOriginalStartStep + ((measureUnderCursor - dragStartMeasure) * STEPS_PER_MEASURE);
+
+      newStartStep = Math.max(newStartStep, 0);
+      newStartStep = Math.min(newStartStep, (this.props.measureCount * STEPS_PER_MEASURE) - this.state.ghostPatternPlaybackStepCount);
+    }
+    else {
+      newStartStep = undefined;
+    }
 
     if (this.state.ghostPatternTrackIndex !== newTrackIndex || this.state.ghostPatternStartStep !== newStartStep) {
       this.setState({
@@ -237,29 +251,41 @@ class TimelineGrid extends React.Component {
   dragResize(clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-    let newStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let newStepCount;
 
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
+
+    if (stepUnderCursor === undefined) {
+      return;
+    }
+
+    newStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     newStepCount = Math.max(newStepCount, STEPS_PER_MEASURE);
     newStepCount = Math.min(newStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.resizeStartStep);
 
     this.props.resizePattern(this.props.highlightedPatternID, newStepCount);
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
   };
 
   dragLoopChange(clientX) {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
-    let newPlaybackStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    let newPlaybackStepCount;
 
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
+
+    if (stepUnderCursor === undefined) {
+      return;
+    }
+
+    newPlaybackStepCount = Math.ceil((stepUnderCursor - this.resizeStartStep + 1) / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     newPlaybackStepCount = Math.max(newPlaybackStepCount, this.minPlaybackStepCount);
     newPlaybackStepCount = Math.min(newPlaybackStepCount, (this.props.measureCount * STEPS_PER_MEASURE) - this.resizeStartStep);
 
     this.props.changePatternPlaybackStepCount(this.props.highlightedPatternID, newPlaybackStepCount);
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
   };
 
   onMouseDown(e) {
@@ -286,6 +312,12 @@ class TimelineGrid extends React.Component {
     if (e.buttons === 0) {
       this.endDrag();
     }
+  };
+
+  onMouseLeave(e) {
+    this.setState({
+      ghostPatternTrackIndex: undefined,
+    });
   };
 
   onTouchMove(e) {
@@ -350,7 +382,7 @@ class TimelineGrid extends React.Component {
       }
     }
 
-    if (this.state.ghostPatternID !== undefined) {
+    if (this.state.ghostPatternTrackIndex !== undefined) {
       ghostPatternTrackID = this.props.tracks[this.state.ghostPatternTrackIndex].id;
     }
 
@@ -363,6 +395,7 @@ class TimelineGrid extends React.Component {
             onMouseMove={(this.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
             onMouseUp={this.onMouseUp}
             onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
             onTouchEnd={this.onTouchEnd}>
         {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
@@ -383,7 +416,7 @@ class TimelineGrid extends React.Component {
                          setIsPopupMenuActive={this.props.setIsPopupMenuActive}
                          setPopupMenuPosition={this.setPopupMenuPosition} />
         )}
-        {ghostPattern !== undefined &&
+        {this.state.ghostPatternTrackIndex !== undefined && this.state.ghostPatternStartStep !== undefined &&
         <TimelinePattern key={-1}
                          trackIndex={this.state.ghostPatternTrackIndex}
                          patternID={ghostPattern.id}
