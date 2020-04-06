@@ -755,6 +755,10 @@ class App extends React.Component {
     let pattern = this.itemByID(newPatternList, patternID);
     let newTrackID = this.state.tracks[newTrackIndex].id;
 
+    if (pattern.trackID === newTrackID && pattern.startStep === newStartStep) {
+      return;
+    }
+
     if (this.isSpaceForPatternInTrack(newTrackID, newStartStep, pattern.playbackStepCount, patternID) !== true) {
       return;
     }
