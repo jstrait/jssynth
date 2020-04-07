@@ -492,7 +492,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   flex: 1;
   min-width: 3.0rem;
   box-sizing: border-box;
-  padding: 1px 2px;
+  padding: 1px;
 }
 
 .note-column-header {
@@ -502,7 +502,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 .note-box {
   display: block;
   height: 2.0rem;
-  width: calc(100% - 2px);
+  width: calc(100% - 4px);
   text-align: center;
   border: 1px solid $border-color;
   margin: 1px;
