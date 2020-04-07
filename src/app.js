@@ -842,7 +842,7 @@ class App extends React.Component {
     patternsInTrack = this.patternsByTrackID(trackID);
     for (otherPattern of patternsInTrack) {
       otherPatternEndStep = otherPattern.startStep + otherPattern.playbackStepCount - 1;
-      if (patternToIgnoreID !== otherPattern.id && !((endStep <= otherPattern.startStep) || (startStep >= otherPatternEndStep))) {
+      if (patternToIgnoreID !== otherPattern.id && !((endStep < otherPattern.startStep) || (startStep > otherPatternEndStep))) {
         return false;
       }
     }
