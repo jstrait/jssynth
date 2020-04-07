@@ -121,6 +121,12 @@ button:disabled {
   cursor: default;
 }
 
+button.button-error:disabled {
+  background: $white;
+  border-color: $light-red;
+  color: $light-red;
+}
+
 .button-tiny {
   border-radius: 6px;
   border-width: 2px;

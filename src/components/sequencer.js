@@ -776,6 +776,32 @@ class PopupMenu extends React.Component {
   };
 };
 
+class AddPastePopupMenuBody extends React.Component {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    let isRoomToPastePattern = true;
+    let pasteStartStep;
+    let pasteButtonCSSClasses;
+    let isPasteButtonDisabled;
+
+    if (this.props.copiedPattern !== undefined) {
+      pasteStartStep = Math.floor(this.props.stepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+      isRoomToPastePattern = this.props.isSpaceForPatternInTrack(this.props.trackID, pasteStartStep, this.props.copiedPattern.playbackStepCount, undefined);
+    }
+
+    pasteButtonCSSClasses = "button-small" + (isRoomToPastePattern === true ? " button-hollow" : " button-error");
+    isPasteButtonDisabled = this.props.copiedPattern === undefined || isRoomToPastePattern === false;
+
+    return <React.Fragment>
+      <button className="button-small button-hollow" onClick={this.props.addPattern}>Add</button>&nbsp;
+      <button className={pasteButtonCSSClasses} onClick={this.props.duplicateCopiedPattern} disabled={isPasteButtonDisabled}>Paste</button>
+    </React.Fragment>;
+  };
+};
+
 class Sequencer extends React.Component {
   constructor(props) {
     super(props);
@@ -924,10 +950,14 @@ class Sequencer extends React.Component {
     let popupMenuContent = undefined;
     if (this.state.isPopupMenuActive === true) {
       if (this.state.highlightedPatternID === undefined) {
-        popupMenuContent = <React.Fragment>
-                             <button className="button-small button-hollow" onClick={this.addPattern}>Add</button>&nbsp;
-                             <button className="button-small button-hollow" onClick={this.duplicateCopiedPattern} disabled={this.props.copiedPattern === undefined}>Paste</button>
-                           </React.Fragment>;
+        popupMenuContent = <AddPastePopupMenuBody
+                             trackID={this.props.tracks[this.state.popupMenuTrackIndex].id}
+                             stepIndex={this.state.popupMenuStepIndex}
+                             copiedPattern={this.props.copiedPattern}
+                             isSpaceForPatternInTrack={this.props.isSpaceForPatternInTrack}
+                             addPattern={this.addPattern}
+                             duplicateCopiedPattern={this.duplicateCopiedPattern}
+                           />
       }
       else {
         popupMenuContent = <React.Fragment>
