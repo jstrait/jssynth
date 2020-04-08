@@ -462,6 +462,7 @@ class TimelinePattern extends React.PureComponent {
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onStartResize = this.onStartResize.bind(this);
     this.onStartLoopChange = this.onStartLoopChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
