@@ -396,7 +396,7 @@ class PatternEditor extends React.Component {
 
   close(e) {
     this.props.setKeyboardNotes([]);
-    this.props.setSelectedPattern(undefined);
+    this.props.setPatternBeingEdited(undefined);
   };
 
   render() {

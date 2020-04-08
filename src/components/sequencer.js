@@ -16,13 +16,13 @@ class TrackHeader extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.setSelectedTrack = this.setSelectedTrack.bind(this);
+    this.setTrackBeingEdited = this.setTrackBeingEdited.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
   };
 
-  setSelectedTrack(e) {
-    this.props.setSelectedTrack(this.props.trackID);
+  setTrackBeingEdited(e) {
+    this.props.setTrackBeingEdited(this.props.trackID);
   };
 
   setTrackVolume(e) {
@@ -42,7 +42,7 @@ class TrackHeader extends React.PureComponent {
       <span className="short-name">{shortTrackName(this.props.name)}</span>
       <span className="sequencer-name-container flex flex-justify-space-between">
         <span className="overflow-hidden no-whitespace-wrap overflow-ellipsis">{this.props.name}</span>
-        <button className="button-hollow button-small" onClick={this.setSelectedTrack}>Edit</button>
+        <button className="button-hollow button-small" onClick={this.setTrackBeingEdited}>Edit</button>
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
         <button className={"button-hollow button-small" + (this.props.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
@@ -904,7 +904,7 @@ class Sequencer extends React.Component {
   };
 
   editPattern(e) {
-    this.props.setSelectedPattern(this.state.highlightedPatternID);
+    this.props.setPatternBeingEdited(this.state.highlightedPatternID);
   };
 
   removePattern(e) {
@@ -984,7 +984,7 @@ class Sequencer extends React.Component {
                          name={track.name}
                          muted={track.muted}
                          volume={track.volume}
-                         setSelectedTrack={this.props.setSelectedTrack}
+                         setTrackBeingEdited={this.props.setTrackBeingEdited}
                          setTrackVolume={this.props.setTrackVolume}
                          toggleTrackMute={this.props.toggleTrackMute} />
           )}

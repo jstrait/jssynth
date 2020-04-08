@@ -36,8 +36,8 @@ class App extends React.Component {
       isLoaded: false,
       loadingStatusMessage: "Loading...",
       measureCount: 1,
-      selectedTrackID: undefined,
-      selectedPatternID: undefined,
+      trackBeingEditedID: undefined,
+      patternBeingEditedID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
       copiedPattern: undefined,
@@ -83,8 +83,8 @@ class App extends React.Component {
     this.addSynthTrack = this.addSynthTrack.bind(this);
     this.addSamplerTrack = this.addSamplerTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
-    this.setSelectedTrack = this.setSelectedTrack.bind(this);
-    this.setSelectedPattern = this.setSelectedPattern.bind(this);
+    this.setTrackBeingEdited = this.setTrackBeingEdited.bind(this);
+    this.setPatternBeingEdited = this.setPatternBeingEdited.bind(this);
     this.setCopiedPattern = this.setCopiedPattern.bind(this);
     this.movePattern = this.movePattern.bind(this);
     this.resizePattern = this.resizePattern.bind(this);
@@ -707,17 +707,17 @@ class App extends React.Component {
     });
   };
 
-  setSelectedTrack(newSelectedTrackID) {
+  setTrackBeingEdited(newTrackBeingEditedID) {
     this.setState({
-      selectedTrackID: newSelectedTrackID,
-      selectedPatternID: undefined,
+      trackBeingEditedID: newTrackBeingEditedID,
+      patternBeingEditedID: undefined,
     });
   };
 
-  setSelectedPattern(newSelectedPatternID) {
+  setPatternBeingEdited(newPatternBeingEditedID) {
     this.setState({
-      selectedTrackID: undefined,
-      selectedPatternID: newSelectedPatternID,
+      trackBeingEditedID: undefined,
+      patternBeingEditedID: newPatternBeingEditedID,
     });
   };
 
@@ -913,14 +913,16 @@ class App extends React.Component {
     let noteContext;
     let note;
     let currentTrack;
-    let selectedPattern;
+    let instrument;
+    let patternBeingEdited;
 
-    if (this.state.selectedTrackID !== undefined) {
-      currentTrack = this.trackByID(this.state.selectedTrackID);
+    if (this.state.trackBeingEditedID !== undefined) {
+      currentTrack = this.trackByID(this.state.trackBeingEditedID);
+      instrument = this.instrumentByID(currentTrack.instrumentID);
     }
-    else if (this.state.selectedPatternID !== undefined) {
-      selectedPattern = this.patternByID(this.state.selectedPatternID);
-      currentTrack = this.trackByID(selectedPattern.trackID);
+    else if (this.state.patternBeingEditedID !== undefined) {
+      patternBeingEdited = this.patternByID(this.state.patternBeingEditedID);
+      currentTrack = this.trackByID(patternBeingEdited.trackID);
     }
     else {
       return;
@@ -947,7 +949,7 @@ class App extends React.Component {
     for (i = 0; i < notes.length; i++) {
       if (!this.state.activeKeyboardNotes.includes(notes[i])) {
         if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternNoteIndex !== undefined) {
-          this.setNoteValue(notes[i], this.state.selectedPatternID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+          this.setNoteValue(notes[i], this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
         }
 
         note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
@@ -1053,8 +1055,8 @@ class App extends React.Component {
   };
 
   render() {
-    let selectedTrack;
-    let selectedPattern;
+    let track;
+    let pattern;
     let instrument;
 
     let view = VIEW_UNKNOWN;
@@ -1063,16 +1065,16 @@ class App extends React.Component {
       view = VIEW_LOADING;
     }
     else {
-      if (this.state.selectedPatternID !== undefined) {
+      if (this.state.patternBeingEditedID !== undefined) {
         view = VIEW_PATTERN_EDITOR;
 
-        selectedPattern = this.patternByID(this.state.selectedPatternID);
-        selectedTrack = this.trackByID(selectedPattern.trackID);
-        instrument = this.instrumentByID(selectedTrack.instrumentID);
+        pattern = this.patternByID(this.state.patternBeingEditedID);
+        track = this.trackByID(pattern.trackID);
+        instrument = this.instrumentByID(track.instrumentID);
       }
-      else if (this.state.selectedTrackID !== undefined) {
-        selectedTrack = this.trackByID(this.state.selectedTrackID);
-        instrument = this.instrumentByID(selectedTrack.instrumentID);
+      else if (this.state.trackBeingEditedID !== undefined) {
+        track = this.trackByID(this.state.trackBeingEditedID);
+        instrument = this.instrumentByID(track.id);
 
         if (instrument.type === "synth") {
           view = VIEW_INSTRUMENT_SYNTH;
@@ -1123,8 +1125,8 @@ class App extends React.Component {
                    setCurrentStep={this.setCurrentStep}
                    setTrackVolume={this.setTrackVolume}
                    toggleTrackMute={this.toggleTrackMute}
-                   setSelectedTrack={this.setSelectedTrack}
-                   setSelectedPattern={this.setSelectedPattern}
+                   setTrackBeingEdited={this.setTrackBeingEdited}
+                   setPatternBeingEdited={this.setPatternBeingEdited}
                    copiedPattern={this.state.copiedPattern}
                    setCopiedPattern={this.setCopiedPattern}
                    addSynthTrack={this.addSynthTrack}
@@ -1141,10 +1143,10 @@ class App extends React.Component {
         {view === VIEW_INSTRUMENT_SYNTH &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SynthInstrumentEditor instrument={instrument}
-                                 trackID={selectedTrack.id}
-                                 trackName={selectedTrack.name}
+                                 trackID={track.id}
+                                 trackName={track.name}
                                  setTrackName={this.setTrackName}
-                                 setSelectedTrack={this.setSelectedTrack}
+                                 setTrackBeingEdited={this.setTrackBeingEdited}
                                  setKeyboardNotes={this.setKeyboardNotes}
                                  updateInstrument={this.updateInstrument} />
         </div>
@@ -1152,10 +1154,10 @@ class App extends React.Component {
         {view === VIEW_INSTRUMENT_SAMPLER &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <SampleInstrumentEditor instrument={instrument}
-                                  trackID={selectedTrack.id}
-                                  trackName={selectedTrack.name}
+                                  trackID={track.id}
+                                  trackName={track.name}
                                   setTrackName={this.setTrackName}
-                                  setSelectedTrack={this.setSelectedTrack}
+                                  setTrackBeingEdited={this.setTrackBeingEdited}
                                   setBufferFromFile={this.setBufferFromFile}
                                   setKeyboardNotes={this.setKeyboardNotes}
                                   updateInstrument={this.updateInstrument} />
@@ -1163,13 +1165,13 @@ class App extends React.Component {
         }
         {view === VIEW_PATTERN_EDITOR &&
         <div className="pb1 pl1 pr1 border-box bt-thick">
-          <PatternEditor pattern={selectedPattern}
+          <PatternEditor pattern={pattern}
                          selectedRowIndex={this.state.selectedPatternRowIndex}
                          selectedNoteIndex={this.state.selectedPatternNoteIndex}
                          setPatternName={this.setPatternName}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
-                         setSelectedPattern={this.setSelectedPattern}
+                         setPatternBeingEdited={this.setPatternBeingEdited}
                          setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
                          keyboardActive={this.state.isKeyboardActive}
