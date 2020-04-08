@@ -550,8 +550,6 @@ class App extends React.Component {
     }
 
     this.setState({
-      selectedTrackID: undefined,
-      selectedPatternID: undefined,
       instruments: newInstruments,
       patterns: newPatterns,
       tracks: newTracks,
