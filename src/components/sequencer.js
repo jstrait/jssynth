@@ -368,6 +368,7 @@ class TimelineGrid extends React.Component {
     let pattern;
     let ghostPattern;
     let ghostPatternTrackID;
+    let popupMenuMeasure;
 
     for (i = 0; i < this.props.tracks.length; i++) {
       trackIndices[this.props.tracks[i].id] = i;
@@ -386,6 +387,10 @@ class TimelineGrid extends React.Component {
       ghostPatternTrackID = this.props.tracks[this.state.ghostPatternTrackIndex].id;
     }
 
+    if (this.props.isPopupMenuActive === true) {
+      popupMenuMeasure = Math.floor(this.props.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
+    }
+
     return <div className="flex full-height no-whitespace-wrap">
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
       <span ref={el => {this.containerEl = el;}}
@@ -397,6 +402,13 @@ class TimelineGrid extends React.Component {
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
             onTouchEnd={this.onTouchEnd}>
+        {this.props.isPopupMenuActive === true && this.props.highlightedPatternID === undefined &&
+        <span className="absolute bg-light-orange"
+              style={{left: (popupMenuMeasure * STEP_WIDTH_IN_PIXELS) + "px",
+                      top: (this.props.popupMenuTrackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
+                      width: (MEASURE_WIDTH_IN_PIXELS - 1) + "px",
+                      height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px",}}>
+        </span>}
         {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
                          trackIndex={patternView.trackIndex}
@@ -1000,6 +1012,8 @@ class Sequencer extends React.Component {
                         measureCount={this.props.measureCount}
                         highlightedPatternID={this.state.highlightedPatternID}
                         isPopupMenuActive={this.state.isPopupMenuActive}
+                        popupMenuTrackIndex={this.state.popupMenuTrackIndex}
+                        popupMenuStepIndex={this.state.popupMenuStepIndex}
                         setHighlightedPattern={this.setHighlightedPattern}
                         setIsPopupMenuActive={this.setIsPopupMenuActive}
                         setPopupMenuPosition={this.setPopupMenuPosition}
