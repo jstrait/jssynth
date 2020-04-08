@@ -44,7 +44,6 @@ class App extends React.Component {
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isKeyboardActive: false,
       activeKeyboardNotes: [],
-      activeNoteContexts: [],
       masterAmplitude: 0.75,
       transport: {
         isPlaying: false,
@@ -138,6 +137,7 @@ class App extends React.Component {
 
     this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
+    this.activeNoteContexts = [];
 
     this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
 
@@ -930,16 +930,15 @@ class App extends React.Component {
 
     let activeNoteSetHasChanged = false;
     let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
-    let newActiveNoteContexts = this.state.activeNoteContexts.concat([]);
 
     // First, stop notes no longer in the active set
     for (i = newActiveKeyboardNotes.length - 1; i >= 0; i--) {
       if (!notes.includes(newActiveKeyboardNotes[i])) {
-        noteContext = newActiveNoteContexts[i];
+        noteContext = this.activeNoteContexts[i];
 
         this.notePlayer.stopNote(currentTrack.id, this.mixer.audioContext(), noteContext);
         newActiveKeyboardNotes.splice(i, 1);
-        newActiveNoteContexts.splice(i, 1);
+        this.activeNoteContexts.splice(i, 1);
 
         activeNoteSetHasChanged = true;
       }
@@ -960,7 +959,7 @@ class App extends React.Component {
                                                         1.0);
 
         newActiveKeyboardNotes.push(notes[i]);
-        newActiveNoteContexts.push(noteContext);
+        this.activeNoteContexts.push(noteContext);
         activeNoteSetHasChanged = true;
       }
     }
@@ -969,7 +968,6 @@ class App extends React.Component {
     if (activeNoteSetHasChanged === true) {
       this.setState({
         activeKeyboardNotes: newActiveKeyboardNotes,
-        activeNoteContexts: newActiveNoteContexts,
       });
     }
   };
