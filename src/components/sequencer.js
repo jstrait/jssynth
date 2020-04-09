@@ -100,6 +100,7 @@ class TimelineGrid extends React.Component {
       ghostPatternTrackIndex: undefined,
       ghostPatternStartStep: undefined,
       ghostPatternPlaybackStepCount: undefined,
+      isPopupMenuPending: false,
     };
 
     // These do not directly affect the rendered state of the component
@@ -111,6 +112,7 @@ class TimelineGrid extends React.Component {
     this.resizeStartStep = undefined;
     this.minPlaybackStepCount = undefined;
 
+    this.setIsPopupMenuPending = this.setIsPopupMenuPending.bind(this);
     this.startDrag = this.startDrag.bind(this);
     this.startResize = this.startResize.bind(this);
     this.startLoopChange = this.startLoopChange.bind(this);
@@ -127,6 +129,21 @@ class TimelineGrid extends React.Component {
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
+  };
+
+  setIsPopupMenuPending(patternID) {
+    let newIsPopupMenuPending;
+
+    if (this.props.highlightedPatternID === patternID) {
+      newIsPopupMenuPending = !this.state.isPopupMenuPending;
+    }
+    else {
+      newIsPopupMenuPending = true;
+    }
+
+    this.setState({
+      isPopupMenuPending: newIsPopupMenuPending,
+    });
   };
 
   startDrag(patternID, patternTrackIndex, patternStartStep, patternPlaybackStepCount, clientX) {
@@ -153,6 +170,10 @@ class TimelineGrid extends React.Component {
     this.dragStartStep = undefined;
     this.resizeStartStep = startStep;
     this.minPlaybackStepCount = undefined;
+
+    this.setState({
+      isPopupMenuPending: false,
+    });
   };
 
   startLoopChange(startStep, baseStepCount) {
@@ -161,6 +182,10 @@ class TimelineGrid extends React.Component {
     this.dragStartStep = undefined;
     this.resizeStartStep = startStep;
     this.minPlaybackStepCount = baseStepCount;
+
+    this.setState({
+      isPopupMenuPending: false,
+    });
   };
 
   endDrag() {
@@ -243,8 +268,10 @@ class TimelineGrid extends React.Component {
       });
     }
 
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
+    if (this.state.isPopupMenuPending === true) {
+      this.setState({
+        isPopupMenuPending: false,
+      });
     }
   };
 
@@ -413,6 +440,8 @@ class TimelineGrid extends React.Component {
                          isError={false}
                          isTransparent={patternView.pattern.id === this.state.ghostPatternID}
                          isPopupMenuActive={this.props.isPopupMenuActive}
+                         isPopupMenuPending={this.state.isPopupMenuPending}
+                         setIsPopupMenuPending={this.setIsPopupMenuPending}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
                          startLoopChange={this.startLoopChange}
@@ -432,6 +461,8 @@ class TimelineGrid extends React.Component {
                          isError={this.props.isSpaceForPatternInTrack(ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount, ghostPattern.id) !== true}
                          isTransparent={true}
                          isPopupMenuActive={this.props.isPopupMenuActive}
+                         isPopupMenuPending={this.state.isPopupMenuPending}
+                         setIsPopupMenuPending={this.setIsPopupMenuPending}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
                          startLoopChange={this.startLoopChange}
@@ -450,9 +481,9 @@ class TimelinePattern extends React.PureComponent {
     super(props);
 
     this.highlight = this.highlight.bind(this);
-    this.togglePopupMenu = this.togglePopupMenu.bind(this);
 
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onStartResize = this.onStartResize.bind(this);
@@ -465,34 +496,36 @@ class TimelinePattern extends React.PureComponent {
     this.props.setHighlightedPattern(this.props.patternID);
   };
 
-  togglePopupMenu(clientX, clientY) {
-    this.props.setPopupMenuPosition(clientX, clientY);
-
-    if (this.props.isSelected === true) {
-      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
-    }
-    else {
-      this.props.setIsPopupMenuActive(false);
-    }
-  };
-
   onMouseDown(e) {
     this.highlight();
-    this.togglePopupMenu(e.clientX, e.clientY);
-
+    this.props.setIsPopupMenuPending(this.props.patternID);
+    this.props.setIsPopupMenuActive(false);
     this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.clientX);
 
     // Prevent click on parent pattern grid container
     e.stopPropagation();
   };
 
+  onMouseUp(e) {
+    if (this.props.isPopupMenuPending === true) {
+      this.props.setPopupMenuPosition(e.clientX, e.clientY);
+      this.props.setIsPopupMenuActive(true);
+    }
+  };
+
   onTouchStart(e) {
     this.highlight();
-    this.togglePopupMenu(e.touches[0].clientX, e.touches[0].clientY);
+    this.props.setIsPopupMenuPending(this.props.patternID);
+    this.props.setIsPopupMenuActive(false);
     this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.touches[0].clientX);
   };
 
   onTouchEnd(e) {
+    if (this.props.isPopupMenuPending === true) {
+      this.props.setPopupMenuPosition(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      this.props.setIsPopupMenuActive(true);
+    }
+
     // Prevent `mousedown` event from firing
     e.preventDefault();
   };
@@ -557,6 +590,7 @@ class TimelinePattern extends React.PureComponent {
                          width: (this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) + "px",
                          height: TRACK_HEIGHT_IN_PIXELS + "px"}}
                  onMouseDown={this.onMouseDown}
+                 onMouseUp={this.onMouseUp}
                  onTouchStart={this.onTouchStart}
                  onTouchEnd={this.onTouchEnd}
                  onBlur={this.onBlur}>
