@@ -253,10 +253,6 @@ class TimelineGrid extends React.Component {
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newStepCount;
 
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
-
     if (stepUnderCursor === undefined) {
       return;
     }
@@ -272,10 +268,6 @@ class TimelineGrid extends React.Component {
     let containerBoundingRect = this.containerEl.getBoundingClientRect();
     let stepUnderCursor = this.stepUnderCursor(containerBoundingRect, clientX);
     let newPlaybackStepCount;
-
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
 
     if (stepUnderCursor === undefined) {
       return;
