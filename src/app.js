@@ -1072,7 +1072,7 @@ class App extends React.Component {
       }
       else if (this.state.trackBeingEditedID !== undefined) {
         track = this.trackByID(this.state.trackBeingEditedID);
-        instrument = this.instrumentByID(track.id);
+        instrument = this.instrumentByID(track.instrumentID);
 
         if (instrument.type === "synth") {
           view = VIEW_INSTRUMENT_SYNTH;
