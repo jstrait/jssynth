@@ -846,7 +846,6 @@ class Sequencer extends React.Component {
     super(props);
 
     this.state = {
-      expanded: true,
       isTimelineElementActive: false,
       selectedPatternID: undefined,
       popupMenuStepIndex: undefined,
@@ -856,7 +855,7 @@ class Sequencer extends React.Component {
       isPopupMenuActive: false,
     };
 
-    this.toggleExpansion = this.toggleExpansion.bind(this);
+    this.toggleIsExpanded = this.toggleIsExpanded.bind(this);
     this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
@@ -872,12 +871,12 @@ class Sequencer extends React.Component {
     this.onScroll = this.onScroll.bind(this);
   };
 
-
-  toggleExpansion() {
-    this.setState((prevState, props) => ({
-      expanded: !prevState.expanded,
+  toggleIsExpanded() {
+    this.setState({
       isPopupMenuActive: false,
-    }));
+    }, function() {
+      this.props.setIsExpanded(!this.props.isExpanded);
+    });
   };
 
   setIsTimelineElementActive(newIsTimelineElementActive) {
@@ -1013,9 +1012,9 @@ class Sequencer extends React.Component {
         <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
       <div className="flex mb1">
-        <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.state.expanded ? "expanded" : "contracted")}>
+        <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.props.isExpanded ? "expanded" : "contracted")}>
           <li className="list-style-none height-1 pl1 border-box bb">
-            <button className={"vertical-top button-tiny button-hollow" + (this.state.expanded ? " button-enabled" : "")} onClick={this.toggleExpansion}>Edit</button>
+            <button className={"vertical-top button-tiny button-hollow" + (this.props.isExpanded ? " button-enabled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader key={track.id}
@@ -1050,7 +1049,7 @@ class Sequencer extends React.Component {
                         changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * STEP_WIDTH_IN_PIXELS}px + 1.0rem - 3px)`}}></span>
         </div>
-        <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.state.expanded ? "" : " display-none")}>
+        <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.props.isExpanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
           {this.props.tracks.map((track) =>
           <li key={track.id} className="flex flex-align-center bg-light-gray pl-half pr-half list-style-none height-3 border-box bb bl">

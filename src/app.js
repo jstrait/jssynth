@@ -40,6 +40,7 @@ class App extends React.Component {
       patternBeingEditedID: undefined,
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
+      isSequencerExpanded: true,
       copiedPattern: undefined,
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isKeyboardActive: false,
@@ -75,6 +76,7 @@ class App extends React.Component {
 
     // Sequencer
     this.setMeasureCount = this.setMeasureCount.bind(this);
+    this.setIsSequencerExpanded = this.setIsSequencerExpanded.bind(this);
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
@@ -385,6 +387,12 @@ class App extends React.Component {
     }, function() {
       this.syncScoreToSynthCore();
       this.setCurrentStep(newCurrentStep);
+    });
+  };
+
+  setIsSequencerExpanded(newIsSequencerExpanded) {
+    this.setState({
+      isSequencerExpanded: newIsSequencerExpanded,
     });
   };
 
@@ -1119,6 +1127,8 @@ class App extends React.Component {
                    patterns={this.state.patterns}
                    measureCount={this.state.measureCount}
                    setMeasureCount={this.setMeasureCount}
+                   isExpanded={this.state.isSequencerExpanded}
+                   setIsExpanded={this.setIsSequencerExpanded}
                    currentStep={this.state.transport.step}
                    setCurrentStep={this.setCurrentStep}
                    setTrackVolume={this.setTrackVolume}
