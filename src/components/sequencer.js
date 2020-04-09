@@ -984,6 +984,14 @@ class Sequencer extends React.Component {
     }
   };
 
+  componentDidMount() {
+    this.timelineContainerEl.scrollLeft = this.props.scrollLeft;
+  };
+
+  componentWillUnmount() {
+    this.props.setScrollLeft(this.timelineContainerEl.scrollLeft);
+  };
+
   render() {
     let popupMenuContent = undefined;
     if (this.state.isPopupMenuActive === true) {

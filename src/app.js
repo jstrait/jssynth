@@ -41,6 +41,7 @@ class App extends React.Component {
       selectedPatternRowIndex: undefined,
       selectedPatternNoteIndex: undefined,
       isSequencerExpanded: true,
+      sequencerScrollLeft: 0,
       copiedPattern: undefined,
       isDownloadEnabled: (typeof document.createElement("a").download !== "undefined"),
       isKeyboardActive: false,
@@ -77,6 +78,7 @@ class App extends React.Component {
     // Sequencer
     this.setMeasureCount = this.setMeasureCount.bind(this);
     this.setIsSequencerExpanded = this.setIsSequencerExpanded.bind(this);
+    this.setSequencerScrollLeft = this.setSequencerScrollLeft.bind(this);
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.setTrackVolume = this.setTrackVolume.bind(this);
     this.toggleTrackMute = this.toggleTrackMute.bind(this);
@@ -393,6 +395,12 @@ class App extends React.Component {
   setIsSequencerExpanded(newIsSequencerExpanded) {
     this.setState({
       isSequencerExpanded: newIsSequencerExpanded,
+    });
+  };
+
+  setSequencerScrollLeft(newSequencerScrollLeft) {
+    this.setState({
+      sequencerScrollLeft: newSequencerScrollLeft,
     });
   };
 
@@ -1129,6 +1137,8 @@ class App extends React.Component {
                    setMeasureCount={this.setMeasureCount}
                    isExpanded={this.state.isSequencerExpanded}
                    setIsExpanded={this.setIsSequencerExpanded}
+                   scrollLeft={this.state.sequencerScrollLeft}
+                   setScrollLeft={this.setSequencerScrollLeft}
                    currentStep={this.state.transport.step}
                    setCurrentStep={this.setCurrentStep}
                    setTrackVolume={this.setTrackVolume}
