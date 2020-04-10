@@ -1108,7 +1108,7 @@ class App extends React.Component {
 
     return <div>
       {view === VIEW_LOADING &&
-      <div className="full-width flex flex-column flex-align-center flex-justify-center" style={{"minHeight": "100vh"}}>
+      <div className="absolute t0 b0 full-width flex flex-column flex-align-center flex-justify-center">
         <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
         <span className="lightText">Web Synthesizer</span>
         <span className="mt1 ml1 mr1">{this.state.loadingStatusMessage}</span>

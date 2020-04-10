@@ -40,6 +40,9 @@
 .relative { position: relative; }
 .absolute { position: absolute; }
 
+.t0 { top: 0; }
+.b0 { bottom: 0; }
+
 .b-all { border: 1px solid $border-color; }
 .bt  { border-top: 1px solid $border-color; }
 .bb  { border-bottom: 1px solid $border-color; }
