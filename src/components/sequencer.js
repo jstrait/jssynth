@@ -80,7 +80,7 @@ class TimelineHeader extends React.PureComponent {
       <ul className="flex m0 pl0 no-whitespace-wrap height-2">
         <li className="sequencer-body-left-padding list-style-none border-box"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
-        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-flush full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
+        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-4 full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
         )}
         <li className="sequencer-body-right-padding list-style-none"></li>
       </ul>

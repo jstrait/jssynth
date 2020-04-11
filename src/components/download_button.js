@@ -87,7 +87,7 @@ export class DownloadButton extends React.PureComponent {
 
     return <div id="download-container" className="relative">
       <button className="button-full button-hollow right flex flex-align-center" onClick={this.togglePopup}>
-        <span className="h3 lh-flush">&darr;</span>&nbsp;&nbsp;*.wav
+        <span className="h3 lh-4">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
       <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.state.fileName + ".wav"} href="#"></a>
       <div className={"mt3 p1 popup-box" + (this.state.isPopupVisible ? "" : " display-none")}>
