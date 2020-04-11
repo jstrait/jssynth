@@ -1116,7 +1116,7 @@ class App extends React.Component {
       }
       {view !== VIEW_LOADING &&
       <div className="flex flex-column flex-justify-space-between" style={{"minHeight": "100vh"}}>
-        <div id="header" className="flex flex-align-center pt1 pb1 pl1 pr1 border-box full-width">
+        <div id="header" className="flex flex-align-center pt-half pb-half pl1 pr1 border-box full-width">
           <div id="logo-container">
             <h1 className="h3 lh-3 red bold mt0 mb0">JS-130</h1>
             <span className="lightText">Web Synthesizer</span>
