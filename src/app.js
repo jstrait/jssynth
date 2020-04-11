@@ -1109,7 +1109,7 @@ class App extends React.Component {
     return <div>
       {view === VIEW_LOADING &&
       <div className="absolute t0 b0 full-width flex flex-column flex-align-center flex-justify-center">
-        <h1 className="logo h2 bold mt0 mb0">JS-130</h1>
+        <h1 className="h2 lh-2 red bold mt0 mb0">JS-130</h1>
         <span className="h3 lightText">Web Synthesizer</span>
         <span className="mt1 ml1 mr1">{this.state.loadingStatusMessage}</span>
       </div>
@@ -1118,7 +1118,7 @@ class App extends React.Component {
       <div className="flex flex-column flex-justify-space-between" style={{"minHeight": "100vh"}}>
         <div id="header" className="flex flex-align-center pt1 pb1 pl1 pr1 border-box full-width">
           <div id="logo-container">
-            <h1 className="logo h3 bold mt0 mb0">JS-130</h1>
+            <h1 className="h3 lh-3 red bold mt0 mb0">JS-130</h1>
             <span className="lightText">Web Synthesizer</span>
           </div>
           <Transport isPlaying={this.state.transport.isPlaying}
