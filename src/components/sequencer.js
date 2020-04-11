@@ -1015,8 +1015,7 @@ class Sequencer extends React.Component {
     }
 
     return <div ref={(el) => { this.sequencerContainerEl = el; }} className="relative pt1 pb1 border-box bt-thick">
-      <div className="flex flex-justify-space-between">
-        <h2 className="mt0 mb1 pl1">Sequencer</h2>
+      <div className="flex flex-justify-end">
         <MeasureCount measureCount={this.props.measureCount} setMeasureCount={this.props.setMeasureCount} />
       </div>
       <div className="flex mb1">
