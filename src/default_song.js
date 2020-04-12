@@ -186,7 +186,7 @@ const instruments = [
 const patterns = [
   {
     id: 1,
-    name: "Bass Synth 1",
+    name: "",
     trackID: 1,
     startStep: 0,
     stepCount: 32,
@@ -230,7 +230,7 @@ const patterns = [
   },
   {
     id: 2,
-    name: "Bass Synth 2",
+    name: "",
     trackID: 1,
     startStep: 64,
     stepCount: 32,
@@ -274,7 +274,7 @@ const patterns = [
   },
   {
     id: 3,
-    name: "Arpeggio 1",
+    name: "",
     trackID: 2,
     startStep: 64,
     stepCount: 16,
@@ -302,7 +302,7 @@ const patterns = [
   },
   {
     id: 4,
-    name: "Arpeggio 2",
+    name: "",
     trackID: 2,
     startStep: 96,
     stepCount: 16,
@@ -330,7 +330,7 @@ const patterns = [
   },
   {
     id: 5,
-    name: "Squeal 1",
+    name: "",
     trackID: 3,
     startStep: 112,
     stepCount: 16,
@@ -358,7 +358,7 @@ const patterns = [
   },
   {
     id: 6,
-    name: "Bass Drum 1",
+    name: "",
     trackID: 4,
     startStep: 0,
     stepCount: 16,
@@ -386,7 +386,7 @@ const patterns = [
   },
   {
     id: 7,
-    name: "Bass Drum 2",
+    name: "",
     trackID: 4,
     startStep: 64,
     stepCount: 16,
@@ -414,7 +414,7 @@ const patterns = [
   },
   {
     id: 8,
-    name: "Snare Drum 1",
+    name: "",
     trackID: 5,
     startStep: 64,
     stepCount: 16,
@@ -442,7 +442,7 @@ const patterns = [
   },
   {
     id: 9,
-    name: "Hi-Hat 1",
+    name: "",
     trackID: 6,
     startStep: 0,
     stepCount: 16,
@@ -470,7 +470,7 @@ const patterns = [
   },
   {
     id: 10,
-    name: "Hi-Hat 2",
+    name: "",
     trackID: 6,
     startStep: 64,
     stepCount: 16,
