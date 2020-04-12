@@ -9,6 +9,7 @@ describe("SynthCore.Note", function() {
     expect(note.octave()).toEqual(3);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(220.0);
+    expect(note.midiNote()).toEqual(57);
   });
 
   it("should raise an error if the note name is not valid", function() {
@@ -57,16 +58,45 @@ describe("SynthCore.Note", function() {
     expect(note1.octave()).toEqual(3);
     expect(note1.stepCount()).toEqual(1);
     expect(note1.frequency()).toEqual(155.56349186104046);
+    expect(note1.midiNote()).toEqual(51);
 
     expect(note2.name()).toEqual("E@");
     expect(note2.octave()).toEqual(3);
     expect(note2.stepCount()).toEqual(1);
     expect(note2.frequency()).toEqual(155.56349186104046);
+    expect(note2.midiNote()).toEqual(51);
 
     expect(note3.name()).toEqual("F@@");
     expect(note3.octave()).toEqual(3);
     expect(note3.stepCount()).toEqual(1);
     expect(note3.frequency()).toEqual(155.56349186104046);
+    expect(note3.midiNote()).toEqual(51);
+  });
+
+  it("should handle notes at start/end of valid range properly", function() {
+    var note = SynthCore.Note("C", 0, 1);
+
+    expect(note.name()).toEqual("C");
+    expect(note.octave()).toEqual(0);
+    expect(note.stepCount()).toEqual(1);
+    expect(note.frequency()).toEqual(16.351597831287414);
+    expect(note.midiNote()).toEqual(12);
+
+    note = SynthCore.Note("A", 0, 1);
+
+    expect(note.name()).toEqual("A");
+    expect(note.octave()).toEqual(0);
+    expect(note.stepCount()).toEqual(1);
+    expect(note.frequency()).toEqual(27.5);
+    expect(note.midiNote()).toEqual(21);
+
+    note = SynthCore.Note("B", 7, 1);
+
+    expect(note.name()).toEqual("B");
+    expect(note.octave()).toEqual(7);
+    expect(note.stepCount()).toEqual(1);
+    expect(note.frequency()).toEqual(3951.066410048993);
+    expect(note.midiNote()).toEqual(107);
   });
 });
 

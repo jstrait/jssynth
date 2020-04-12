@@ -1,5 +1,8 @@
 "use strict";
 
+var NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var NOTES_IN_OCTAVE = 12;
+
 export function Note(newNoteName, newOctave, newStepCount) {
   var NOTE_RATIOS = {
     "A"  : 1.0,
@@ -87,6 +90,7 @@ export function Note(newNoteName, newOctave, newStepCount) {
   var octave = newOctave;
   var stepCount = newStepCount;
   var frequency;
+  var midiNote;
 
   if (normalizedNoteName === undefined) {
     throw TypeError("Invalid note name: \"" + noteName + "\"");
@@ -99,11 +103,13 @@ export function Note(newNoteName, newOctave, newStepCount) {
   }
 
   frequency = calculateFrequency(normalizedNoteName, octave);
+  midiNote = 12 + (octave * NOTES_IN_OCTAVE) + NOTE_NAMES.indexOf(normalizedNoteName);
 
 
   return {
     name: function() { return noteName; },
     octave: function() { return octave; },
+    midiNote: function() { return midiNote; },
     stepCount: function() { return stepCount; },
     frequency: function() { return frequency; },
   };
