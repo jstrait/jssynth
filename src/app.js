@@ -96,6 +96,7 @@ class App extends React.Component {
     this.addPattern = this.addPattern.bind(this);
     this.duplicatePattern = this.duplicatePattern.bind(this);
     this.removePattern = this.removePattern.bind(this);
+    this.generatePatternImage = this.generatePatternImage.bind(this);
 
     // Instrument Editor
     this.setTrackName = this.setTrackName.bind(this);
@@ -125,6 +126,7 @@ class App extends React.Component {
   initialize() {
     const audioContext = SynthCore.AudioContextBuilder.buildAudioContext();
     let bufferConfigs;
+    let pattern;
 
     if (audioContext === undefined) {
       this.state.loadingStatusMessage = <span>Your browser doesn&rsquo;t appear to support the WebAudio API needed by the JS-130. Try a recent version of Chrome, Safari, or Firefox.</span>;
@@ -159,6 +161,13 @@ class App extends React.Component {
         bufferConfigs.push({label: instrument.bufferID, url: instrument.filename});
       }
     });
+
+    this.canvas = document.createElement("canvas");
+    this.canvasContext = this.canvas.getContext("2d");
+
+    for (pattern of DefaultSong.patterns) {
+      pattern.image = this.generatePatternImage(pattern);
+    }
 
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
@@ -613,6 +622,8 @@ class App extends React.Component {
       ]
     };
 
+    newPattern.image = this.generatePatternImage(newPattern);
+
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
     });
@@ -643,6 +654,8 @@ class App extends React.Component {
       playbackStepCount: originalPattern.playbackStepCount,
       rows: duplicatedRows,
     };
+
+    newPattern.image = this.generatePatternImage(newPattern);
 
     this.setState({
       patterns: this.state.patterns.concat(newPattern),
@@ -695,16 +708,14 @@ class App extends React.Component {
 
   removePatternRow(patternID, rowIndex) {
     let patternIndex = this.patternIndexByID(patternID);
-
+    let pattern = this.patternByID(patternID);
     let newPatterns = this.state.patterns.concat([]);
 
     let i;
-    let pattern;
     let notesArray;
 
     newPatterns[patternIndex].rows.splice(rowIndex, 1);
     if (newPatterns[patternIndex].rows.length === 0) {
-      pattern = this.patternByID(patternID);
       notesArray = Array(pattern.stepCount);
 
       for (i = 0; i < notesArray.length; i++) {
@@ -715,6 +726,8 @@ class App extends React.Component {
         notes: notesArray,
       });
     }
+
+    pattern.image = this.generatePatternImage(pattern);
 
     this.setState({
       patterns: newPatterns,
@@ -815,6 +828,8 @@ class App extends React.Component {
       }
     }
 
+    pattern.image = this.generatePatternImage(pattern);
+
     this.setState({
       patterns: newPatternList,
     }, function() {
@@ -890,6 +905,8 @@ class App extends React.Component {
         i += 1;
       }
     }
+
+    pattern.image = this.generatePatternImage(pattern);
 
     this.forceUpdate();
     this.syncScoreToSynthCore();
@@ -1067,6 +1084,66 @@ class App extends React.Component {
       this.togglePlaying();
     }
   };
+
+
+  generatePatternImage(pattern) {
+    const STEP_WIDTH_IN_PIXELS = 9;
+    const TRACK_HEIGHT_IN_PIXELS = 72;
+    const STEP_HEIGHT_IN_PIXELS = 2;
+    const PIXEL_RATIO = window.devicePixelRatio;
+
+    let i;
+    let serializedPatternRows;
+    let row;
+    let note;
+    let minMidiNote = Number.POSITIVE_INFINITY;
+    let maxMidiNote = Number.NEGATIVE_INFINITY;
+    let midiNote;
+    let yMarginInPixels;
+    let noteTopPixel;
+
+    this.canvas.height = TRACK_HEIGHT_IN_PIXELS * PIXEL_RATIO;
+    this.canvas.width = pattern.stepCount * STEP_WIDTH_IN_PIXELS * PIXEL_RATIO;
+    this.canvasContext.fillStyle = "#130f30";
+
+    serializedPatternRows = Serializer.serializePatternRows(pattern.stepCount, pattern.stepCount, pattern.rows);
+
+    for (row of serializedPatternRows) {
+      for (note of row) {
+        if (note !== undefined) {
+          midiNote = note.midiNote();
+
+          if (midiNote < minMidiNote) {
+            minMidiNote = midiNote;
+          }
+
+          if (midiNote > maxMidiNote) {
+            maxMidiNote = midiNote;
+          }
+        }
+      }
+    }
+
+    yMarginInPixels = (TRACK_HEIGHT_IN_PIXELS - ((maxMidiNote - minMidiNote) * STEP_HEIGHT_IN_PIXELS)) / 2;
+    yMarginInPixels = Math.max(0, yMarginInPixels);
+
+    for (row of serializedPatternRows) {
+      for (i = 0; i < row.length; i++) {
+        if (row[i] !== undefined) {
+          note = row[i];
+          noteTopPixel = (maxMidiNote - note.midiNote()) * STEP_HEIGHT_IN_PIXELS;
+
+          this.canvasContext.fillRect(i * STEP_WIDTH_IN_PIXELS * PIXEL_RATIO,
+                                      (noteTopPixel + yMarginInPixels) * PIXEL_RATIO,
+                                      ((note.stepCount() * STEP_WIDTH_IN_PIXELS) - 1) * PIXEL_RATIO,
+                                      STEP_HEIGHT_IN_PIXELS * PIXEL_RATIO);
+        }
+      }
+    }
+
+    return this.canvas.toDataURL("image/png");
+  };
+
 
   render() {
     let track;

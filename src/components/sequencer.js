@@ -433,6 +433,7 @@ class TimelineGrid extends React.Component {
                          trackIndex={patternView.trackIndex}
                          patternID={patternView.pattern.id}
                          patternName={patternView.pattern.name}
+                         patternImage={patternView.pattern.image}
                          startStep={patternView.pattern.startStep}
                          baseStepCount={patternView.pattern.stepCount}
                          fullStepCount={patternView.pattern.playbackStepCount}
@@ -454,6 +455,7 @@ class TimelineGrid extends React.Component {
                          trackIndex={this.state.ghostPatternTrackIndex}
                          patternID={ghostPattern.id}
                          patternName={ghostPattern.name}
+                         patternImage={ghostPattern.image}
                          startStep={this.state.ghostPatternStartStep}
                          baseStepCount={ghostPattern.stepCount}
                          fullStepCount={ghostPattern.playbackStepCount}
@@ -606,9 +608,11 @@ class TimelinePattern extends React.PureComponent {
         isError={this.props.isError}
         startStep={this.props.baseStepCount * index}
         stepCount={SUB_PATTERN_LENGTHS[index]}
+        baseStepCount={this.props.baseStepCount}
         isFirstSegment={index === 0}
         isLastSegment={index === (SUB_PATTERN_LENGTHS.length - 1)}
         isResizeable={this.props.baseStepCount === this.props.fullStepCount}
+        image={this.props.patternImage}
         onStartLoopChange={this.onStartLoopChange}
         onStartResize={this.onStartResize}
       />
@@ -626,6 +630,7 @@ class TimelinePatternSegment extends React.PureComponent {
   render() {
     let leftPixel = this.props.startStep * STEP_WIDTH_IN_PIXELS;
     let widthInPixels = (this.props.stepCount * STEP_WIDTH_IN_PIXELS) - 1;
+    let baseWidthInPixels = this.props.baseStepCount * STEP_WIDTH_IN_PIXELS;
     let extraSegmentStyles = "";
     let extraDividerStyles = "";
 
@@ -648,7 +653,12 @@ class TimelinePatternSegment extends React.PureComponent {
 
     return <React.Fragment>
       <span className={"overflow-hidden timeline-pattern" + extraSegmentStyles}
-            style={{left: leftPixel + "px", width: widthInPixels + "px"}}>
+            style={{
+              left: leftPixel + "px",
+              width: widthInPixels + "px",
+              backgroundImage: `url(${this.props.image})`,
+              backgroundSize: `${baseWidthInPixels}px ${TRACK_HEIGHT_IN_PIXELS}px`,
+            }}>
         {this.props.isLastSegment === true &&
         <TimelinePatternSidebar
           isError={this.props.isError}
