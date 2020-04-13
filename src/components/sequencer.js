@@ -696,12 +696,12 @@ class TimelinePatternSidebar extends React.PureComponent {
 
   render() {
     const backgroundColorStyle = (this.props.isError === true) ? "bg-red" : "bg-orange";
-    const resizeButtonBackgroundColorStyle = ((this.props.isResizeable === true || this.props.isError === true) ? "" : " lightText");
+    const resizeButtonExtraStyles = ((this.props.isResizeable === true || this.props.isError === true) ? " timeline-sidebar-button-enabled" : "");
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
     return <span className={"absolute t0 r0 flex flex-column width-1 full-height right " + backgroundColorStyle}>
-      <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
-      <span className={"flex-uniform-size h4 center cursor-default" + resizeButtonBackgroundColorStyle} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
+      <span className="timeline-sidebar-button timeline-sidebar-button-enabled flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
+      <span className={"timeline-sidebar-button flex-uniform-size h4 center cursor-default" + resizeButtonExtraStyles} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
     </span>;
   };
 };

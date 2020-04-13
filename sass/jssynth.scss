@@ -1,6 +1,7 @@
 $font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", helvetica, arial, sans-serif;
 $orange: orange;
 $light-orange: papayawhip;
+$dark-orange: darkorange;
 $red: #c00;
 $light-red: #faa;
 $black: #130f30;
@@ -373,6 +374,19 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-overlay {
   opacity: 0.8;
+}
+
+.timeline-sidebar-button {
+  color: #aaa;
+}
+
+.timeline-sidebar-button-enabled {
+  color: $black;
+}
+
+.timeline-sidebar-button-enabled:active {
+  color: $white;
+  background: $dark-orange;
 }
 
 .timeline-pattern-menu-container {
