@@ -69,7 +69,6 @@ class SampleInstrumentEditor extends React.Component {
       {label: "Triangle", value: "triangle"},
     ];
 
-    this.close = this.close.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -94,11 +93,6 @@ class SampleInstrumentEditor extends React.Component {
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
     this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
-  };
-
-  close(e) {
-    this.props.setKeyboardNotes([]);
-    this.props.setTrackBeingEdited(undefined);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -205,7 +199,7 @@ class SampleInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
+      <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
       <div className="mb1">
         <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
       </div>
@@ -389,7 +383,6 @@ class SynthInstrumentEditor extends React.Component {
       {label: "Pink", value: "pink"},
     ];
 
-    this.close = this.close.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setTrackName = this.setTrackName.bind(this);
     this.setOscillator1Waveform = this.setOscillator1Waveform.bind(this);
@@ -421,11 +414,6 @@ class SynthInstrumentEditor extends React.Component {
     this.setDelayTime = this.setDelayTime.bind(this);
     this.setDelayFeedback = this.setDelayFeedback.bind(this);
     this.setReverbWetPercentage = this.setReverbWetPercentage.bind(this);
-  };
-
-  close(e) {
-    this.props.setKeyboardNotes([]);
-    this.props.setTrackBeingEdited(undefined);
   };
 
   setSelectedTab(newSelectedTab) {
@@ -561,7 +549,7 @@ class SynthInstrumentEditor extends React.Component {
 
   render() {
     return <div>
-      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
+      <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
       <div className="mb1">
         <label className="bold">Name:</label>&nbsp;<input className="input-underlined" type="text" value={this.props.trackName} onChange={this.setTrackName} />
       </div>

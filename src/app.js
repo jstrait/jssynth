@@ -102,6 +102,7 @@ class App extends React.Component {
     this.setTrackName = this.setTrackName.bind(this);
     this.updateInstrument = this.updateInstrument.bind(this);
     this.setBufferFromFile = this.setBufferFromFile.bind(this);
+    this.closeInstrumentEditor = this.closeInstrumentEditor.bind(this);
 
     // Pattern Editor
     this.setPatternName = this.setPatternName.bind(this);
@@ -109,6 +110,7 @@ class App extends React.Component {
     this.removePatternRow = this.removePatternRow.bind(this);
     this.setSelectedPatternNoteIndex = this.setSelectedPatternNoteIndex.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
+    this.closePatternEditor = this.closePatternEditor.bind(this);
 
     // Keyboard
     this.activateKeyboard = this.activateKeyboard.bind(this);
@@ -910,6 +912,11 @@ class App extends React.Component {
     this.syncScoreToSynthCore();
   };
 
+  closePatternEditor() {
+    this.setKeyboardNotes([]);
+    this.setPatternBeingEdited(undefined);
+  }
+
   updateInstrument(instrumentID, field, value) {
     this.instrumentByID(instrumentID)[field] = value;
     this.forceUpdate();
@@ -926,6 +933,11 @@ class App extends React.Component {
       this.updateInstrument(instrumentID, "filename", file.name);
     });
   };
+
+  closeInstrumentEditor() {
+    this.setKeyboardNotes([]);
+    this.setTrackBeingEdited(undefined);
+  }
 
   activateKeyboard() {
     this.setState({
@@ -1239,9 +1251,9 @@ class App extends React.Component {
                                  trackID={track.id}
                                  trackName={track.name}
                                  setTrackName={this.setTrackName}
-                                 setTrackBeingEdited={this.setTrackBeingEdited}
-                                 setKeyboardNotes={this.setKeyboardNotes}
-                                 updateInstrument={this.updateInstrument} />
+                                 updateInstrument={this.updateInstrument}
+                                 onClose={this.closeInstrumentEditor}
+          />
         </div>
         }
         {view === VIEW_INSTRUMENT_SAMPLER &&
@@ -1250,10 +1262,10 @@ class App extends React.Component {
                                   trackID={track.id}
                                   trackName={track.name}
                                   setTrackName={this.setTrackName}
-                                  setTrackBeingEdited={this.setTrackBeingEdited}
                                   setBufferFromFile={this.setBufferFromFile}
-                                  setKeyboardNotes={this.setKeyboardNotes}
-                                  updateInstrument={this.updateInstrument} />
+                                  updateInstrument={this.updateInstrument}
+                                  onClose={this.closeInstrumentEditor}
+          />
         </div>
         }
         {view === VIEW_PATTERN_EDITOR &&
@@ -1264,11 +1276,11 @@ class App extends React.Component {
                          setPatternName={this.setPatternName}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
-                         setPatternBeingEdited={this.setPatternBeingEdited}
                          setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
                          keyboardActive={this.state.isKeyboardActive}
-                         setKeyboardNotes={this.setKeyboardNotes} />
+                         onClose={this.closePatternEditor}
+          />
         </div>
         }
         {(view === VIEW_PATTERN_EDITOR || view === VIEW_INSTRUMENT_SYNTH || view === VIEW_INSTRUMENT_SAMPLER) &&

@@ -390,13 +390,6 @@ class PatternFooter extends React.PureComponent {
 class PatternEditor extends React.Component {
   constructor(props) {
     super(props);
-
-    this.close = this.close.bind(this);
-  };
-
-  close(e) {
-    this.props.setKeyboardNotes([]);
-    this.props.setPatternBeingEdited(undefined);
   };
 
   render() {
@@ -409,7 +402,7 @@ class PatternEditor extends React.Component {
     }
 
     return <div>
-      <button className="button-link" onClick={this.close}>&larr; Sequencer</button>
+      <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
       <PatternHeader patternID={this.props.pattern.id}
                      patternName={this.props.pattern.name}
                      setPatternName={this.props.setPatternName} />
