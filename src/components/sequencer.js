@@ -695,7 +695,7 @@ class TimelinePatternSidebar extends React.PureComponent {
   };
 
   render() {
-    const backgroundColorStyle = (this.props.isError === true) ? "bg-red" : "bg-gray";
+    const backgroundColorStyle = (this.props.isError === true) ? "bg-red" : "bg-orange";
     const resizeButtonBackgroundColorStyle = ((this.props.isResizeable === true || this.props.isError === true) ? "" : " lightText");
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
