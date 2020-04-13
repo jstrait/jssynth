@@ -729,8 +729,6 @@ class App extends React.Component {
       });
     }
 
-    pattern.image = this.generatePatternImage(pattern);
-
     this.setState({
       patterns: newPatterns,
     }, function() {
@@ -906,13 +904,20 @@ class App extends React.Component {
       }
     }
 
-    pattern.image = this.generatePatternImage(pattern);
-
     this.forceUpdate();
     this.syncScoreToSynthCore();
   };
 
   closePatternEditor() {
+    let newPatternList = this.state.patterns.concat([]);
+    let pattern = this.itemByID(newPatternList, this.state.patternBeingEditedID);
+
+    pattern.image = this.generatePatternImage(pattern);
+
+    this.setState({
+      patterns: newPatternList,
+    });
+
     this.setKeyboardNotes([]);
     this.setPatternBeingEdited(undefined);
   }
