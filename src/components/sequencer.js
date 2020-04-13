@@ -657,7 +657,8 @@ class TimelinePatternSegment extends React.PureComponent {
               left: leftPixel + "px",
               width: widthInPixels + "px",
               backgroundImage: `url(${this.props.image})`,
-              backgroundSize: `${baseWidthInPixels}px ${TRACK_HEIGHT_IN_PIXELS}px`,
+              backgroundSize: `auto ${TRACK_HEIGHT_IN_PIXELS}px`,
+              backgroundRepeat: "no-repeat",
             }}>
         {this.props.isLastSegment === true && this.props.isSelected === true &&
         <TimelinePatternSidebar

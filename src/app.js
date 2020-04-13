@@ -828,8 +828,6 @@ class App extends React.Component {
       }
     }
 
-    pattern.image = this.generatePatternImage(pattern);
-
     this.setState({
       patterns: newPatternList,
     }, function() {
