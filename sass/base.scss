@@ -45,6 +45,7 @@
 
 .t0 { top: 0; }
 .b0 { bottom: 0; }
+.r0 { right: 0; }
 
 .b-all { border: 1px solid $border-color; }
 .bt  { border-top: 1px solid $border-color; }
@@ -113,6 +114,7 @@
 .bg-black { background: $black; }
 .bg-light-orange { background: $light-orange; }
 .red { color: $red; }
+.bg-light-red { background: $light-red; }
 .bg-red { background: $red; }
 .bg-gray { background: $border-color; }
 .bg-light-gray { background: $light-gray; }

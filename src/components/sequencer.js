@@ -632,6 +632,7 @@ class TimelinePatternSegment extends React.PureComponent {
     let widthInPixels = (this.props.stepCount * STEP_WIDTH_IN_PIXELS) - 1;
     let baseWidthInPixels = this.props.baseStepCount * STEP_WIDTH_IN_PIXELS;
     let extraSegmentStyles = "";
+    let overlayBackgroundStyle = " bg-light-gray";
     let extraDividerStyles = "";
 
     if (this.props.isFirstSegment !== true) {
@@ -644,10 +645,12 @@ class TimelinePatternSegment extends React.PureComponent {
 
     if (this.props.isError === true) {
       extraSegmentStyles += " timeline-pattern-error";
+      overlayBackgroundStyle = " bg-light-red";
       extraDividerStyles += " timeline-pattern-divider-error";
     }
     else if (this.props.isSelected === true) {
       extraSegmentStyles += " timeline-pattern-selected";
+      overlayBackgroundStyle = " bg-light-orange";
       extraDividerStyles += " timeline-pattern-divider-selected";
     }
 
@@ -660,6 +663,9 @@ class TimelinePatternSegment extends React.PureComponent {
               backgroundSize: `auto ${TRACK_HEIGHT_IN_PIXELS}px`,
               backgroundRepeat: "no-repeat",
             }}>
+        {this.props.isFirstSegment !== true &&
+        <span className={"block full-height timeline-pattern-overlay" + overlayBackgroundStyle}></span>
+        }
         {this.props.isLastSegment === true && this.props.isSelected === true &&
         <TimelinePatternSidebar
           isError={this.props.isError}
@@ -693,7 +699,7 @@ class TimelinePatternSidebar extends React.PureComponent {
     const resizeButtonBackgroundColorStyle = ((this.props.isResizeable === true || this.props.isError === true) ? "" : " lightText");
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
-    return <span className={"flex flex-column width-1 full-height right " + backgroundColorStyle}>
+    return <span className={"absolute t0 r0 flex flex-column width-1 full-height right " + backgroundColorStyle}>
       <span className="flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
       <span className={"flex-uniform-size h4 center cursor-default" + resizeButtonBackgroundColorStyle} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
     </span>;

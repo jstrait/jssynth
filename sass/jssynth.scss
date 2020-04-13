@@ -338,18 +338,18 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   width: 0;
   margin-top: 5px;
   border-width: 0 0 0 1px;
-  border-color: $black;
-  border-style: dashed;
+  border-color: $light-gray;
+  border-style: solid;
 }
 
 .timeline-pattern-divider-selected {
   background: $light-orange;
-  border-color: $orange;
+  border-color: $light-orange;
 }
 
 .timeline-pattern-divider-error {
   background: $light-red;
-  border-color: $red;
+  border-color: $light-red;
 }
 
 .timeline-pattern-name {
@@ -369,6 +369,10 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .timeline-pattern-name-error {
   background: $light-red;
+}
+
+.timeline-pattern-overlay {
+  opacity: 0.8;
 }
 
 .timeline-pattern-menu-container {
