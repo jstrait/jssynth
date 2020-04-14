@@ -143,7 +143,7 @@ class App extends React.Component {
     this.offlineSongPlayer = SynthCore.SongPlayer();
     this.notePlayer = SynthCore.NotePlayer();
 
-    this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer, function() {});
+    this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer);
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
     this.activeNoteContexts = [];
 

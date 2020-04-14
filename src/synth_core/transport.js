@@ -1,6 +1,6 @@
 "use strict";
 
-export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
+export function Transport(mixer, songPlayer, notePlayer) {
   var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
   var TICK_INTERVAL = 50;         // in milliseconds
   var LOOP = true;
@@ -29,7 +29,6 @@ export function Transport(mixer, songPlayer, notePlayer, stopCallback) {
 
     if (songPlayer.isFinishedPlaying() === true) {
       stop();
-      window.setTimeout(stopCallback, stepInterval * 1000);
     }
   };
 
