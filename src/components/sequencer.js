@@ -422,12 +422,8 @@ class TimelineGrid extends React.Component {
             onMouseLeave={this.onMouseLeave}
             onTouchEnd={this.onTouchEnd}>
         {this.props.isPopupMenuActive === true && this.props.selectedPatternID === undefined &&
-        <span className="absolute bg-light-orange"
-              style={{left: (popupMenuMeasure * STEP_WIDTH_IN_PIXELS) + "px",
-                      top: (this.props.popupMenuTrackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
-                      width: (MEASURE_WIDTH_IN_PIXELS - 1) + "px",
-                      height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px",}}>
-        </span>}
+        <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex} measure={popupMenuMeasure} />
+        }
         {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
                          trackIndex={patternView.trackIndex}
@@ -475,6 +471,25 @@ class TimelineGrid extends React.Component {
       </span>
       <span className="sequencer-body-right-padding border-box bg-lighter-gray"></span>
     </div>;
+  };
+};
+
+class TimelineHighlight extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  };
+
+  render() {
+    return <span
+             className="absolute bg-light-orange"
+             style={{
+                     left: (this.props.measure * STEP_WIDTH_IN_PIXELS) + "px",
+                     top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
+                     width: (MEASURE_WIDTH_IN_PIXELS - 1) + "px",
+                     height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px",
+             }}
+           >
+           </span>
   };
 };
 
