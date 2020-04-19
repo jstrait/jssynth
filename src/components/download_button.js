@@ -10,7 +10,7 @@ export class DownloadButton extends React.PureComponent {
       isPopupVisible: false,
       isDownloadInProgress: false,
       errorMessage: "",
-      fileName: "js-130",
+      fileName: "js-140",
     };
 
     this.togglePopup = this.togglePopup.bind(this);
