@@ -48,6 +48,29 @@ class InstrumentPaneTab extends React.PureComponent {
   };
 };
 
+class ExponentialSlider extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.onChange = this.onChange.bind(this);
+  };
+
+  onChange(e) {
+    let linearPercentage = parseFloat(e.target.value);
+    let exponentialPercentage = linearPercentage ** 2;
+    let newValue = (exponentialPercentage * (this.props.max - this.props.min)) + this.props.min;
+
+    this.props.onChange(newValue);
+  };
+
+  render() {
+    let exponentialPercentage = ((this.props.value - this.props.min) / (this.props.max - this.props.min));
+    let linearPercentage = Math.sqrt(exponentialPercentage);
+
+    return <input type="range" min="0.0" max="1.0" step="0.005" value={linearPercentage} onChange={this.onChange} />;
+  };
+};
+
 
 class SampleInstrumentEditor extends React.Component {
   constructor(props) {
@@ -462,8 +485,8 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "noiseType", newValue);
   };
 
-  setLFOAmplitude(e) {
-    this.props.updateInstrument(this.props.instrument.id, "lfoAmplitude", parseInt(e.target.value, 10));
+  setLFOAmplitude(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "lfoAmplitude", newValue);
   };
 
   setLFOFrequency(e) {
@@ -672,8 +695,8 @@ class SynthInstrumentEditor extends React.Component {
             <h2 className="h3 section-header display-none block-l">Pitch Wobble</h2>
             <span className="control">
               <label className="control-label">Amount:</label>
-              <input type="range" min="0" max="1200" step="1" value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
-              <span className="control-value">{this.props.instrument.lfoAmplitude}c</span>
+              <ExponentialSlider min={0} max={1200} value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
+              <span className="control-value">{this.props.instrument.lfoAmplitude.toFixed(0)}c</span>
             </span>
             <span className="control">
               <label className="control-label">Rate:</label>
