@@ -331,7 +331,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
           </span>
         </div>
-        <div className={"pl1 br border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+        <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
           <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
           <span className="control">
             <label className="control-label">Attack Speed:</label>
