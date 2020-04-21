@@ -331,46 +331,48 @@ class SampleInstrumentEditor extends React.Component {
             </span>
           </span>
         </div>
-        <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
-          <span className="control">
-            <label className="control-label">Attack Speed:</label>
-            <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
-            <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000}ms</span>
-          </span>
-          <span className="control">
-            <label className="control-label">Decay Speed:</label>
-            <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
-            <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000}ms</span>
-          </span>
-          <span className="control">
-            <label className="control-label">Sustain Volume:</label>
-            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
-            <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
-          </span>
-          <span className="control">
-            <label className="control-label">Release Speed:</label>
-            <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
-            <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000}ms</span>
-          </span>
-        </div>
-        <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Effects</h2>
-          <span className="control">
-            <label className="control-label">Delay Time:</label>
-            <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
-            <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
-          </span>
-          <span className="control">
-            <label className="control-label">Delay Feedback:</label>
-            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
-            <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
-          </span>
-          <span className="control">
-            <label className="control-label">Reverb Amount:</label>
-            <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
-            <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
-          </span>
+        <div>
+            <div className={"pl1 border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
+            <span className="control">
+              <label className="control-label">Attack Speed:</label>
+              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
+              <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000}ms</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Decay Speed:</label>
+              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
+              <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000}ms</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Sustain Volume:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
+              <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Release Speed:</label>
+              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
+              <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000}ms</span>
+            </span>
+          </div>
+          <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
+            <h2 className="h3 section-header display-none block-l">Effects</h2>
+            <span className="control">
+              <label className="control-label">Delay Time:</label>
+              <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
+              <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Delay Feedback:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
+              <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
+            </span>
+            <span className="control">
+              <label className="control-label">Reverb Amount:</label>
+              <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
+              <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>;
