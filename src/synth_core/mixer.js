@@ -44,7 +44,7 @@ function MixerChannel(audioContext, audioDestination, initialAmplitude, initialM
   };
 
   var setReverb = function(newReverbWetPercentage) {
-    reverbWetGain.gain.value = newReverbWetPercentage;
+    reverbWetGain.gain.value = newReverbWetPercentage * 3.0;
   };
 
   var input = function() {
