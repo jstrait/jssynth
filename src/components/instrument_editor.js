@@ -295,22 +295,22 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
-              <span className="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.filterEnvelopeSustainPercentage)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
           <span>
@@ -337,22 +337,22 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
-              <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
-              <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Sustain Volume:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
-              <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.envelopeSustainPercentage)}</span>
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
-              <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
           <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
@@ -360,17 +360,17 @@ class SampleInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Delay Time:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
-              <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.delayTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Delay Feedback:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
-              <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.delayFeedback)}</span>
             </span>
             <span className="control">
               <label className="control-label">Reverb Amount:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
-              <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.reverbWetPercentage)}</span>
             </span>
           </div>
         </div>
@@ -600,7 +600,7 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator1Amplitude} onChange={this.setOscillator1Amplitude} />
-            <span className="control-value">{(this.props.instrument.oscillator1Amplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{formatPercentage(this.props.instrument.oscillator1Amplitude)}</span>
           </span>
           <span className="block lightText">Secondary:</span>
           <span className="control">
@@ -619,13 +619,13 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.oscillator2Amplitude} onChange={this.setOscillator2Amplitude} />
-            <span className="control-value">{(this.props.instrument.oscillator2Amplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{formatPercentage(this.props.instrument.oscillator2Amplitude)}</span>
           </span>
           <span className="block lightText">Noise:</span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
             <input type="range" min="0" max="1" step="0.01" value={this.props.instrument.noiseAmplitude} onChange={this.setNoiseAmplitude} />
-            <span className="control-value">{(this.props.instrument.noiseAmplitude * 100).toFixed(0)}%</span>
+            <span className="control-value">{formatPercentage(this.props.instrument.noiseAmplitude)}</span>
           </span>
           <span className="control">
             <label className="control-label indented">Type:</label>
@@ -655,22 +655,22 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeAttackTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeDecayTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Sustain:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.filterEnvelopeSustainPercentage} onChange={this.setFilterEnvelopeSustainPercentage} />
-              <span className="control-value">{(this.props.instrument.filterEnvelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.filterEnvelopeSustainPercentage)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
-              <span className="control-value">{this.props.instrument.filterEnvelopeReleaseTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
           <span>
@@ -716,22 +716,22 @@ class SynthInstrumentEditor extends React.Component {
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
-              <span className="control-value">{this.props.instrument.envelopeAttackTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
-              <span className="control-value">{this.props.instrument.envelopeDecayTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Sustain Volume:</label>
               <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.envelopeSustainPercentage} onChange={this.setEnvelopeSustainPercentage} />
-              <span className="control-value">{(this.props.instrument.envelopeSustainPercentage * 100).toFixed(0)}%</span>
+              <span className="control-value">{formatPercentage(this.props.instrument.envelopeSustainPercentage)}</span>
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
               <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
-              <span className="control-value">{this.props.instrument.envelopeReleaseTime * 1000}ms</span>
+              <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
         </div>
@@ -741,22 +741,30 @@ class SynthInstrumentEditor extends React.Component {
           <span className="control">
             <label className="control-label">Delay Time:</label>
             <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
-            <span className="control-value">{this.props.instrument.delayTime * 1000} ms</span>
+            <span className="control-value">{formatTime(this.props.instrument.delayTime)}</span>
           </span>
           <span className="control">
             <label className="control-label">Delay Feedback:</label>
             <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.delayFeedback} onChange={this.setDelayFeedback} />
-            <span className="control-value">{(this.props.instrument.delayFeedback * 100).toFixed(0)}%</span>
+            <span className="control-value">{formatPercentage(this.props.instrument.delayFeedback)}</span>
           </span>
           <span className="control">
             <label className="control-label">Reverb Amount:</label>
             <input type="range" min="0.0" max="1.0" step="0.01" value={this.props.instrument.reverbWetPercentage} onChange={this.setReverbWetPercentage} />
-            <span className="control-value">{(this.props.instrument.reverbWetPercentage * 100).toFixed(0)}%</span>
+            <span className="control-value">{formatPercentage(this.props.instrument.reverbWetPercentage)}</span>
           </span>
         </div>
       </div>
     </div>;
   };
+};
+
+function formatPercentage(percentage) {
+  return (percentage * 100).toFixed(0) + "%";
+};
+
+function formatTime(seconds) {
+  return (seconds * 1000) + "ms";
 };
 
 export { SynthInstrumentEditor, SampleInstrumentEditor };
