@@ -764,7 +764,12 @@ function formatPercentage(percentage) {
 };
 
 function formatTime(seconds) {
-  return (seconds * 1000) + "ms";
+  if (seconds >= 1.0) {
+    return seconds.toFixed(2) + "sec";
+  }
+  else {
+    return (seconds * 1000) + "ms";
+  }
 };
 
 export { SynthInstrumentEditor, SampleInstrumentEditor };
