@@ -1,9 +1,8 @@
 "use strict";
 
-export function InstrumentNote(note, amplitude, channelID) {
+export function InstrumentNote(note, channelID) {
   return {
     note: function() { return note; },
-    amplitude: function() { return amplitude; },
     channelID: function() { return channelID; },
   };
 };

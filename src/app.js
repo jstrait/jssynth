@@ -999,7 +999,7 @@ class App extends React.Component {
           this.setNoteValue(notes[i], this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
         }
 
-        note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1);
+        note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1.0, 1);
         noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
                                                         this.mixer.audioContext(),
                                                         this.mixer.destination(currentTrack.id),

@@ -4,96 +4,117 @@ import * as SynthCore from "./../src/synth_core";
 
 describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
-    var note = SynthCore.Note("A", 3, 1);
+    var note = SynthCore.Note("A", 3, 0.75, 1);
     expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(3);
+    expect(note.amplitude()).toEqual(0.75);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(220.0);
     expect(note.midiNote()).toEqual(57);
   });
 
-  it("should raise an error if the note name is not valid", function() {
-    expect(function() { SynthCore.Note("a", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("V", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A!", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("@", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A@@@", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A###", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A@#", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note(" ", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("", 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note(0, 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note(undefined, 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note(null, 3, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note(true, 3, 1) }).toThrowError(TypeError);
+  it("should raise an error if the note has invalid values", function() {
+    // Name
+    expect(function() { SynthCore.Note("a", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("V", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A!", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("@", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A@@@", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A###", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A@#", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(" ", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("", 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(0, 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(undefined, 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(null, 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note(true, 3, 1.0, 1) }).toThrowError(TypeError);
 
-    expect(function() { SynthCore.Note("A", "", 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", "Q", 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", "3", 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", -1, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 8, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 2.1, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", NaN, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", undefined, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", null, 1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", true, 1) }).toThrowError(TypeError);
+    // Octave
+    expect(function() { SynthCore.Note("A", "", 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", "Q", 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", "3", 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", -1, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 8, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 2.1, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", NaN, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", undefined, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", null, 1.0, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", true, 1.0, 1) }).toThrowError(TypeError);
 
-    expect(function() { SynthCore.Note("A", 3, "") }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, "1") }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, "A") }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, -1) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, 1.2) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, NaN) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, undefined) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, null) }).toThrowError(TypeError);
-    expect(function() { SynthCore.Note("A", 3, true) }).toThrowError(TypeError);
+    // Amplitude
+    expect(function() { SynthCore.Note("A", 3, "", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, "1.0", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, "A", 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, -1, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.2, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, NaN, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, undefined, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, null, 1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, true, 1) }).toThrowError(TypeError);
+
+    // Step countt
+    expect(function() { SynthCore.Note("A", 3, 1.0, "") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, "1") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, "A") }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, -1) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, 1.2) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, NaN) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, undefined) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, null) }).toThrowError(TypeError);
+    expect(function() { SynthCore.Note("A", 3, 1.0, true) }).toThrowError(TypeError);
   });
 
   it("should handle enharmonic equivalents properly", function() {
-    var note1 = SynthCore.Note("D#", 3, 1);
-    var note2 = SynthCore.Note("E@", 3, 1);
-    var note3 = SynthCore.Note("F@@", 3, 1);
+    var note1 = SynthCore.Note("D#", 3, 1.0, 1);
+    var note2 = SynthCore.Note("E@", 3, 1.0, 1);
+    var note3 = SynthCore.Note("F@@", 3, 1.0, 1);
 
     expect(note1.name()).toEqual("D#");
     expect(note1.octave()).toEqual(3);
+    expect(note1.amplitude()).toEqual(1.0);
     expect(note1.stepCount()).toEqual(1);
     expect(note1.frequency()).toEqual(155.56349186104046);
     expect(note1.midiNote()).toEqual(51);
 
     expect(note2.name()).toEqual("E@");
     expect(note2.octave()).toEqual(3);
+    expect(note2.amplitude()).toEqual(1.0);
     expect(note2.stepCount()).toEqual(1);
     expect(note2.frequency()).toEqual(155.56349186104046);
     expect(note2.midiNote()).toEqual(51);
 
     expect(note3.name()).toEqual("F@@");
     expect(note3.octave()).toEqual(3);
+    expect(note3.amplitude()).toEqual(1.0);
     expect(note3.stepCount()).toEqual(1);
     expect(note3.frequency()).toEqual(155.56349186104046);
     expect(note3.midiNote()).toEqual(51);
   });
 
   it("should handle notes at start/end of valid range properly", function() {
-    var note = SynthCore.Note("C", 0, 1);
+    var note = SynthCore.Note("C", 0, 1.0, 1);
 
     expect(note.name()).toEqual("C");
     expect(note.octave()).toEqual(0);
+    expect(note.amplitude()).toEqual(1.0);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(16.351597831287414);
     expect(note.midiNote()).toEqual(12);
 
-    note = SynthCore.Note("A", 0, 1);
+    note = SynthCore.Note("A", 0, 1.0, 1);
 
     expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(0);
+    expect(note.amplitude()).toEqual(1.0);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(27.5);
     expect(note.midiNote()).toEqual(21);
 
-    note = SynthCore.Note("B", 7, 1);
+    note = SynthCore.Note("B", 7, 1.0, 1);
 
     expect(note.name()).toEqual("B");
     expect(note.octave()).toEqual(7);
+    expect(note.amplitude()).toEqual(1.0);
     expect(note.stepCount()).toEqual(1);
     expect(note.frequency()).toEqual(3951.066410048993);
     expect(note.midiNote()).toEqual(107);
@@ -111,16 +132,19 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].amplitude()).toEqual(1.0);
     expect(parsedSequence[0].stepCount()).toEqual(1);
 
     expect(parsedSequence[1].name()).toEqual("B@");
     expect(parsedSequence[1].octave()).toEqual(2);
+    expect(parsedSequence[1].amplitude()).toEqual(1.0);
     expect(parsedSequence[1].stepCount()).toEqual(1);
 
     expect(parsedSequence[2]).toBe(undefined);
 
     expect(parsedSequence[3].name()).toEqual("C#");
     expect(parsedSequence[3].octave()).toEqual(5);
+    expect(parsedSequence[3].amplitude()).toEqual(1.0);
     expect(parsedSequence[3].stepCount()).toEqual(1);
   });
 
@@ -134,6 +158,7 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].amplitude()).toEqual(1.0);
     expect(parsedSequence[0].stepCount()).toEqual(4);
 
     expect(parsedSequence[1]).toBe(undefined);
@@ -142,16 +167,19 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[4].name()).toEqual("C");
     expect(parsedSequence[4].octave()).toEqual(2);
+    expect(parsedSequence[4].amplitude()).toEqual(1.0);
     expect(parsedSequence[4].stepCount()).toEqual(2);
 
     expect(parsedSequence[5]).toBe(undefined);
 
     expect(parsedSequence[6].name()).toEqual("D");
     expect(parsedSequence[6].octave()).toEqual(4);
+    expect(parsedSequence[6].amplitude()).toEqual(1.0);
     expect(parsedSequence[6].stepCount()).toEqual(1);
 
     expect(parsedSequence[7].name()).toEqual("G");
     expect(parsedSequence[7].octave()).toEqual(3);
+    expect(parsedSequence[7].amplitude()).toEqual(1.0);
     expect(parsedSequence[7].stepCount()).toEqual(3);
   });
 
@@ -174,6 +202,7 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[8].name()).toEqual("C");
     expect(parsedSequence[8].octave()).toBe(2);
+    expect(parsedSequence[8].amplitude()).toEqual(1.0);
     expect(parsedSequence[8].stepCount()).toEqual(1);
   });
 
@@ -187,6 +216,7 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].amplitude()).toEqual(1.0);
     expect(parsedSequence[0].stepCount()).toEqual(4);
   });
 
@@ -200,6 +230,7 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[0].name()).toEqual("A");
     expect(parsedSequence[0].octave()).toEqual(4);
+    expect(parsedSequence[0].amplitude()).toEqual(1.0);
     expect(parsedSequence[0].stepCount()).toEqual(2);
 
     expect(parsedSequence[1]).toBe(undefined);
@@ -209,6 +240,7 @@ describe("SynthCore.SequenceParser", function() {
 
     expect(parsedSequence[5].name()).toEqual("C");
     expect(parsedSequence[5].octave()).toEqual(2);
+    expect(parsedSequence[5].amplitude()).toEqual(1.0);
     expect(parsedSequence[5].stepCount()).toEqual(1);
   });
 

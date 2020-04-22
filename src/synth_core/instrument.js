@@ -100,7 +100,7 @@ var BaseInstrument = function(config) {
 
 
 function SampleInstrument(config) {
-  var BASE_FREQUENCY = Note(config.rootNoteName, config.rootNoteOctave, 1).frequency();
+  var BASE_FREQUENCY = Note(config.rootNoteName, config.rootNoteOctave, 1.0, 1).frequency();
   var sampleInstrument = BaseInstrument(config);
 
   var buildBufferSourceNode = function(audioContext, target, note) {

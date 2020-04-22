@@ -25,7 +25,7 @@ export var SequenceParser = {
         octave = parseInt(noteString.slice(-1), 10);
 
         try {
-          sequence[i] = Note(noteName, octave, noteDuration);
+          sequence[i] = Note(noteName, octave, 1.0, noteDuration);
         }
         catch (e) {
           // If the note is invalid, we want to skip it without causing
