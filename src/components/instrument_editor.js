@@ -486,6 +486,7 @@ class SynthInstrumentEditor extends React.Component {
       {label: "Pink", value: "pink"},
     ];
 
+    this.OSCILLATOR_DETUNE_STOPS = [[0.0, -700], [0.225, -100], [0.325, -40], [0.5, 0], [0.675, 40], [0.775, 100], [1.0, 700]];
     this.ENVELOPE_SPEED_STOPS = [[0.0, 0.0], [0.5, 1.0], [1.0, 5.0]];
 
     this.setSelectedTab = this.setSelectedTab.bind(this);
@@ -551,8 +552,8 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "oscillator2Octave", newValue);
   };
 
-  setOscillator2Detune(e) {
-    this.props.updateInstrument(this.props.instrument.id, "oscillator2Detune", parseInt(e.target.value, 10));
+  setOscillator2Detune(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "oscillator2Detune", newValue);
   };
 
   setOscillator2Amplitude(e) {
@@ -693,8 +694,8 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label indented">Detune:</label>
-            <input type="range" min="-700" max="700" step="1" value={this.props.instrument.oscillator2Detune} onChange={this.setOscillator2Detune} />
-            <span className="control-value">{this.props.instrument.oscillator2Detune}c</span>
+            <MultiLinearSlider value={this.props.instrument.oscillator2Detune} stops={this.OSCILLATOR_DETUNE_STOPS} onChange={this.setOscillator2Detune} />
+            <span className="control-value">{this.props.instrument.oscillator2Detune.toFixed(0)}c</span>
           </span>
           <span className="control">
             <label className="control-label indented">Volume:</label>
