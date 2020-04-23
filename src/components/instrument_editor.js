@@ -71,6 +71,82 @@ class ExponentialSlider extends React.PureComponent {
   };
 };
 
+class MultiLinearSlider extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.valueToPercentage = this.valueToPercentage.bind(this);
+    this.percentageToValue = this.percentageToValue.bind(this);
+
+    this.onChange = this.onChange.bind(this);
+  };
+
+  lerp(percentage, min, max) {
+   return ((1.0 - percentage) * min) + (percentage * max);
+  };
+
+  valueToPercentage(value) {
+    let lowerStopPercentage;
+    let upperStopPercentage;
+    let lowerStopValue;
+    let upperStopValue;
+    let i = 0;
+
+    while (i < this.props.stops.length - 1) {
+      upperStopValue = this.props.stops[i + 1][1];
+
+      if (this.props.value <= upperStopValue) {
+        lowerStopPercentage = this.props.stops[i][0];
+        upperStopPercentage = this.props.stops[i + 1][0];
+        lowerStopValue = this.props.stops[i][1];
+
+        return this.lerp((this.props.value - lowerStopValue) / (upperStopValue - lowerStopValue), lowerStopPercentage, upperStopPercentage);
+      }
+
+      i++;
+    }
+
+    return this.props.stops[this.props.stops.length - 1][0];
+  };
+
+  percentageToValue(percentage) {
+    let lowerStopPercentage;
+    let upperStopPercentage;
+    let lowerStopValue;
+    let upperStopValue;
+    let i = 0;
+
+    while (i < this.props.stops.length - 1) {
+      upperStopPercentage = this.props.stops[i + 1][0];
+
+      if (percentage <= upperStopPercentage) {
+        lowerStopPercentage = this.props.stops[i][0];
+        lowerStopValue = this.props.stops[i][1];
+        upperStopValue = this.props.stops[i + 1][1];
+
+        return this.lerp((percentage - lowerStopPercentage) / (upperStopPercentage - lowerStopPercentage), lowerStopValue, upperStopValue);
+      }
+
+      i++;
+    }
+
+    return this.props.stops[this.props.stops.length - 1][1];
+  };
+
+  onChange(e) {
+    let sliderPercentage = parseFloat(e.target.value);
+    let newValue = this.percentageToValue(sliderPercentage);
+
+    this.props.onChange(newValue);
+  };
+
+  render() {
+    let sliderPercentage = this.valueToPercentage(this.props.value);
+
+    return <input type="range" min="0.0" max="1.0" step="0.005" value={sliderPercentage} onChange={this.onChange} />;
+  };
+};
+
 
 class SampleInstrumentEditor extends React.Component {
   constructor(props) {
@@ -91,6 +167,8 @@ class SampleInstrumentEditor extends React.Component {
       {label: "Saw", value: "sawtooth"},
       {label: "Triangle", value: "triangle"},
     ];
+
+    this.ENVELOPE_SPEED_STOPS = [[0.0, 0.0], [0.5, 1.0], [1.0, 5.0]];
 
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.showFileChooser = this.showFileChooser.bind(this);
@@ -176,36 +254,36 @@ class SampleInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeAttackTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", parseFloat(e.target.value));
+  setFilterEnvelopeAttackTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", newValue);
   };
 
-  setFilterEnvelopeDecayTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", parseFloat(e.target.value));
+  setFilterEnvelopeDecayTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", newValue);
   };
 
   setFilterEnvelopeSustainPercentage(e) {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeReleaseTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", parseFloat(e.target.value));
+  setFilterEnvelopeReleaseTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", newValue);
   };
 
-  setEnvelopeAttackTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", parseFloat(e.target.value));
+  setEnvelopeAttackTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", newValue);
   };
 
-  setEnvelopeDecayTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", parseFloat(e.target.value));
+  setEnvelopeDecayTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", newValue);
   };
 
   setEnvelopeSustainPercentage(e) {
     this.props.updateInstrument(this.props.instrument.id, "envelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setEnvelopeReleaseTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
+  setEnvelopeReleaseTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", newValue);
   };
 
   setDelayTime(e) {
@@ -294,12 +372,12 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -309,7 +387,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
@@ -336,12 +414,12 @@ class SampleInstrumentEditor extends React.Component {
             <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -351,7 +429,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
@@ -407,6 +485,8 @@ class SynthInstrumentEditor extends React.Component {
       {label: "White", value: "white"},
       {label: "Pink", value: "pink"},
     ];
+
+    this.ENVELOPE_SPEED_STOPS = [[0.0, 0.0], [0.5, 1.0], [1.0, 5.0]];
 
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setTrackName = this.setTrackName.bind(this);
@@ -527,36 +607,36 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAmount", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeAttackTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", parseFloat(e.target.value));
+  setFilterEnvelopeAttackTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeAttackTime", newValue);
   };
 
-  setFilterEnvelopeDecayTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", parseFloat(e.target.value));
+  setFilterEnvelopeDecayTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeDecayTime", newValue);
   };
 
   setFilterEnvelopeSustainPercentage(e) {
     this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setFilterEnvelopeReleaseTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", parseFloat(e.target.value));
+  setFilterEnvelopeReleaseTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "filterEnvelopeReleaseTime", newValue);
   };
 
-  setEnvelopeAttackTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", parseFloat(e.target.value));
+  setEnvelopeAttackTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeAttackTime", newValue);
   };
 
-  setEnvelopeDecayTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", parseFloat(e.target.value));
+  setEnvelopeDecayTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeDecayTime", newValue);
   };
 
   setEnvelopeSustainPercentage(e) {
     this.props.updateInstrument(this.props.instrument.id, "envelopeSustainPercentage", parseFloat(e.target.value));
   };
 
-  setEnvelopeReleaseTime(e) {
-    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", parseFloat(e.target.value));
+  setEnvelopeReleaseTime(newValue) {
+    this.props.updateInstrument(this.props.instrument.id, "envelopeReleaseTime", newValue);
   };
 
   setDelayTime(e) {
@@ -654,12 +734,12 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeAttackTime} onChange={this.setFilterEnvelopeAttackTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeDecayTime} onChange={this.setFilterEnvelopeDecayTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -669,7 +749,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.filterEnvelopeReleaseTime} onChange={this.setFilterEnvelopeReleaseTime} />
+              <MultiLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
@@ -715,12 +795,12 @@ class SynthInstrumentEditor extends React.Component {
             <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeAttackTime} onChange={this.setEnvelopeAttackTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeDecayTime} onChange={this.setEnvelopeDecayTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -730,7 +810,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
-              <input type="range" min="0.0" max="5.0" step="0.01" value={this.props.instrument.envelopeReleaseTime} onChange={this.setEnvelopeReleaseTime} />
+              <MultiLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
