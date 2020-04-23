@@ -2,6 +2,8 @@
 
 import React from "react";
 
+const NOTE_NAMES = ["A", "B", "C", "D", "E", "F", "G"];
+
 class Key extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -10,7 +12,7 @@ class Key extends React.PureComponent {
   render() {
     let noteString = this.props.noteName + this.props.octave;
     let cssClass = this.props.noteName.toLowerCase();
-    let isWhiteKey = ["A", "B", "C", "D", "E", "F", "G"].includes(this.props.noteName);
+    let isWhiteKey = NOTE_NAMES.includes(this.props.noteName);
     let keyColorClass = (isWhiteKey) ? "keyboard-white-key" : "keyboard-black-key";
     let pressedClass = this.props.isActive ? "pressed" : "";
 
