@@ -25,7 +25,7 @@ class Key extends React.PureComponent {
   };
 };
 
-class Keyboard extends React.Component {
+class Keyboard extends React.PureComponent {
   constructor(props) {
     super(props);
 
