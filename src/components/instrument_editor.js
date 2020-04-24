@@ -48,29 +48,6 @@ class InstrumentPaneTab extends React.PureComponent {
   };
 };
 
-class ExponentialSlider extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-  };
-
-  onChange(e) {
-    let linearPercentage = parseFloat(e.target.value);
-    let exponentialPercentage = linearPercentage ** 2;
-    let newValue = (exponentialPercentage * (this.props.max - this.props.min)) + this.props.min;
-
-    this.props.onChange(newValue);
-  };
-
-  render() {
-    let exponentialPercentage = ((this.props.value - this.props.min) / (this.props.max - this.props.min));
-    let linearPercentage = Math.sqrt(exponentialPercentage);
-
-    return <input type="range" min="0.0" max="1.0" step="0.005" value={linearPercentage} onChange={this.onChange} />;
-  };
-};
-
 class MultiLinearSlider extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -488,6 +465,7 @@ class SynthInstrumentEditor extends React.Component {
 
     this.OSCILLATOR_DETUNE_STOPS = [[0.0, -700], [0.225, -100], [0.325, -40], [0.5, 0], [0.675, 40], [0.775, 100], [1.0, 700]];
     this.ENVELOPE_SPEED_STOPS = [[0.0, 0.0], [0.5, 1.0], [1.0, 5.0]];
+    this.PITCH_LFO_STOPS = [[0.0, 0], [0.75, 100], [1.0, 1200]];
 
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setTrackName = this.setTrackName.bind(this);
@@ -778,7 +756,7 @@ class SynthInstrumentEditor extends React.Component {
             <h2 className="h3 section-header display-none block-l">Pitch Wobble</h2>
             <span className="control">
               <label className="control-label">Amount:</label>
-              <ExponentialSlider min={0} max={1200} value={this.props.instrument.lfoAmplitude} onChange={this.setLFOAmplitude} />
+              <MultiLinearSlider value={this.props.instrument.lfoAmplitude} stops={this.PITCH_LFO_STOPS} onChange={this.setLFOAmplitude} />
               <span className="control-value">{this.props.instrument.lfoAmplitude.toFixed(0)}c</span>
             </span>
             <span className="control">
