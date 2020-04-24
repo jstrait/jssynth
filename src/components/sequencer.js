@@ -234,7 +234,6 @@ class TimelineGrid extends React.Component {
 
     if (stepIndex >= 0 && stepIndex < (this.props.measureCount * STEPS_PER_MEASURE)) {
       this.props.setPopupMenuPosition(stepIndex, trackIndex);
-      this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
     }
     else {
       this.props.setIsPopupMenuActive(false);
@@ -309,6 +308,7 @@ class TimelineGrid extends React.Component {
 
   onMouseDown(e) {
     this.setPopupMenuPosition(e.clientX, e.clientY);
+    this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
   };
 
   onMouseDrag(e) {
