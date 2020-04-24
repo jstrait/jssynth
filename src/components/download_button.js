@@ -78,7 +78,10 @@ export class DownloadButton extends React.PureComponent {
           <span>.wav</span>
         </span>
         <span className="block red">{this.state.errorMessage}</span>
-        <button className="button-full button-hollow mt1 right" disabled={this.state.isDownloadInProgress} onClick={this.beginDownload}>Download</button>
+        <div className="mt1 flex flex-justify-end flex-align-center">
+          {this.state.isDownloadInProgress && <span className="spinner-icon mr-half" style={{}}></span>}
+          <button className="button-full button-hollow" disabled={this.state.isDownloadInProgress} onClick={this.beginDownload}>Download</button>
+        </div>
       </span>;
     }
     else {
