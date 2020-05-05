@@ -426,7 +426,6 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   width: 2.0rem;
   height: 1.0rem;
   margin-top: -2px;
-  pointer-events: auto;
 }
 
 .timeline-pattern-menu-arrow-outline {
@@ -436,6 +435,8 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   border-width: 1.0rem 1.0rem 0 1.0rem;
   border-style: solid;
   border-color: $border-color transparent transparent transparent;
+  pointer-events: auto;
+  clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
 }
 
 .timeline-pattern-menu-arrow-fill {
