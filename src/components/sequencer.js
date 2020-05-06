@@ -830,7 +830,7 @@ class PopupMenu extends React.Component {
     containerLeft = Math.min(containerLeft, window.innerWidth - containerWidth);
 
     this.containerEl.style.left = `${containerLeft}px`;
-    this.arrowContainerEl.style.left = `calc(${stepAlignedTargetX - this.containerEl.offsetLeft}px - 1.0rem)`;
+    this.arrowContainerEl.style.left = `calc(${Math.min(stepAlignedTargetX - this.containerEl.offsetLeft, containerWidth - this.arrowContainerEl.getBoundingClientRect().width + 8)}px - 1.0rem)`;
   };
 
   render() {
