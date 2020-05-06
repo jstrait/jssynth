@@ -2,23 +2,8 @@
 
 var NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 var NOTES_IN_OCTAVE = 12;
-var MIDDLE_OCTAVE = 4;
+var MIDDLE_A_MIDI_NOTE_NUMBER = 69;
 var MIDDLE_A_FREQUENCY = 440.0;
-
-var NOTE_RATIOS = {
-  "A"  : 1.0,
-  "A#" : Math.pow(2,  1 / 12),
-  "B"  : Math.pow(2,  2 / 12),
-  "C"  : Math.pow(2,  3 / 12),
-  "C#" : Math.pow(2,  4 / 12),
-  "D"  : Math.pow(2,  5 / 12),
-  "D#" : Math.pow(2,  6 / 12),
-  "E"  : Math.pow(2,  7 / 12),
-  "F"  : Math.pow(2,  8 / 12),
-  "F#" : Math.pow(2,  9 / 12),
-  "G"  : Math.pow(2, 10 / 12),
-  "G#" : Math.pow(2, 11 / 12),
-};
 
 var ENHARMONIC_EQUIVALENTS = {
   "A"   : "A",
@@ -71,27 +56,13 @@ var ENHARMONIC_EQUIVALENTS = {
 
 
 export function Note(newNoteName, newOctave, newAmplitude, newStepCount) {
-  var calculateFrequency = function(normalizedNoteName, octave) {
-    var octaveExponent = octave - MIDDLE_OCTAVE;
-    var octaveMultiplier;
-
-    // Compensate for octaves starting at C, but base frequency (440Hz) being an A
-    if (normalizedNoteName !== "A" && normalizedNoteName !== "A#" && normalizedNoteName !== "B") {
-      octaveExponent -= 1;
-    }
-
-    octaveMultiplier = Math.pow(2.0, octaveExponent);
-
-    return NOTE_RATIOS[normalizedNoteName] * MIDDLE_A_FREQUENCY * octaveMultiplier;
-  };
-
   var noteName = newNoteName;
   var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
   var octave = newOctave;
   var amplitude = newAmplitude;
   var stepCount = newStepCount;
-  var frequency;
   var midiNote;
+  var frequency;
 
   if (normalizedNoteName === undefined) {
     throw TypeError("Invalid note name: \"" + noteName + "\"");
@@ -106,9 +77,8 @@ export function Note(newNoteName, newOctave, newAmplitude, newStepCount) {
     throw TypeError("Invalid step count: \"" + stepCount + "\"");
   }
 
-  frequency = calculateFrequency(normalizedNoteName, octave);
   midiNote = 12 + (octave * NOTES_IN_OCTAVE) + NOTE_NAMES.indexOf(normalizedNoteName);
-
+  frequency = (2 ** ((midiNote - MIDDLE_A_MIDI_NOTE_NUMBER) / 12)) * MIDDLE_A_FREQUENCY;
 
   return {
     name: function() { return noteName; },

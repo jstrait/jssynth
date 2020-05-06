@@ -116,7 +116,7 @@ describe("SynthCore.Note", function() {
     expect(note.octave()).toEqual(7);
     expect(note.amplitude()).toEqual(1.0);
     expect(note.stepCount()).toEqual(1);
-    expect(note.frequency()).toEqual(3951.066410048993);
+    expect(note.frequency()).toEqual(3951.066410048992);
     expect(note.midiNote()).toEqual(107);
   });
 });
