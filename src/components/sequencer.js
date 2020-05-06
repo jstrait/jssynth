@@ -825,18 +825,20 @@ class PopupMenu extends React.Component {
     let containerWidth = this.containerEl.getBoundingClientRect().width;
     let containerLeft = stepAlignedTargetX - (containerWidth / 2);
 
+    let arrowContainerBoundingRect = this.arrowContainerEl.getBoundingClientRect();
+
     // Clamp position to window's left/right edges
     containerLeft = Math.max(containerLeft, 0);
     containerLeft = Math.min(containerLeft, window.innerWidth - containerWidth);
 
     this.containerEl.style.left = `${containerLeft}px`;
-    this.arrowContainerEl.style.left = `calc(${Math.min(stepAlignedTargetX - this.containerEl.offsetLeft, containerWidth - this.arrowContainerEl.getBoundingClientRect().width + 8)}px - 1.0rem)`;
+    this.containerEl.style.top = `${this.props.targetY - arrowContainerBoundingRect.height}px`;
+    this.arrowContainerEl.style.left = `calc(${Math.min(stepAlignedTargetX - this.containerEl.offsetLeft, containerWidth - arrowContainerBoundingRect.width + 8)}px - 1.0rem)`;
   };
 
   render() {
     return <span ref={el => {this.containerEl = el;}}
             className="absolute pointer-events-none"
-            style={{top: `calc(${this.props.targetY}px - 1.0rem)`}}
             onMouseDown={this.props.onMouseDown}>
       <span className="timeline-pattern-menu">{this.props.content}</span>
       <span ref={el => {this.arrowContainerEl = el;}} className="timeline-pattern-menu-arrow-container">
