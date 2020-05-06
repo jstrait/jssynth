@@ -128,19 +128,19 @@ button.button-error:disabled {
 }
 
 .button-tiny {
-  border-radius: 6px;
+  border-radius: 0.25rem;
   border-width: 2px;
   padding: 0.0rem 0.5rem;
 }
 
 .button-small {
-  border-radius: 10px;
+  border-radius: 0.5rem;
   border-width: 2px;
   padding: 0.25rem 0.5rem;
 }
 
 .button-full {
-  border-radius: 10px;
+  border-radius: 0.75rem;
   border-width: 3px;
   padding: $size-half;
 }
@@ -162,12 +162,12 @@ button.button-error:disabled {
 }
 
 .button-tab-list:first-child {
-  border-radius: 10px 0 0 10px;
+  border-radius: 0.75rem 0 0 0.75rem;
   border-left-width: 3px;
 }
 
 .button-tab-list:last-child {
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 0.75rem 0.75rem 0;
   border-right-width: 3px;
 }
 
