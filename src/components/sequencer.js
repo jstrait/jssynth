@@ -835,7 +835,7 @@ class PopupMenu extends React.Component {
 
   render() {
     return <span ref={el => {this.containerEl = el;}}
-            className="timeline-pattern-menu-container"
+            className="absolute pointer-events-none"
             style={{top: `calc(${this.props.targetY}px - 1.0rem)`}}
             onMouseDown={this.props.onMouseDown}>
       <span className="timeline-pattern-menu">{this.props.content}</span>

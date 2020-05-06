@@ -94,6 +94,8 @@
 .cursor-default { cursor: default; }
 .pointer { cursor: pointer; }
 
+.pointer-events-none { pointer-events: none; }
+
 .no-user-select {
   -moz-user-select: none;
   -webkit-user-select: none;

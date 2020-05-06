@@ -404,12 +404,6 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   background: $dark-orange;
 }
 
-.timeline-pattern-menu-container {
-  position: absolute;
-  height: $size-3;
-  pointer-events: none;
-}
-
 .timeline-pattern-menu {
   display: block;
   border: 2px solid $border-color;
