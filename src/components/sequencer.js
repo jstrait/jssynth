@@ -515,9 +515,12 @@ class TimelinePattern extends React.PureComponent {
 
   onMouseDown(e) {
     this.selectSelf();
-    this.props.setIsPopupMenuPending(this.props.patternID);
-    this.props.setIsPopupMenuActive(false);
-    this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.clientX);
+
+    if (e.button === 0) {  // Prevent drag errors when using context menu
+      this.props.setIsPopupMenuPending(this.props.patternID);
+      this.props.setIsPopupMenuActive(false);
+      this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.clientX);
+    }
 
     // Prevent click on parent pattern grid container
     e.stopPropagation();
@@ -553,7 +556,9 @@ class TimelinePattern extends React.PureComponent {
       this.props.setIsPopupMenuActive(false);
     }
 
-    this.props.startResize(this.props.startStep);
+    if (e.button === 0) { // Prevent drag errors when using context menu
+      this.props.startResize(this.props.startStep);
+    }
 
     // Prevent a drag start occuring on parent
     e.stopPropagation();
@@ -565,7 +570,9 @@ class TimelinePattern extends React.PureComponent {
       this.props.setIsPopupMenuActive(false);
     }
 
-    this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
+    if (e.button === 0) { // Prevent drag errors when using context menu
+      this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
+    }
 
     // Prevent a drag start occuring on parent
     e.stopPropagation();
