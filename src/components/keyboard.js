@@ -238,9 +238,8 @@ class Keyboard extends React.PureComponent {
   };
 
   componentWillUnmount() {
-    const eventRemover = this.keyboardOuterContainer.removeEventListener || this.keyboardOuterContainer.detachEvent;
-    eventRemover("touchmove", this.touchMove);
-    eventRemover("gesturestart", this.gestureStart);
+    this.keyboardOuterContainer.removeEventListener("touchmove", this.touchMove);
+    this.keyboardOuterContainer.removeEventListener("gesturestart", this.gestureStart);
   };
 
   render() {

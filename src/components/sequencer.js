@@ -381,9 +381,7 @@ class TimelineGrid extends React.Component {
   };
 
   componentWillUnmount() {
-    const eventRemover = this.containerEl.removeEventListener || this.containerEl.detachEvent;
-    eventRemover("touchmove", this.onTouchMove);
-
+    this.containerEl.removeEventListener("touchmove", this.onTouchMove);
     window.removeEventListener("mouseup", this.onMouseUp);
   };
 
