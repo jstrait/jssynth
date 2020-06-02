@@ -1,8 +1,9 @@
 "use strict";
 
+const SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
+const TICK_INTERVAL = 50;         // in milliseconds
+
 export function Transport(mixer, songPlayer, notePlayer) {
-  var SCHEDULE_AHEAD_TIME = 0.2;  // in seconds
-  var TICK_INTERVAL = 50;         // in milliseconds
   var LOOP = true;
 
   var currentStep = 0;

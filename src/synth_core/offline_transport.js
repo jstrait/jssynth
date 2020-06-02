@@ -6,10 +6,10 @@ import { NotePlayer } from "./note_player";
 import { WaveWriter } from "./wave_writer";
 
 export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAmplitude, sampleRate, completeCallback) {
-  var NUM_CHANNELS = 1;
-  var SIXTEENTHS_PER_MINUTE = tempo * 4;
-  var STEP_INTERVAL_IN_SECONDS = 60.0 / SIXTEENTHS_PER_MINUTE;
-  var FADE_OUT_TIME_IN_SECONDS = 1.5;
+  const NUM_CHANNELS = 1;
+  const SIXTEENTHS_PER_MINUTE = tempo * 4;
+  const STEP_INTERVAL_IN_SECONDS = 60.0 / SIXTEENTHS_PER_MINUTE;
+  const FADE_OUT_TIME_IN_SECONDS = 1.5;
 
   var calculatePlaybackTimeInSeconds = function() {
     var minimumPlaybackTime = songPlayer.stepCount() * STEP_INTERVAL_IN_SECONDS;

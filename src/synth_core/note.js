@@ -1,11 +1,11 @@
 "use strict";
 
-var NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-var NOTES_IN_OCTAVE = 12;
-var MIDDLE_A_MIDI_NOTE_NUMBER = 69;
-var MIDDLE_A_FREQUENCY = 440.0;
+const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+const NOTES_IN_OCTAVE = 12;
+const MIDDLE_A_MIDI_NOTE_NUMBER = 69;
+const MIDDLE_A_FREQUENCY = 440.0;
 
-var ENHARMONIC_EQUIVALENTS = {
+const ENHARMONIC_EQUIVALENTS = {
   "A"   : "A",
   "G##" : "A",
   "B@@" : "A",

@@ -1,23 +1,22 @@
 "use strict";
 
+const LITTLE_ENDIAN = true;
+const AUDIO_FORMAT_CODE = 1;  // I.e., PCM
+const NUM_CHANNELS = 1;
+const BITS_PER_SAMPLE = 16;
+const BYTES_PER_SAMPLE = 2;
+const MAX_SAMPLE_VALUE = 32767;
+const BLOCK_ALIGN = BYTES_PER_SAMPLE * NUM_CHANNELS;
+const WAVEFILE_HEADER_BYTE_COUNT = 44;
+const RIFF_CHUNK_BODY_BYTE_COUNT_MINIMUM = 36;
+const FORMAT_CHUNK_BODY_BYTE_COUNT = 16;
+
 export function WaveWriter(sampleRate) {
-  var LITTLE_ENDIAN = true;
-  var AUDIO_FORMAT_CODE = 1;  // I.e., PCM
-  var NUM_CHANNELS = 1;
-  var BITS_PER_SAMPLE = 16;
-  var BYTES_PER_SAMPLE = 2;
-  var MAX_SAMPLE_VALUE = 32767;
-
-  var BLOCK_ALIGN = BYTES_PER_SAMPLE * NUM_CHANNELS;
-  var BYTE_RATE = BLOCK_ALIGN * sampleRate;
-
-  var WAVEFILE_HEADER_BYTE_COUNT = 44;
-  var RIFF_CHUNK_BODY_BYTE_COUNT_MINIMUM = 36;
-  var FORMAT_CHUNK_BODY_BYTE_COUNT = 16;
+  const BYTE_RATE = BLOCK_ALIGN * sampleRate;
 
   var write = function(rawFloat32SampleData) {
-    var sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
-    var fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
+    const sampleDataByteCount = rawFloat32SampleData.length * BYTES_PER_SAMPLE;
+    const fileLength = WAVEFILE_HEADER_BYTE_COUNT + sampleDataByteCount;
     var outputView = new DataView(new ArrayBuffer(fileLength));
     var sampleByteOffset;
     var clampedSample;
