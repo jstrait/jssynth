@@ -324,16 +324,21 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseUp(e) {
+    window.removeEventListener("mouseup", this.onMouseUp);
     this.endDrag();
   };
 
   onMouseEnter(e) {
+    window.removeEventListener("mouseup", this.onMouseUp);
+
     if (e.buttons === 0) {
       this.endDrag();
     }
   };
 
   onMouseLeave(e) {
+    window.addEventListener("mouseup", this.onMouseUp, false);
+
     this.setState({
       ghostPatternTrackIndex: undefined,
     });
@@ -378,6 +383,8 @@ class TimelineGrid extends React.Component {
   componentWillUnmount() {
     const eventRemover = this.containerEl.removeEventListener || this.containerEl.detachEvent;
     eventRemover("touchmove", this.onTouchMove);
+
+    window.removeEventListener("mouseup", this.onMouseUp);
   };
 
   render() {
