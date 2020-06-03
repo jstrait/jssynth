@@ -915,6 +915,7 @@ class Sequencer extends React.Component {
     this.uploadFile = this.uploadFile.bind(this);
     this.onPopupMenuMouseDown = this.onPopupMenuMouseDown.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   };
 
   toggleIsExpanded() {
@@ -1030,12 +1031,22 @@ class Sequencer extends React.Component {
     }
   };
 
+  onWindowResize(e) {
+    if (this.state.isPopupMenuActive === true) {
+      this.setState({
+        isPopupMenuActive: false,
+      });
+    }
+  };
+
   componentDidMount() {
     this.timelineContainerEl.scrollLeft = this.props.scrollLeft;
+    window.addEventListener("resize", this.onWindowResize, false);
   };
 
   componentWillUnmount() {
     this.props.setScrollLeft(this.timelineContainerEl.scrollLeft);
+    window.removeEventListener("resize", this.onWindowResize);
   };
 
   render() {
