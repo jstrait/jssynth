@@ -89,14 +89,14 @@
 
 .border-box { box-sizing: border-box; }
 
-.no-whitespace-wrap { white-space: nowrap; }
+.whitespace-wrap-none { white-space: nowrap; }
 
 .cursor-default { cursor: default; }
 .pointer { cursor: pointer; }
 
 .pointer-events-none { pointer-events: none; }
 
-.no-user-select {
+.user-select-none {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;

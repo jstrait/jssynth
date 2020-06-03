@@ -245,7 +245,7 @@ class Keyboard extends React.PureComponent {
   render() {
     let rootNote = this.props.rootNoteName + this.props.rootNoteOctave;
 
-    return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex no-user-select" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
+    return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex user-select-none" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">

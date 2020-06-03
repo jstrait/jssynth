@@ -104,7 +104,7 @@ class PatternMeasure extends React.Component {
 
     return <ul className={"flex flex-uniform-size flex-column mt0 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
       <li className="inline-block list-style-none full-width">
-        <ul className="flex ml0 pl0 center no-whitespace-wrap">
+        <ul className="flex ml0 pl0 center whitespace-wrap-none">
           {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
           <li key={noteIndex + this.props.startStep + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + this.props.startStep + 1}</li>
           )}
@@ -112,7 +112,7 @@ class PatternMeasure extends React.Component {
       </li>
       {this.props.rows.map((patternRow, rowIndex) =>
       <li key={rowIndex} className="inline-block list-style-none full-width">
-        <ul className="flex ml0 pl0 no-whitespace-wrap">
+        <ul className="flex ml0 pl0 whitespace-wrap-none">
           {patternRow.slice(0, this.props.stepCount).map((note, noteIndex) =>
           <li key={this.props.startStep + noteIndex} className="list-style-none inline-block note-container">
             <NoteBox note={note}

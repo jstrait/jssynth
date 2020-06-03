@@ -41,7 +41,7 @@ class TrackHeader extends React.PureComponent {
     return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr-half height-3 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.name)}</span>
       <span className="sequencer-name-container flex flex-justify-space-between">
-        <span className="overflow-hidden no-whitespace-wrap overflow-ellipsis">{this.props.name}</span>
+        <span className="overflow-hidden whitespace-wrap-none overflow-ellipsis">{this.props.name}</span>
         <button className="button-hollow button-small" onClick={this.setTrackBeingEdited}>Edit</button>
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
@@ -77,7 +77,7 @@ class TimelineHeader extends React.PureComponent {
     let baseTimelineWidth = this.props.measureCount * MEASURE_WIDTH_IN_PIXELS;
 
     return <div className="relative">
-      <ul className="flex m0 pl0 no-whitespace-wrap height-2">
+      <ul className="flex m0 pl0 whitespace-wrap-none height-2">
         <li className="sequencer-body-left-padding list-style-none border-box"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
         <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-4 full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
@@ -415,7 +415,7 @@ class TimelineGrid extends React.Component {
       popupMenuMeasure = Math.floor(this.props.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     }
 
-    return <div className="flex full-height no-whitespace-wrap">
+    return <div className="flex full-height whitespace-wrap-none">
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
       <span ref={el => {this.containerEl = el;}}
             className="sequencer-body relative border-box"
@@ -1092,7 +1092,7 @@ class Sequencer extends React.Component {
           )}
         </ul>
         <div ref={(el) => { this.timelineContainerEl = el; }}
-             className={"relative flex flex-uniform-size flex-column m0 pl0 no-user-select border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")} onScroll={this.onScroll}>
+             className={"relative flex flex-uniform-size flex-column m0 pl0 user-select-none border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")} onScroll={this.onScroll}>
           <TimelineHeader measureCount={this.props.measureCount}
                           currentStep={this.props.currentStep}
                           setCurrentStep={this.props.setCurrentStep}
