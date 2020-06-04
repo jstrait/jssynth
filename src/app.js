@@ -174,7 +174,7 @@ class App extends React.Component {
     this.bufferCollection.addBuffersFromURLs(
       bufferConfigs,
       () => {
-        let i;
+        let track;
         let channelID;
         let instrument;
 
@@ -192,12 +192,12 @@ class App extends React.Component {
 
         this.transport.setTempo(this.state.transport.tempo);
 
-        for (i = 0; i < this.state.tracks.length; i++) {
-          channelID = this.state.tracks[i].id;
-          instrument = this.instrumentByID(this.state.tracks[i].instrumentID);
+        for (track of this.state.tracks) {
+          channelID = track.id;
+          instrument = this.instrumentByID(track.instrumentID);
           this.mixer.addChannel(channelID,
-                                this.state.tracks[i].volume,
-                                this.state.tracks[i].muted,
+                                track.volume,
+                                track.muted,
                                 this.bufferCollection.getBuffer("reverb"),
                                 instrument.reverbWetPercentage,
                                 instrument.delayTime,
@@ -214,10 +214,11 @@ class App extends React.Component {
   };
 
   itemByID(array, targetID) {
-    let i;
-    for (i = 0; i < array.length; i++) {
-      if (array[i].id === targetID) {
-        return array[i];
+    let element;
+
+    for (element of array) {
+      if (element.id === targetID) {
+        return element;
       }
     }
 
@@ -349,11 +350,9 @@ class App extends React.Component {
   };
 
   syncChannels() {
-    let i;
     let track, instrument;
 
-    for (i = 0; i < this.state.tracks.length; i++) {
-      track = this.state.tracks[i];
+    for (track of this.state.tracks) {
       instrument = this.instrumentByID(track.instrumentID);
       this.mixer.setChannelAmplitude(track.id, track.volume);
       this.mixer.setChannelDelay(track.id, instrument.delayTime, instrument.delayFeedback);
@@ -1075,11 +1074,9 @@ class App extends React.Component {
   exportToWav(onExportComplete) {
     let offlineTransport;
 
-    let i;
     let serializedTracks = [];
     let track, instrument;
-    for (i = 0; i < this.state.tracks.length; i++) {
-      track = this.state.tracks[i];
+    for (track of this.state.tracks) {
       instrument = this.instrumentByID(track.instrumentID);
       serializedTracks.push({id: track.id,
                              volume: track.volume,
