@@ -40,6 +40,16 @@
 .pb1 { padding-bottom: $size-1; }
 .pt2 { padding-top: $size-2; }
 
+.pr-half-safe { padding-right: 0.75rem; }
+.pl1-safe { padding-left: $size-1; }
+.pr1-safe { padding-right: $size-1; }
+
+@supports(padding: max(0px)) {
+  .pr-half-safe { padding-right: max(0.75rem, env(safe-area-inset-right)); }
+  .pl1-safe { padding-left: max(1.5rem, env(safe-area-inset-left)); }
+  .pr1-safe { padding-right: max(1.5rem, env(safe-area-inset-right)); }
+}
+
 .relative { position: relative; }
 .absolute { position: absolute; }
 

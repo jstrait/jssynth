@@ -38,7 +38,7 @@ class TrackHeader extends React.PureComponent {
       return fullTrackName.substring(0, 4);
     };
 
-    return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1 pr-half height-3 border-box bb br">
+    return <li className="flex flex-column flex-justify-center bg-light-gray list-style-none pl1-safe pr-half height-3 border-box bb br">
       <span className="short-name">{shortTrackName(this.props.name)}</span>
       <span className="sequencer-name-container flex flex-justify-space-between">
         <span className="overflow-hidden whitespace-wrap-none overflow-ellipsis">{this.props.name}</span>
@@ -840,7 +840,7 @@ class MeasureCount extends React.PureComponent {
 
   render() {
     if (this.state.editMode === true) {
-      return <span className="flex flex-column flex-align-end pr1">
+      return <span className="flex flex-column flex-align-end pr1-safe">
         <span>
           <label>Measures:</label>&nbsp;
           <input type="text" className={"width-1" + (this.state.isValidValue ? "" : " note-box-invalid")} maxLength="2" defaultValue={this.props.measureCount} onChange={this.validateValue} ref={input => {this.measureCountInput = input;}} />
@@ -852,7 +852,7 @@ class MeasureCount extends React.PureComponent {
       </span>;
     }
     else {
-      return <span className="flex flex-column flex-align-end pr1">
+      return <span className="flex flex-column flex-align-end pr1-safe">
         <label>Measures: {this.props.measureCount}</label>
         <button className="block button-link" onClick={this.enableEditMode}>change</button>
       </span>;
@@ -1119,7 +1119,7 @@ class Sequencer extends React.Component {
       </div>
       <div className="flex mb1">
         <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.props.isExpanded ? "expanded" : "contracted")}>
-          <li className="list-style-none height-1 pl1 border-box bb">
+          <li className="list-style-none height-1 pl1-safe border-box bb">
             <button className={"vertical-top button-tiny button-hollow" + (this.props.isExpanded ? " button-enabled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
@@ -1158,13 +1158,13 @@ class Sequencer extends React.Component {
         <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.props.isExpanded ? "" : " display-none")}>
           <li className="list-style-none inline-block pr1 border-box bb height-2">&nbsp;</li>
           {this.props.tracks.map((track) =>
-          <li key={track.id} className="flex flex-align-center bg-light-gray pl-half pr-half list-style-none height-3 border-box bb bl">
+          <li key={track.id} className="flex flex-align-center bg-light-gray pl-half pr-half-safe list-style-none height-3 border-box bb bl">
             <TrackRemoveButton trackID={track.id} removeTrack={this.props.removeTrack} />
           </li>
           )}
         </ul>
       </div>
-      <div className="pl1">
+      <div className="pl1-safe">
         <button className="button-full button-hollow mr-half" onClick={this.props.addSynthTrack}>Add Synth Track</button>
         <button className="button-full button-hollow" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
