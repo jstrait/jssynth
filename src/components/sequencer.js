@@ -127,6 +127,7 @@ class TimelineGrid extends React.Component {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onTouchEnd = this.onTouchEnd.bind(this);
   };
@@ -308,7 +309,11 @@ class TimelineGrid extends React.Component {
 
   onMouseDown(e) {
     this.setPopupMenuPosition(e.clientX, e.clientY);
-    this.props.setIsPopupMenuActive(!this.props.isPopupMenuActive);
+    this.props.setIsPopupMenuActive(false);
+
+    this.setState({
+      isPopupMenuPending: true,
+    });
   };
 
   onMouseDrag(e) {
@@ -326,6 +331,10 @@ class TimelineGrid extends React.Component {
   onMouseUp(e) {
     window.removeEventListener("mouseup", this.onMouseUp);
     this.endDrag();
+
+    this.setState({
+      isPopupMenuPending: false,
+    });
   };
 
   onMouseEnter(e) {
@@ -341,6 +350,15 @@ class TimelineGrid extends React.Component {
 
     this.setState({
       ghostPatternTrackIndex: undefined,
+    });
+  };
+
+  onTouchStart(e) {
+    this.setPopupMenuPosition(e.touches[0].clientX, e.touches[0].clientY);
+    this.props.setIsPopupMenuActive(false);
+
+    this.setState({
+      isPopupMenuPending: true,
     });
   };
 
@@ -411,7 +429,7 @@ class TimelineGrid extends React.Component {
       ghostPatternTrackID = this.props.tracks[this.state.ghostPatternTrackIndex].id;
     }
 
-    if (this.props.isPopupMenuActive === true) {
+    if (this.state.isPopupMenuPending === true || this.props.isPopupMenuActive === true) {
       popupMenuMeasure = Math.floor(this.props.popupMenuStepIndex / STEPS_PER_MEASURE) * STEPS_PER_MEASURE;
     }
 
@@ -425,9 +443,13 @@ class TimelineGrid extends React.Component {
             onMouseUp={this.onMouseUp}
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
+            onTouchStart={this.onTouchStart}
             onTouchEnd={this.onTouchEnd}>
-        {this.props.isPopupMenuActive === true && this.props.selectedPatternID === undefined &&
-        <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex} measure={popupMenuMeasure} />
+        {(this.state.isPopupMenuPending === true || this.props.isPopupMenuActive === true) && this.props.selectedPatternID === undefined &&
+        <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex}
+                           measure={popupMenuMeasure}
+                           setIsPopupMenuPending={this.setIsPopupMenuPending}
+                           setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
         }
         {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
@@ -482,17 +504,37 @@ class TimelineGrid extends React.Component {
 class TimelineHighlight extends React.PureComponent {
   constructor(props) {
     super(props);
+
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+  };
+
+  onMouseUp(e) {
+    this.props.setIsPopupMenuPending(undefined);
+    this.props.setIsPopupMenuActive(true);
+
+    this.el.focus();
+
+    e.stopPropagation();
+  };
+
+  onBlur(e) {
+    this.props.setIsPopupMenuActive(false);
   };
 
   render() {
     return <span
-             className="absolute bg-light-orange"
+             ref={(el) => { this.el = el; }}
+             tabIndex="-1"
+             className="absolute bg-light-orange outline-none"
              style={{
                      left: (this.props.measure * STEP_WIDTH_IN_PIXELS) + "px",
                      top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
                      width: (MEASURE_WIDTH_IN_PIXELS - 1) + "px",
                      height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px",
              }}
+             onMouseUp={this.onMouseUp}
+             onBlur={this.onBlur}
            >
            </span>
   };
