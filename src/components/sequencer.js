@@ -437,7 +437,7 @@ class TimelineGrid extends React.Component {
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
       <span ref={el => {this.containerEl = el;}}
             className="sequencer-body relative border-box"
-            style={{minWidth: (this.props.measureCount * MEASURE_WIDTH_IN_PIXELS) + "px"}}
+            style={{minWidth: `${this.props.measureCount * MEASURE_WIDTH_IN_PIXELS}px`}}
             onMouseDown={this.onMouseDown}
             onMouseMove={(this.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
             onMouseUp={this.onMouseUp}
@@ -528,10 +528,10 @@ class TimelineHighlight extends React.PureComponent {
              tabIndex="-1"
              className="absolute bg-light-orange outline-none"
              style={{
-                     left: (this.props.measure * STEP_WIDTH_IN_PIXELS) + "px",
-                     top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
-                     width: (MEASURE_WIDTH_IN_PIXELS - 1) + "px",
-                     height: (TRACK_HEIGHT_IN_PIXELS - 1) + "px",
+                     left: `${this.props.measure * STEP_WIDTH_IN_PIXELS}px`,
+                     top: `${this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS}px`,
+                     width: `${MEASURE_WIDTH_IN_PIXELS - 1}px`,
+                     height: `${TRACK_HEIGHT_IN_PIXELS - 1}px`,
              }}
              onMouseUp={this.onMouseUp}
              onBlur={this.onBlur}
@@ -656,10 +656,10 @@ class TimelinePattern extends React.PureComponent {
     return <span ref={(el) => { this.el = el; }}
                  tabIndex="-1"
                  className={"absolute block left full-height overflow-hidden outline-none" + extraContainerCSS}
-                 style={{left: (this.props.startStep * STEP_WIDTH_IN_PIXELS) + "px",
-                         top: (this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS) + "px",
-                         width: (this.props.fullStepCount * STEP_WIDTH_IN_PIXELS) + "px",
-                         height: TRACK_HEIGHT_IN_PIXELS + "px"}}
+                 style={{left: `${this.props.startStep * STEP_WIDTH_IN_PIXELS}px`,
+                         top: `${this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS}px`,
+                         width: `${this.props.fullStepCount * STEP_WIDTH_IN_PIXELS}px`,
+                         height: `${TRACK_HEIGHT_IN_PIXELS}px`}}
                  onMouseDown={this.onMouseDown}
                  onMouseUp={this.onMouseUp}
                  onTouchStart={this.onTouchStart}
@@ -726,8 +726,8 @@ class TimelinePatternSegment extends React.PureComponent {
     return <React.Fragment>
       <span className={"overflow-hidden timeline-pattern" + extraSegmentStyles}
             style={{
-              left: leftPixel + "px",
-              width: widthInPixels + "px",
+              left: `${leftPixel}px`,
+              width: `${widthInPixels}px`,
               backgroundImage: `url(${this.props.image})`,
               backgroundSize: `auto ${TRACK_HEIGHT_IN_PIXELS}px`,
               backgroundRepeat: "no-repeat",
@@ -746,7 +746,7 @@ class TimelinePatternSegment extends React.PureComponent {
       </span>
       {this.props.isFirstSegment !== true &&
         <span className={"absolute timeline-pattern-divider" + extraDividerStyles}
-              style={{left: leftPixel + "px"}}></span>}
+              style={{left: `${leftPixel}px`}}></span>}
     </React.Fragment>;
   };
 };
