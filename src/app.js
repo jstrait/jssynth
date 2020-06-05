@@ -1002,8 +1002,7 @@ class App extends React.Component {
         noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
                                                         this.mixer.audioContext(),
                                                         this.mixer.destination(currentTrack.id),
-                                                        note,
-                                                        1.0);
+                                                        note);
 
         newActiveKeyboardNotes.push(notes[i]);
         this.activeNoteContexts.push(noteContext);

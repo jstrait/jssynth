@@ -32,7 +32,6 @@ export function SongPlayer() {
                                 mixer.audioContext(),
                                 mixer.destination(note.channelID()),
                                 note.note(),
-                                note.note().amplitude(),
                                 currentTime,
                                 currentTime + noteTimeDuration);
       });

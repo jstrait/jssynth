@@ -28,8 +28,8 @@ var BaseInstrument = function(config) {
     return filter;
   };
 
-  var scheduleNote = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    var noteContext = baseInstrument.gateOn(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
+  var scheduleNote = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
+    var noteContext = baseInstrument.gateOn(audioContext, audioDestination, note, gateOnTime, gateOffTime);
     baseInstrument.gateOff(noteContext, gateOffTime, false);
   };
 
@@ -113,7 +113,7 @@ function SampleInstrument(config) {
     return audioBufferSourceNode;
   };
 
-  sampleInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+  sampleInstrument.gateOn = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
     var masterGain, calculatedMasterGainEnvelope;
     var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
     var envelopeAttackStartTime = Math.max(0.0, gateOnTime - 0.001);
@@ -123,7 +123,7 @@ function SampleInstrument(config) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    calculatedMasterGainEnvelope = Envelope(amplitude, config.envelope, gateOnTime, gateOffTime);
+    calculatedMasterGainEnvelope = Envelope(note.amplitude(), config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack
     masterGain.gain.setValueAtTime(0.0, envelopeAttackStartTime);
@@ -165,7 +165,7 @@ function SampleInstrument(config) {
 
     return {
       gateOnTime: gateOnTime,
-      amplitude: amplitude,
+      amplitude: note.amplitude(),
       audioBufferSourceNode: audioBufferSourceNode,
       masterGain: masterGain,
       filter: filter,
@@ -180,7 +180,7 @@ function SampleInstrument(config) {
 function SynthInstrument(config) {
   var synthInstrument = BaseInstrument(config);
 
-  synthInstrument.gateOn = function(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
+  synthInstrument.gateOn = function(audioContext, audioDestination, note, gateOnTime, gateOffTime) {
     var masterGainAmplitude, masterGain, calculatedMasterGainEnvelope;
     var filter, filterLfoGain, filterLfoOscillator, calculatedFilterEnvelope;
     var oscillator1, oscillator1Gain, oscillator2, oscillator2Gain, noise, noiseGain;
@@ -192,7 +192,7 @@ function SynthInstrument(config) {
     masterGain = audioContext.createGain();
     masterGain.connect(audioDestination);
 
-    masterGainAmplitude = amplitude / (config.oscillators.length + 1);
+    masterGainAmplitude = note.amplitude() / (config.oscillators.length + 1);
     calculatedMasterGainEnvelope = Envelope(masterGainAmplitude, config.envelope, gateOnTime, gateOffTime);
 
     // Master Gain Envelope Attack

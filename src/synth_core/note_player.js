@@ -3,12 +3,12 @@
 export function NotePlayer() {
   var channels = {};
 
-  var scheduleNote = function(channelID, audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime) {
-    channels[channelID].instrument.scheduleNote(audioContext, audioDestination, note, amplitude, gateOnTime, gateOffTime);
+  var scheduleNote = function(channelID, audioContext, audioDestination, note, gateOnTime, gateOffTime) {
+    channels[channelID].instrument.scheduleNote(audioContext, audioDestination, note, gateOnTime, gateOffTime);
   };
 
-  var playImmediateNote = function(channelID, audioContext, audioDestination, note, amplitude) {
-    return channels[channelID].instrument.gateOn(audioContext, audioDestination, note, amplitude, audioContext.currentTime, Number.POSITIVE_INFINITY);
+  var playImmediateNote = function(channelID, audioContext, audioDestination, note) {
+    return channels[channelID].instrument.gateOn(audioContext, audioDestination, note, audioContext.currentTime, Number.POSITIVE_INFINITY);
   };
 
   var stopNote = function(channelID, audioContext, noteContext) {
