@@ -29,10 +29,10 @@
 .pb0 { padding-bottom: 0; }
 .pl0 { padding-left: 0; }
 .pr0 { padding-right: 0; }
-.pt-half { padding-top: 0.75rem; }
-.pb-half { padding-bottom: 0.75rem; }
-.pl-half { padding-left: 0.75rem; }
-.pr-half { padding-right: 0.75rem; }
+.pt-half { padding-top: $size-half; }
+.pb-half { padding-bottom: $size-half; }
+.pl-half { padding-left: $size-half; }
+.pr-half { padding-right: $size-half; }
 .p1 { padding: $size-1; }
 .pl1 { padding-left: $size-1; }
 .pr1 { padding-right: $size-1; }
@@ -40,7 +40,7 @@
 .pb1 { padding-bottom: $size-1; }
 .pt2 { padding-top: $size-2; }
 
-.pr-half-safe { padding-right: 0.75rem; }
+.pr-half-safe { padding-right: $size-half; }
 .pl1-safe { padding-left: $size-1; }
 .pr1-safe { padding-right: $size-1; }
 
