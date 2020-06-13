@@ -961,11 +961,7 @@ class Sequencer extends React.Component {
   };
 
   toggleIsExpanded() {
-    this.setState({
-      isPopupMenuActive: false,
-    }, function() {
-      this.props.setIsExpanded(!this.props.isExpanded);
-    });
+    this.props.setIsExpanded(!this.props.isExpanded);
   };
 
   setIsTimelineElementActive(newIsTimelineElementActive) {
