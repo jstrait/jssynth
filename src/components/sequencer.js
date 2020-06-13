@@ -352,10 +352,6 @@ class TimelineGrid extends React.Component {
 
   onMouseEnter(e) {
     window.removeEventListener("mouseup", this.onMouseUp);
-
-    if (e.buttons === 0) {
-      this.endDrag();
-    }
   };
 
   onMouseLeave(e) {
