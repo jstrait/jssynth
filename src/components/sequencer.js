@@ -157,6 +157,10 @@ class TimelineGrid extends React.Component {
     this.resizeStartStep = undefined;
     this.minPlaybackStepCount = undefined;
 
+    // Fix for Safari to prevent text on the rest of the page from being selected during a
+    // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
+    document.body.classList.add("user-select-none");
+
     this.setState({
       ghostPatternID: patternID,
       ghostPatternTrackIndex: patternTrackIndex,
@@ -172,6 +176,10 @@ class TimelineGrid extends React.Component {
     this.resizeStartStep = startStep;
     this.minPlaybackStepCount = undefined;
 
+    // Fix for Safari to prevent text on the rest of the page from being selected during a
+    // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
+    document.body.classList.add("user-select-none");
+
     this.setState({
       isPopupMenuPending: false,
     });
@@ -183,6 +191,10 @@ class TimelineGrid extends React.Component {
     this.dragStartStep = undefined;
     this.resizeStartStep = startStep;
     this.minPlaybackStepCount = baseStepCount;
+
+    // Fix for Safari to prevent text on the rest of the page from being selected during a
+    // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
+    document.body.classList.add("user-select-none");
 
     this.setState({
       isPopupMenuPending: false,
@@ -203,6 +215,7 @@ class TimelineGrid extends React.Component {
       });
     }
 
+    document.body.classList.remove("user-select-none");
     this.dragType = TIMELINE_DRAG_NONE;
   };
 
