@@ -371,11 +371,12 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 .timeline-pattern-name {
   position: absolute;
   background: $light-gray;
-  margin-left: 0.5rem;
-  margin-top: 0.25rem;
-  line-height: 1.5rem;
+  margin-left: 0.25rem;
+  margin-top: 1px;
+  line-height: 1.25rem;
   max-width: calc(100% - 1.5rem - 0.5rem - 2px);
   overflow: hidden;
+  font-size: 1.0rem;
   text-overflow: ellipsis;
 }
 
