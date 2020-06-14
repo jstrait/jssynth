@@ -28,7 +28,9 @@ class TabStripItem extends React.PureComponent {
   };
 
   render() {
-    return <li className={"tab-strip-item list-style-none flex-uniform-size h4 lh-3 cursor-pointer border-box center" + (this.props.isSelected ? " white bg-black" : "")} onClick={this.setSelectedValue}>{this.props.label}</li>;
+    const cssClasses = "tab-strip-item list-style-none flex-uniform-size h4 lh-3 cursor-pointer border-box center" + (this.props.isSelected ? " white bg-black" : "");
+
+    return <li className={cssClasses} onClick={this.setSelectedValue}>{this.props.label}</li>;
   };
 };
 
@@ -44,7 +46,9 @@ class InstrumentPaneTab extends React.PureComponent {
   };
 
   render() {
-    return <li style={{"flexShrink": 0}} className={"list-style-none cursor-pointer mr1 border-box " + (this.props.isSelected ? "pane-tab-selected" : "pane-tab-unselected")} onClick={this.setSelectedTab}>{this.props.label}</li>;
+    const cssClasses = "list-style-none cursor-pointer mr1 border-box " + (this.props.isSelected ? "pane-tab-selected" : "pane-tab-unselected");
+
+    return <li style={{"flexShrink": 0}} className={cssClasses} onClick={this.setSelectedTab}>{this.props.label}</li>;
   };
 };
 
