@@ -30,7 +30,7 @@ class TrackHeader extends React.PureComponent {
   };
 
   toggleTrackMute(e) {
-    this.props.toggleTrackMute(this.props.trackID, !this.props.muted);
+    this.props.toggleTrackMute(this.props.trackID, !this.props.isMuted);
   };
 
   render() {
@@ -45,8 +45,8 @@ class TrackHeader extends React.PureComponent {
         <button className="button-hollow button-small" onClick={this.setTrackBeingEdited}>Edit</button>
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
-        <button className={"button-hollow button-small" + (this.props.muted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
-        <input className="full-width" style={{marginLeft: "4px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.muted} value={this.props.volume} onChange={this.setTrackVolume} />
+        <button className={"button-hollow button-small" + (this.props.isMuted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
+        <input className="full-width" style={{marginLeft: "4px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.isMuted} value={this.props.volume} onChange={this.setTrackVolume} />
       </span>
     </li>;
   };
@@ -1131,7 +1131,7 @@ class Sequencer extends React.Component {
             <TrackHeader key={track.id}
                          trackID={track.id}
                          name={track.name}
-                         muted={track.muted}
+                         isMuted={track.isMuted}
                          volume={track.volume}
                          setTrackBeingEdited={this.props.setTrackBeingEdited}
                          setTrackVolume={this.props.setTrackVolume}

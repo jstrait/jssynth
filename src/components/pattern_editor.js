@@ -205,7 +205,7 @@ class NoteInput extends React.Component {
   };
 
   onBlur(e) {
-    if (!this.props.keyboardActive) {
+    if (!this.props.isKeyboardActive) {
       this.props.setSelectedNoteIndex(undefined, undefined);
     }
   };
@@ -414,7 +414,7 @@ class PatternEditor extends React.Component {
                  selectedNoteIndex={this.props.selectedNoteIndex}
                  setSelectedNoteIndex={this.props.setSelectedNoteIndex}
                  setNoteValue={this.props.setNoteValue}
-                 keyboardActive={this.props.keyboardActive} />
+                 isKeyboardActive={this.props.isKeyboardActive} />
       <PatternNotes patternID={this.props.pattern.id}
                     stepCount={this.props.pattern.stepCount}
                     rows={this.props.pattern.rows}

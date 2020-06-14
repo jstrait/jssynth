@@ -55,7 +55,7 @@ class App extends React.Component {
       instruments: [],
       patterns: [],
       tracks: [],
-      midiEnabled: false,
+      isMidiEnabled: false,
       midiInputNames: ["None"],
     };
 
@@ -187,7 +187,7 @@ class App extends React.Component {
           instruments: DefaultSong.instruments,
           patterns: DefaultSong.patterns,
           tracks: DefaultSong.tracks,
-          midiEnabled: this.midiController.enabled(),
+          isMidiEnabled: this.midiController.isEnabled(),
         }));
 
         this.transport.setTempo(this.state.transport.tempo);
@@ -197,7 +197,7 @@ class App extends React.Component {
           instrument = this.instrumentByID(track.instrumentID);
           this.mixer.addChannel(channelID,
                                 track.volume,
-                                track.muted,
+                                track.isMuted,
                                 this.bufferCollection.getBuffer("reverb"),
                                 instrument.reverbWetPercentage,
                                 instrument.delayTime,
@@ -453,7 +453,7 @@ class App extends React.Component {
     let newTrackList = tracks.concat([]);
     let track = this.itemByID(newTrackList, trackID);
 
-    track.muted = newIsMuted;
+    track.isMuted = newIsMuted;
 
     this.setState({
       tracks: newTrackList
@@ -466,7 +466,7 @@ class App extends React.Component {
       id: this.idGenerator.next(),
       name: newTrackName,
       instrumentID: newInstrument.id,
-      muted: false,
+      isMuted: false,
       volume: 0.8,
     };
 
@@ -475,7 +475,7 @@ class App extends React.Component {
       tracks: prevState.tracks.concat([newTrack])
     }),
     function() {
-      this.mixer.addChannel(newTrack.id, newTrack.volume, newTrack.muted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
+      this.mixer.addChannel(newTrack.id, newTrack.volume, newTrack.isMuted, this.bufferCollection.getBuffer("reverb"), newInstrument.reverbWetPercentage, newInstrument.delayTime, newInstrument.delayFeedback);
       this.syncInstrumentsToSynthCore();
     });
   };
@@ -1079,7 +1079,7 @@ class App extends React.Component {
       instrument = this.instrumentByID(track.instrumentID);
       serializedTracks.push({id: track.id,
                              volume: track.volume,
-                             isMuted: track.muted,
+                             isMuted: track.isMuted,
                              reverbBuffer: this.bufferCollection.getBuffer("reverb"),
                              reverbWetPercentage: instrument.reverbWetPercentage,
                              delayTime: instrument.delayTime,
@@ -1279,7 +1279,7 @@ class App extends React.Component {
                          removePatternRow={this.removePatternRow}
                          setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
                          setNoteValue={this.setNoteValue}
-                         keyboardActive={this.state.isKeyboardActive}
+                         isKeyboardActive={this.state.isKeyboardActive}
                          onClose={this.closePatternEditor}
           />
         </div>
@@ -1295,8 +1295,8 @@ class App extends React.Component {
         }
         <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
           <p className="center mt1 mb0">MIDI Device(s):&nbsp;
-          {this.state.midiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
-          {this.state.midiEnabled === true && this.state.midiInputNames.join(", ")}
+          {this.state.isMidiEnabled === false && <span>Browser doesn&rsquo;t support MIDI</span>}
+          {this.state.isMidiEnabled === true && this.state.midiInputNames.join(", ")}
           </p>
           <p className="center mt0 mb1">Made by <a href="https://www.joelstrait.com/">Joel Strait</a>, &copy; 2014-20</p>
         </div>

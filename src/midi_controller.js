@@ -48,18 +48,18 @@ export const MidiController = function(onStateChange, onMessage, onError) {
 
 
   let inputs = [];
-  let enabled = false;
+  let isEnabled = false;
 
   if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess().then(onMIDIInit, onMIDISystemError);
-    enabled = true;
+    isEnabled = true;
   }
   else {
-    enabled = false;
+    isEnabled = false;
   }
 
   return {
-    enabled: function() { return enabled; },
+    isEnabled: function() { return isEnabled; },
     inputs: function() { return inputs; },
   };
 };
