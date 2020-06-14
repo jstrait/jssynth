@@ -12,6 +12,8 @@ const TIMELINE_DRAG_MOVE_PATTERN = 2;
 const TIMELINE_DRAG_RESIZE_PATTERN = 3;
 const TIMELINE_DRAG_LOOP_PATTERN = 4;
 
+const MEASURE_HIGHLIGHT_PATTERN_ID = -1;
+
 class TrackHeader extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -136,7 +138,7 @@ class TimelineGrid extends React.Component {
     let newIsPopupMenuPending;
 
     if (this.props.selectedPatternID === patternID) {
-      newIsPopupMenuPending = !this.state.isPopupMenuPending;
+      newIsPopupMenuPending = !this.props.isPopupMenuActive;
     }
     else {
       newIsPopupMenuPending = true;
@@ -321,12 +323,16 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDown(e) {
-    this.setPopupMenuPosition(e.clientX, e.clientY);
-    this.props.setIsPopupMenuActive(false);
+    if (this.props.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID) {
+      this.props.setSelectedPattern(undefined);
+    }
+    else {
+      this.props.setSelectedPattern(MEASURE_HIGHLIGHT_PATTERN_ID);
+      this.setPopupMenuPosition(e.clientX, e.clientY);
+      this.setIsPopupMenuPending(MEASURE_HIGHLIGHT_PATTERN_ID);
+    }
 
-    this.setState({
-      isPopupMenuPending: true,
-    });
+    this.props.setIsPopupMenuActive(false);
   };
 
   onMouseDrag(e) {
@@ -454,11 +460,13 @@ class TimelineGrid extends React.Component {
             onMouseLeave={this.onMouseLeave}
             onTouchStart={this.onTouchStart}
             onTouchEnd={this.onTouchEnd}>
-        {(this.state.isPopupMenuPending === true || this.props.isPopupMenuActive === true) && this.props.selectedPatternID === undefined &&
+        {this.props.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID &&
         <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex}
                            measure={popupMenuMeasure}
+                           isPopupMenuPending={this.state.isPopupMenuPending}
                            setIsPopupMenuPending={this.setIsPopupMenuPending}
-                           setIsPopupMenuActive={this.props.setIsPopupMenuActive} />
+                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+                           setPopupMenuPosition={this.setPopupMenuPosition} />
         }
         {patternsByTrackIndex.map((patternView) =>
         <TimelinePattern key={patternView.pattern.id}
@@ -519,8 +527,10 @@ class TimelineHighlight extends React.PureComponent {
   };
 
   onMouseUp(e) {
-    this.props.setIsPopupMenuPending(undefined);
-    this.props.setIsPopupMenuActive(true);
+    if (this.props.isPopupMenuPending === true) {
+      this.props.setPopupMenuPosition(e.clientX, e.clientY);
+      this.props.setIsPopupMenuActive(true);
+    }
 
     this.el.focus();
 
@@ -1099,7 +1109,7 @@ class Sequencer extends React.Component {
   render() {
     let popupMenuContent = undefined;
     if (this.state.isPopupMenuActive === true) {
-      if (this.state.selectedPatternID === undefined) {
+      if (this.state.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID) {
         popupMenuContent = <AddPastePopupMenuBody
                              trackID={this.props.tracks[this.state.popupMenuTrackIndex].id}
                              stepIndex={this.state.popupMenuStepIndex}
