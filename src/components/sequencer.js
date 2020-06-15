@@ -464,7 +464,6 @@ class TimelineGrid extends React.Component {
         <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex}
                            measure={popupMenuMeasure}
                            isPopupMenuPending={this.state.isPopupMenuPending}
-                           setIsPopupMenuPending={this.setIsPopupMenuPending}
                            setSelectedPattern={this.props.setSelectedPattern}
                            setIsPopupMenuActive={this.props.setIsPopupMenuActive}
                            setPopupMenuPosition={this.setPopupMenuPosition} />
