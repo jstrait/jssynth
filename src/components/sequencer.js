@@ -627,8 +627,6 @@ class TimelinePattern extends React.PureComponent {
   };
 
   onStartResize(e) {
-    this.selectSelf();
-
     if (e.button === undefined || e.button === 0) { // Prevent drag errors when using context menu
       this.props.startResize(this.props.startStep);
     }
@@ -638,8 +636,6 @@ class TimelinePattern extends React.PureComponent {
   };
 
   onStartLoopChange(e) {
-    this.selectSelf();
-
     if (e.button === undefined || e.button === 0) { // Prevent drag errors when using context menu
       this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
     }
