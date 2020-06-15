@@ -465,6 +465,7 @@ class TimelineGrid extends React.Component {
                            measure={popupMenuMeasure}
                            isPopupMenuPending={this.state.isPopupMenuPending}
                            setIsPopupMenuPending={this.setIsPopupMenuPending}
+                           setSelectedPattern={this.props.setSelectedPattern}
                            setIsPopupMenuActive={this.props.setIsPopupMenuActive}
                            setPopupMenuPosition={this.setPopupMenuPosition} />
         }
@@ -539,6 +540,7 @@ class TimelineHighlight extends React.PureComponent {
 
   onBlur(e) {
     this.props.setIsPopupMenuActive(false);
+    this.props.setSelectedPattern(undefined);
   };
 
   render() {
