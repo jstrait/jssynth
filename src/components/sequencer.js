@@ -604,6 +604,9 @@ class TimelinePattern extends React.PureComponent {
     this.props.setIsPopupMenuPending(this.props.patternID);
     this.props.setIsPopupMenuActive(false);
     this.props.startDrag(this.props.patternID, this.props.trackIndex, this.props.startStep, this.props.fullStepCount, e.touches[0].clientX);
+
+    // Prevent touch start on parent pattern grid container
+    e.stopPropagation();
   };
 
   onTouchEnd(e) {
