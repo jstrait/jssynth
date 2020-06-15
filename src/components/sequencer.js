@@ -1089,12 +1089,24 @@ class Sequencer extends React.Component {
         isPopupMenuActive: false,
       });
     }
+
+    if (this.state.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID) {
+      this.setState({
+        selectedPatternID: undefined,
+      });
+    }
   };
 
   onWindowResize(e) {
     if (this.state.isPopupMenuActive === true) {
       this.setState({
         isPopupMenuActive: false,
+      });
+    }
+
+    if (this.state.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID) {
+      this.setState({
+        selectedPatternID: undefined,
       });
     }
   };
