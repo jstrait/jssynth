@@ -182,6 +182,10 @@ class TimelineGrid extends React.Component {
     // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
     document.body.classList.add("user-select-none");
 
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
+
     this.setState({
       isPopupMenuPending: false,
     });
@@ -197,6 +201,10 @@ class TimelineGrid extends React.Component {
     // Fix for Safari to prevent text on the rest of the page from being selected during a
     // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
     document.body.classList.add("user-select-none");
+
+    if (this.props.isPopupMenuActive === true) {
+      this.props.setIsPopupMenuActive(false);
+    }
 
     this.setState({
       isPopupMenuPending: false,
@@ -480,8 +488,7 @@ class TimelineGrid extends React.Component {
                          isSelected={this.props.selectedPatternID === patternView.pattern.id}
                          isError={false}
                          isTransparent={patternView.pattern.id === this.state.ghostPatternID}
-                         isPopupMenuActive={this.props.isPopupMenuActive}
-                         isPopupMenuPending={this.state.isPopupMenuPending}
+                         isPopupMenuPending={(this.props.selectedPatternID === patternView.pattern.id) && this.state.isPopupMenuPending}
                          setIsPopupMenuPending={this.setIsPopupMenuPending}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
@@ -502,8 +509,7 @@ class TimelineGrid extends React.Component {
                          isSelected={true}
                          isError={this.props.isSpaceForPatternInTrack(ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount, ghostPattern.id) !== true}
                          isTransparent={true}
-                         isPopupMenuActive={this.props.isPopupMenuActive}
-                         isPopupMenuPending={this.state.isPopupMenuPending}
+                         isPopupMenuPending={(this.props.selectedPatternID === ghostPattern.id) && this.state.isPopupMenuPending}
                          setIsPopupMenuPending={this.setIsPopupMenuPending}
                          startDrag={this.startDrag}
                          startResize={this.startResize}
@@ -622,9 +628,6 @@ class TimelinePattern extends React.PureComponent {
 
   onStartResize(e) {
     this.selectSelf();
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
 
     if (e.button === undefined || e.button === 0) { // Prevent drag errors when using context menu
       this.props.startResize(this.props.startStep);
@@ -636,9 +639,6 @@ class TimelinePattern extends React.PureComponent {
 
   onStartLoopChange(e) {
     this.selectSelf();
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
 
     if (e.button === undefined || e.button === 0) { // Prevent drag errors when using context menu
       this.props.startLoopChange(this.props.startStep, this.props.baseStepCount);
@@ -650,9 +650,7 @@ class TimelinePattern extends React.PureComponent {
 
   onBlur(e) {
     this.props.setSelectedPattern(undefined);
-    if (this.props.isPopupMenuActive === true) {
-      this.props.setIsPopupMenuActive(false);
-    }
+    this.props.setIsPopupMenuActive(false);
   };
 
   render() {
