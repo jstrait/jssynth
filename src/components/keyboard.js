@@ -35,16 +35,16 @@ class Keyboard extends React.PureComponent {
     this.scrollRightTimeoutID = undefined;
 
     this.touchHandler = this.touchHandler.bind(this);
-    this.mouseDown = this.mouseDown.bind(this);
-    this.mouseUp = this.mouseUp.bind(this);
-    this.mouseMove = this.mouseMove.bind(this);
-    this.mouseOut = this.mouseOut.bind(this);
-    this.mouseOver = this.mouseOver.bind(this);
-    this.touchStart = this.touchStart.bind(this);
-    this.touchEnd = this.touchEnd.bind(this);
-    this.touchMove = this.touchMove.bind(this);
-    this.gestureStart = this.gestureStart.bind(this);
-    this.scroll = this.scroll.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseOut = this.onMouseOut.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
+    this.onGestureStart = this.onGestureStart.bind(this);
+    this.onScroll = this.onScroll.bind(this);
 
     this.touches = {};
   };
@@ -63,13 +63,13 @@ class Keyboard extends React.PureComponent {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
           isLeftScrollActive = true;
           if (this.scrollLeftTimeoutID === undefined) {
-            this.scrollLeftTimeoutID = setInterval(() => this.scroll(-SCROLL_AMOUNT), 15);
+            this.scrollLeftTimeoutID = setInterval(() => this.onScroll(-SCROLL_AMOUNT), 15);
           }
         }
         else if (elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
           isRightScrollActive = true;
           if (this.scrollRightTimeoutID === undefined) {
-            this.scrollRightTimeoutID = setInterval(() => this.scroll(SCROLL_AMOUNT), 15);
+            this.scrollRightTimeoutID = setInterval(() => this.onScroll(SCROLL_AMOUNT), 15);
           }
         }
         else {
@@ -111,7 +111,7 @@ class Keyboard extends React.PureComponent {
     return elementUnderCursor;
   };
 
-  mouseDown(e) {
+  onMouseDown(e) {
     const RIGHT_MOUSE_BUTTON = 2;
 
     if (e.button === RIGHT_MOUSE_BUTTON) {
@@ -123,27 +123,27 @@ class Keyboard extends React.PureComponent {
     this.touchHandler(this.touches);
   };
 
-  mouseUp(e) {
+  onMouseUp(e) {
     this.props.deactivate();
     delete this.touches[-1];
     this.touchHandler(this.touches);
   };
 
-  mouseMove(e) {
+  onMouseMove(e) {
     if (this.props.isActive) {
       this.touches[-1] = { x: e.clientX, y: e.clientY };
       this.touchHandler(this.touches);
     }
   };
 
-  mouseOut(e) {
+  onMouseOut(e) {
     if (this.props.isActive) {
       this.touches[-1] = { x: e.clientX, y: e.clientY };
       this.touchHandler(this.touches);
     }
   };
 
-  mouseOver(e) {
+  onMouseOver(e) {
     let noMouseButtonsPressed = false;
 
     if (e.buttons !== undefined && e.buttons === 0) {
@@ -163,7 +163,7 @@ class Keyboard extends React.PureComponent {
     }
   };
 
-  touchStart(e) {
+  onTouchStart(e) {
     let i;
     let touch;
     let newTouches = e.changedTouches;
@@ -182,7 +182,7 @@ class Keyboard extends React.PureComponent {
     this.touchHandler(this.touches);
   };
 
-  touchEnd(e) {
+  onTouchEnd(e) {
     let i;
     let removedTouches = e.changedTouches;
 
@@ -200,7 +200,7 @@ class Keyboard extends React.PureComponent {
     e.preventDefault();
   };
 
-  touchMove(e) {
+  onTouchMove(e) {
     let i;
     let touch;
     let newTouches = e.changedTouches;
@@ -216,11 +216,11 @@ class Keyboard extends React.PureComponent {
     e.preventDefault();
   };
 
-  gestureStart(e) {
+  onGestureStart(e) {
     e.preventDefault();
   };
 
-  scroll(delta) {
+  onScroll(delta) {
     this.keyboardContainer.scrollLeft += delta;
   };
 
@@ -234,23 +234,23 @@ class Keyboard extends React.PureComponent {
     // activating when using the keyboard on iOS.
     // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
     // https://github.com/facebook/react/issues/9809.
-    this.keyboardOuterContainer.addEventListener("touchmove", this.touchMove, false);
+    this.keyboardOuterContainer.addEventListener("touchmove", this.onTouchMove, false);
 
     // This prevents the "three finger page zoom" gesture on iOS while using the piano keyboard,
     // because it makes it very difficult to play chords without accidentally changing the page zoom.
     // React doesn't support the "gesturestart" event, so adding it manually.
-    this.keyboardOuterContainer.addEventListener("gesturestart", this.gestureStart, false);
+    this.keyboardOuterContainer.addEventListener("gesturestart", this.onGestureStart, false);
   };
 
   componentWillUnmount() {
-    this.keyboardOuterContainer.removeEventListener("touchmove", this.touchMove);
-    this.keyboardOuterContainer.removeEventListener("gesturestart", this.gestureStart);
+    this.keyboardOuterContainer.removeEventListener("touchmove", this.onTouchMove);
+    this.keyboardOuterContainer.removeEventListener("gesturestart", this.onGestureStart);
   };
 
   render() {
     let rootNote = this.props.rootNoteName + this.props.rootNoteOctave;
 
-    return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex user-select-none" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onMouseMove={this.mouseMove} onMouseOut={this.mouseOut} onMouseOver={this.mouseOver} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
+    return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex user-select-none" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} onMouseOut={this.onMouseOut} onMouseOver={this.onMouseOver} onTouchStart={this.onTouchStart} onTouchEnd={this.onTouchEnd}>
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
