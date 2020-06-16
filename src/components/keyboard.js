@@ -168,6 +168,10 @@ class Keyboard extends React.PureComponent {
     let touch;
     let newTouches = e.changedTouches;
 
+    // Fix for Safari to prevent text on the rest of the page from being selected during a
+    // long press on iOS, or when the mouse is moved out of the timeline grid during the drag.
+    document.body.classList.add("user-select-none");
+
     this.props.activate();
 
     for (i = 0; i < newTouches.length; i++) {
@@ -188,6 +192,7 @@ class Keyboard extends React.PureComponent {
 
     this.touchHandler(this.touches);
     if (Object.keys(this.touches).length === 0) {
+      document.body.classList.remove("user-select-none");
       this.props.deactivate();
     }
 
