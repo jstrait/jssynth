@@ -22,7 +22,7 @@ class Key extends React.PureComponent {
     }
 
     return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={noteString}>
-      <span className="keyboard-key-label">{rootNoteIndicator}<br />{this.props.label}</span>
+      <span className="keyboard-key-label">{rootNoteIndicator}{this.props.label}</span>
     </span>;
   };
 };

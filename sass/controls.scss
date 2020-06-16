@@ -321,6 +321,9 @@ button.button-error:disabled {
 }
 
 .keyboard-key-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   line-height: 1.5rem;
   position: absolute;
   bottom: 0;
@@ -331,7 +334,6 @@ button.button-error:disabled {
 }
 
 .keyboard-key-root-indicator {
-  display: inline-block;
   border-radius: 6px;
   padding: 0.0rem 0.25rem;
   background: $red;
