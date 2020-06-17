@@ -1016,6 +1016,7 @@ class Sequencer extends React.Component {
     this.props.addPattern(trackID, startStep);
 
     this.setState({
+      selectedPatternID: undefined,
       isPopupMenuActive: false,
     });
   };
@@ -1039,6 +1040,7 @@ class Sequencer extends React.Component {
     this.props.duplicatePattern(trackID, this.props.copiedPattern, startStep);
 
     this.setState({
+      selectedPatternID: undefined,
       isPopupMenuActive: false,
     });
   };
