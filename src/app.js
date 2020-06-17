@@ -39,7 +39,7 @@ class App extends React.Component {
       trackBeingEditedID: undefined,
       patternBeingEditedID: undefined,
       selectedPatternRowIndex: undefined,
-      selectedPatternNoteIndex: undefined,
+      selectedPatternStepIndex: undefined,
       isSequencerExpanded: true,
       sequencerScrollLeft: 0,
       copiedPattern: undefined,
@@ -108,7 +108,7 @@ class App extends React.Component {
     this.setPatternName = this.setPatternName.bind(this);
     this.addPatternRow = this.addPatternRow.bind(this);
     this.removePatternRow = this.removePatternRow.bind(this);
-    this.setSelectedPatternNoteIndex = this.setSelectedPatternNoteIndex.bind(this);
+    this.setSelectedPatternStepIndex = this.setSelectedPatternStepIndex.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
     this.closePatternEditor = this.closePatternEditor.bind(this);
 
@@ -876,27 +876,27 @@ class App extends React.Component {
     return true;
   };
 
-  setSelectedPatternNoteIndex(rowIndex, noteIndex) {
-    this.setState({ selectedPatternRowIndex: rowIndex, selectedPatternNoteIndex: noteIndex });
+  setSelectedPatternStepIndex(rowIndex, stepIndex) {
+    this.setState({ selectedPatternRowIndex: rowIndex, selectedPatternStepIndex: stepIndex });
   };
 
-  setNoteValue(noteValue, patternID, rowIndex, noteIndex) {
+  setNoteValue(noteValue, patternID, rowIndex, stepIndex) {
     let i;
     let pattern = this.patternByID(patternID);
     let patternRowNotes = pattern.rows[rowIndex].notes;
-    let previousValue = patternRowNotes[noteIndex].name;
+    let previousValue = patternRowNotes[stepIndex].name;
 
-    patternRowNotes[noteIndex] = {name: noteValue};
+    patternRowNotes[stepIndex] = {name: noteValue};
 
     if (noteValue === "-") {
-      i = noteIndex - 1;
+      i = stepIndex - 1;
       while (i >= 0 && patternRowNotes[i].name === "") {
         patternRowNotes[i] = {name: "-"};
         i -= 1;
       }
     }
     else if (noteValue === "" || previousValue === "-") {
-      i = noteIndex + 1;
+      i = stepIndex + 1;
       while (i < patternRowNotes.length && patternRowNotes[i].name === "-") {
         patternRowNotes[i] = {name: ""};
         i += 1;
@@ -994,8 +994,8 @@ class App extends React.Component {
     // Next, start notes newly added to the active set
     for (i = 0; i < notes.length; i++) {
       if (!this.state.activeKeyboardNotes.includes(notes[i])) {
-        if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternNoteIndex !== undefined) {
-          this.setNoteValue(notes[i], this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternNoteIndex);
+        if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternStepIndex !== undefined) {
+          this.setNoteValue(notes[i], this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternStepIndex);
         }
 
         note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1.0, 1);
@@ -1273,11 +1273,11 @@ class App extends React.Component {
         <div className="pb1 pl1 pr1 border-box bt-thick">
           <PatternEditor pattern={pattern}
                          selectedRowIndex={this.state.selectedPatternRowIndex}
-                         selectedNoteIndex={this.state.selectedPatternNoteIndex}
+                         selectedStepIndex={this.state.selectedPatternStepIndex}
                          setPatternName={this.setPatternName}
                          addPatternRow={this.addPatternRow}
                          removePatternRow={this.removePatternRow}
-                         setSelectedNoteIndex={this.setSelectedPatternNoteIndex}
+                         setSelectedStepIndex={this.setSelectedPatternStepIndex}
                          setNoteValue={this.setNoteValue}
                          isKeyboardActive={this.state.isKeyboardActive}
                          onClose={this.closePatternEditor}

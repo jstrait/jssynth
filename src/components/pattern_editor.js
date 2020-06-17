@@ -80,8 +80,8 @@ class PatternNotes extends React.Component {
                         rows={measure}
                         isKeyboardActive={this.props.isKeyboardActive}
                         selectedRowIndex={this.props.selectedRowIndex}
-                        selectedNoteIndex={this.props.selectedNoteIndex}
-                        setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                        selectedStepIndex={this.props.selectedStepIndex}
+                        setSelectedStepIndex={this.props.setSelectedStepIndex}
                         setNoteValue={this.props.setNoteValue} />
         )}
       </div>
@@ -109,25 +109,25 @@ class PatternMeasure extends React.Component {
     return <ul className={"flex flex-uniform-size flex-column mt1 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
       <li className="inline-block list-style-none full-width">
         <ul className="flex ml0 pl0 center whitespace-wrap-none">
-          {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
-          <li key={noteIndex + this.props.startStep + 1} className="list-style-none inline-block note-container h4 note-column-header">{noteIndex + this.props.startStep + 1}</li>
+          {Array(this.props.stepCount).fill(undefined).map((_, stepIndex) =>
+          <li key={stepIndex + this.props.startStep + 1} className="list-style-none inline-block note-container h4 note-column-header">{stepIndex + this.props.startStep + 1}</li>
           )}
         </ul>
       </li>
       {this.props.rows.map((patternRow, rowIndex) =>
       <li key={rowIndex} className="inline-block list-style-none full-width">
         <ul className="flex ml0 pl0 whitespace-wrap-none">
-          {patternRow.slice(0, this.props.stepCount).map((note, noteIndex) =>
-          <li key={this.props.startStep + noteIndex} className="list-style-none inline-block note-container">
+          {patternRow.slice(0, this.props.stepCount).map((note, stepIndex) =>
+          <li key={this.props.startStep + stepIndex} className="list-style-none inline-block note-container">
             <NoteBox patternID={this.props.patternID}
                      note={note}
                      rowIndex={rowIndex}
-                     noteIndex={this.props.startStep + noteIndex}
+                     stepIndex={this.props.startStep + stepIndex}
                      maxStep={this.props.maxStep}
                      maxRow={this.props.rows.length - 1}
-                     isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === (this.props.startStep + noteIndex)}
+                     isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedStepIndex === (this.props.startStep + stepIndex)}
                      isKeyboardActive={this.props.isKeyboardActive}
-                     setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                     setSelectedStepIndex={this.props.setSelectedStepIndex}
                      setNoteValue={this.props.setNoteValue} />
            </li>
           )}
@@ -209,10 +209,10 @@ class NoteBox extends React.PureComponent {
       this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === FOUR && e.shiftKey) {
-      this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.maxStep);
+      this.props.setSelectedStepIndex(this.props.rowIndex, this.props.maxStep);
     }
      else if (e.keyCode === SIX && e.shiftKey) {
-      this.props.setSelectedNoteIndex(this.props.rowIndex, 0);
+      this.props.setSelectedStepIndex(this.props.rowIndex, 0);
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(this.props.note.name);
@@ -236,23 +236,23 @@ class NoteBox extends React.PureComponent {
       this.setNoteValue("-");
     }
     else if (e.keyCode === LEFT_ARROW) {
-      if (this.props.noteIndex > 0) {
-        this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex - 1);
+      if (this.props.stepIndex > 0) {
+        this.props.setSelectedStepIndex(this.props.rowIndex, this.props.stepIndex - 1);
       }
     }
     else if (e.keyCode === RIGHT_ARROW) {
-      if (this.props.noteIndex < this.props.maxStep) {
-        this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex + 1);
+      if (this.props.stepIndex < this.props.maxStep) {
+        this.props.setSelectedStepIndex(this.props.rowIndex, this.props.stepIndex + 1);
       }
     }
     else if (e.keyCode === UP_ARROW) {
       if (this.props.rowIndex > 0) {
-        this.props.setSelectedNoteIndex(this.props.rowIndex - 1, this.props.noteIndex);
+        this.props.setSelectedStepIndex(this.props.rowIndex - 1, this.props.stepIndex);
       }
     }
     else if (e.keyCode === DOWN_ARROW) {
       if (this.props.rowIndex < this.props.maxRow) {
-        this.props.setSelectedNoteIndex(this.props.rowIndex + 1, this.props.noteIndex);
+        this.props.setSelectedStepIndex(this.props.rowIndex + 1, this.props.stepIndex);
       }
     }
 
@@ -268,17 +268,17 @@ class NoteBox extends React.PureComponent {
   };
 
   onFocus(e) {
-    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
+    this.props.setSelectedStepIndex(this.props.rowIndex, this.props.stepIndex);
   };
 
   onBlur(e) {
     if (!this.props.isKeyboardActive) {
-      this.props.setSelectedNoteIndex(undefined, undefined);
+      this.props.setSelectedStepIndex(undefined, undefined);
     }
   };
 
   setNoteValue(newNoteValue) {
-    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.rowIndex, this.props.stepIndex);
   };
 
   extractNoteParts(noteString) {
@@ -368,8 +368,8 @@ class PatternFooter extends React.PureComponent {
   };
 
   eraseNote(e) {
-    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      this.props.setNoteValue("", this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedStepIndex !== undefined) {
+      this.props.setNoteValue("", this.props.patternID, this.props.selectedRowIndex, this.props.selectedStepIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -378,8 +378,8 @@ class PatternFooter extends React.PureComponent {
   };
 
   setNoteAsDash(e) {
-    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      this.props.setNoteValue("-", this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedStepIndex !== undefined) {
+      this.props.setNoteValue("-", this.props.patternID, this.props.selectedRowIndex, this.props.selectedStepIndex);
 
       // Prevent the currently selected note input from losing focus,
       // which will prevent the note from being set properly.
@@ -391,8 +391,8 @@ class PatternFooter extends React.PureComponent {
     return <div className="flex flex-justify-space-between">
       <button className="button-full button-hollow" onClick={this.addPatternRow}>Add Row</button>
       <span>
-        <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
-        <button className="inline-block button-full button-hollow" disabled={this.props.selectedRowIndex === undefined || this.props.selectedNoteIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
+        <button className="inline-block button-full button-hollow mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
+        <button className="inline-block button-full button-hollow" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
       </span>
     </div>;
   };
@@ -405,8 +405,8 @@ class PatternEditor extends React.Component {
 
   render() {
     let selectedNote;
-    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      selectedNote = this.props.pattern.rows[this.props.selectedRowIndex].notes[this.props.selectedNoteIndex];
+    if (this.props.selectedRowIndex !== undefined && this.props.selectedStepIndex !== undefined) {
+      selectedNote = this.props.pattern.rows[this.props.selectedRowIndex].notes[this.props.selectedStepIndex];
     }
     else {
       selectedNote = { name: "" };
@@ -422,13 +422,13 @@ class PatternEditor extends React.Component {
                     rows={this.props.pattern.rows}
                     isKeyboardActive={this.props.isKeyboardActive}
                     selectedRowIndex={this.props.selectedRowIndex}
-                    selectedNoteIndex={this.props.selectedNoteIndex}
-                    setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                    selectedStepIndex={this.props.selectedStepIndex}
+                    setSelectedStepIndex={this.props.setSelectedStepIndex}
                     setNoteValue={this.props.setNoteValue}
                     removePatternRow={this.props.removePatternRow} />
       <PatternFooter patternID={this.props.pattern.id}
                      selectedRowIndex={this.props.selectedRowIndex}
-                     selectedNoteIndex={this.props.selectedNoteIndex}
+                     selectedStepIndex={this.props.selectedStepIndex}
                      addPatternRow={this.props.addPatternRow}
                      setNoteValue={this.props.setNoteValue} />
     </div>;
