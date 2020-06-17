@@ -522,6 +522,7 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
   font-size: 1.0rem;
   font-weight: normal;
   line-height: 2.0rem;
+  outline: none;
 }
 
 .note-box-focused {
@@ -532,20 +533,6 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 .note-box-invalid {
   background: #f66;
-}
-
-/*
-An input that should be invisible (e.g. to detect keypresses). If you actually make it
-fully invisible by using "display: none" etc., it no longer responds to key presses.
-This style makes it as invisible as possible, while still not being _completely_ hidden.
-*/
-.hidden-input {
-  background: $white;
-  height: 0;
-  width: 0;
-  border: 1px solid $white;
-  outline: none;
-  caret-color: transparent;
 }
 
 

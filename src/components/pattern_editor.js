@@ -73,15 +73,19 @@ class PatternNotes extends React.Component {
       <div className="flex flex-uniform-size overflow-scroll-x">
         {measures.map((measure, measureIndex) =>
         <PatternMeasure key={measureIndex}
+                        patternID={this.props.patternID}
                         startStep={measureIndex * measureLength}
                         stepCount={measureLength}
+                        maxStep={this.props.stepCount - 1}
                         rows={measure}
+                        isKeyboardActive={this.props.isKeyboardActive}
                         selectedRowIndex={this.props.selectedRowIndex}
                         selectedNoteIndex={this.props.selectedNoteIndex}
-                        setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+                        setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                        setNoteValue={this.props.setNoteValue} />
         )}
       </div>
-      <ul className="flex flex-column mt0 mb1 ml0 pl0 overflow-scroll-x border-box">
+      <ul className="flex flex-column mt1 mb1 ml0 pl0 overflow-scroll-x border-box">
         <li className="list-style-none flex-uniform-size">&nbsp;</li>
         {this.props.rows.map((patternRow, rowIndex) =>
         <li key={rowIndex} className="list-style-none flex-uniform-size">
@@ -102,7 +106,7 @@ class PatternMeasure extends React.Component {
     const leftPaddingStyle = (this.props.startStep === 0) ? " pl0" : " pl-half";
     const leftBorderStyle = (this.props.startStep === 0) ? "" : " bl";
 
-    return <ul className={"flex flex-uniform-size flex-column mt0 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
+    return <ul className={"flex flex-uniform-size flex-column mt1 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
       <li className="inline-block list-style-none full-width">
         <ul className="flex ml0 pl0 center whitespace-wrap-none">
           {Array(this.props.stepCount).fill(undefined).map((_, noteIndex) =>
@@ -115,11 +119,16 @@ class PatternMeasure extends React.Component {
         <ul className="flex ml0 pl0 whitespace-wrap-none">
           {patternRow.slice(0, this.props.stepCount).map((note, noteIndex) =>
           <li key={this.props.startStep + noteIndex} className="list-style-none inline-block note-container">
-            <NoteBox note={note}
+            <NoteBox patternID={this.props.patternID}
+                     note={note}
                      rowIndex={rowIndex}
                      noteIndex={this.props.startStep + noteIndex}
+                     maxStep={this.props.maxStep}
+                     maxRow={this.props.rows.length - 1}
                      isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedNoteIndex === (this.props.startStep + noteIndex)}
-                     setSelectedNoteIndex={this.props.setSelectedNoteIndex} />
+                     isKeyboardActive={this.props.isKeyboardActive}
+                     setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                     setNoteValue={this.props.setNoteValue} />
            </li>
           )}
         </ul>
@@ -133,81 +142,15 @@ class NoteBox extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
-    this.noteIsValid = this.noteIsValid.bind(this);
-    this.formatNote = this.formatNote.bind(this);
-  };
-
-  onMouseDown(e) {
-    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
-    e.preventDefault();
-  };
-
-  onTouchStart(e) {
-    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
-  };
-
-  noteIsValid(rawNoteString) {
-    return /^$|^-$|^ $|(^[A-G](@|@@|#|##){0,1}[0-7]$)/.test(rawNoteString);
-  };
-
-  formatNote(rawNoteString) {
-    let formattedNoteName = rawNoteString;
-
-    formattedNoteName = formattedNoteName.toUpperCase();
-    formattedNoteName = formattedNoteName.replace("##", "𝄪");
-    formattedNoteName = formattedNoteName.replace("#", "♯");
-    formattedNoteName = formattedNoteName.replace("@@", "𝄫");
-    formattedNoteName = formattedNoteName.replace("@", "♭");
-    formattedNoteName = formattedNoteName.replace("-", "—");
-
-    return formattedNoteName;
-  };
-
-  render() {
-    let formattedNoteName = this.formatNote(this.props.note.name);
-    let noteIsValid = (this.props.isSelected === true) || this.noteIsValid(this.props.note.name);
-
-    return <span className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")} onMouseDown={this.onMouseDown} onTouchStart={this.onTouchStart}>{formattedNoteName}</span>;
-  };
-};
-
-class NoteInput extends React.Component {
-  constructor(props) {
-    super(props);
-
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
     this.extractNoteParts = this.extractNoteParts.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-  };
-
-  setNoteValue(newNoteValue) {
-    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.selectedRowIndex, this.props.selectedNoteIndex);
-  };
-
-  extractNoteParts(noteString) {
-    let noteNameMatches = noteString.match(/^[A-G]/);
-    let noteName = (noteNameMatches === null) ? "" : noteNameMatches[0];
-    let octaveMatches = noteString.match(/\d$/);
-    let octave = (octaveMatches === null) ? "" : octaveMatches[0];
-
-    let modifier = noteString;
-    if (noteName !== "") {
-      modifier = noteString.slice(1);
-    }
-    if (octave !== "") {
-      modifier = modifier.slice(0, modifier.length - 1);
-    }
-
-    return {noteName: noteName, modifier: modifier, octave: octave};
-  };
-
-  onBlur(e) {
-    if (!this.props.isKeyboardActive) {
-      this.props.setSelectedNoteIndex(undefined, undefined);
-    }
+    this.noteIsValid = this.noteIsValid.bind(this);
+    this.formatNote = this.formatNote.bind(this);
   };
 
   onKeyDown(e) {
@@ -266,10 +209,10 @@ class NoteInput extends React.Component {
       this.setNoteValue(noteParts.noteName + noteParts.modifier + noteParts.octave);
     }
     else if (e.keyCode === FOUR && e.shiftKey) {
-      this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.noteCount - 1);
+      this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.maxStep);
     }
      else if (e.keyCode === SIX && e.shiftKey) {
-      this.props.setSelectedNoteIndex(this.props.selectedRowIndex, 0);
+      this.props.setSelectedNoteIndex(this.props.rowIndex, 0);
     }
     else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
       noteParts = this.extractNoteParts(this.props.note.name);
@@ -293,37 +236,105 @@ class NoteInput extends React.Component {
       this.setNoteValue("-");
     }
     else if (e.keyCode === LEFT_ARROW) {
-      if (this.props.selectedNoteIndex > 0) {
-        this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.selectedNoteIndex - 1);
+      if (this.props.noteIndex > 0) {
+        this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex - 1);
       }
     }
     else if (e.keyCode === RIGHT_ARROW) {
-      if (this.props.selectedNoteIndex < this.props.noteCount - 1) {
-        this.props.setSelectedNoteIndex(this.props.selectedRowIndex, this.props.selectedNoteIndex + 1);
+      if (this.props.noteIndex < this.props.maxStep) {
+        this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex + 1);
       }
     }
     else if (e.keyCode === UP_ARROW) {
-      if (this.props.selectedRowIndex > 0) {
-        this.props.setSelectedNoteIndex(this.props.selectedRowIndex - 1, this.props.selectedNoteIndex);
+      if (this.props.rowIndex > 0) {
+        this.props.setSelectedNoteIndex(this.props.rowIndex - 1, this.props.noteIndex);
       }
     }
     else if (e.keyCode === DOWN_ARROW) {
-      if (this.props.selectedRowIndex < this.props.rowCount - 1) {
-        this.props.setSelectedNoteIndex(this.props.selectedRowIndex + 1, this.props.selectedNoteIndex);
+      if (this.props.rowIndex < this.props.maxRow) {
+        this.props.setSelectedNoteIndex(this.props.rowIndex + 1, this.props.noteIndex);
       }
     }
 
     e.preventDefault();
   };
 
+  onMouseDown(e) {
+    this.el.focus();
+  };
+
+  onTouchStart(e) {
+    this.el.focus();
+  };
+
+  onFocus(e) {
+    this.props.setSelectedNoteIndex(this.props.rowIndex, this.props.noteIndex);
+  };
+
+  onBlur(e) {
+    if (!this.props.isKeyboardActive) {
+      this.props.setSelectedNoteIndex(undefined, undefined);
+    }
+  };
+
+  setNoteValue(newNoteValue) {
+    this.props.setNoteValue(newNoteValue, this.props.patternID, this.props.rowIndex, this.props.noteIndex);
+  };
+
+  extractNoteParts(noteString) {
+    let noteNameMatches = noteString.match(/^[A-G]/);
+    let noteName = (noteNameMatches === null) ? "" : noteNameMatches[0];
+    let octaveMatches = noteString.match(/\d$/);
+    let octave = (octaveMatches === null) ? "" : octaveMatches[0];
+
+    let modifier = noteString;
+    if (noteName !== "") {
+      modifier = noteString.slice(1);
+    }
+    if (octave !== "") {
+      modifier = modifier.slice(0, modifier.length - 1);
+    }
+
+    return {noteName: noteName, modifier: modifier, octave: octave};
+  };
+
+  noteIsValid(rawNoteString) {
+    return /^$|^-$|^ $|(^[A-G](@|@@|#|##){0,1}[0-7]$)/.test(rawNoteString);
+  };
+
+  formatNote(rawNoteString) {
+    let formattedNoteName = rawNoteString;
+
+    formattedNoteName = formattedNoteName.toUpperCase();
+    formattedNoteName = formattedNoteName.replace("##", "𝄪");
+    formattedNoteName = formattedNoteName.replace("#", "♯");
+    formattedNoteName = formattedNoteName.replace("@@", "𝄫");
+    formattedNoteName = formattedNoteName.replace("@", "♭");
+    formattedNoteName = formattedNoteName.replace("-", "—");
+
+    return formattedNoteName;
+  };
+
   componentDidUpdate() {
-    if (this.props.selectedRowIndex !== undefined && this.props.selectedNoteIndex !== undefined) {
-      this.noteInput.focus();
+    if (this.props.isSelected === true) {
+      this.el.focus();
     }
   };
 
   render() {
-    return <input ref={(input) => { this.noteInput = input; }} className="hidden-input" type="text" readOnly={true} onKeyDown={this.onKeyDown} onBlur={this.onBlur} />;
+    let formattedNoteName = this.formatNote(this.props.note.name);
+    let noteIsValid = (this.props.isSelected === true) || this.noteIsValid(this.props.note.name);
+
+    return <span ref={(el) => { this.el = el; }}
+                 tabIndex="-1"
+                 className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")}
+                 onKeyDown={this.onKeyDown}
+                 onMouseDown={this.onMouseDown}
+                 onTouchStart={this.onTouchStart}
+                 onFocus={this.onFocus}
+                 onBlur={this.onBlur}>
+             {formattedNoteName}
+           </span>;
   };
 };
 
@@ -406,21 +417,14 @@ class PatternEditor extends React.Component {
       <PatternHeader patternID={this.props.pattern.id}
                      patternName={this.props.pattern.name}
                      setPatternName={this.props.setPatternName} />
-      <NoteInput note={selectedNote}
-                 patternID={this.props.pattern.id}
-                 rowCount={this.props.pattern.rows.length}
-                 noteCount={this.props.pattern.stepCount}
-                 selectedRowIndex={this.props.selectedRowIndex}
-                 selectedNoteIndex={this.props.selectedNoteIndex}
-                 setSelectedNoteIndex={this.props.setSelectedNoteIndex}
-                 setNoteValue={this.props.setNoteValue}
-                 isKeyboardActive={this.props.isKeyboardActive} />
       <PatternNotes patternID={this.props.pattern.id}
                     stepCount={this.props.pattern.stepCount}
                     rows={this.props.pattern.rows}
+                    isKeyboardActive={this.props.isKeyboardActive}
                     selectedRowIndex={this.props.selectedRowIndex}
                     selectedNoteIndex={this.props.selectedNoteIndex}
                     setSelectedNoteIndex={this.props.setSelectedNoteIndex}
+                    setNoteValue={this.props.setNoteValue}
                     removePatternRow={this.props.removePatternRow} />
       <PatternFooter patternID={this.props.pattern.id}
                      selectedRowIndex={this.props.selectedRowIndex}
