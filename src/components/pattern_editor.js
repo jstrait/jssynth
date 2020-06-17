@@ -149,7 +149,7 @@ class NoteBox extends React.PureComponent {
     this.onBlur = this.onBlur.bind(this);
     this.setNoteValue = this.setNoteValue.bind(this);
     this.extractNoteParts = this.extractNoteParts.bind(this);
-    this.noteIsValid = this.noteIsValid.bind(this);
+    this.isNoteValid = this.isNoteValid.bind(this);
     this.formatNote = this.formatNote.bind(this);
   };
 
@@ -298,7 +298,7 @@ class NoteBox extends React.PureComponent {
     return {noteName: noteName, modifier: modifier, octave: octave};
   };
 
-  noteIsValid(rawNoteString) {
+  isNoteValid(rawNoteString) {
     return /^$|^-$|^ $|(^[A-G](@|@@|#|##){0,1}[0-7]$)/.test(rawNoteString);
   };
 
@@ -323,11 +323,11 @@ class NoteBox extends React.PureComponent {
 
   render() {
     let formattedNoteName = this.formatNote(this.props.note.name);
-    let noteIsValid = (this.props.isSelected === true) || this.noteIsValid(this.props.note.name);
+    let isNoteValid = (this.props.isSelected === true) || this.isNoteValid(this.props.note.name);
 
     return <span ref={(el) => { this.el = el; }}
                  tabIndex="-1"
-                 className={"note-box" + (noteIsValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")}
+                 className={"note-box" + (isNoteValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")}
                  onKeyDown={this.onKeyDown}
                  onMouseDown={this.onMouseDown}
                  onTouchStart={this.onTouchStart}
