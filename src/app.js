@@ -959,15 +959,15 @@ class App extends React.Component {
     let i;
     let noteContext;
     let note;
-    let currentTrack;
+    let currentTrackID;
     let patternBeingEdited;
 
     if (this.state.trackBeingEditedID !== undefined) {
-      currentTrack = this.trackByID(this.state.trackBeingEditedID);
+      currentTrackID = this.state.trackBeingEditedID;
     }
     else if (this.state.patternBeingEditedID !== undefined) {
       patternBeingEdited = this.patternByID(this.state.patternBeingEditedID);
-      currentTrack = this.trackByID(patternBeingEdited.trackID);
+      currentTrackID = patternBeingEdited.trackID;
     }
     else {
       return;
@@ -981,7 +981,7 @@ class App extends React.Component {
       if (!notes.includes(newActiveKeyboardNotes[i])) {
         noteContext = this.activeNoteContexts[i];
 
-        this.notePlayer.stopNote(currentTrack.id, this.mixer.audioContext(), noteContext);
+        this.notePlayer.stopNote(currentTrackID, this.mixer.audioContext(), noteContext);
         newActiveKeyboardNotes.splice(i, 1);
         this.activeNoteContexts.splice(i, 1);
 
@@ -997,9 +997,9 @@ class App extends React.Component {
         }
 
         note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1.0, 1);
-        noteContext = this.notePlayer.playImmediateNote(currentTrack.id,
+        noteContext = this.notePlayer.playImmediateNote(currentTrackID,
                                                         this.mixer.audioContext(),
-                                                        this.mixer.destination(currentTrack.id),
+                                                        this.mixer.destination(currentTrackID),
                                                         note);
 
         newActiveKeyboardNotes.push(notes[i]);
