@@ -1031,17 +1031,20 @@ class App extends React.Component {
 
   onMIDIStateChange(data) {
     let inputs = this.midiController.inputs();
+    let connectedInputNames = [];
+    let input;
 
-    let connectedInputNames = inputs.map(function(input) {
-      return (input.state === "connected") ? input.name : undefined;
-    });
+    for (input of inputs) {
+      if (input.state === "connected") {
+        connectedInputNames.push(input.name);
+      }
+    }
 
-    connectedInputNames = connectedInputNames.filter(function(inputName) { return inputName !== undefined });
     if (connectedInputNames.length === 0) {
       connectedInputNames = ["None"];
     }
 
-    this.setState({midiInputNames: [].concat(connectedInputNames)});
+    this.setState({midiInputNames: connectedInputNames});
   };
 
   onMIDIMessage(messageType, data) {
