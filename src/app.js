@@ -115,6 +115,8 @@ class App extends React.Component {
     // Keyboard
     this.activateKeyboard = this.activateKeyboard.bind(this);
     this.deactivateKeyboard = this.deactivateKeyboard.bind(this);
+    this.setKeyboardTouchNotes = this.setKeyboardTouchNotes.bind(this);
+    this.setKeyboardMidiNotes = this.setKeyboardMidiNotes.bind(this);
     this.setKeyboardNotes = this.setKeyboardNotes.bind(this);
 
     // MIDI
@@ -145,7 +147,9 @@ class App extends React.Component {
 
     this.transport = SynthCore.Transport(this.mixer, this.songPlayer, this.notePlayer);
     this.mixer.setMasterAmplitude(this.state.masterAmplitude);
-    this.activeNoteContexts = [];
+    this.activeKeyboardTouchNotes = [];
+    this.activeKeyboardMidiNotes = [];
+    this.activeNoteContexts = {};
 
     this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
 
@@ -917,7 +921,7 @@ class App extends React.Component {
       patterns: newPatternList,
     });
 
-    this.setKeyboardNotes([]);
+    this.setKeyboardNotes([], []);
     this.setPatternBeingEdited(undefined);
   }
 
@@ -939,7 +943,7 @@ class App extends React.Component {
   };
 
   closeInstrumentEditor() {
-    this.setKeyboardNotes([]);
+    this.setKeyboardNotes([], []);
     this.setTrackBeingEdited(undefined);
   }
 
@@ -955,12 +959,23 @@ class App extends React.Component {
     });
   };
 
-  setKeyboardNotes(notes) {
-    let i;
+  setKeyboardTouchNotes(newKeyboardTouchNotes) {
+    this.setKeyboardNotes(newKeyboardTouchNotes, this.activeKeyboardMidiNotes);
+  };
+
+  setKeyboardMidiNotes(newKeyboardMidiNotes) {
+    this.setKeyboardNotes(this.activeKeyboardTouchNotes, newKeyboardMidiNotes);
+  };
+
+  setKeyboardNotes(newKeyboardTouchNotes, newKeyboardMidiNotes) {
+    let noteString;
     let noteContext;
     let note;
     let currentTrackID;
     let patternBeingEdited;
+    let newActiveKeyboardNotes = [...new Set(newKeyboardTouchNotes.concat(newKeyboardMidiNotes))];
+    let previousActiveKeyboardNotes = [...new Set(this.activeKeyboardTouchNotes.concat(this.activeKeyboardMidiNotes))];
+    let activeNoteSetHasChanged = false;
 
     if (this.state.trackBeingEditedID !== undefined) {
       currentTrackID = this.state.trackBeingEditedID;
@@ -973,42 +988,40 @@ class App extends React.Component {
       return;
     }
 
-    let activeNoteSetHasChanged = false;
-    let newActiveKeyboardNotes = this.state.activeKeyboardNotes.concat([]);
-
     // First, stop notes no longer in the active set
-    for (i = newActiveKeyboardNotes.length - 1; i >= 0; i--) {
-      if (!notes.includes(newActiveKeyboardNotes[i])) {
-        noteContext = this.activeNoteContexts[i];
+    for (noteString of previousActiveKeyboardNotes) {
+      if (newActiveKeyboardNotes.includes(noteString) === false) {
+        noteContext = this.activeNoteContexts[noteString];
 
         this.notePlayer.stopNote(currentTrackID, this.mixer.audioContext(), noteContext);
-        newActiveKeyboardNotes.splice(i, 1);
-        this.activeNoteContexts.splice(i, 1);
+        delete this.activeNoteContexts[noteString];
 
         activeNoteSetHasChanged = true;
       }
     }
 
     // Next, start notes newly added to the active set
-    for (i = 0; i < notes.length; i++) {
-      if (!this.state.activeKeyboardNotes.includes(notes[i])) {
+    for (noteString of newActiveKeyboardNotes) {
+      if (previousActiveKeyboardNotes.includes(noteString) === false) {
         if (this.state.selectedPatternRowIndex !== undefined && this.state.selectedPatternStepIndex !== undefined) {
-          this.setNoteValue(notes[i], this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternStepIndex);
+          this.setNoteValue(noteString, this.state.patternBeingEditedID, this.state.selectedPatternRowIndex, this.state.selectedPatternStepIndex);
         }
 
-        note = SynthCore.Note(notes[i].slice(0, -1), parseInt(notes[i].slice(-1), 10), 1.0, 1);
+        note = SynthCore.Note(noteString.slice(0, -1), parseInt(noteString.slice(-1), 10), 1.0, 1);
         noteContext = this.notePlayer.playImmediateNote(currentTrackID,
                                                         this.mixer.audioContext(),
                                                         this.mixer.destination(currentTrackID),
                                                         note);
 
-        newActiveKeyboardNotes.push(notes[i]);
-        this.activeNoteContexts.push(noteContext);
+        this.activeNoteContexts[noteString] = noteContext;
         activeNoteSetHasChanged = true;
       }
     }
 
     // Finally, update state
+    this.activeKeyboardTouchNotes = newKeyboardTouchNotes;
+    this.activeKeyboardMidiNotes = newKeyboardMidiNotes;
+
     if (activeNoteSetHasChanged === true) {
       this.setState({
         activeKeyboardNotes: newActiveKeyboardNotes,
@@ -1034,7 +1047,7 @@ class App extends React.Component {
   onMIDIMessage(messageType, data) {
     const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     let noteName, octave, noteString;
-    let newActiveNotes = this.state.activeKeyboardNotes.concat([]);
+    let newActiveMidiNotes = this.activeKeyboardMidiNotes.concat([]);
 
     // Note number 0-11 are for the -1 octave, which is not currently supported
     if (data.noteNumber < 12) {
@@ -1047,17 +1060,17 @@ class App extends React.Component {
     noteString = `${noteName}${octave}`;
 
     if (messageType === "noteon") {
-      if (!newActiveNotes.includes(noteString)) {
-        newActiveNotes.push(noteString);
+      if (newActiveMidiNotes.includes(noteString) === false) {
+        newActiveMidiNotes.push(noteString);
       }
-      this.setKeyboardNotes(newActiveNotes);
+      this.setKeyboardMidiNotes(newActiveMidiNotes);
     }
     else if (messageType === "noteoff") {
-      let noteIndex = newActiveNotes.indexOf(noteString);
+      let noteIndex = newActiveMidiNotes.indexOf(noteString);
       if (noteIndex !== -1) {
-        newActiveNotes.splice(noteIndex, 1);
+        newActiveMidiNotes.splice(noteIndex, 1);
       }
-      this.setKeyboardNotes(newActiveNotes);
+      this.setKeyboardMidiNotes(newActiveMidiNotes);
     }
     else if (messageType === "controller") {
       // Maybe do something with controller messages in the future
@@ -1289,7 +1302,7 @@ class App extends React.Component {
                   activeNotes={this.state.activeKeyboardNotes}
                   activate={this.activateKeyboard}
                   deactivate={this.deactivateKeyboard}
-                  setNotes={this.setKeyboardNotes} />
+                  setNotes={this.setKeyboardTouchNotes} />
         }
         <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
           <p className="center mt1 mb0">MIDI Device(s):&nbsp;
