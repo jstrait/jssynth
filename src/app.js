@@ -960,12 +960,10 @@ class App extends React.Component {
     let noteContext;
     let note;
     let currentTrack;
-    let instrument;
     let patternBeingEdited;
 
     if (this.state.trackBeingEditedID !== undefined) {
       currentTrack = this.trackByID(this.state.trackBeingEditedID);
-      instrument = this.instrumentByID(currentTrack.instrumentID);
     }
     else if (this.state.patternBeingEditedID !== undefined) {
       patternBeingEdited = this.patternByID(this.state.patternBeingEditedID);
