@@ -1052,8 +1052,9 @@ class App extends React.Component {
     let noteName, octave, noteString;
     let newActiveMidiNotes = this.activeKeyboardMidiNotes.concat([]);
 
-    // Note number 0-11 are for the -1 octave, which is not currently supported
-    if (data.noteNumber < 12) {
+    // Note numbers 0-11 are for the -1 octave, and note numbers greater than 107 are
+    // for octaves 8 and above. Notes in these octaves are not currently supported.
+    if (data.noteNumber < 12 || data.noteNumber > 107) {
       return;
     }
 
