@@ -1138,6 +1138,7 @@ class Sequencer extends React.Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.timelineContainerEl.scrollLeft = this.props.scrollLeft;
     window.addEventListener("resize", this.onWindowResize, false);
   };

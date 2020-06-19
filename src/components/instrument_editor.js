@@ -279,6 +279,10 @@ class SampleInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "reverbWetPercentage", parseFloat(e.target.value));
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     return <div>
       <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
@@ -634,6 +638,9 @@ class SynthInstrumentEditor extends React.Component {
     this.props.updateInstrument(this.props.instrument.id, "reverbWetPercentage", parseFloat(e.target.value));
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  };
 
   render() {
     return <div>

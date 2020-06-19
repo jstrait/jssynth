@@ -403,6 +403,10 @@ class PatternEditor extends React.Component {
     super(props);
   };
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     let selectedNote;
     if (this.props.selectedRowIndex !== undefined && this.props.selectedStepIndex !== undefined) {
