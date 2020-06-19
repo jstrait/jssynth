@@ -532,7 +532,9 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 }
 
 .note-box-invalid {
-  background: #f66;
+  background: $light-red;
+  border: 2px solid $red;
+  margin: 0;
 }
 
 
