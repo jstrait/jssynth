@@ -331,13 +331,13 @@ class TimelineGrid extends React.Component {
   };
 
   onMouseDown(e) {
-    if (this.props.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID) {
-      this.props.setSelectedPattern(undefined);
-    }
-    else {
+    if (this.props.selectedPatternID === undefined) {
       this.props.setSelectedPattern(MEASURE_HIGHLIGHT_PATTERN_ID);
       this.setPopupMenuPosition(e.clientX, e.clientY);
       this.setIsPopupMenuPending(MEASURE_HIGHLIGHT_PATTERN_ID);
+    }
+    else {
+      this.props.setSelectedPattern(undefined);
     }
 
     this.props.setIsPopupMenuActive(false);
@@ -357,7 +357,12 @@ class TimelineGrid extends React.Component {
 
   onMouseUp(e) {
     window.removeEventListener("mouseup", this.onMouseUp);
+
     this.endDrag();
+
+    if (this.state.isPopupMenuPending === true) {
+      this.props.setIsPopupMenuActive(true);
+    }
 
     this.setState({
       isPopupMenuPending: false,
@@ -377,12 +382,16 @@ class TimelineGrid extends React.Component {
   };
 
   onTouchStart(e) {
-    this.setPopupMenuPosition(e.touches[0].clientX, e.touches[0].clientY);
-    this.props.setIsPopupMenuActive(false);
+    if (this.props.selectedPatternID === undefined) {
+      this.props.setSelectedPattern(MEASURE_HIGHLIGHT_PATTERN_ID);
+      this.setPopupMenuPosition(e.touches[0].clientX, e.touches[0].clientY);
+      this.setIsPopupMenuPending(MEASURE_HIGHLIGHT_PATTERN_ID);
+    }
+    else {
+      this.props.setSelectedPattern(undefined);
+    }
 
-    this.setState({
-      isPopupMenuPending: true,
-    });
+    this.props.setIsPopupMenuActive(false);
   };
 
   onTouchMove(e) {
@@ -408,6 +417,17 @@ class TimelineGrid extends React.Component {
 
   onTouchEnd(e) {
     this.endDrag();
+
+    if (this.state.isPopupMenuPending === true) {
+      this.props.setIsPopupMenuActive(true);
+    }
+
+    this.setState({
+      isPopupMenuPending: false,
+    });
+
+    // Prevent mouse events
+    e.preventDefault();
   };
 
   componentDidMount() {
@@ -528,24 +548,34 @@ class TimelineHighlight extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
     this.onBlur = this.onBlur.bind(this);
   };
 
-  onMouseUp(e) {
-    if (this.props.isPopupMenuPending === true) {
-      this.props.setPopupMenuPosition(e.clientX, e.clientY);
-      this.props.setIsPopupMenuActive(true);
-    }
-
-    this.el.focus();
-
-    e.stopPropagation();
+  onTouchStart(e) {
+    e.preventDefault();
   };
 
   onBlur(e) {
     this.props.setIsPopupMenuActive(false);
     this.props.setSelectedPattern(undefined);
+  };
+
+  componentDidMount() {
+    // This event handler is added manually to the actual DOM element, instead of using the
+    // normal React way of attaching events because React seems to have a bug that prevents
+    // preventDefault() from working correctly in a "touchstart" handler.
+    // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and
+    // https://github.com/facebook/react/issues/9809.
+    this.el.addEventListener("touchstart", this.onTouchStart, false);
+  };
+
+  componentWillUnmount() {
+    this.el.removeEventListener("touchstart", this.onTouchStart);
+  };
+
+  componentDidUpdate() {
+    this.el.focus();
   };
 
   render() {
@@ -559,7 +589,6 @@ class TimelineHighlight extends React.PureComponent {
                      width: `${MEASURE_WIDTH_IN_PIXELS - 1}px`,
                      height: `${TRACK_HEIGHT_IN_PIXELS - 1}px`,
              }}
-             onMouseUp={this.onMouseUp}
              onBlur={this.onBlur}
            >
            </span>
