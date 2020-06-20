@@ -88,8 +88,8 @@ export class DownloadButton extends React.PureComponent {
       bodyContent = <span>Downloading to *.wav is not supported in your browser. If using a mobile device, try using a desktop browser instead.</span>;
     }
 
-    return <div id="download-container" className="relative">
-      <button className="button-full button-hollow right flex flex-align-center" onClick={this.togglePopup}>
+    return <div id="download-container" className="relative flex flex-justify-end">
+      <button className="button-full button-hollow flex flex-align-center" onClick={this.togglePopup}>
         <span className="h3 lh-4">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
       <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.state.fileName + ".wav"} href="#"></a>
