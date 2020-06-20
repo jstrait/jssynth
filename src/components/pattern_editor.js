@@ -86,9 +86,9 @@ class PatternNotes extends React.Component {
         )}
       </div>
       <ul className="flex flex-column mt1 mb1 ml0 pl0 overflow-scroll-x border-box">
-        <li className="list-style-none flex-uniform-size">&nbsp;</li>
+        <li className="list-style-none h4" style={{paddingTop: "1px", paddingBottom: "1px"}}>&nbsp;</li>
         {this.props.rows.map((patternRow, rowIndex) =>
-        <li key={rowIndex} className="list-style-none flex-uniform-size">
+        <li key={rowIndex} className="list-style-none flex flex-justify-center flex-align-center" style={{height: "38px"}}>
           <PatternRowRemoveButton patternID={this.props.patternID} rowIndex={rowIndex} removePatternRow={this.props.removePatternRow} />
         </li>
         )}
