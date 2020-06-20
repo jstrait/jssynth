@@ -701,7 +701,7 @@ class TimelinePattern extends React.PureComponent {
 
     return <span ref={(el) => { this.el = el; }}
                  tabIndex="-1"
-                 className={"absolute block left full-height overflow-hidden outline-none" + extraContainerCSS}
+                 className={"absolute block outline-none" + extraContainerCSS}
                  style={{left: `${this.props.startStep * STEP_WIDTH_IN_PIXELS}px`,
                          top: `${this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS}px`,
                          width: `${this.props.fullStepCount * STEP_WIDTH_IN_PIXELS}px`,
@@ -814,7 +814,7 @@ class TimelinePatternSidebar extends React.PureComponent {
     const resizeButtonExtraStyles = ((this.props.isResizeable === true || this.props.isError === true) ? " timeline-sidebar-button-enabled" : "");
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
-    return <span className={"absolute t0 r0 flex flex-column width-1 full-height right " + backgroundColorStyle}>
+    return <span className={"absolute t0 r0 flex flex-column width-1 full-height " + backgroundColorStyle}>
       <span className={"timeline-sidebar-button flex-uniform-size h4 center cursor-default" + resizeButtonExtraStyles} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
       <span className="timeline-sidebar-button timeline-sidebar-button-enabled flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
     </span>;
