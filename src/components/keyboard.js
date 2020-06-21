@@ -31,8 +31,10 @@ class Keyboard extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.scrollLeftTimeoutID = undefined;
-    this.scrollRightTimeoutID = undefined;
+    this.state = {
+      scrollLeftTimeoutID: undefined,
+      scrollRightTimeoutID: undefined,
+    };
 
     this.touchHandler = this.touchHandler.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -54,6 +56,8 @@ class Keyboard extends React.PureComponent {
     let key;
     let isLeftScrollActive = false;
     let isRightScrollActive = false;
+    let newScrollLeftTimeoutID = this.state.scrollLeftTimeoutID;
+    let newScrollRightTimeoutID = this.state.scrollRightTimeoutID;
     let activeNotes = [];
 
     for (key in touches) {
@@ -62,14 +66,14 @@ class Keyboard extends React.PureComponent {
       if (elementUnderCursor !== undefined) {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
           isLeftScrollActive = true;
-          if (this.scrollLeftTimeoutID === undefined) {
-            this.scrollLeftTimeoutID = setInterval(() => this.onScroll(-SCROLL_AMOUNT), 15);
+          if (this.state.scrollLeftTimeoutID === undefined) {
+            newScrollLeftTimeoutID = setInterval(() => this.onScroll(-SCROLL_AMOUNT), 15);
           }
         }
         else if (elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
           isRightScrollActive = true;
-          if (this.scrollRightTimeoutID === undefined) {
-            this.scrollRightTimeoutID = setInterval(() => this.onScroll(SCROLL_AMOUNT), 15);
+          if (this.state.scrollRightTimeoutID === undefined) {
+            newScrollRightTimeoutID = setInterval(() => this.onScroll(SCROLL_AMOUNT), 15);
           }
         }
         else {
@@ -78,13 +82,20 @@ class Keyboard extends React.PureComponent {
       }
     }
 
-    if (!isLeftScrollActive && this.scrollLeftTimeoutID !== undefined) {
-      clearInterval(this.scrollLeftTimeoutID);
-      this.scrollLeftTimeoutID = undefined;
+    if (!isLeftScrollActive && this.state.scrollLeftTimeoutID !== undefined) {
+      clearInterval(this.state.scrollLeftTimeoutID);
+      newScrollLeftTimeoutID = undefined;
     }
-    if (!isRightScrollActive && this.scrollRightTimeoutID !== undefined) {
-      clearInterval(this.scrollRightTimeoutID);
-      this.scrollRightTimeoutID = undefined;
+    if (!isRightScrollActive && this.state.scrollRightTimeoutID !== undefined) {
+      clearInterval(this.state.scrollRightTimeoutID);
+      newScrollRightTimeoutID = undefined;
+    }
+
+    if (newScrollLeftTimeoutID !== this.state.scrollLeftTimeoutID || newScrollRightTimeoutID !== this.state.scrollRightTimeoutID) {
+      this.setState({
+        scrollLeftTimeoutID: newScrollLeftTimeoutID,
+        scrollRightTimeoutID: newScrollRightTimeoutID,
+      });
     }
 
     this.props.setNotes(activeNotes);
@@ -251,7 +262,7 @@ class Keyboard extends React.PureComponent {
     let rootNote = this.props.rootNoteName + this.props.rootNoteOctave;
 
     return <div ref={(el) => { this.keyboardOuterContainer = el; }} className="keyboard-outer-container flex user-select-none" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} onMouseOut={this.onMouseOut} onMouseOver={this.onMouseOver} onTouchStart={this.onTouchStart} onTouchEnd={this.onTouchEnd}>
-      <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
+      <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.state.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container center" ref={(div) => { this.keyboardContainer = div; }}>
         <div className="keyboard block border-box">
           <Key isActive={this.props.activeNotes.includes("C0")} noteName="C" octave="0" rootNote={rootNote} label="C0" />
@@ -359,7 +370,7 @@ class Keyboard extends React.PureComponent {
           <Key isActive={this.props.activeNotes.includes("B7")} noteName="B" octave="7" rootNote={rootNote} label="B7" />
         </div>
       </div>
-      <div className={"keyboard-scroll-button js-keyboard-scroll-right flex flex-align-center flex-justify-center full-height" + (this.scrollRightTimeoutID !== undefined ? " pressed" : "")}>&rarr;</div>
+      <div className={"keyboard-scroll-button js-keyboard-scroll-right flex flex-align-center flex-justify-center full-height" + (this.state.scrollRightTimeoutID !== undefined ? " pressed" : "")}>&rarr;</div>
     </div>;
   };
 };
