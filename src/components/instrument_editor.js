@@ -297,7 +297,7 @@ class SampleInstrumentEditor extends React.Component {
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l " + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Sound File</h2>
+          <h2 className="h3 lh-3 display-none block-l">Sound File</h2>
           <label className="inline-block control-label">Sound file:</label>
           <span>{this.props.instrument.filename}</span>&nbsp;
           <button className="button-link" onClick={this.showFileChooser}>change</button>
@@ -337,7 +337,7 @@ class SampleInstrumentEditor extends React.Component {
           </span>
         </div>
         <div className={"pl1 pr1 br border-box instrument-panel block-l " + (this.state.selectedTab === "filter" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Filter</h2>
+          <h2 className="h3 lh-3 display-none block-l">Filter</h2>
           <span className="control">
             <label className="control-label">Cutoff:</label>
             <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
@@ -396,7 +396,7 @@ class SampleInstrumentEditor extends React.Component {
         </div>
         <div>
             <div className={"pl1 border-box instrument-panel block-l " + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
+            <h2 className="h3 lh-3 display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
@@ -419,7 +419,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
           </div>
           <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-l">Effects</h2>
+            <h2 className="h3 lh-3 display-none block-l">Effects</h2>
             <span className="control">
               <label className="control-label">Delay Time:</label>
               <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
@@ -657,7 +657,7 @@ class SynthInstrumentEditor extends React.Component {
       </ul>
       <div className="flex overflow-scroll-x instrument-panel-container">
         <div className={"pr1 br instrument-panel block-l" + (this.state.selectedTab === "base_sound" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Sound Generator</h2>
+          <h2 className="h3 lh-3 display-none block-l">Sound Generator</h2>
           <span className="block lightText">Base:</span>
           <span className="control">
             <label className="control-label indented">Waveform:</label>
@@ -704,7 +704,7 @@ class SynthInstrumentEditor extends React.Component {
         </div>
 
         <div className={"pl1 pr1 br border-box instrument-panel block-l" + (this.state.selectedTab === "filter" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Filter</h2>
+          <h2 className="h3 lh-3 display-none block-l">Filter</h2>
           <span className="control">
             <label className="control-label">Cutoff:</label>
               <input type="range" min="50" max="9950" step="50" value={this.props.instrument.filterCutoff} onChange={this.setFilterCutoff} />
@@ -764,7 +764,7 @@ class SynthInstrumentEditor extends React.Component {
 
         <div className="pr1-l br-l">
           <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "pitch_wobble" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-l">Pitch Wobble</h2>
+            <h2 className="h3 lh-3 display-none block-l">Pitch Wobble</h2>
             <span className="control">
               <label className="control-label">Amount:</label>
               <MultiLinearSlider value={this.props.instrument.lfoAmplitude} stops={this.PITCH_LFO_STOPS} onChange={this.setLFOAmplitude} />
@@ -782,7 +782,7 @@ class SynthInstrumentEditor extends React.Component {
           </div>
 
           <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "loudness_envelope" ? "" : " display-none")}>
-            <h2 className="h3 section-header display-none block-l">Loudness Envelope</h2>
+            <h2 className="h3 lh-3 display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
               <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
@@ -807,7 +807,7 @@ class SynthInstrumentEditor extends React.Component {
         </div>
 
         <div className={"pl1 border-box instrument-panel block-l" + (this.state.selectedTab === "effects" ? "" : " display-none")}>
-          <h2 className="h3 section-header display-none block-l">Effects</h2>
+          <h2 className="h3 lh-3 display-none block-l">Effects</h2>
           <span className="control">
             <label className="control-label">Delay Time:</label>
             <input type="range" min="0.0" max="0.99" step="0.01" value={this.props.instrument.delayTime} onChange={this.setDelayTime} />
