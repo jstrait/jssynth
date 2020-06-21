@@ -85,7 +85,7 @@ class PatternNotes extends React.Component {
                         setNoteValue={this.props.setNoteValue} />
         )}
       </div>
-      <ul className="flex flex-column mt1 mb1 ml0 pl0 overflow-scroll-x border-box">
+      <ul className="flex flex-column mt1 mb1 ml0 pl-half overflow-scroll-x border-box">
         <li className="list-style-none h4" style={{paddingTop: "1px", paddingBottom: "1px"}}>&nbsp;</li>
         {this.props.rows.map((patternRow, rowIndex) =>
         <li key={rowIndex} className="list-style-none flex flex-justify-center flex-align-center" style={{height: "38px"}}>
@@ -105,8 +105,9 @@ class PatternMeasure extends React.Component {
   render() {
     const leftPaddingStyle = (this.props.startStep === 0) ? " pl0" : " pl-half";
     const leftBorderStyle = (this.props.startStep === 0) ? "" : " bl";
+    const rightPaddingStyle = ((this.props.startStep + this.props.stepCount - 1) === this.props.maxStep) ? "" : "pr-half";
 
-    return <ul className={"flex flex-uniform-size flex-column mt1 mb0 ml0 pb1" + leftPaddingStyle + " pr-half" + leftBorderStyle + " border-box"}>
+    return <ul className={`flex flex-uniform-size flex-column mt1 mb0 ml0 pb1 ${leftPaddingStyle} ${rightPaddingStyle} ${leftBorderStyle} border-box`}>
       <li className="inline-block list-style-none full-width">
         <ul className="flex ml0 pl0 center whitespace-wrap-none">
           {Array(this.props.stepCount).fill(undefined).map((_, stepIndex) =>
