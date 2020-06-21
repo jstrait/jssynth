@@ -1262,7 +1262,7 @@ class App extends React.Component {
                    removeTrack={this.removeTrack} />
         }
         {view === VIEW_INSTRUMENT_SYNTH &&
-        <div className="pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
           <SynthInstrumentEditor instrument={instrument}
                                  trackID={track.id}
                                  trackName={track.name}
@@ -1273,7 +1273,7 @@ class App extends React.Component {
         </div>
         }
         {view === VIEW_INSTRUMENT_SAMPLER &&
-        <div className="pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
           <SampleInstrumentEditor instrument={instrument}
                                   trackID={track.id}
                                   trackName={track.name}
@@ -1285,7 +1285,7 @@ class App extends React.Component {
         </div>
         }
         {view === VIEW_PATTERN_EDITOR &&
-        <div className="pb1 pl1 pr1 border-box bt-thick">
+        <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
           <PatternEditor pattern={pattern}
                          selectedRowIndex={this.state.selectedPatternRowIndex}
                          selectedStepIndex={this.state.selectedPatternStepIndex}
