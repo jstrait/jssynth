@@ -68,6 +68,9 @@ class TimelineHeader extends React.PureComponent {
   };
 
   onPlaybackHeadTouchStart(e) {
+    // Hide the sequencer popup menu, to prevent it from blocking the slider
+    this.inputEl.focus();
+
     this.props.setIsTimelineElementActive(true);
   };
 
@@ -87,7 +90,7 @@ class TimelineHeader extends React.PureComponent {
         <li className="sequencer-body-right-padding list-style-none"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * STEPS_PER_MEASURE) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
+        <input ref={el => {this.inputEl = el;}} type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * STEPS_PER_MEASURE) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
       </div>
     </div>;
   };
