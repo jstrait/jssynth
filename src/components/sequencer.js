@@ -70,7 +70,6 @@ class TimelineHeader extends React.PureComponent {
 
     this.setCurrentStep = this.setCurrentStep.bind(this);
     this.onPlaybackHeadTouchStart = this.onPlaybackHeadTouchStart.bind(this);
-    this.onPlaybackHeadTouchEnd = this.onPlaybackHeadTouchEnd.bind(this);
   };
 
   setCurrentStep(e) {
@@ -80,12 +79,6 @@ class TimelineHeader extends React.PureComponent {
   onPlaybackHeadTouchStart(e) {
     // Hide the sequencer popup menu, to prevent it from blocking the slider
     this.inputEl.focus();
-
-    this.props.setIsTimelineElementActive(true);
-  };
-
-  onPlaybackHeadTouchEnd(e) {
-    this.props.setIsTimelineElementActive(false);
   };
 
   render() {
@@ -113,7 +106,6 @@ class TimelineHeader extends React.PureComponent {
           value={this.props.currentStep}
           onChange={this.setCurrentStep}
           onTouchStart={this.onPlaybackHeadTouchStart}
-          onTouchEnd={this.onPlaybackHeadTouchEnd}
         />
       </div>
     </div>;
@@ -1040,7 +1032,6 @@ class Sequencer extends React.Component {
     super(props);
 
     this.state = {
-      isTimelineElementActive: false,
       selectedPatternID: undefined,
       popupMenuStepIndex: undefined,
       popupMenuTrackIndex: undefined,
@@ -1050,7 +1041,6 @@ class Sequencer extends React.Component {
     };
 
     this.toggleIsExpanded = this.toggleIsExpanded.bind(this);
-    this.setIsTimelineElementActive = this.setIsTimelineElementActive.bind(this);
     this.setSelectedPattern = this.setSelectedPattern.bind(this);
     this.setIsPopupMenuActive = this.setIsPopupMenuActive.bind(this);
     this.setPopupMenuPosition = this.setPopupMenuPosition.bind(this);
@@ -1068,10 +1058,6 @@ class Sequencer extends React.Component {
 
   toggleIsExpanded() {
     this.props.setIsExpanded(!this.props.isExpanded);
-  };
-
-  setIsTimelineElementActive(newIsTimelineElementActive) {
-    this.setState({isTimelineElementActive: newIsTimelineElementActive});
   };
 
   setSelectedPattern(patternID) {
@@ -1254,14 +1240,13 @@ class Sequencer extends React.Component {
         </ul>
         <div
           ref={(el) => { this.timelineContainerEl = el; }}
-          className={"relative flex flex-uniform-size flex-column m0 pl0 user-select-none border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}
+          className={"relative flex flex-uniform-size flex-column m0 pl0 user-select-none border-box overflow-scroll-x"}
           onScroll={this.onScroll}
         >
           <TimelineHeader
             measureCount={this.props.measureCount}
             currentStep={this.props.currentStep}
             setCurrentStep={this.props.setCurrentStep}
-            setIsTimelineElementActive={this.setIsTimelineElementActive}
           />
           <TimelineGrid
             tracks={this.props.tracks}
