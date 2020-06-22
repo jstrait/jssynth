@@ -46,7 +46,6 @@ a {
 /* Header */
 
 #transport {
-  -webkit-justify-content: center;
   justify-content: center;
 }
 
@@ -153,7 +152,6 @@ a {
 .tab-strip {
   overflow: hidden;
   border-radius: 5px;
-  -webkit-flex: 1;
   flex: 1;
 }
 
@@ -178,36 +176,27 @@ a {
 
 @media (max-width: 666px) {
   #header {
-    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
   }
 
   #logo-container {
-    -webkit-order: 1;
     order: 1;
-    -webkit-flex: 1 50%;
     flex: 1 50%;
   }
 
   #transport {
-    -webkit-order: 3;
     order: 3;
-    -webkit-flex: 1 100%;
     flex: 1 100%;
     padding-top: 1.5rem;
-    -webkit-justify-content: space-between;
     justify-content: space-between;
   }
 
   .transport-inner {
-    -webkit-flex: 1;
     flex: 1;
   }
 
   #download-container {
-    -webkit-order: 2;
     order: 2;
-    -webkit-flex: 1 50%;
     flex: 1 50%;
   }
 }
@@ -464,15 +453,12 @@ input[type='range'].sequencer-playback-header::-ms-thumb:active {
 
 @media (max-width: 768px) {
   .instrument-panel-container {
-    -webkit-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: stretch;
     align-items: stretch;
     width: 100%;
   }
 
   .instrument-panel {
-    -webkit-flex: 1;
     flex: 1;
     min-width: 0;
     margin: 0;

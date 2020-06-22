@@ -194,11 +194,8 @@ button.button-error:disabled {
 }
 
 .control {
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-direction: row;
   flex-direction: row;
-  -webkit-align-items: center;
   align-items: center;
 }
 
@@ -219,7 +216,6 @@ button.button-error:disabled {
 
 @media (max-width: 768px) {
   .control {
-    -webkit-align-items: flex-start;
     align-items: flex-start;
   }
 
@@ -272,7 +268,6 @@ button.button-error:disabled {
 
 .keyboard-scroll-button {
   background: #c1c1c1;
-  -webkit-flex: 0 0 40px;
   flex: 0 0 40px;
 }
 
