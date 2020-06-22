@@ -10,7 +10,13 @@ class TabStrip extends React.PureComponent {
   render() {
     return <ul className="tab-strip flex m0 pl0 border-box b-all">
       {this.props.items.map((item) =>
-        <TabStripItem key={item.value} label={item.label} value={item.value} isSelected={this.props.selectedValue === item.value} setSelectedValue={this.props.setSelectedValue} />
+        <TabStripItem
+          key={item.value}
+          label={item.label}
+          value={item.value}
+          isSelected={this.props.selectedValue === item.value}
+          setSelectedValue={this.props.setSelectedValue}
+        />
       )}
     </ul>;
   };

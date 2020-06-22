@@ -72,17 +72,19 @@ class PatternNotes extends React.Component {
     return <div className="flex">
       <div className="flex flex-uniform-size overflow-scroll-x">
         {measures.map((measure, measureIndex) =>
-        <PatternMeasure key={measureIndex}
-                        patternID={this.props.patternID}
-                        startStep={measureIndex * measureLength}
-                        stepCount={measureLength}
-                        maxStep={this.props.stepCount - 1}
-                        rows={measure}
-                        isKeyboardActive={this.props.isKeyboardActive}
-                        selectedRowIndex={this.props.selectedRowIndex}
-                        selectedStepIndex={this.props.selectedStepIndex}
-                        setSelectedStepIndex={this.props.setSelectedStepIndex}
-                        setNoteValue={this.props.setNoteValue} />
+        <PatternMeasure
+          key={measureIndex}
+          patternID={this.props.patternID}
+          startStep={measureIndex * measureLength}
+          stepCount={measureLength}
+          maxStep={this.props.stepCount - 1}
+          rows={measure}
+          isKeyboardActive={this.props.isKeyboardActive}
+          selectedRowIndex={this.props.selectedRowIndex}
+          selectedStepIndex={this.props.selectedStepIndex}
+          setSelectedStepIndex={this.props.setSelectedStepIndex}
+          setNoteValue={this.props.setNoteValue}
+        />
         )}
       </div>
       <ul className="flex flex-column mt1 mb1 ml0 pl-half overflow-scroll-x border-box">
@@ -120,16 +122,18 @@ class PatternMeasure extends React.Component {
         <ul className="flex ml0 pl0 whitespace-wrap-none">
           {patternRow.slice(0, this.props.stepCount).map((note, stepIndex) =>
           <li key={this.props.startStep + stepIndex} className="list-style-none inline-block note-container">
-            <NoteBox patternID={this.props.patternID}
-                     note={note}
-                     rowIndex={rowIndex}
-                     stepIndex={this.props.startStep + stepIndex}
-                     maxStep={this.props.maxStep}
-                     maxRow={this.props.rows.length - 1}
-                     isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedStepIndex === (this.props.startStep + stepIndex)}
-                     isKeyboardActive={this.props.isKeyboardActive}
-                     setSelectedStepIndex={this.props.setSelectedStepIndex}
-                     setNoteValue={this.props.setNoteValue} />
+            <NoteBox
+              patternID={this.props.patternID}
+              note={note}
+              rowIndex={rowIndex}
+              stepIndex={this.props.startStep + stepIndex}
+              maxStep={this.props.maxStep}
+              maxRow={this.props.rows.length - 1}
+              isSelected={this.props.selectedRowIndex === rowIndex && this.props.selectedStepIndex === (this.props.startStep + stepIndex)}
+              isKeyboardActive={this.props.isKeyboardActive}
+              setSelectedStepIndex={this.props.setSelectedStepIndex}
+              setNoteValue={this.props.setNoteValue}
+            />
            </li>
           )}
         </ul>
@@ -326,14 +330,16 @@ class NoteBox extends React.PureComponent {
     let formattedNoteName = this.formatNote(this.props.note.name);
     let isNoteValid = (this.props.isSelected === true) || this.isNoteValid(this.props.note.name);
 
-    return <span ref={(el) => { this.el = el; }}
-                 tabIndex="-1"
-                 className={"note-box" + (isNoteValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")}
-                 onKeyDown={this.onKeyDown}
-                 onMouseDown={this.onMouseDown}
-                 onTouchStart={this.onTouchStart}
-                 onFocus={this.onFocus}
-                 onBlur={this.onBlur}>
+    return <span
+             ref={(el) => { this.el = el; }}
+             tabIndex="-1"
+             className={"note-box" + (isNoteValid ? "" : " note-box-invalid") + ((this.props.isSelected === true) ? " note-box-focused" : "")}
+             onKeyDown={this.onKeyDown}
+             onMouseDown={this.onMouseDown}
+             onTouchStart={this.onTouchStart}
+             onFocus={this.onFocus}
+             onBlur={this.onBlur}
+           >
              {formattedNoteName}
            </span>;
   };
@@ -419,23 +425,29 @@ class PatternEditor extends React.Component {
 
     return <div>
       <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
-      <PatternHeader patternID={this.props.pattern.id}
-                     patternName={this.props.pattern.name}
-                     setPatternName={this.props.setPatternName} />
-      <PatternNotes patternID={this.props.pattern.id}
-                    stepCount={this.props.pattern.stepCount}
-                    rows={this.props.pattern.rows}
-                    isKeyboardActive={this.props.isKeyboardActive}
-                    selectedRowIndex={this.props.selectedRowIndex}
-                    selectedStepIndex={this.props.selectedStepIndex}
-                    setSelectedStepIndex={this.props.setSelectedStepIndex}
-                    setNoteValue={this.props.setNoteValue}
-                    removePatternRow={this.props.removePatternRow} />
-      <PatternFooter patternID={this.props.pattern.id}
-                     selectedRowIndex={this.props.selectedRowIndex}
-                     selectedStepIndex={this.props.selectedStepIndex}
-                     addPatternRow={this.props.addPatternRow}
-                     setNoteValue={this.props.setNoteValue} />
+      <PatternHeader
+        patternID={this.props.pattern.id}
+        patternName={this.props.pattern.name}
+        setPatternName={this.props.setPatternName}
+      />
+      <PatternNotes
+        patternID={this.props.pattern.id}
+        stepCount={this.props.pattern.stepCount}
+        rows={this.props.pattern.rows}
+        isKeyboardActive={this.props.isKeyboardActive}
+        selectedRowIndex={this.props.selectedRowIndex}
+        selectedStepIndex={this.props.selectedStepIndex}
+        setSelectedStepIndex={this.props.setSelectedStepIndex}
+        setNoteValue={this.props.setNoteValue}
+        removePatternRow={this.props.removePatternRow}
+      />
+      <PatternFooter
+        patternID={this.props.pattern.id}
+        selectedRowIndex={this.props.selectedRowIndex}
+        selectedStepIndex={this.props.selectedStepIndex}
+        addPatternRow={this.props.addPatternRow}
+        setNoteValue={this.props.setNoteValue}
+      />
     </div>;
   };
 };

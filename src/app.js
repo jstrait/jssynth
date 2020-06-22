@@ -1224,89 +1224,98 @@ class App extends React.Component {
             <h1 className="h3 lh-3 red bold mt0 mb0">JS-140</h1>
             <span className="lightText">Web Synthesizer</span>
           </div>
-          <Transport isPlaying={this.state.transport.isPlaying}
-                     amplitude={this.state.masterAmplitude}
-                     tempo={this.state.transport.tempo}
-                     rewindTransport={this.rewindTransport}
-                     togglePlaying={this.togglePlaying}
-                     updateAmplitude={this.updateMasterAmplitude}
-                     updateTempo={this.updateTempo} />
+          <Transport
+            isPlaying={this.state.transport.isPlaying}
+            amplitude={this.state.masterAmplitude}
+            tempo={this.state.transport.tempo}
+            rewindTransport={this.rewindTransport}
+            togglePlaying={this.togglePlaying}
+            updateAmplitude={this.updateMasterAmplitude}
+            updateTempo={this.updateTempo}
+          />
           <DownloadButton isEnabled={this.state.isDownloadEnabled} onRequestDownload={this.exportToWav} />
         </div>
         {view === VIEW_SEQUENCER &&
-        <Sequencer tracks={this.state.tracks}
-                   patterns={this.state.patterns}
-                   measureCount={this.state.measureCount}
-                   setMeasureCount={this.setMeasureCount}
-                   isExpanded={this.state.isSequencerExpanded}
-                   setIsExpanded={this.setIsSequencerExpanded}
-                   scrollLeft={this.state.sequencerScrollLeft}
-                   setScrollLeft={this.setSequencerScrollLeft}
-                   currentStep={this.state.transport.step}
-                   setCurrentStep={this.setCurrentStep}
-                   setTrackVolume={this.setTrackVolume}
-                   toggleTrackMute={this.toggleTrackMute}
-                   setTrackBeingEdited={this.setTrackBeingEdited}
-                   setPatternBeingEdited={this.setPatternBeingEdited}
-                   copiedPattern={this.state.copiedPattern}
-                   setCopiedPattern={this.setCopiedPattern}
-                   addSynthTrack={this.addSynthTrack}
-                   addSamplerTrack={this.addSamplerTrack}
-                   addPattern={this.addPattern}
-                   duplicatePattern={this.duplicatePattern}
-                   isSpaceForPatternInTrack={this.isSpaceForPatternInTrack}
-                   movePattern={this.movePattern}
-                   resizePattern={this.resizePattern}
-                   changePatternPlaybackStepCount={this.changePatternPlaybackStepCount}
-                   removePattern={this.removePattern}
-                   removeTrack={this.removeTrack} />
+        <Sequencer
+          tracks={this.state.tracks}
+          patterns={this.state.patterns}
+          measureCount={this.state.measureCount}
+          setMeasureCount={this.setMeasureCount}
+          isExpanded={this.state.isSequencerExpanded}
+          setIsExpanded={this.setIsSequencerExpanded}
+          scrollLeft={this.state.sequencerScrollLeft}
+          setScrollLeft={this.setSequencerScrollLeft}
+          currentStep={this.state.transport.step}
+          setCurrentStep={this.setCurrentStep}
+          setTrackVolume={this.setTrackVolume}
+          toggleTrackMute={this.toggleTrackMute}
+          setTrackBeingEdited={this.setTrackBeingEdited}
+          setPatternBeingEdited={this.setPatternBeingEdited}
+          copiedPattern={this.state.copiedPattern}
+          setCopiedPattern={this.setCopiedPattern}
+          addSynthTrack={this.addSynthTrack}
+          addSamplerTrack={this.addSamplerTrack}
+          addPattern={this.addPattern}
+          duplicatePattern={this.duplicatePattern}
+          isSpaceForPatternInTrack={this.isSpaceForPatternInTrack}
+          movePattern={this.movePattern}
+          resizePattern={this.resizePattern}
+          changePatternPlaybackStepCount={this.changePatternPlaybackStepCount}
+          removePattern={this.removePattern}
+          removeTrack={this.removeTrack}
+        />
         }
         {view === VIEW_INSTRUMENT_SYNTH &&
         <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
-          <SynthInstrumentEditor instrument={instrument}
-                                 trackID={track.id}
-                                 trackName={track.name}
-                                 setTrackName={this.setTrackName}
-                                 updateInstrument={this.updateInstrument}
-                                 onClose={this.closeInstrumentEditor}
+          <SynthInstrumentEditor
+            instrument={instrument}
+            trackID={track.id}
+            trackName={track.name}
+            setTrackName={this.setTrackName}
+            updateInstrument={this.updateInstrument}
+            onClose={this.closeInstrumentEditor}
           />
         </div>
         }
         {view === VIEW_INSTRUMENT_SAMPLER &&
         <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
-          <SampleInstrumentEditor instrument={instrument}
-                                  trackID={track.id}
-                                  trackName={track.name}
-                                  setTrackName={this.setTrackName}
-                                  setBufferFromFile={this.setBufferFromFile}
-                                  updateInstrument={this.updateInstrument}
-                                  onClose={this.closeInstrumentEditor}
+          <SampleInstrumentEditor
+            instrument={instrument}
+            trackID={track.id}
+            trackName={track.name}
+            setTrackName={this.setTrackName}
+            setBufferFromFile={this.setBufferFromFile}
+            updateInstrument={this.updateInstrument}
+            onClose={this.closeInstrumentEditor}
           />
         </div>
         }
         {view === VIEW_PATTERN_EDITOR &&
         <div className="pb1 pl1-safe pr1-safe border-box bt-thick">
-          <PatternEditor pattern={pattern}
-                         selectedRowIndex={this.state.selectedPatternRowIndex}
-                         selectedStepIndex={this.state.selectedPatternStepIndex}
-                         setPatternName={this.setPatternName}
-                         addPatternRow={this.addPatternRow}
-                         removePatternRow={this.removePatternRow}
-                         setSelectedStepIndex={this.setSelectedPatternStepIndex}
-                         setNoteValue={this.setNoteValue}
-                         isKeyboardActive={this.state.isKeyboardActive}
-                         onClose={this.closePatternEditor}
+          <PatternEditor
+            pattern={pattern}
+            selectedRowIndex={this.state.selectedPatternRowIndex}
+            selectedStepIndex={this.state.selectedPatternStepIndex}
+            setPatternName={this.setPatternName}
+            addPatternRow={this.addPatternRow}
+            removePatternRow={this.removePatternRow}
+            setSelectedStepIndex={this.setSelectedPatternStepIndex}
+            setNoteValue={this.setNoteValue}
+            isKeyboardActive={this.state.isKeyboardActive}
+            onClose={this.closePatternEditor}
           />
         </div>
         }
         {(view === VIEW_PATTERN_EDITOR || view === VIEW_INSTRUMENT_SYNTH || view === VIEW_INSTRUMENT_SAMPLER) &&
-        <Keyboard isActive={this.state.isKeyboardActive}
-                  rootNoteName={instrument.rootNoteName}
-                  rootNoteOctave={instrument.rootNoteOctave}
-                  activeNotes={this.state.activeKeyboardNotes}
-                  activate={this.activateKeyboard}
-                  deactivate={this.deactivateKeyboard}
-                  setNotes={this.setKeyboardTouchNotes} />
+        <Keyboard
+          isActive={this.state.isKeyboardActive}
+          rootNoteName={instrument.rootNoteName}
+          rootNoteOctave={instrument.rootNoteOctave}
+          activeNotes={this.state.activeKeyboardNotes}
+          activate={this.activateKeyboard}
+          deactivate={this.deactivateKeyboard}
+          setNotes={this.setKeyboardTouchNotes}
+        />
         }
         <div className="flex flex-column flex-uniform-size flex-justify-end mt0">
           <p className="center mt1 mb0">MIDI Device(s):&nbsp;

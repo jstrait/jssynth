@@ -48,7 +48,17 @@ class TrackHeader extends React.PureComponent {
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
         <button className={"button-hollow button-small" + (this.props.isMuted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
-        <input className="full-width" style={{marginLeft: "4px"}} type="range" min="0.0" max="1.0" step="0.01" disabled={this.props.isMuted} value={this.props.volume} onChange={this.setTrackVolume} />
+        <input
+          className="full-width"
+          style={{marginLeft: "4px"}}
+          type="range"
+          min="0.0"
+          max="1.0"
+          step="0.01"
+          disabled={this.props.isMuted}
+          value={this.props.volume}
+          onChange={this.setTrackVolume}
+        />
       </span>
     </li>;
   };
@@ -85,12 +95,26 @@ class TimelineHeader extends React.PureComponent {
       <ul className="flex m0 pl0 whitespace-wrap-none height-2">
         <li className="sequencer-body-left-padding list-style-none border-box"></li>
         {Array(this.props.measureCount).fill(undefined).map((_, measureIndex) =>
-        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb"><span className="block h4 lh-4 full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span></li>
+        <li key={measureIndex} className="sequencer-cell sequencer-cell-header flex-uniform-size list-style-none border-box br bb">
+          <span className="block h4 lh-4 full-width" style={{marginLeft: "4.5px"}}>{measureIndex + 1}</span>
+        </li>
         )}
         <li className="sequencer-body-right-padding list-style-none"></li>
       </ul>
       <div className="sequencer-step-timeline">
-        <input ref={el => {this.inputEl = el;}} type="range" className="sequencer-playback-header" style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}} min="0" max={(this.props.measureCount * STEPS_PER_MEASURE) - 1} step="1" value={this.props.currentStep} onChange={this.setCurrentStep} onTouchStart={this.onPlaybackHeadTouchStart} onTouchEnd={this.onPlaybackHeadTouchEnd} />
+        <input
+          ref={el => {this.inputEl = el;}}
+          type="range"
+          className="sequencer-playback-header"
+          style={{width: "calc(" + baseTimelineWidth + "px + (1.5rem - " + STEP_WIDTH_IN_PIXELS + "px))", marginLeft: "calc(0.25rem - 0.5px)"}}
+          min="0"
+          max={(this.props.measureCount * STEPS_PER_MEASURE) - 1}
+          step="1"
+          value={this.props.currentStep}
+          onChange={this.setCurrentStep}
+          onTouchStart={this.onPlaybackHeadTouchStart}
+          onTouchEnd={this.onPlaybackHeadTouchEnd}
+        />
       </div>
     </div>;
   };
@@ -481,65 +505,73 @@ class TimelineGrid extends React.Component {
 
     return <div className="flex full-height whitespace-wrap-none">
       <span className="sequencer-body-left-padding border-box bg-lighter-gray"></span>
-      <span ref={el => {this.containerEl = el;}}
-            className="sequencer-body relative border-box"
-            style={{minWidth: `${this.props.measureCount * MEASURE_WIDTH_IN_PIXELS}px`}}
-            onMouseDown={this.onMouseDown}
-            onMouseMove={(this.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
-            onMouseUp={this.onMouseUp}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            onTouchStart={this.onTouchStart}
-            onTouchEnd={this.onTouchEnd}>
+      <span
+        ref={el => {this.containerEl = el;}}
+        className="sequencer-body relative border-box"
+        style={{minWidth: `${this.props.measureCount * MEASURE_WIDTH_IN_PIXELS}px`}}
+        onMouseDown={this.onMouseDown}
+        onMouseMove={(this.dragType !== TIMELINE_DRAG_NONE) ? this.onMouseDrag : undefined}
+        onMouseUp={this.onMouseUp}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+        onTouchStart={this.onTouchStart}
+        onTouchEnd={this.onTouchEnd}
+      >
         {this.props.selectedPatternID === MEASURE_HIGHLIGHT_PATTERN_ID &&
-        <TimelineHighlight trackIndex={this.props.popupMenuTrackIndex}
-                           measure={popupMenuMeasure}
-                           isPopupMenuPending={this.state.isPopupMenuPending}
-                           setSelectedPattern={this.props.setSelectedPattern}
-                           setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                           setPopupMenuPosition={this.setPopupMenuPosition} />
+        <TimelineHighlight
+          trackIndex={this.props.popupMenuTrackIndex}
+          measure={popupMenuMeasure}
+          isPopupMenuPending={this.state.isPopupMenuPending}
+          setSelectedPattern={this.props.setSelectedPattern}
+          setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+          setPopupMenuPosition={this.setPopupMenuPosition}
+        />
         }
         {patternsByTrackIndex.map((patternView) =>
-        <TimelinePattern key={patternView.pattern.id}
-                         trackIndex={patternView.trackIndex}
-                         patternID={patternView.pattern.id}
-                         patternName={patternView.pattern.name}
-                         patternImage={patternView.pattern.image}
-                         startStep={patternView.pattern.startStep}
-                         baseStepCount={patternView.pattern.stepCount}
-                         fullStepCount={patternView.pattern.playbackStepCount}
-                         isSelected={this.props.selectedPatternID === patternView.pattern.id}
-                         isError={false}
-                         isTransparent={patternView.pattern.id === this.state.ghostPatternID}
-                         isPopupMenuPending={(this.props.selectedPatternID === patternView.pattern.id) && this.state.isPopupMenuPending}
-                         setIsPopupMenuPending={this.setIsPopupMenuPending}
-                         startDrag={this.startDrag}
-                         startResize={this.startResize}
-                         startLoopChange={this.startLoopChange}
-                         setSelectedPattern={this.props.setSelectedPattern}
-                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                         setPopupMenuPosition={this.setPopupMenuPosition} />
+        <TimelinePattern
+          key={patternView.pattern.id}
+          trackIndex={patternView.trackIndex}
+          patternID={patternView.pattern.id}
+          patternName={patternView.pattern.name}
+          patternImage={patternView.pattern.image}
+          startStep={patternView.pattern.startStep}
+          baseStepCount={patternView.pattern.stepCount}
+          fullStepCount={patternView.pattern.playbackStepCount}
+          isSelected={this.props.selectedPatternID === patternView.pattern.id}
+          isError={false}
+          isTransparent={patternView.pattern.id === this.state.ghostPatternID}
+          isPopupMenuPending={(this.props.selectedPatternID === patternView.pattern.id) && this.state.isPopupMenuPending}
+          setIsPopupMenuPending={this.setIsPopupMenuPending}
+          startDrag={this.startDrag}
+          startResize={this.startResize}
+          startLoopChange={this.startLoopChange}
+          setSelectedPattern={this.props.setSelectedPattern}
+          setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+          setPopupMenuPosition={this.setPopupMenuPosition}
+        />
         )}
         {this.state.ghostPatternTrackIndex !== undefined && this.state.ghostPatternStartStep !== undefined &&
-        <TimelinePattern key={-1}
-                         trackIndex={this.state.ghostPatternTrackIndex}
-                         patternID={ghostPattern.id}
-                         patternName={ghostPattern.name}
-                         patternImage={ghostPattern.image}
-                         startStep={this.state.ghostPatternStartStep}
-                         baseStepCount={ghostPattern.stepCount}
-                         fullStepCount={ghostPattern.playbackStepCount}
-                         isSelected={true}
-                         isError={this.props.isSpaceForPatternInTrack(ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount, ghostPattern.id) !== true}
-                         isTransparent={true}
-                         isPopupMenuPending={(this.props.selectedPatternID === ghostPattern.id) && this.state.isPopupMenuPending}
-                         setIsPopupMenuPending={this.setIsPopupMenuPending}
-                         startDrag={this.startDrag}
-                         startResize={this.startResize}
-                         startLoopChange={this.startLoopChange}
-                         setSelectedPattern={this.props.setSelectedPattern}
-                         setIsPopupMenuActive={this.props.setIsPopupMenuActive}
-                         setPopupMenuPosition={this.setPopupMenuPosition} />
+        <TimelinePattern
+          key={-1}
+          trackIndex={this.state.ghostPatternTrackIndex}
+          patternID={ghostPattern.id}
+          patternName={ghostPattern.name}
+          patternImage={ghostPattern.image}
+          startStep={this.state.ghostPatternStartStep}
+          baseStepCount={ghostPattern.stepCount}
+          fullStepCount={ghostPattern.playbackStepCount}
+          isSelected={true}
+          isError={this.props.isSpaceForPatternInTrack(ghostPatternTrackID, this.state.ghostPatternStartStep, ghostPattern.playbackStepCount, ghostPattern.id) !== true}
+          isTransparent={true}
+          isPopupMenuPending={(this.props.selectedPatternID === ghostPattern.id) && this.state.isPopupMenuPending}
+          setIsPopupMenuPending={this.setIsPopupMenuPending}
+          startDrag={this.startDrag}
+          startResize={this.startResize}
+          startLoopChange={this.startLoopChange}
+          setSelectedPattern={this.props.setSelectedPattern}
+          setIsPopupMenuActive={this.props.setIsPopupMenuActive}
+          setPopupMenuPosition={this.setPopupMenuPosition}
+        />
         }
       </span>
       <span className="sequencer-body-right-padding border-box bg-lighter-gray"></span>
@@ -702,18 +734,20 @@ class TimelinePattern extends React.PureComponent {
       SUB_PATTERN_LENGTHS.push(this.props.fullStepCount % this.props.baseStepCount);
     }
 
-    return <span ref={(el) => { this.el = el; }}
-                 tabIndex="-1"
-                 className={"absolute block outline-none" + extraContainerCSS}
-                 style={{left: `${this.props.startStep * STEP_WIDTH_IN_PIXELS}px`,
-                         top: `${this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS}px`,
-                         width: `${this.props.fullStepCount * STEP_WIDTH_IN_PIXELS}px`,
-                         height: `${TRACK_HEIGHT_IN_PIXELS}px`}}
-                 onMouseDown={this.onMouseDown}
-                 onMouseUp={this.onMouseUp}
-                 onTouchStart={this.onTouchStart}
-                 onTouchEnd={this.onTouchEnd}
-                 onBlur={this.onBlur}>
+    return <span
+             ref={(el) => { this.el = el; }}
+             tabIndex="-1"
+             className={"absolute block outline-none" + extraContainerCSS}
+             style={{left: `${this.props.startStep * STEP_WIDTH_IN_PIXELS}px`,
+                     top: `${this.props.trackIndex * TRACK_HEIGHT_IN_PIXELS}px`,
+                     width: `${this.props.fullStepCount * STEP_WIDTH_IN_PIXELS}px`,
+                     height: `${TRACK_HEIGHT_IN_PIXELS}px`}}
+             onMouseDown={this.onMouseDown}
+             onMouseUp={this.onMouseUp}
+             onTouchStart={this.onTouchStart}
+             onTouchEnd={this.onTouchEnd}
+             onBlur={this.onBlur}
+           >
       {SUB_PATTERN_LENGTHS.map((_, index) =>
       <TimelinePatternSegment
         key={SUB_PATTERN_LENGTHS.length - index - 1}   /* Keys are defined in reverse order so that the rightmost pattern is always 0.
@@ -773,14 +807,16 @@ class TimelinePatternSegment extends React.PureComponent {
     }
 
     return <React.Fragment>
-      <span className={"overflow-hidden timeline-pattern" + extraSegmentStyles}
-            style={{
-              left: `${leftPixel}px`,
-              width: `${widthInPixels}px`,
-              backgroundImage: `url(${this.props.image})`,
-              backgroundSize: `auto ${TRACK_HEIGHT_IN_PIXELS}px`,
-              backgroundRepeat: "no-repeat",
-            }}>
+      <span
+        className={"overflow-hidden timeline-pattern" + extraSegmentStyles}
+        style={{
+          left: `${leftPixel}px`,
+          width: `${widthInPixels}px`,
+          backgroundImage: `url(${this.props.image})`,
+          backgroundSize: `auto ${TRACK_HEIGHT_IN_PIXELS}px`,
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         {this.props.isFirstSegment !== true &&
         <span className={"block full-height timeline-pattern-overlay" + overlayBackgroundStyle}></span>
         }
@@ -818,8 +854,20 @@ class TimelinePatternSidebar extends React.PureComponent {
     const onResize = (this.props.isResizeable === true) ? this.props.onStartResize : this.noOp;
 
     return <span className={"absolute t0 r0 flex flex-column width-1 full-height " + backgroundColorStyle}>
-      <span className={"timeline-sidebar-button flex-uniform-size h4 center cursor-default" + resizeButtonExtraStyles} onMouseDown={onResize} onTouchStart={onResize}>&harr;</span>
-      <span className="timeline-sidebar-button timeline-sidebar-button-enabled flex-uniform-size h4 center cursor-default" onMouseDown={this.props.onStartLoopChange} onTouchStart={this.props.onStartLoopChange}>&#8635;</span>
+      <span
+        className={"timeline-sidebar-button flex-uniform-size h4 center cursor-default" + resizeButtonExtraStyles}
+        onMouseDown={onResize}
+        onTouchStart={onResize}
+      >
+        &harr;
+      </span>
+      <span
+        className="timeline-sidebar-button timeline-sidebar-button-enabled flex-uniform-size h4 center cursor-default"
+        onMouseDown={this.props.onStartLoopChange}
+        onTouchStart={this.props.onStartLoopChange}
+      >
+        &#8635;
+      </span>
     </span>;
   };
 };
@@ -892,7 +940,14 @@ class MeasureCount extends React.PureComponent {
       return <span className="flex flex-column flex-align-end pr1-safe">
         <span>
           <label>Measures:</label>&nbsp;
-          <input type="text" className={"width-1" + (this.state.isValidValue ? "" : " note-box-invalid")} maxLength="2" defaultValue={this.props.measureCount} onChange={this.validateValue} ref={input => {this.measureCountInput = input;}} />
+          <input
+            ref={input => {this.measureCountInput = input;}}
+            type="text"
+            className={"width-1" + (this.state.isValidValue ? "" : " note-box-invalid")}
+            maxLength="2"
+            defaultValue={this.props.measureCount}
+            onChange={this.validateValue}
+          />
         </span>
         <span>
           <button className="button-link" onClick={this.disableEditMode}>cancel</button>&nbsp;
@@ -940,9 +995,11 @@ class PopupMenu extends React.Component {
   };
 
   render() {
-    return <span ref={el => {this.containerEl = el;}}
-            className="absolute pointer-events-none"
-            onMouseDown={this.props.onMouseDown}>
+    return <span
+             ref={el => {this.containerEl = el;}}
+             className="absolute pointer-events-none"
+             onMouseDown={this.props.onMouseDown}
+           >
       <span className="timeline-pattern-menu">{this.props.content}</span>
       <span ref={el => {this.arrowContainerEl = el;}} className="timeline-pattern-menu-arrow-container">
         <span className="timeline-pattern-menu-arrow-outline"></span>
@@ -1183,36 +1240,45 @@ class Sequencer extends React.Component {
             <button className={"vertical-top button-tiny button-hollow" + (this.props.isExpanded ? " button-enabled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
-            <TrackHeader key={track.id}
-                         trackID={track.id}
-                         name={track.name}
-                         isMuted={track.isMuted}
-                         volume={track.volume}
-                         setTrackBeingEdited={this.props.setTrackBeingEdited}
-                         setTrackVolume={this.props.setTrackVolume}
-                         toggleTrackMute={this.props.toggleTrackMute} />
+            <TrackHeader
+              key={track.id}
+              trackID={track.id}
+              name={track.name}
+              isMuted={track.isMuted}
+              volume={track.volume}
+              setTrackBeingEdited={this.props.setTrackBeingEdited}
+              setTrackVolume={this.props.setTrackVolume}
+              toggleTrackMute={this.props.toggleTrackMute}
+            />
           )}
         </ul>
-        <div ref={(el) => { this.timelineContainerEl = el; }}
-             className={"relative flex flex-uniform-size flex-column m0 pl0 user-select-none border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")} onScroll={this.onScroll}>
-          <TimelineHeader measureCount={this.props.measureCount}
-                          currentStep={this.props.currentStep}
-                          setCurrentStep={this.props.setCurrentStep}
-                          setIsTimelineElementActive={this.setIsTimelineElementActive} />
-          <TimelineGrid tracks={this.props.tracks}
-                        patterns={this.props.patterns}
-                        measureCount={this.props.measureCount}
-                        selectedPatternID={this.state.selectedPatternID}
-                        isPopupMenuActive={this.state.isPopupMenuActive}
-                        popupMenuTrackIndex={this.state.popupMenuTrackIndex}
-                        popupMenuStepIndex={this.state.popupMenuStepIndex}
-                        setSelectedPattern={this.setSelectedPattern}
-                        setIsPopupMenuActive={this.setIsPopupMenuActive}
-                        setPopupMenuPosition={this.setPopupMenuPosition}
-                        isSpaceForPatternInTrack={this.props.isSpaceForPatternInTrack}
-                        movePattern={this.props.movePattern}
-                        resizePattern={this.props.resizePattern}
-                        changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount} />
+        <div
+          ref={(el) => { this.timelineContainerEl = el; }}
+          className={"relative flex flex-uniform-size flex-column m0 pl0 user-select-none border-box" + (this.state.isTimelineElementActive ? " overflow-hidden-x" : " overflow-scroll-x")}
+          onScroll={this.onScroll}
+        >
+          <TimelineHeader
+            measureCount={this.props.measureCount}
+            currentStep={this.props.currentStep}
+            setCurrentStep={this.props.setCurrentStep}
+            setIsTimelineElementActive={this.setIsTimelineElementActive}
+          />
+          <TimelineGrid
+            tracks={this.props.tracks}
+            patterns={this.props.patterns}
+            measureCount={this.props.measureCount}
+            selectedPatternID={this.state.selectedPatternID}
+            isPopupMenuActive={this.state.isPopupMenuActive}
+            popupMenuTrackIndex={this.state.popupMenuTrackIndex}
+            popupMenuStepIndex={this.state.popupMenuStepIndex}
+            setSelectedPattern={this.setSelectedPattern}
+            setIsPopupMenuActive={this.setIsPopupMenuActive}
+            setPopupMenuPosition={this.setPopupMenuPosition}
+            isSpaceForPatternInTrack={this.props.isSpaceForPatternInTrack}
+            movePattern={this.props.movePattern}
+            resizePattern={this.props.resizePattern}
+            changePatternPlaybackStepCount={this.props.changePatternPlaybackStepCount}
+          />
           <span className="sequencer-playback-line" style={{left: `calc(${this.props.currentStep * STEP_WIDTH_IN_PIXELS}px + 1.0rem - 3px)`}}></span>
         </div>
         <ul className={"flex flex-column mt0 mb0 ml0 pl0 border-box" + (this.props.isExpanded ? "" : " display-none")}>
@@ -1230,10 +1296,12 @@ class Sequencer extends React.Component {
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
       {this.state.isPopupMenuActive === true &&
-      <PopupMenu targetX={this.state.popupMenuTargetX}
-                 targetY={this.state.popupMenuTargetY}
-                 onMouseDown={this.onPopupMenuMouseDown}
-                 content={popupMenuContent} />
+      <PopupMenu
+        targetX={this.state.popupMenuTargetX}
+        targetY={this.state.popupMenuTargetY}
+        onMouseDown={this.onPopupMenuMouseDown}
+        content={popupMenuContent}
+      />
       }
     </div>;
   };
