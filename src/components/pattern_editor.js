@@ -167,7 +167,7 @@ class NoteBox extends React.PureComponent {
     const THREE = 51;
     const FOUR = 52;
     const SIX = 54;
-    const NINE = 57;
+    const SEVEN = 55;
     const A = 65;
     const G = 71;
     const DASH = 189;
@@ -219,7 +219,7 @@ class NoteBox extends React.PureComponent {
      else if (e.keyCode === SIX && e.shiftKey) {
       this.props.setSelectedStepIndex(this.props.rowIndex, 0);
     }
-    else if (e.keyCode >= ZERO && e.keyCode <= NINE && !e.shiftKey) {
+    else if (e.keyCode >= ZERO && e.keyCode <= SEVEN && !e.shiftKey) {
       noteParts = this.extractNoteParts(this.props.note.name);
 
       if (noteParts.modifier === "-") {
@@ -289,7 +289,7 @@ class NoteBox extends React.PureComponent {
   extractNoteParts(noteString) {
     let noteNameMatches = noteString.match(/^[A-G]/);
     let noteName = (noteNameMatches === null) ? "" : noteNameMatches[0];
-    let octaveMatches = noteString.match(/\d$/);
+    let octaveMatches = noteString.match(/[0-7]$/);
     let octave = (octaveMatches === null) ? "" : octaveMatches[0];
 
     let modifier = noteString;
