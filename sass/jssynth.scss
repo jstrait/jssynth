@@ -211,53 +211,53 @@ a {
   bottom: 1px;
 }
 
-input[type='range'].sequencer-playback-header::-webkit-slider-runnable-track {
+input[type="range"].sequencer-playback-header::-webkit-slider-runnable-track {
   height: 0px;
   background-color: red;
 }
 
-input[type='range'].sequencer-playback-header::-moz-range-track {
+input[type="range"].sequencer-playback-header::-moz-range-track {
   height: 0px;
   background-color: red;
 }
 
-input[type='range'].sequencer-playback-header::-ms-track {
+input[type="range"].sequencer-playback-header::-ms-track {
   height: 0px;
   background-color: red;
 }
 
-input[type='range'].sequencer-playback-header::-webkit-slider-thumb {
+input[type="range"].sequencer-playback-header::-webkit-slider-thumb {
   background: #aaaaaaaa;
   border: 2px solid black;
   box-sizing: border-box;
   margin-top: -0.75rem;
 }
 
-input[type='range'].sequencer-playback-header::-moz-range-thumb {
+input[type="range"].sequencer-playback-header::-moz-range-thumb {
   background: #aaaaaaaa;
   border: 2px solid black;
   box-sizing: border-box;
 }
 
-input[type='range'].sequencer-playback-header::-ms-thumb {
+input[type="range"].sequencer-playback-header::-ms-thumb {
   background: #aaaaaaaa;
   border: 2px solid black;
   box-sizing: border-box;
 }
 
-input[type='range'].sequencer-playback-header::-webkit-slider-thumb:hover,
-input[type='range'].sequencer-playback-header::-webkit-slider-thumb:active {
+input[type="range"].sequencer-playback-header::-webkit-slider-thumb:hover,
+input[type="range"].sequencer-playback-header::-webkit-slider-thumb:active {
   background: #666666aa;
 }
 
-input[type='range'].sequencer-playback-header::-moz-range-thumb:hover,
-input[type='range'].sequencer-playback-header::-moz-range-thumb:active {
+input[type="range"].sequencer-playback-header::-moz-range-thumb:hover,
+input[type="range"].sequencer-playback-header::-moz-range-thumb:active {
   background: #666666aa;
 }
 
 
-input[type='range'].sequencer-playback-header::-ms-thumb:hover,
-input[type='range'].sequencer-playback-header::-ms-thumb:active {
+input[type="range"].sequencer-playback-header::-ms-thumb:hover,
+input[type="range"].sequencer-playback-header::-ms-thumb:active {
   background: #666666aa;
 }
 

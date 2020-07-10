@@ -1,22 +1,22 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: ['./src/app.js', './sass/jssynth.scss'],
+  entry: ["./src/app.js", "./sass/jssynth.scss"],
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         }
       },
@@ -25,15 +25,15 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               url: false,
             },
           },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
-              implementation: require('sass'),
+              implementation: require("sass"),
             },
           },
         ],
@@ -48,10 +48,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
-      { from: 'html/jssynth.html' },
-      { from: 'sounds/*.wav' },
-      { from: 'images/*.png' },
-      { from: 'lib/*.js' },
+      { from: "html/jssynth.html" },
+      { from: "sounds/*.wav" },
+      { from: "images/*.png" },
+      { from: "lib/*.js" },
     ], { copyUnmodified: true }),
     new MiniCssExtractPlugin({
         filename: "jssynth.css",
@@ -64,7 +64,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'jssynth.js',
+    filename: "jssynth.js",
     path: path.resolve(__dirname, "./dist"),
   }
 };
