@@ -47,12 +47,14 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      { from: "html/jssynth.html" },
-      { from: "sounds/*.wav" },
-      { from: "images/*.png" },
-      { from: "lib/*.js" },
-    ], { copyUnmodified: true }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "html/jssynth.html" },
+        { from: "sounds/*.wav" },
+        { from: "images/*.png" },
+        { from: "lib/*.js" },
+      ],
+    }),
     new MiniCssExtractPlugin({
         filename: "jssynth.css",
     }),
