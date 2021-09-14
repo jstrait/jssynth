@@ -63,7 +63,7 @@ class Keyboard extends React.PureComponent {
     for (key in touches) {
       let elementUnderCursor = this.getElementUnderCursor(touches[key].x, touches[key].y);
 
-      if (elementUnderCursor !== undefined) {
+      if (elementUnderCursor !== null) {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
           isLeftScrollActive = true;
           if (this.state.scrollLeftTimeoutID === undefined) {
@@ -104,13 +104,11 @@ class Keyboard extends React.PureComponent {
   getElementUnderCursor(x, y) {
     let elementUnderCursor = document.elementFromPoint(x, y);
 
-    if (elementUnderCursor === null) {
-      elementUnderCursor = undefined;
-    }
-    else if (!elementUnderCursor.classList.contains("keyboard-key") &&
-             !elementUnderCursor.classList.contains("js-keyboard-scroll-left") &&
-             !elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
-      elementUnderCursor = undefined;
+    if (elementUnderCursor !== null &&
+        !elementUnderCursor.classList.contains("keyboard-key") &&
+        !elementUnderCursor.classList.contains("js-keyboard-scroll-left") &&
+        !elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
+      elementUnderCursor = null;
     }
 
     return elementUnderCursor;
