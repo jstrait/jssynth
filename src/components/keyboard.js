@@ -61,7 +61,7 @@ class Keyboard extends React.PureComponent {
     let activeNotes = [];
 
     for (key in touches) {
-      let elementUnderCursor = this.getElementUnderCursor(touches[key].x, touches[key].y);
+      let elementUnderCursor = document.elementFromPoint(touches[key].x, touches[key].y);
 
       if (elementUnderCursor !== null) {
         if (elementUnderCursor.classList.contains("js-keyboard-scroll-left")) {
@@ -76,7 +76,7 @@ class Keyboard extends React.PureComponent {
             newScrollRightTimeoutID = setInterval(() => this.onScroll(SCROLL_AMOUNT), 15);
           }
         }
-        else {
+        else if (elementUnderCursor.classList.contains("keyboard-key")) {
           activeNotes.push(elementUnderCursor.dataset.note);
         }
       }
@@ -99,19 +99,6 @@ class Keyboard extends React.PureComponent {
     }
 
     this.props.setNotes(activeNotes);
-  };
-
-  getElementUnderCursor(x, y) {
-    let elementUnderCursor = document.elementFromPoint(x, y);
-
-    if (elementUnderCursor !== null &&
-        !elementUnderCursor.classList.contains("keyboard-key") &&
-        !elementUnderCursor.classList.contains("js-keyboard-scroll-left") &&
-        !elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
-      elementUnderCursor = null;
-    }
-
-    return elementUnderCursor;
   };
 
   onMouseDown(e) {
