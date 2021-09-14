@@ -326,6 +326,7 @@ button.button-error:disabled {
   right: 0;
   font-size: 1.0rem;
   white-space: normal;
+  pointer-events: none;
 }
 
 .keyboard-key-root-indicator {

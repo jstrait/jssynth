@@ -107,12 +107,6 @@ class Keyboard extends React.PureComponent {
     if (elementUnderCursor === null) {
       elementUnderCursor = undefined;
     }
-    else if (elementUnderCursor.classList.contains("keyboard-key-label")) {
-      elementUnderCursor = elementUnderCursor.parentElement;
-    }
-    else if (elementUnderCursor.classList.contains("keyboard-key-root-indicator")) {
-      elementUnderCursor = elementUnderCursor.parentElement.parentElement;
-    }
     else if (!elementUnderCursor.classList.contains("keyboard-key") &&
              !elementUnderCursor.classList.contains("js-keyboard-scroll-left") &&
              !elementUnderCursor.classList.contains("js-keyboard-scroll-right")) {
