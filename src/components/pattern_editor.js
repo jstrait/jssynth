@@ -177,7 +177,6 @@ class NoteBox extends React.PureComponent {
     const UP_ARROW = 38;
     const DOWN_ARROW = 40;
 
-    let element = e.target;
     let noteParts;
 
     if (e.keyCode === SPACE || e.keyCode === DELETE || e.keyCode === BACKSPACE) {
