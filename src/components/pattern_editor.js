@@ -415,14 +415,6 @@ class PatternEditor extends React.Component {
   };
 
   render() {
-    let selectedNote;
-    if (this.props.selectedRowIndex !== undefined && this.props.selectedStepIndex !== undefined) {
-      selectedNote = this.props.pattern.rows[this.props.selectedRowIndex].notes[this.props.selectedStepIndex];
-    }
-    else {
-      selectedNote = { name: "" };
-    }
-
     return <div>
       <button className="button-link" onClick={this.props.onClose}>&larr; Sequencer</button>
       <PatternHeader
