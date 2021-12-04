@@ -11,7 +11,6 @@ class Key extends React.PureComponent {
 
   render() {
     let noteString = this.props.noteName + this.props.octave;
-    let cssClass = this.props.noteName.toLowerCase();
     let isWhiteKey = NOTE_NAMES.includes(this.props.noteName);
     let keyColorClass = (isWhiteKey) ? "keyboard-white-key" : "keyboard-black-key";
     let pressedClass = this.props.isActive ? "pressed" : "";
@@ -21,7 +20,7 @@ class Key extends React.PureComponent {
       rootNoteIndicator = <span className="keyboard-key-root-indicator">Root</span>;
     }
 
-    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass + " " + cssClass} data-note={noteString}>
+    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass} data-note={noteString}>
       <span className="keyboard-key-label">{rootNoteIndicator}{this.props.label}</span>
     </span>;
   };
