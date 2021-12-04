@@ -318,13 +318,14 @@ button.button-error:disabled {
 .keyboard-key-label {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;  /* Center white key labels */
   line-height: 1.5rem;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   font-size: 1.0rem;
+  text-align: center;  /* Center black key labels */
   white-space: normal;
   pointer-events: none;
 }
