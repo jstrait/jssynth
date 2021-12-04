@@ -252,7 +252,7 @@ class Keyboard extends React.PureComponent {
            >
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.state.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-container" ref={(div) => { this.keyboardContainer = div; }}>
-        <div className="keyboard block border-box">
+        <div className="keyboard block">
           <Key isActive={this.props.activeNotes.includes("C0")} noteName="C" octave="0" rootNote={rootNote} label="C0" />
           <Key isActive={this.props.activeNotes.includes("C#0")} noteName="C#" octave="0" rootNote={rootNote} label="C♯0 D♭0" />
           <Key isActive={this.props.activeNotes.includes("D0")} noteName="D" octave="0" rootNote={rootNote} label="D0" />
