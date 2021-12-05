@@ -20,7 +20,7 @@ class Key extends React.PureComponent {
       rootNoteIndicator = <span className="keyboard-key-root-indicator">Root</span>;
     }
 
-    return <span className={"inline-block keyboard-key " + keyColorClass + " " + pressedClass} data-note={noteString}>
+    return <span className={"keyboard-key " + keyColorClass + " " + pressedClass} data-note={noteString}>
       <span className="keyboard-key-label">{rootNoteIndicator}{this.props.label}</span>
     </span>;
   };

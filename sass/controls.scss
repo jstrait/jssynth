@@ -276,20 +276,19 @@ button.button-error:disabled {
 }
 
 .keyboard-keys-container {
+  display: flex;
   position: relative;
   overflow-x: hidden;
-  overflow-y: hidden;
   background: $white;
-  white-space: nowrap;
 }
 
 .keyboard-key {
+  flex-shrink: 0;
   position: relative;
 }
 
 .keyboard-white-key {
   box-sizing: border-box;
-  height: 100%;
   width: 3.5rem;
   border-style: solid;
   border-color: $black;
@@ -321,7 +320,6 @@ button.button-error:disabled {
   right: 0;
   font-size: 1.0rem;
   text-align: center;  /* Center black key labels */
-  white-space: normal;
   pointer-events: none;
 }
 
@@ -340,7 +338,6 @@ button.button-error:disabled {
   width: 2.5rem;
   margin-left: -1.25rem;
   margin-right: -1.25rem;
-  vertical-align: top;
   z-index: 2;
   color: $white;
   border: 2px solid $black;
