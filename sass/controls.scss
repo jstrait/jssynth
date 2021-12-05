@@ -296,11 +296,8 @@ button.button-error:disabled {
 .keyboard-white-key {
   box-sizing: border-box;
   width: 3.5rem;
-  border-style: solid;
-  border-color: $black;
-  border-width: 1px;
-  border-top-width: 2px;
-  border-bottom-width: 2px;
+  border: solid $black;
+  border-width: 2px 1px;
   background: $white;
   color: $black;
   border-bottom-left-radius: 5px;
