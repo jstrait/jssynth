@@ -210,11 +210,11 @@ class Keyboard extends React.PureComponent {
   };
 
   onScroll(delta) {
-    this.keyboardContainer.scrollLeft += delta;
+    this.keyboardKeysContainer.scrollLeft += delta;
   };
 
   componentDidMount() {
-    this.keyboardContainer.scrollLeft = (this.keyboardContainer.scrollWidth / 2) - (this.keyboardContainer.clientWidth / 2);
+    this.keyboardKeysContainer.scrollLeft = (this.keyboardKeysContainer.scrollWidth / 2) - (this.keyboardKeysContainer.clientWidth / 2);
 
     // This event handler is added manually to the actual DOM element, instead of using the
     // normal React way of attaching events because React seems to have a bug that prevents
@@ -251,7 +251,7 @@ class Keyboard extends React.PureComponent {
              onTouchEnd={this.onTouchEnd}
            >
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.state.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
-      <div className="keyboard-container" ref={(div) => { this.keyboardContainer = div; }}>
+      <div className="keyboard-keys-container" ref={(div) => { this.keyboardKeysContainer = div; }}>
         <Key isActive={this.props.activeNotes.includes("C0")} noteName="C" octave="0" rootNote={rootNote} label="C0" />
         <Key isActive={this.props.activeNotes.includes("C#0")} noteName="C#" octave="0" rootNote={rootNote} label="C♯0 D♭0" />
         <Key isActive={this.props.activeNotes.includes("D0")} noteName="D" octave="0" rootNote={rootNote} label="D0" />
