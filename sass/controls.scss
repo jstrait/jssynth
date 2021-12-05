@@ -291,17 +291,17 @@ button.button-error:disabled {
   line-height: 1.5rem;
   text-align: center;  /* Center black key labels */
   cursor: default;  /* Prevent I-beam cursor in Safari when hovering over key label */
+  box-sizing: border-box;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .keyboard-white-key {
-  box-sizing: border-box;
   width: 3.5rem;
   border: solid $black;
   border-width: 2px 1px;
   background: $white;
   color: $black;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .keyboard-white-key:first-child {
@@ -322,7 +322,6 @@ button.button-error:disabled {
 }
 
 .keyboard-black-key {
-  box-sizing: border-box;
   background: $black;
   height: 60%;
   width: 2.5rem;
@@ -331,8 +330,6 @@ button.button-error:disabled {
   z-index: 2;
   color: $white;
   border: 2px solid $black;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .keyboard-key.pressed {
