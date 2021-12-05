@@ -283,7 +283,14 @@ button.button-error:disabled {
 
 .keyboard-key {
   flex-shrink: 0;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;  /* Center white key labels */
+  font-size: 1.0rem;
+  line-height: 1.5rem;
+  text-align: center;  /* Center black key labels */
+  cursor: default;  /* Prevent I-beam cursor in Safari when hovering over key label */
 }
 
 .keyboard-white-key {
@@ -308,26 +315,13 @@ button.button-error:disabled {
   border-right-width: 2px;
 }
 
-.keyboard-key-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* Center white key labels */
-  line-height: 1.5rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-size: 1.0rem;
-  text-align: center;  /* Center black key labels */
-  pointer-events: none;
-}
-
 .keyboard-key-root-indicator {
   border-radius: 6px;
   padding: 0.0rem 0.25rem;
   background: $red;
   color: $white;
   font-size: 0.75rem;
+  pointer-events: none;
 }
 
 .keyboard-black-key {

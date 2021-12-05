@@ -21,7 +21,7 @@ class Key extends React.PureComponent {
     }
 
     return <span className={"keyboard-key " + keyColorClass + " " + pressedClass} data-note={noteString}>
-      <span className="keyboard-key-label">{rootNoteIndicator}{this.props.label}</span>
+      {rootNoteIndicator}{this.props.label}
     </span>;
   };
 };
