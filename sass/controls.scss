@@ -311,15 +311,6 @@ button.button-error:disabled {
   border-right-width: 2px;
 }
 
-.keyboard-key-root-indicator {
-  border-radius: 6px;
-  padding: 0.0rem 0.25rem;
-  background: $red;
-  color: $white;
-  font-size: 0.75rem;
-  pointer-events: none;
-}
-
 .keyboard-black-key {
   background: $black;
   height: 60%;
@@ -329,6 +320,15 @@ button.button-error:disabled {
   z-index: 2;
   color: $white;
   border: 2px solid $black;
+}
+
+.keyboard-key-root-indicator {
+  border-radius: 6px;
+  padding: 0.0rem 0.25rem;
+  background: $red;
+  color: $white;
+  font-size: 0.75rem;
+  pointer-events: none;
 }
 
 .keyboard-key.pressed {
