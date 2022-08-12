@@ -270,8 +270,10 @@ button.button-error:disabled {
   flex: 0 0 40px;
 }
 
-.keyboard-scroll-button:hover {
-  background: #a1a1a1;
+@media (hover) {
+  .keyboard-scroll-button:hover {
+    background: #a1a1a1;
+  }
 }
 
 .keyboard-keys-container {
