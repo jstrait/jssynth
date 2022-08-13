@@ -42,7 +42,7 @@ class Keyboard extends React.PureComponent {
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onTouchStart = this.onTouchStart.bind(this);
-    this.onTouchEnd = this.onTouchEnd.bind(this);
+    this.onTouchEndOrCancel = this.onTouchEndOrCancel.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
     this.onGestureStart = this.onGestureStart.bind(this);
     this.onScroll = this.onScroll.bind(this);
@@ -171,7 +171,7 @@ class Keyboard extends React.PureComponent {
     this.touchHandler(this.touches);
   };
 
-  onTouchEnd(e) {
+  onTouchEndOrCancel(e) {
     let i;
     let removedTouches = e.changedTouches;
 
@@ -248,7 +248,8 @@ class Keyboard extends React.PureComponent {
              onMouseOut={this.onMouseOut}
              onMouseOver={this.onMouseOver}
              onTouchStart={this.onTouchStart}
-             onTouchEnd={this.onTouchEnd}
+             onTouchEnd={this.onTouchEndOrCancel}
+             onTouchCancel={this.onTouchEndOrCancel}
            >
       <div className={"keyboard-scroll-button js-keyboard-scroll-left flex flex-align-center flex-justify-center full-height" + (this.state.scrollLeftTimeoutID !== undefined ? " pressed" : "")}>&larr;</div>
       <div className="keyboard-keys-container" ref={(div) => { this.keyboardKeysContainer = div; }}>
