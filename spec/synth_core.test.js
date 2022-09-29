@@ -73,21 +73,21 @@ describe("SynthCore.Note", function() {
     expect(note1.octave()).toEqual(3);
     expect(note1.amplitude()).toEqual(1.0);
     expect(note1.stepCount()).toEqual(1);
-    expect(note1.frequency()).toEqual(155.56349186104046);
+    expect(note1.frequency()).toEqual(155.56349186104043);
     expect(note1.midiNote()).toEqual(51);
 
     expect(note2.name()).toEqual("E@");
     expect(note2.octave()).toEqual(3);
     expect(note2.amplitude()).toEqual(1.0);
     expect(note2.stepCount()).toEqual(1);
-    expect(note2.frequency()).toEqual(155.56349186104046);
+    expect(note2.frequency()).toEqual(155.56349186104043);
     expect(note2.midiNote()).toEqual(51);
 
     expect(note3.name()).toEqual("F@@");
     expect(note3.octave()).toEqual(3);
     expect(note3.amplitude()).toEqual(1.0);
     expect(note3.stepCount()).toEqual(1);
-    expect(note3.frequency()).toEqual(155.56349186104046);
+    expect(note3.frequency()).toEqual(155.56349186104043);
     expect(note3.midiNote()).toEqual(51);
   });
 
