@@ -55,12 +55,8 @@ const ENHARMONIC_EQUIVALENTS = {
 };
 
 
-export function Note(newNoteName, newOctave, newAmplitude, newStepCount) {
-  var noteName = newNoteName;
+export function Note(noteName, octave, amplitude, stepCount) {
   var normalizedNoteName = ENHARMONIC_EQUIVALENTS[noteName];
-  var octave = newOctave;
-  var amplitude = newAmplitude;
-  var stepCount = newStepCount;
   var midiNote;
   var frequency;
 
