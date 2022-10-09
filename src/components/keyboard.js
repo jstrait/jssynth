@@ -1,6 +1,7 @@
 "use strict";
 
 import React from "react";
+import { flushSync } from "react-dom";
 
 const NOTE_NAMES = ["A", "B", "C", "D", "E", "F", "G"];
 
@@ -91,9 +92,11 @@ class Keyboard extends React.PureComponent {
     }
 
     if (newScrollLeftTimeoutID !== this.state.scrollLeftTimeoutID || newScrollRightTimeoutID !== this.state.scrollRightTimeoutID) {
-      this.setState({
-        scrollLeftTimeoutID: newScrollLeftTimeoutID,
-        scrollRightTimeoutID: newScrollRightTimeoutID,
+      flushSync(() => {
+        this.setState({
+          scrollLeftTimeoutID: newScrollLeftTimeoutID,
+          scrollRightTimeoutID: newScrollRightTimeoutID,
+        });
       });
     }
 
@@ -218,7 +221,7 @@ class Keyboard extends React.PureComponent {
 
     // This event handler is added manually to the actual DOM element, instead of using the
     // normal React way of attaching events because React seems to have a bug that prevents
-    // preventDefault() from working correctly in a "touchmove" handler (as of v17.0.2).
+    // preventDefault() from working correctly in a "touchmove" handler (as of v18.2.0).
     // The preventDefault() is needed to prevent the "pinch zoom into page" gesture from
     // activating when using the keyboard on iOS.
     // See https://medium.com/@ericclemmons/react-event-preventdefault-78c28c950e46 and

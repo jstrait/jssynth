@@ -1,7 +1,8 @@
 "use strict";
 
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+import { flushSync } from "react-dom";
 
 import * as SynthCore from "./synth_core";
 import * as DefaultSong from "./default_song";
@@ -182,17 +183,19 @@ class App extends React.Component {
         let channelID;
         let instrument;
 
-        this.setState((prevState, props) => ({
-          isLoaded: true,
-          measureCount: DefaultSong.measureCount,
-          transport: Object.assign({}, prevState.transport, {
-            tempo: DefaultSong.tempo,
-          }),
-          instruments: DefaultSong.instruments,
-          patterns: DefaultSong.patterns,
-          tracks: DefaultSong.tracks,
-          isMidiEnabled: this.midiController.isEnabled(),
-        }));
+        flushSync(() => {
+          this.setState((prevState, props) => ({
+            isLoaded: true,
+            measureCount: DefaultSong.measureCount,
+            transport: Object.assign({}, prevState.transport, {
+              tempo: DefaultSong.tempo,
+            }),
+            instruments: DefaultSong.instruments,
+            patterns: DefaultSong.patterns,
+            tracks: DefaultSong.tracks,
+            isMidiEnabled: this.midiController.isEnabled(),
+          }));
+        });
 
         this.transport.setTempo(this.state.transport.tempo);
 
@@ -1330,4 +1333,4 @@ class App extends React.Component {
   };
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+createRoot(document.getElementById("root")).render(<App />);
