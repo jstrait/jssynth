@@ -957,8 +957,12 @@ class App extends React.Component {
   };
 
   deactivateKeyboard() {
-    this.setState({
-      isKeyboardActive: false
+    // `flushSync()` is needed to make sure mouse events that happen immediately
+    // afterward see the state update.
+    flushSync(() => {
+      this.setState({
+        isKeyboardActive: false
+      });
     });
   };
 
