@@ -152,7 +152,7 @@ class App extends React.Component {
     this.activeKeyboardMidiNotes = [];
     this.activeNoteContexts = {};
 
-    this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage);
+    this.midiController = MidiController(this.onMIDIStateChange, this.onMIDIMessage, this.onMIDIError);
 
     this.bufferCollection = SynthCore.BufferCollection(audioContext);
     this.bufferCollection.addBuffer("white-noise", BufferGenerator.generateWhiteNoise(audioContext));
@@ -1088,8 +1088,8 @@ class App extends React.Component {
     }
   };
 
-  onMIDIError() {
-    console.log("Unexpected MIDI error");
+  onMIDIError(error) {
+    console.log(error);
   };
 
   exportToWav(onExportComplete) {

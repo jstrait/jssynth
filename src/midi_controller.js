@@ -21,8 +21,8 @@ export const MidiController = function(onStateChange, onMessage, onError) {
     };
   };
 
-  const onMIDISystemError = function() {
-    onError();
+  const onMIDISystemError = function(error) {
+    onError(error);
   };
 
   const onMidiMessage = function(e) {
