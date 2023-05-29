@@ -55,7 +55,6 @@ class TrackHeader extends React.PureComponent {
           min="0.0"
           max="1.0"
           step="0.01"
-          disabled={this.props.isMuted}
           value={this.props.volume}
           onChange={this.setTrackVolume}
         />

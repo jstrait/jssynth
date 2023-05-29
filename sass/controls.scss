@@ -80,27 +80,6 @@ input[type="range"]::-ms-thumb:active
   background: $orange;
 }
 
-input[type="range"]:disabled::-webkit-slider-thumb,
-input[type="range"]:disabled::-webkit-slider-thumb:hover,
-input[type="range"]:disabled::-webkit-slider-thumb:active
-{
-  background: #ccc;
-}
-
-input[type="range"]:disabled::-moz-range-thumb,
-input[type="range"]:disabled::-moz-range-thumb:hover,
-input[type="range"]:disabled::-moz-range-thumb:active
- {
-  background: #ccc;
-}
-
-input[type="range"]:disabled::-ms-thumb,
-input[type="range"]:disabled::-ms-thumb:hover,
-input[type="range"]:disabled::-ms-thumb:active
- {
-  background: #ccc;
-}
-
 input[type="range"]::-moz-focus-outer {
   border: 0;
 }
