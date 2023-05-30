@@ -109,10 +109,28 @@ button:disabled {
   cursor: default;
 }
 
-button.button-standard-error:disabled {
+.button-link {
+  background: none;
+  color: $link-color;
+  border: 0;
+  font-size: 1.0rem;
+  font-weight: 300;
+  text-decoration: underline;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.button-standard {
   background: $white;
-  border-color: $light-red;
-  color: $light-red;
+  border-color: #ccc;
+}
+
+@media (hover) {
+  .button-standard:enabled:hover {
+    background: $light-orange;
+    border-color: $orange;
+    color: $orange;
+  }
 }
 
 .button-standard-tiny {
@@ -133,15 +151,16 @@ button.button-standard-error:disabled {
   padding: $size-half;
 }
 
-.button-standard {
-  background: $white;
-  border-color: #ccc;
-}
-
 .button-standard-toggled {
   background: $orange;
   border-color: $orange;
   color: $white;
+}
+
+button.button-standard-error:disabled {
+  background: $white;
+  border-color: $light-red;
+  color: $light-red;
 }
 
 .button-standard-tab-list {
@@ -157,17 +176,6 @@ button.button-standard-error:disabled {
 .button-standard-tab-list:last-child {
   border-radius: 0 0.75rem 0.75rem 0;
   border-right-width: 3px;
-}
-
-.button-link {
-  background: none;
-  color: $link-color;
-  border: 0;
-  font-size: 1.0rem;
-  font-weight: 300;
-  text-decoration: underline;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .input-underlined {
@@ -234,14 +242,6 @@ button.button-standard-error:disabled {
     order: 2;
     flex: 0 0 100%;
     margin-bottom: calc(1.0rem - 1px);
-  }
-}
-
-@media (hover) {
-  .button-standard:enabled:hover {
-    background: $light-orange;
-    border-color: $orange;
-    color: $orange;
   }
 }
 
