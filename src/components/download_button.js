@@ -80,7 +80,7 @@ export class DownloadButton extends React.PureComponent {
         <span className="block red">{this.state.errorMessage}</span>
         <div className="mt1 flex flex-justify-end flex-align-center">
           {this.state.isDownloadInProgress && <span className="spinner-icon mr-half" style={{}}></span>}
-          <button className="button-full button-hollow" disabled={this.state.isDownloadInProgress} onClick={this.beginDownload}>Download</button>
+          <button className="button-full button-standard" disabled={this.state.isDownloadInProgress} onClick={this.beginDownload}>Download</button>
         </div>
       </span>;
     }
@@ -89,7 +89,7 @@ export class DownloadButton extends React.PureComponent {
     }
 
     return <div id="download-container" className="relative flex flex-justify-end">
-      <button className="button-full button-hollow flex flex-align-center" onClick={this.togglePopup}>
+      <button className="button-full button-standard flex flex-align-center" onClick={this.togglePopup}>
         <span className="h3 lh-4">&darr;</span>&nbsp;&nbsp;*.wav
       </button>
       <a ref={(el) => { this.hiddenDownloadLink = el; }} className="display-none" download={this.state.fileName + ".wav"} href="#"></a>

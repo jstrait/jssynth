@@ -133,7 +133,7 @@ button.button-error:disabled {
   padding: $size-half;
 }
 
-.button-hollow {
+.button-standard {
   background: $white;
   border-color: #ccc;
 }
@@ -238,7 +238,7 @@ button.button-error:disabled {
 }
 
 @media (hover) {
-  .button-hollow:enabled:hover {
+  .button-standard:enabled:hover {
     background: $light-orange;
     border-color: $orange;
     color: $orange;
