@@ -356,7 +356,7 @@ class PatternRowRemoveButton extends React.PureComponent {
   };
 
   render() {
-    return <button className="button-small button-standard full-width round" onClick={this.removePatternRow}>X</button>;
+    return <button className="button-standard-small button-standard full-width round" onClick={this.removePatternRow}>X</button>;
   };
 };
 
@@ -395,10 +395,10 @@ class PatternFooter extends React.PureComponent {
 
   render() {
     return <div className="flex flex-justify-space-between">
-      <button className="button-full button-standard" onClick={this.addPatternRow}>Add Row</button>
+      <button className="button-standard-full button-standard" onClick={this.addPatternRow}>Add Row</button>
       <span>
-        <button className="inline-block button-full button-standard mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
-        <button className="inline-block button-full button-standard" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
+        <button className="inline-block button-standard-full button-standard mr-half" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.eraseNote}>&#8998;</button>
+        <button className="inline-block button-standard-full button-standard" disabled={this.props.selectedRowIndex === undefined || this.props.selectedStepIndex === undefined} onMouseDown={this.setNoteAsDash}>—</button>
       </span>
     </div>;
   };

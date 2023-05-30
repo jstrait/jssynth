@@ -109,25 +109,25 @@ button:disabled {
   cursor: default;
 }
 
-button.button-error:disabled {
+button.button-standard-error:disabled {
   background: $white;
   border-color: $light-red;
   color: $light-red;
 }
 
-.button-tiny {
+.button-standard-tiny {
   border-radius: 0.25rem;
   border-width: 2px;
   padding: 0.0rem 0.5rem;
 }
 
-.button-small {
+.button-standard-small {
   border-radius: 0.5rem;
   border-width: 2px;
   padding: 0.25rem 0.5rem;
 }
 
-.button-full {
+.button-standard-full {
   border-radius: 0.75rem;
   border-width: 3px;
   padding: $size-half;
@@ -138,23 +138,23 @@ button.button-error:disabled {
   border-color: #ccc;
 }
 
-.button-toggled {
+.button-standard-toggled {
   background: $orange;
   border-color: $orange;
   color: $white;
 }
 
-.button-tab-list {
+.button-standard-tab-list {
   border-width: 3px 1.5px;
   padding: $size-half;
 }
 
-.button-tab-list:first-child {
+.button-standard-tab-list:first-child {
   border-radius: 0.75rem 0 0 0.75rem;
   border-left-width: 3px;
 }
 
-.button-tab-list:last-child {
+.button-standard-tab-list:last-child {
   border-radius: 0 0.75rem 0.75rem 0;
   border-right-width: 3px;
 }

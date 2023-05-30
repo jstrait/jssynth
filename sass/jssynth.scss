@@ -87,19 +87,19 @@ a {
 }
 
 @media (hover) {
-  .button-tab-list:hover .play-icon {
+  .button-standard-tab-list:hover .play-icon {
     border-color: transparent transparent transparent $orange;
   }
 
-  .button-tab-list:hover .play-icon-enabled {
+  .button-standard-tab-list:hover .play-icon-enabled {
     border-color: $orange;
   }
 
-  .button-tab-list:hover .rewind-icon {
+  .button-standard-tab-list:hover .rewind-icon {
     border-color: $orange;
   }
 
-  .button-tab-list:hover .rewind-icon::before {
+  .button-standard-tab-list:hover .rewind-icon::before {
     border-color: transparent $orange transparent transparent;
   }
 }
