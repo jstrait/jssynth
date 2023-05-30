@@ -47,7 +47,7 @@ class TrackHeader extends React.PureComponent {
         <button className="button-hollow button-small" onClick={this.setTrackBeingEdited}>Edit</button>
       </span>
       <span className="sequencer-volume-container flex flex-align-center">
-        <button className={"button-hollow button-small" + (this.props.isMuted ? " button-enabled" : "")} onClick={this.toggleTrackMute}>Mute</button>
+        <button className={"button-hollow button-small" + (this.props.isMuted ? " button-toggled" : "")} onClick={this.toggleTrackMute}>Mute</button>
         <input
           className="full-width"
           style={{marginLeft: "4px"}}
@@ -1222,7 +1222,7 @@ class Sequencer extends React.Component {
       <div className="flex mb1">
         <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.props.isExpanded ? "expanded" : "contracted")}>
           <li className="list-style-none height-1 pl1-safe border-box bb">
-            <button className={"vertical-top button-tiny button-hollow" + (this.props.isExpanded ? " button-enabled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
+            <button className={"vertical-top button-tiny button-hollow" + (this.props.isExpanded ? " button-toggled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader
