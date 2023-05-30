@@ -875,7 +875,7 @@ class TrackRemoveButton extends React.PureComponent {
   };
 
   render() {
-    return <button className="button-standard-small button-standard full-width round" onClick={this.removeTrack}>X</button>;
+    return <button className="button-standard button-standard-small full-width round" onClick={this.removeTrack}>X</button>;
   };
 };
 
@@ -942,7 +942,7 @@ class MeasureCount extends React.PureComponent {
         </span>
         <span>
           <button className="button-link" onClick={this.disableEditMode}>cancel</button>&nbsp;
-          <button className="button-standard-small button-standard" disabled={!this.state.isValidValue} onClick={this.setMeasureCount}>Save</button>
+          <button className="button-standard button-standard-small" disabled={!this.state.isValidValue} onClick={this.setMeasureCount}>Save</button>
         </span>
       </span>;
     }
@@ -1016,11 +1016,11 @@ class AddPastePopupMenuBody extends React.Component {
       isRoomToPastePattern = this.props.isSpaceForPatternInTrack(this.props.trackID, pasteStartStep, this.props.copiedPattern.playbackStepCount, undefined);
     }
 
-    pasteButtonCSSClasses = "button-standard-small" + (isRoomToPastePattern === true ? " button-standard" : " button-standard-error");
+    pasteButtonCSSClasses = (isRoomToPastePattern === true ? "button-standard" : "button-standard-error") + " button-standard-small";
     isPasteButtonDisabled = this.props.copiedPattern === undefined || isRoomToPastePattern === false;
 
     return <React.Fragment>
-      <button className="button-standard-small button-standard" onClick={this.props.addPattern}>Add</button>&nbsp;
+      <button className="button-standard button-standard-small" onClick={this.props.addPattern}>Add</button>&nbsp;
       <button className={pasteButtonCSSClasses} onClick={this.props.duplicateCopiedPattern} disabled={isPasteButtonDisabled}>Paste</button>
     </React.Fragment>;
   };
@@ -1208,9 +1208,9 @@ class Sequencer extends React.Component {
       }
       else {
         popupMenuContent = <React.Fragment>
-                             <button className="button-standard-small button-standard" onClick={this.copyPattern}>Copy</button>&nbsp;
-                             <button className="button-standard-small button-standard" onClick={this.editPattern}>Edit</button>&nbsp;
-                             <button className="button-standard-small button-standard" onClick={this.removePattern}>Remove</button>
+                             <button className="button-standard button-standard-small" onClick={this.copyPattern}>Copy</button>&nbsp;
+                             <button className="button-standard button-standard-small" onClick={this.editPattern}>Edit</button>&nbsp;
+                             <button className="button-standard button-standard-small" onClick={this.removePattern}>Remove</button>
                            </React.Fragment>;
       }
     }
@@ -1222,7 +1222,7 @@ class Sequencer extends React.Component {
       <div className="flex mb1">
         <ul className={"flex flex-column m0 pt1 pl0 border-box " + (this.props.isExpanded ? "expanded" : "contracted")}>
           <li className="list-style-none height-1 pl1-safe border-box bb">
-            <button className={"vertical-top button-standard-tiny button-standard" + (this.props.isExpanded ? " button-standard-toggled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
+            <button className={"vertical-top button-standard button-standard-tiny" + (this.props.isExpanded ? " button-standard-toggled" : "")} onClick={this.toggleIsExpanded}>Edit</button>
           </li>
           {this.props.tracks.map((track) =>
             <TrackHeader
@@ -1275,8 +1275,8 @@ class Sequencer extends React.Component {
         </ul>
       </div>
       <div className="pl1-safe">
-        <button className="button-standard-full button-standard mr-half" onClick={this.props.addSynthTrack}>Add Synth Track</button>
-        <button className="button-standard-full button-standard" onClick={this.showFileChooser}>Add Sampler Track</button>
+        <button className="button-standard button-standard-full mr-half" onClick={this.props.addSynthTrack}>Add Synth Track</button>
+        <button className="button-standard button-standard-full" onClick={this.showFileChooser}>Add Sampler Track</button>
         <input className="display-none" type="file" onChange={this.uploadFile} ref={input => {this.fileInput = input;}} />
       </div>
       {this.state.isPopupMenuActive === true &&

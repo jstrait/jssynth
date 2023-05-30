@@ -37,8 +37,8 @@ class Controls extends React.PureComponent {
 
   render() {
     return <span className="whitespace-wrap-none">
-      <button className="button-standard-tab-list button-standard" onClick={this.props.onRewind}><span className="rewind-icon">Rewind</span></button>
-      <button className={"mr-half mr1-l button-standard-tab-list button-standard" + (this.props.isPlaying ? " button-standard-toggled" : "")}  onClick={this.props.onTogglePlayback}><span className={"play-icon" + (this.props.isPlaying ? " play-icon-enabled" : "")}>Play</span></button>
+      <button className="button-standard button-standard-tab-list" onClick={this.props.onRewind}><span className="rewind-icon">Rewind</span></button>
+      <button className={"mr-half mr1-l button-standard button-standard-tab-list" + (this.props.isPlaying ? " button-standard-toggled" : "")}  onClick={this.props.onTogglePlayback}><span className={"play-icon" + (this.props.isPlaying ? " play-icon-enabled" : "")}>Play</span></button>
     </span>;
   };
 };
