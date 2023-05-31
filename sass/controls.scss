@@ -93,12 +93,9 @@ input[type="range"]::-moz-focus-outer {
 }
 
 button {
-  border: solid #ddd;
-  background: #ddd;
   outline: none;
   font-size: 1.0rem;
   font-family: $font-family;
-  color: $black;
   cursor: pointer;
   margin: 0;
 }
@@ -121,6 +118,8 @@ button:disabled {
 
 .button-standard {
   background: $white;
+  color: $black;
+  border-style: solid;
   border-color: #ccc;
 }
 
