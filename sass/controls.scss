@@ -157,6 +157,7 @@ button:disabled {
 
 button.button-standard-error:disabled {
   background: $white;
+  border-style: solid;
   border-color: $light-red;
   color: $light-red;
 }
