@@ -58,7 +58,7 @@ class InstrumentPaneTab extends React.PureComponent {
   };
 };
 
-class MultiLinearSlider extends React.PureComponent {
+class PiecewiseLinearSlider extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -363,12 +363,12 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -378,7 +378,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
@@ -405,12 +405,12 @@ class SampleInstrumentEditor extends React.Component {
             <h2 className="h3 lh-3 display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -420,7 +420,7 @@ class SampleInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
@@ -689,7 +689,7 @@ class SynthInstrumentEditor extends React.Component {
           </span>
           <span className="control">
             <label className="control-label indented">Detune:</label>
-            <MultiLinearSlider value={this.props.instrument.oscillator2Detune} stops={this.OSCILLATOR_DETUNE_STOPS} onChange={this.setOscillator2Detune} />
+            <PiecewiseLinearSlider value={this.props.instrument.oscillator2Detune} stops={this.OSCILLATOR_DETUNE_STOPS} onChange={this.setOscillator2Detune} />
             <span className="control-value">{this.props.instrument.oscillator2Detune.toFixed(0)}c</span>
           </span>
           <span className="control">
@@ -730,12 +730,12 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Attack Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label indented">Decay Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -745,7 +745,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label indented">Release Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.filterEnvelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setFilterEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.filterEnvelopeReleaseTime)}</span>
             </span>
           </span>
@@ -773,7 +773,7 @@ class SynthInstrumentEditor extends React.Component {
             <h2 className="h3 lh-3 display-none block-l">Pitch Wobble</h2>
             <span className="control">
               <label className="control-label">Amount:</label>
-              <MultiLinearSlider value={this.props.instrument.lfoAmplitude} stops={this.PITCH_LFO_STOPS} onChange={this.setLFOAmplitude} />
+              <PiecewiseLinearSlider value={this.props.instrument.lfoAmplitude} stops={this.PITCH_LFO_STOPS} onChange={this.setLFOAmplitude} />
               <span className="control-value">{this.props.instrument.lfoAmplitude.toFixed(0)}c</span>
             </span>
             <span className="control">
@@ -791,12 +791,12 @@ class SynthInstrumentEditor extends React.Component {
             <h2 className="h3 lh-3 display-none block-l">Loudness Envelope</h2>
             <span className="control">
               <label className="control-label">Attack Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeAttackTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeAttackTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeAttackTime)}</span>
             </span>
             <span className="control">
               <label className="control-label">Decay Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeDecayTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeDecayTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeDecayTime)}</span>
             </span>
             <span className="control">
@@ -806,7 +806,7 @@ class SynthInstrumentEditor extends React.Component {
             </span>
             <span className="control">
               <label className="control-label">Release Speed:</label>
-              <MultiLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
+              <PiecewiseLinearSlider value={this.props.instrument.envelopeReleaseTime} stops={this.ENVELOPE_SPEED_STOPS} onChange={this.setEnvelopeReleaseTime} />
               <span className="control-value">{formatTime(this.props.instrument.envelopeReleaseTime)}</span>
             </span>
           </div>
