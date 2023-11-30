@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import { STEPS_PER_MEASURE } from "./../constants";
+
 class PatternHeader extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -50,8 +52,7 @@ class PatternNotes extends React.Component {
   };
 
   render() {
-    const measureLength = 16;
-    const measureCount = Math.ceil(this.props.stepCount / measureLength);
+    const measureCount = Math.ceil(this.props.stepCount / STEPS_PER_MEASURE);
 
     let measures = [];
     let measure = undefined;
@@ -60,10 +61,10 @@ class PatternNotes extends React.Component {
 
     for (i = 0; i < measureCount; i++) {
       measure = [];
-      startStep = i * measureLength;
+      startStep = i * STEPS_PER_MEASURE;
 
       for (j = 0; j < this.props.rows.length; j++) {
-        measure.push(this.props.rows[j].notes.slice(startStep, startStep + measureLength));
+        measure.push(this.props.rows[j].notes.slice(startStep, startStep + STEPS_PER_MEASURE));
       }
 
       measures.push(measure);
@@ -75,8 +76,8 @@ class PatternNotes extends React.Component {
         <PatternMeasure
           key={measureIndex}
           patternID={this.props.patternID}
-          startStep={measureIndex * measureLength}
-          stepCount={measureLength}
+          startStep={measureIndex * STEPS_PER_MEASURE}
+          stepCount={STEPS_PER_MEASURE}
           maxStep={this.props.stepCount - 1}
           rows={measure}
           isKeyboardActive={this.props.isKeyboardActive}
