@@ -4,6 +4,10 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 
+import { STEPS_PER_MEASURE } from "./constants";
+import { STEP_WIDTH_IN_PIXELS } from "./constants";
+import { TRACK_HEIGHT_IN_PIXELS } from "./constants";
+
 import * as SynthCore from "./synth_core";
 import * as DefaultSong from "./default_song";
 import { BufferGenerator } from "./buffer_generator";
@@ -26,8 +30,6 @@ const VIEW_SEQUENCER = 2;
 const VIEW_INSTRUMENT_SYNTH = 3;
 const VIEW_INSTRUMENT_SAMPLER = 4;
 const VIEW_PATTERN_EDITOR = 5;
-
-const STEPS_PER_MEASURE = 16;
 
 class App extends React.Component {
   constructor(props) {
@@ -1120,8 +1122,6 @@ class App extends React.Component {
 
 
   generatePatternImage(pattern) {
-    const STEP_WIDTH_IN_PIXELS = 9;
-    const TRACK_HEIGHT_IN_PIXELS = 72;
     const STEP_HEIGHT_IN_PIXELS = 2;
     const PIXEL_RATIO = window.devicePixelRatio;
 

@@ -1,5 +1,6 @@
 "use strict";
 
+import { STEPS_PER_MEASURE } from "./constants";
 import * as SynthCore from "./synth_core";
 
 export class Serializer {
@@ -152,7 +153,6 @@ export class Serializer {
   };
 
   static serializeScore(measureCount, tracks, patterns) {
-    const STEPS_PER_MEASURE = 16;
     const TOTAL_STEPS = measureCount * STEPS_PER_MEASURE;
 
     let i, j, k;

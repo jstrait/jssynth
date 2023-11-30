@@ -2,9 +2,10 @@
 
 import React from "react";
 
-const STEP_WIDTH_IN_PIXELS = 9;
-const TRACK_HEIGHT_IN_PIXELS = 72;
-const STEPS_PER_MEASURE = 16;
+import { STEPS_PER_MEASURE } from "./../constants";
+import { STEP_WIDTH_IN_PIXELS } from "./../constants";
+import { TRACK_HEIGHT_IN_PIXELS } from "./../constants";
+
 const MEASURE_WIDTH_IN_PIXELS = STEP_WIDTH_IN_PIXELS * STEPS_PER_MEASURE;
 
 const TIMELINE_DRAG_NONE = 1;
