@@ -52,7 +52,7 @@ describe("SynthCore.Note", function() {
     expect(function() { SynthCore.Note("A", 3, null, 1) }).toThrowError(TypeError);
     expect(function() { SynthCore.Note("A", 3, true, 1) }).toThrowError(TypeError);
 
-    // Step countt
+    // Step count
     expect(function() { SynthCore.Note("A", 3, 1.0, "") }).toThrowError(TypeError);
     expect(function() { SynthCore.Note("A", 3, 1.0, "1") }).toThrowError(TypeError);
     expect(function() { SynthCore.Note("A", 3, 1.0, "A") }).toThrowError(TypeError);
