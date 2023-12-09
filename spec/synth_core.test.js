@@ -5,6 +5,7 @@ import * as SynthCore from "./../src/synth_core";
 describe("SynthCore.Note", function() {
   it("should construct a Note properly", function() {
     var note = SynthCore.Note("A", 3, 0.75, 1);
+
     expect(note.name()).toEqual("A");
     expect(note.octave()).toEqual(3);
     expect(note.amplitude()).toEqual(0.75);
@@ -150,7 +151,6 @@ describe("SynthCore.SequenceParser", function() {
 
   it("should properly parse a sequence containing ties", function() {
     var rawSequence = ["A4", "-", "-", "-", "C2", "-", "D4", "G3", "-", "-"];
-
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(8);
@@ -185,7 +185,6 @@ describe("SynthCore.SequenceParser", function() {
 
   it("should properly parse a sequence with bad note names", function() {
     var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A", "C2"];
-
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(9);
@@ -208,7 +207,6 @@ describe("SynthCore.SequenceParser", function() {
 
   it("should properly parse a sequence containing trailing spaces", function() {
     var rawSequence = ["A4", "-", "-", "-", "", "", ""];
-
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toBe(1);
@@ -222,7 +220,6 @@ describe("SynthCore.SequenceParser", function() {
 
   it("should properly parse a sequence with unattached sustain characters ('-')", function() {
     var rawSequence = ["A4", "-", "", "-", "-", "C2"];
-
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence.length).toEqual(6);
@@ -246,7 +243,6 @@ describe("SynthCore.SequenceParser", function() {
 
   it("should properly parse a sequence with leading sustain characters ('-')", function() {
     var rawSequence = ["-", "-", "-", "-"];
-
     var parsedSequence = SynthCore.SequenceParser.parse(rawSequence);
 
     expect(parsedSequence).toEqual([]);
