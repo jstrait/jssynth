@@ -2,8 +2,8 @@
 
 import { Envelope } from "./../../src/synth_core/envelope";
 
-describe("Envelope", function() {
-  test("should calculate correctly when envelope is effectively a no-op", function() {
+describe("Envelope", () => {
+  test("should calculate correctly when envelope is effectively a no-op", () => {
     var envelopeConfig = {
       attackTime: 0.0,
       decayTime: 0.0,
@@ -27,7 +27,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(1.11, 1.1)).toEqual(0.0);
   });
 
-  test("should calculate correctly when attack time is longer than note duration", function() {
+  test("should calculate correctly when attack time is longer than note duration", () => {
     var envelopeConfig = {
       attackTime: 0.2,
       decayTime: 0.0,
@@ -51,7 +51,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(1.11, 1.1)).toEqual(0.0);
   });
 
-  test("should calculate correctly attack time is shorter than note duration ", function() {
+  test("should calculate correctly attack time is shorter than note duration ", () => {
     var envelopeConfig = {
       attackTime: 0.5,
       decayTime: 0.0,
@@ -77,7 +77,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(2.01, 2.0)).toEqual(0.0);
   });
 
-  test("should calculate correctly when decay ends before note ends", function() {
+  test("should calculate correctly when decay ends before note ends", () => {
     var envelopeConfig = {
       attackTime: 0.5,
       decayTime: 0.25,
@@ -105,7 +105,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(2.01, 2.0)).toEqual(0.0);
   });
 
-  test("should calculate correctly when decay is a no-op because sustain is 100%", function() {
+  test("should calculate correctly when decay is a no-op because sustain is 100%", () => {
     var envelopeConfig = {
       attackTime: 0.5,
       decayTime: 1.0,
@@ -129,7 +129,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(2.01, 2.0)).toEqual(0.0);
   });
 
-  test("should calculate correctly when decay ends before gate off, but is a no-op due to sustain volume", function() {
+  test("should calculate correctly when decay ends before gate off, but is a no-op due to sustain volume", () => {
     var envelopeConfig = {
       attackTime: 0.0,
       decayTime: 0.5,
@@ -157,7 +157,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(2.01, 2.0)).toEqual(0.0);
   });
 
-  test("should calculate correctly when decay ends after gate off, but is a no-op due to sustain volume", function() {
+  test("should calculate correctly when decay ends after gate off, but is a no-op due to sustain volume", () => {
     var envelopeConfig = {
       attackTime: 0.0,
       decayTime:1.5,
@@ -185,7 +185,7 @@ describe("Envelope", function() {
     expect(calculatedEnvelope.valueAtTime(2.01, 2.0)).toEqual(0.0);
   });
 
-  test("should calculate correctly when there is a release portion of the envelope", function() {
+  test("should calculate correctly when there is a release portion of the envelope", () => {
     var envelopeConfig = {
       attackTime: 0.0,
       decayTime: 0.0,

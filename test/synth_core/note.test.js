@@ -2,8 +2,8 @@
 
 import { Note } from "./../../src/synth_core/note";
 
-describe("Note", function() {
-  test("should construct a Note properly", function() {
+describe("Note", () => {
+  test("should construct a Note properly", () => {
     var note = Note("A", 3, 0.75, 1);
 
     expect(note.name()).toEqual("A");
@@ -14,58 +14,58 @@ describe("Note", function() {
     expect(note.midiNote()).toEqual(57);
   });
 
-  test("should raise an error if the note has invalid values", function() {
+  test("should raise an error if the note has invalid values", () => {
     // Name
-    expect(function() { Note("a", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("V", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A!", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("@", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A@@@", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A###", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A@#", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note(" ", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("", 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note(0, 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note(undefined, 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note(null, 3, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note(true, 3, 1.0, 1) }).toThrowError(TypeError);
+    expect(() => Note("a", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("V", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A!", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("@", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A@@@", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A###", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A@#", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note(" ", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("", 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note(0, 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note(undefined, 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note(null, 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note(true, 3, 1.0, 1)).toThrowError(TypeError);
 
     // Octave
-    expect(function() { Note("A", "", 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", "Q", 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", "3", 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", -1, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 8, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 2.1, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", NaN, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", undefined, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", null, 1.0, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", true, 1.0, 1) }).toThrowError(TypeError);
+    expect(() => Note("A", "", 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", "Q", 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", "3", 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", -1, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 8, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 2.1, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", NaN, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", undefined, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", null, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", true, 1.0, 1)).toThrowError(TypeError);
 
     // Amplitude
-    expect(function() { Note("A", 3, "", 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, "1.0", 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, "A", 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, -1, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.2, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, NaN, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, undefined, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, null, 1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, true, 1) }).toThrowError(TypeError);
+    expect(() => Note("A", 3, "", 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, "1.0", 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, "A", 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, -1, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.2, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, NaN, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, undefined, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, null, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, true, 1)).toThrowError(TypeError);
 
     // Step count
-    expect(function() { Note("A", 3, 1.0, "") }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, "1") }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, "A") }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, -1) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, 1.2) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, NaN) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, undefined) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, null) }).toThrowError(TypeError);
-    expect(function() { Note("A", 3, 1.0, true) }).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, "")).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, "1")).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, "A")).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, -1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, 1.2)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, NaN)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, undefined)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, null)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, true)).toThrowError(TypeError);
   });
 
-  test("should handle enharmonic equivalents properly", function() {
+  test("should handle enharmonic equivalents properly", () => {
     var note1 = Note("D#", 3, 1.0, 1);
     var note2 = Note("E@", 3, 1.0, 1);
     var note3 = Note("F@@", 3, 1.0, 1);
@@ -92,7 +92,7 @@ describe("Note", function() {
     expect(note3.midiNote()).toEqual(51);
   });
 
-  test("should handle notes at start/end of valid range properly", function() {
+  test("should handle notes at start/end of valid range properly", () => {
     var note = Note("C", 0, 1.0, 1);
 
     expect(note.name()).toEqual("C");
