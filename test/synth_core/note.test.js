@@ -3,7 +3,7 @@
 import { Note } from "./../../src/synth_core/note";
 
 describe("Note", function() {
-  it("should construct a Note properly", function() {
+  test("should construct a Note properly", function() {
     var note = Note("A", 3, 0.75, 1);
 
     expect(note.name()).toEqual("A");
@@ -14,7 +14,7 @@ describe("Note", function() {
     expect(note.midiNote()).toEqual(57);
   });
 
-  it("should raise an error if the note has invalid values", function() {
+  test("should raise an error if the note has invalid values", function() {
     // Name
     expect(function() { Note("a", 3, 1.0, 1) }).toThrowError(TypeError);
     expect(function() { Note("V", 3, 1.0, 1) }).toThrowError(TypeError);
@@ -65,7 +65,7 @@ describe("Note", function() {
     expect(function() { Note("A", 3, 1.0, true) }).toThrowError(TypeError);
   });
 
-  it("should handle enharmonic equivalents properly", function() {
+  test("should handle enharmonic equivalents properly", function() {
     var note1 = Note("D#", 3, 1.0, 1);
     var note2 = Note("E@", 3, 1.0, 1);
     var note3 = Note("F@@", 3, 1.0, 1);
@@ -92,7 +92,7 @@ describe("Note", function() {
     expect(note3.midiNote()).toEqual(51);
   });
 
-  it("should handle notes at start/end of valid range properly", function() {
+  test("should handle notes at start/end of valid range properly", function() {
     var note = Note("C", 0, 1.0, 1);
 
     expect(note.name()).toEqual("C");
