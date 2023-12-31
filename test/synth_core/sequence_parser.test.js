@@ -3,7 +3,7 @@
 import { SequenceParser } from "./../../src/synth_core/sequence_parser";
 
 describe("SequenceParser", () => {
-  test("should properly parse a valid sequence", () => {
+  test("properly parses a valid sequence", () => {
     var rawSequence = ["A4", "B@2", "", "C#5", ""];
     var parsedSequence = SequenceParser.parse(rawSequence);
 
@@ -28,7 +28,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[3].stepCount()).toEqual(1);
   });
 
-  test("should properly parse a sequence containing ties", () => {
+  test("properly parses a sequence containing ties", () => {
     var rawSequence = ["A4", "-", "-", "-", "C2", "-", "D4", "G3", "-", "-"];
     var parsedSequence = SequenceParser.parse(rawSequence);
 
@@ -62,7 +62,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[7].stepCount()).toEqual(3);
   });
 
-  test("should properly parse a sequence with invalid note names", () => {
+  test("properly parses a sequence with invalid note names", () => {
     var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A", "C2"];
     var parsedSequence = SequenceParser.parse(rawSequence);
 
@@ -84,7 +84,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[8].stepCount()).toEqual(1);
   });
 
-  test("should properly parse a sequence containing trailing spaces", () => {
+  test("properly parses a sequence containing trailing spaces", () => {
     var rawSequence = ["A4", "-", "-", "-", "", "", ""];
     var parsedSequence = SequenceParser.parse(rawSequence);
 
@@ -97,7 +97,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[0].stepCount()).toEqual(4);
   });
 
-  test("should properly parse a sequence with unattached sustain characters ('-')", () => {
+  test("properly parses a sequence with unattached sustain characters ('-')", () => {
     var rawSequence = ["A4", "-", "", "-", "-", "C2"];
     var parsedSequence = SequenceParser.parse(rawSequence);
 
@@ -120,7 +120,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[5].stepCount()).toEqual(1);
   });
 
-  test("should properly parse a sequence with leading sustain characters ('-')", () => {
+  test("properly parses a sequence with leading sustain characters ('-')", () => {
     var rawSequence = ["-", "-", "-", "-"];
     var parsedSequence = SequenceParser.parse(rawSequence);
 

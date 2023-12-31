@@ -3,7 +3,7 @@
 import { Note } from "./../../src/synth_core/note";
 
 describe("Note", () => {
-  test("should return correct object when constructed with valid argument values", () => {
+  test("returns correct object when constructed with valid argument values", () => {
     var note = Note("A", 3, 0.75, 1);
 
     expect(note.name()).toEqual("A");
@@ -14,7 +14,7 @@ describe("Note", () => {
     expect(note.midiNote()).toEqual(57);
   });
 
-  test("should raise an error if constructed with an invalid argument value", () => {
+  test("raises an error if constructed with an invalid argument value", () => {
     // Name
     expect(() => Note("a", 3, 1.0, 1)).toThrowError(TypeError);
     expect(() => Note("V", 3, 1.0, 1)).toThrowError(TypeError);
@@ -65,7 +65,7 @@ describe("Note", () => {
     expect(() => Note("A", 3, 1.0, true)).toThrowError(TypeError);
   });
 
-  test("should handle enharmonic equivalents properly", () => {
+  test("handles enharmonic equivalents properly", () => {
     var note1 = Note("D#", 3, 1.0, 1);
     var note2 = Note("E@", 3, 1.0, 1);
     var note3 = Note("F@@", 3, 1.0, 1);
@@ -92,7 +92,7 @@ describe("Note", () => {
     expect(note3.midiNote()).toEqual(51);
   });
 
-  test("should handle notes at start/end of valid range properly", () => {
+  test("handles notes at start/end of valid range properly", () => {
     var note = Note("C", 0, 1.0, 1);
 
     expect(note.name()).toEqual("C");
