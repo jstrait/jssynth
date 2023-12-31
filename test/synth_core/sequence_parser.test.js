@@ -62,7 +62,7 @@ describe("SequenceParser", () => {
     expect(parsedSequence[7].stepCount()).toEqual(3);
   });
 
-  test("should properly parse a sequence with bad note names", () => {
+  test("should properly parse a sequence with invalid note names", () => {
     var rawSequence = ["V3", "-", "-", "-", "4", "A", "@5", "3A", "C2"];
     var parsedSequence = SequenceParser.parse(rawSequence);
 

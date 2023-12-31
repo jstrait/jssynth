@@ -51,7 +51,7 @@ describe("Envelope", () => {
     expect(calculatedEnvelope.valueAtTime(1.11, 1.1)).toEqual(0.0);
   });
 
-  test("should calculate correctly attack time is shorter than note duration ", () => {
+  test("should calculate correctly when attack time is shorter than note duration ", () => {
     var envelopeConfig = {
       attackTime: 0.5,
       decayTime: 0.0,
