@@ -49,7 +49,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
-        { from: "html/jssynth.html" },
+        { from: "html/index.html" },
         { from: "sounds/*.wav" },
         { from: "images/*.png" },
         { from: "lib/*.js" },
