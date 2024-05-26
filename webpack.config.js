@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: ["./src/app.js", "./sass/jssynth.scss"],
+  entry: ["./src/app.js", "./sass/main.scss"],
   module: {
     rules: [
       {
