@@ -76,7 +76,7 @@ a {
 }
 
 .rewind-icon::before {
-  content: "\00a0";  // space character
+  content: "\00a0";  /* space character */
   display: block;
   width: 0px;
   height: 0px;
