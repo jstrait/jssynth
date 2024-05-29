@@ -142,12 +142,8 @@ a {
   border-style: solid;
   border-width: 2px;
   border-color: $black $black $black transparent;
-  -webkit-animation: spinner 1s linear infinite;
-  -moz-animation: spinner 1s linear infinite;
   animation: spinner 1s linear infinite;
 }
-@-moz-keyframes spinner { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spinner { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spinner { 100% { transform: rotate(360deg); } }
 
 .tab-strip {
