@@ -16,53 +16,53 @@ describe("Note", () => {
 
   test("raises an error if constructed with an invalid argument value", () => {
     // Name
-    expect(() => Note("a", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("V", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A!", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("@", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A@@@", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A###", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A@#", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note(" ", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("", 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note(0, 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note(undefined, 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note(null, 3, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note(true, 3, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("a", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("V", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A!", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("@", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A@@@", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A###", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A@#", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note(" ", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("", 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note(0, 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note(undefined, 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note(null, 3, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note(true, 3, 1.0, 1)).toThrow(TypeError);
 
     // Octave
-    expect(() => Note("A", "", 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", "Q", 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", "3", 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", -1, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 8, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 2.1, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", NaN, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", undefined, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", null, 1.0, 1)).toThrowError(TypeError);
-    expect(() => Note("A", true, 1.0, 1)).toThrowError(TypeError);
+    expect(() => Note("A", "", 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", "Q", 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", "3", 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", -1, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", 8, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", 2.1, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", NaN, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", undefined, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", null, 1.0, 1)).toThrow(TypeError);
+    expect(() => Note("A", true, 1.0, 1)).toThrow(TypeError);
 
     // Amplitude
-    expect(() => Note("A", 3, "", 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, "1.0", 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, "A", 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, -1, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.2, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, NaN, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, undefined, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, null, 1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, true, 1)).toThrowError(TypeError);
+    expect(() => Note("A", 3, "", 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, "1.0", 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, "A", 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, -1, 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.2, 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, NaN, 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, undefined, 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, null, 1)).toThrow(TypeError);
+    expect(() => Note("A", 3, true, 1)).toThrow(TypeError);
 
     // Step count
-    expect(() => Note("A", 3, 1.0, "")).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, "1")).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, "A")).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, -1)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, 1.2)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, NaN)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, undefined)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, null)).toThrowError(TypeError);
-    expect(() => Note("A", 3, 1.0, true)).toThrowError(TypeError);
+    expect(() => Note("A", 3, 1.0, "")).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, "1")).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, "A")).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, -1)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, 1.2)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, NaN)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, undefined)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, null)).toThrow(TypeError);
+    expect(() => Note("A", 3, 1.0, true)).toThrow(TypeError);
   });
 
   test("handles enharmonic equivalents properly", () => {
