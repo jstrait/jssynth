@@ -1,14 +1,14 @@
 input[type="text"] {
-  font-family: $font-family;
+  font-family: var(--font-family);
   font-size: 1.20rem;
   font-weight: 300;
-  color: $black;
+  color: var(--black);
   padding: 0;
 }
 
 input[type="text"]:disabled {
-  color: $border-color;
-  background: $white;   /* Prevent gray background in Firefox */
+  color: var(--border-color);
+  background: var(--white);   /* Prevent gray background in Firefox */
 }
 
 input[type="range"] {
@@ -41,7 +41,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 1.5rem;
   margin-top: calc(-0.75rem + 1px);
   border-radius: 50%;
-  background: $black;
+  background: var(--black);
   border: 0;
   box-shadow: none;  /* Remove shadows added in iOS/iPadOS 15 */
 }
@@ -50,7 +50,7 @@ input[type="range"]::-moz-range-thumb {
   height: 1.5rem;
   width: 1.5rem;
   border-radius: 50%;
-  background: $black;
+  background: var(--black);
   border: 0;
 }
 
@@ -58,33 +58,33 @@ input[type="range"]::-ms-thumb {
   height: 1.5rem;
   width: 1.5rem;
   border-radius: 50%;
-  background: $black;
+  background: var(--black);
   border: 0;
 }
 
 input[type="range"]::-webkit-slider-thumb:active {
-  background: $orange;
+  background: var(--orange);
 }
 
 input[type="range"]::-moz-range-thumb:active {
-  background: $orange;
+  background: var(--orange);
 }
 
 input[type="range"]::-ms-thumb:active {
-  background: $orange;
+  background: var(--orange);
 }
 
 @media (hover) {
   input[type="range"]::-webkit-slider-thumb:hover {
-    background: $orange;
+    background: var(--orange);
   }
 
   input[type="range"]::-moz-range-thumb:hover {
-    background: $orange;
+    background: var(--orange);
   }
 
   input[type="range"]::-ms-thumb:hover {
-    background: $orange;
+    background: var(--orange);
   }
 }
 
@@ -95,20 +95,20 @@ input[type="range"]::-moz-focus-outer {
 button {
   outline: none;
   font-size: 1.0rem;
-  font-family: $font-family;
+  font-family: var(--font-family);
   cursor: pointer;
   margin: 0;
 }
 
 button:disabled {
-  border-color: $border-color;
-  color: $border-color;
+  border-color: var(--border-color);
+  color: var(--border-color);
   cursor: default;
 }
 
 .button-link {
   background: none;
-  color: $link-color;
+  color: var(--link-color);
   border: 0;
   font-weight: 300;
   text-decoration: underline;
@@ -117,17 +117,17 @@ button:disabled {
 }
 
 .button-standard {
-  background: $white;
-  color: $black;
+  background: var(--white);
+  color: var(--black);
   border-style: solid;
   border-color: #ccc;
 }
 
 @media (hover) {
   .button-standard:enabled:hover {
-    background: $light-orange;
-    border-color: $orange;
-    color: $orange;
+    background: var(--light-orange);
+    border-color: var(--orange);
+    color: var(--orange);
   }
 }
 
@@ -146,25 +146,25 @@ button:disabled {
 .button-standard-full {
   border-radius: 0.75rem;
   border-width: 3px;
-  padding: $size-half;
+  padding: var(--size-half);
 }
 
 .button-standard-toggled {
-  background: $orange;
-  border-color: $orange;
-  color: $white;
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
 }
 
 button.button-standard-error:disabled {
-  background: $white;
+  background: var(--white);
   border-style: solid;
-  border-color: $light-red;
-  color: $light-red;
+  border-color: var(--light-red);
+  color: var(--light-red);
 }
 
 .button-standard-tab-list {
   border-width: 3px 1.5px;
-  padding: $size-half;
+  padding: var(--size-half);
 }
 
 .button-standard-tab-list:first-child {
@@ -179,13 +179,13 @@ button.button-standard-error:disabled {
 
 .input-underlined {
   outline: none;
-  border: solid $black;
+  border: solid var(--black);
   border-width: 0 0 1px 0;
   border-radius: 0;  /* For iOS */
 }
 
 .input-underlined:disabled {
-  border-color: $border-color;
+  border-color: var(--border-color);
 }
 
 .control {
@@ -266,7 +266,7 @@ button.button-standard-error:disabled {
 .keyboard-keys-container {
   display: flex;
   overflow-x: hidden;
-  background: $white;
+  background: var(--white);
 }
 
 .keyboard-key {
@@ -286,10 +286,10 @@ button.button-standard-error:disabled {
 
 .keyboard-white-key {
   width: 3.5rem;
-  border: solid $black;
+  border: solid var(--black);
   border-width: 2px 1px;
-  background: $white;
-  color: $black;
+  background: var(--white);
+  color: var(--black);
 }
 
 .keyboard-white-key:first-child {
@@ -301,30 +301,30 @@ button.button-standard-error:disabled {
 }
 
 .keyboard-black-key {
-  background: $black;
+  background: var(--black);
   height: 60%;
   width: 2.5rem;
   margin-left: -1.25rem;
   margin-right: -1.25rem;
   z-index: 2;
-  color: $white;
-  border: 2px solid $black;
+  color: var(--white);
+  border: 2px solid var(--black);
 }
 
 .keyboard-key-root-indicator {
   border-radius: 6px;
   padding: 0.0rem 0.25rem;
-  background: $red;
-  color: $white;
+  background: var(--red);
+  color: var(--white);
   font-size: 0.75rem;
   pointer-events: none;
 }
 
 .keyboard-key.pressed {
-  background: $orange;
+  background: var(--orange);
 }
 .keyboard-scroll-button.pressed {
-  background: $orange;
+  background: var(--orange);
 }
 
 @media (min-width: 768px) {

@@ -1,23 +1,25 @@
-$font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", helvetica, arial, sans-serif;
-$orange: orange;
-$light-orange: papayawhip;
-$dark-orange: darkorange;
-$red: #c00;
-$light-red: #faa;
-$black: #130f30;
-$white: #fff;
-$border-color: #ddd;
-$light-gray: #f1f1f1;
-$lighter-gray: #fafafa;
-$link-color: #0af;
-
-$size-half: 0.75rem;
-$size-1: 1.5rem;
-$size-2: 3.0rem;
-$size-3: 4.5rem;
-
 @import "controls.scss";
 @import "utilities.scss";
+
+:root {
+  --font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", helvetica, arial, sans-serif;
+  --orange: orange;
+  --light-orange: papayawhip;
+  --dark-orange: darkorange;
+  --red: #c00;
+  --light-red: #faa;
+  --black: #130f30;
+  --white: #fff;
+  --border-color: #ddd;
+  --light-gray: #f1f1f1;
+  --lighter-gray: #fafafa;
+  --link-color: #0af;
+
+  --size-half: 0.75rem;
+  --size-1: 1.5rem;
+  --size-2: 3.0rem;
+  --size-3: 4.5rem;
+}
 
 html {
   font-size: 16px;
@@ -30,16 +32,16 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: $font-family;
+  font-family: var(--font-family);
   font-size: 20px;
-  background: $white;
-  color: $black;
+  background: var(--white);
+  color: var(--black);
   line-height: 1.5em;
   font-weight: 300;
 }
 
 a {
-  color: $link-color;
+  color: var(--link-color);
 }
 
 /* Header */
@@ -55,11 +57,11 @@ a {
   overflow: hidden;
   border-style: solid;
   border-width: 0.5rem 0.0rem 0.5rem 1.0rem;
-  border-color: transparent transparent transparent $black;
+  border-color: transparent transparent transparent var(--black);
 }
 
 .play-icon-enabled {
-  border-color: $white;
+  border-color: var(--white);
 }
 
 .rewind-icon {
@@ -69,7 +71,7 @@ a {
   overflow: hidden;
   border-style: solid;
   border-width: 0 0 0 3px;
-  border-color: $black;
+  border-color: var(--black);
   box-sizing: border-box;
 }
 
@@ -81,32 +83,32 @@ a {
   margin-left: -3px;
   border-style: solid;
   border-width: 0.5rem 1.0rem 0.5rem 0.0rem;
-  border-color: transparent $black transparent transparent;
+  border-color: transparent var(--black) transparent transparent;
 }
 
 @media (hover) {
   .button-standard-tab-list:hover .play-icon {
-    border-color: transparent transparent transparent $orange;
+    border-color: transparent transparent transparent var(--orange);
   }
 
   .button-standard-tab-list:hover .play-icon-enabled {
-    border-color: $orange;
+    border-color: var(--orange);
   }
 
   .button-standard-tab-list:hover .rewind-icon {
-    border-color: $orange;
+    border-color: var(--orange);
   }
 
   .button-standard-tab-list:hover .rewind-icon::before {
-    border-color: transparent $orange transparent transparent;
+    border-color: transparent var(--orange) transparent transparent;
   }
 }
 
 .popup-box {
-  background: $white;
+  background: var(--white);
   position: absolute;
   right: 0;
-  border: 2px solid $border-color;
+  border: 2px solid var(--border-color);
   border-radius: 10px;
   width: 15.0rem;
   z-index: 1000;
@@ -119,7 +121,7 @@ a {
   right: 1.5rem;
   border-width: 0 1.25rem 1.25rem 1.25rem;
   border-style: solid;
-  border-color: transparent transparent $border-color transparent;
+  border-color: transparent transparent var(--border-color) transparent;
 }
 
 .popup-box::after {
@@ -130,7 +132,7 @@ a {
   padding-top: 0.1875rem;  /* Prevent artifact when menu is hidden in Safari */
   border-width: 0 1.0625rem 1.0625rem 1.0625rem;
   border-style: solid;
-  border-color: transparent transparent $white transparent;
+  border-color: transparent transparent var(--white) transparent;
 }
 
 .spinner-icon {
@@ -139,7 +141,7 @@ a {
   border-radius: 50%;
   border-style: solid;
   border-width: 2px;
-  border-color: $black $black $black transparent;
+  border-color: var(--black) var(--black) var(--black) transparent;
   animation: spinner 1s linear infinite;
 }
 @keyframes spinner { 100% { transform: rotate(360deg); } }
@@ -151,7 +153,7 @@ a {
 }
 
 .tab-strip-item {
-  border-right: 1px solid $border-color;
+  border-right: 1px solid var(--border-color);
 }
 
 .tab-strip-item:last-child {
@@ -272,7 +274,7 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
   top: calc(3.0rem - 1px);
   bottom: 0;
   width: 5px;
-  background: $orange;
+  background: var(--orange);
   opacity: 0.5;
 }
 
@@ -316,9 +318,9 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
   display: block;
   height: calc(100% - 1px);
   box-sizing: border-box;
-  border: 1px solid $black;
+  border: 1px solid var(--black);
   border-radius: 5px;
-  background: $light-gray;
+  background: var(--light-gray);
 }
 
 .timeline-pattern-transparent {
@@ -326,39 +328,39 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
 }
 
 .timeline-pattern-selected {
-  background: $light-orange;
-  border-color: $orange;
+  background: var(--light-orange);
+  border-color: var(--orange);
 }
 
 .timeline-pattern-error {
-  background: $light-red;
-  border-color: $red;
+  background: var(--light-red);
+  border-color: var(--red);
 }
 
 .timeline-pattern-divider {
   display: block;
-  background: $light-gray;
+  background: var(--light-gray);
   height: calc(100% - (5px * 2));
   width: 0;
   margin-top: 5px;
   border-width: 0 0 0 1px;
-  border-color: $light-gray;
+  border-color: var(--light-gray);
   border-style: solid;
 }
 
 .timeline-pattern-divider-selected {
-  background: $light-orange;
-  border-color: $light-orange;
+  background: var(--light-orange);
+  border-color: var(--light-orange);
 }
 
 .timeline-pattern-divider-error {
-  background: $light-red;
-  border-color: $light-red;
+  background: var(--light-red);
+  border-color: var(--light-red);
 }
 
 .timeline-pattern-name {
   position: absolute;
-  background: $light-gray;
+  background: var(--light-gray);
   margin-left: 0.25rem;
   margin-top: 1px;
   line-height: 1.25rem;
@@ -369,11 +371,11 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
 }
 
 .timeline-pattern-name-selected {
-  background: $light-orange;
+  background: var(--light-orange);
 }
 
 .timeline-pattern-name-error {
-  background: $light-red;
+  background: var(--light-red);
 }
 
 .timeline-pattern-overlay {
@@ -385,21 +387,21 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
 }
 
 .timeline-sidebar-button-enabled {
-  color: $black;
+  color: var(--black);
 }
 
 .timeline-sidebar-button-enabled:active {
-  color: $white;
-  background: $dark-orange;
+  color: var(--white);
+  background: var(--dark-orange);
 }
 
 .timeline-pattern-menu {
   display: block;
-  border: 2px solid $border-color;
+  border: 2px solid var(--border-color);
   border-radius: 0.75rem;
   padding: 0.5rem;
   box-sizing: border-box;
-  background: $lighter-gray;
+  background: var(--lighter-gray);
   pointer-events: auto;
 }
 
@@ -417,7 +419,7 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
   width: 0;
   border-width: 1.0rem 1.0rem 0 1.0rem;
   border-style: solid;
-  border-color: $border-color transparent transparent transparent;
+  border-color: var(--border-color) transparent transparent transparent;
   pointer-events: auto;
   clip-path: polygon(0 0, 100% 0, 50% 100%, 0 0);
 }
@@ -429,7 +431,7 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
   width: 0;
   border-width: 0.8125rem 0.8125rem 0 0.8125rem;
   border-style: solid;
-  border-color: $lighter-gray transparent transparent transparent;
+  border-color: var(--lighter-gray) transparent transparent transparent;
 }
 
 .expanded {
@@ -479,11 +481,11 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
 
 .pane-tab-unselected {
   padding-bottom: 2px;
-  border-bottom: 2px solid $border-color;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .pane-tab-selected {
-  border-bottom: 4px solid $orange;
+  border-bottom: 4px solid var(--orange);
 }
 
 .note-container {
@@ -502,7 +504,7 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
   height: 2.0rem;
   width: calc(100% - 4px);
   text-align: center;
-  border: 1px solid $border-color;
+  border: 1px solid var(--border-color);
   margin: 1px;
   font-size: 1.0rem;
   font-weight: normal;
@@ -511,14 +513,14 @@ input[type="range"].sequencer-playback-header::-ms-thumb:active {
 }
 
 .note-box-focused {
-  background: $light-orange;
-  border: 2px solid $orange;
+  background: var(--light-orange);
+  border: 2px solid var(--orange);
   margin: 0;
 }
 
 .note-box-invalid {
-  background: $light-red;
-  border: 2px solid $red;
+  background: var(--light-red);
+  border: 2px solid var(--red);
   margin: 0;
 }
 
