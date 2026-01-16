@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: ["./src/app.js", "./sass/main.scss"],
+  entry: ["./src/app.js", "./css/main.css"],
   module: {
     rules: [
       {
@@ -20,19 +20,13 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
               url: false,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              implementation: require("sass"),
             },
           },
         ],

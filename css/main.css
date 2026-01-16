@@ -1,5 +1,5 @@
-@import "controls.scss";
-@import "utilities.scss";
+@import "controls.css";
+@import "utilities.css";
 
 :root {
   --font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", helvetica, arial, sans-serif;
