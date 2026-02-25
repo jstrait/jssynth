@@ -9,7 +9,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production",
     "serve": "webpack serve --config webpack.config.js --mode production --compress --no-bonjour --no-hot --no-live-reload --no-static --no-web-socket-server",
-    "test": "jest"
+    "test": "jest --randomize"
   },
   "browserslist": [
     "supports es6"
