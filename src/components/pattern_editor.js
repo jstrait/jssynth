@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { STEPS_PER_MEASURE } from "./../constants";
+import { STEPS_PER_MEASURE } from "./../constants.js";
 
 class PatternHeader extends React.PureComponent {
   constructor(props) {

@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import { STEPS_PER_MEASURE } from "./../constants";
-import { STEP_WIDTH_IN_PIXELS } from "./../constants";
-import { TRACK_HEIGHT_IN_PIXELS } from "./../constants";
+import { STEPS_PER_MEASURE } from "./../constants.js";
+import { STEP_WIDTH_IN_PIXELS } from "./../constants.js";
+import { TRACK_HEIGHT_IN_PIXELS } from "./../constants.js";
 
 const MEASURE_WIDTH_IN_PIXELS = STEP_WIDTH_IN_PIXELS * STEPS_PER_MEASURE;
 

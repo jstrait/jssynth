@@ -1,7 +1,7 @@
 "use strict";
 
-import { STEPS_PER_MEASURE } from "./constants";
-import * as SynthCore from "./synth_core";
+import { STEPS_PER_MEASURE } from "./constants.js";
+import * as SynthCore from "./synth_core.js";
 
 export class Serializer {
   constructor() {};

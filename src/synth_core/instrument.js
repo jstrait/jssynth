@@ -1,7 +1,7 @@
 "use strict";
 
-import { Envelope } from "./envelope";
-import { Note } from "./note";
+import { Envelope } from "./envelope.js";
+import { Note } from "./note.js";
 
 var BaseInstrument = function(config) {
   var buildOscillator = function(audioContext, waveform, frequency, detune) {

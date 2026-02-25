@@ -1,6 +1,6 @@
 "use strict";
 
-import { Note } from "./../../src/synth_core/note";
+import { Note } from "./../../src/synth_core/note.js";
 
 describe("Note", () => {
   test("returns correct object when constructed with valid argument values", () => {

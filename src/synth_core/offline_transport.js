@@ -1,8 +1,8 @@
 "use strict";
 
-import { AudioContextBuilder } from "./audio_context_builder";
-import { Mixer } from "./mixer";
-import { WaveWriter } from "./wave_writer";
+import { AudioContextBuilder } from "./audio_context_builder.js";
+import { Mixer } from "./mixer.js";
+import { WaveWriter } from "./wave_writer.js";
 
 export function OfflineTransport(tracks, songPlayer, notePlayer, tempo, masterAmplitude, sampleRate, completeCallback) {
   const NUM_CHANNELS = 1;

@@ -1,6 +1,6 @@
 "use strict";
 
-import { Score } from "./score";
+import { Score } from "./score.js";
 
 export function SongPlayer() {
   var score = Score([]);

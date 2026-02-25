@@ -4,24 +4,24 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 
-import { STEPS_PER_MEASURE } from "./constants";
-import { STEP_WIDTH_IN_PIXELS } from "./constants";
-import { TRACK_HEIGHT_IN_PIXELS } from "./constants";
+import { STEPS_PER_MEASURE } from "./constants.js";
+import { STEP_WIDTH_IN_PIXELS } from "./constants.js";
+import { TRACK_HEIGHT_IN_PIXELS } from "./constants.js";
 
-import * as SynthCore from "./synth_core";
-import * as DefaultSong from "./default_song";
-import { BufferGenerator } from "./buffer_generator";
-import { IDGenerator } from "./id_generator";
-import { MidiController } from "./midi_controller";
-import { Serializer } from "./serializer";
+import * as SynthCore from "./synth_core.js";
+import * as DefaultSong from "./default_song.js";
+import { BufferGenerator } from "./buffer_generator.js";
+import { IDGenerator } from "./id_generator.js";
+import { MidiController } from "./midi_controller.js";
+import { Serializer } from "./serializer.js";
 
-import { DownloadButton } from "./components/download_button";
-import { Keyboard } from "./components/keyboard";
-import { PatternEditor } from "./components/pattern_editor";
-import { SampleInstrumentEditor } from "./components/instrument_editor";
-import { Sequencer } from "./components/sequencer";
-import { SynthInstrumentEditor } from "./components/instrument_editor";
-import { Transport } from "./components/transport";
+import { DownloadButton } from "./components/download_button.js";
+import { Keyboard } from "./components/keyboard.js";
+import { PatternEditor } from "./components/pattern_editor.js";
+import { SampleInstrumentEditor } from "./components/instrument_editor.js";
+import { Sequencer } from "./components/sequencer.js";
+import { SynthInstrumentEditor } from "./components/instrument_editor.js";
+import { Transport } from "./components/transport.js";
 
 
 const VIEW_UNKNOWN = -1;

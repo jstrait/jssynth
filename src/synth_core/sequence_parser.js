@@ -1,6 +1,6 @@
 "use strict";
 
-import { Note } from "./note";
+import { Note } from "./note.js";
 
 export var SequenceParser = {
   parse: function(noteStrings) {

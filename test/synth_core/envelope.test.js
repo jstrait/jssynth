@@ -1,6 +1,6 @@
 "use strict";
 
-import { Envelope } from "./../../src/synth_core/envelope";
+import { Envelope } from "./../../src/synth_core/envelope.js";
 
 describe("Envelope", () => {
   test("calculates correctly when envelope is effectively a no-op", () => {

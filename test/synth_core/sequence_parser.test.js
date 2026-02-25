@@ -1,6 +1,6 @@
 "use strict";
 
-import { SequenceParser } from "./../../src/synth_core/sequence_parser";
+import { SequenceParser } from "./../../src/synth_core/sequence_parser.js";
 
 describe("SequenceParser", () => {
   test("properly parses a valid sequence", () => {
