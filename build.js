@@ -1,0 +1,70 @@
+import * as esbuild from "esbuild";
+import * as fs from "node:fs/promises";
+
+const outputDirectory = "dist";
+
+const esbuildConfig = {
+  entryPoints: [
+    { out: "jssynth", in: "src/app.js" },
+    { out: "jssynth", in: "css/main.css" },
+    { out: "index", in: "html/index.html" },
+    "images/*.png",
+    "sounds/*.wav",
+  ],
+  external: ["images/*"],
+  loader: {
+    ".html": "copy",
+    ".js": "jsx",
+    ".png": "copy",
+    ".wav": "copy",
+  },
+  bundle: true,
+  minify: true,
+  format: "iife",
+  platform: "browser",
+  target: [
+    "safari14.1",
+    "ios14.5",
+    "firefox88",
+    "chrome90",
+    "edge90",
+  ],
+  outbase: ".",
+  outdir: outputDirectory,
+  plugins: [],
+  write: false,
+};
+
+const cleanOutputFolderPlugin = {
+  name: "clean-output-folder",
+  setup(build) {
+    build.onStart(async () => {
+      await fs.rm(outputDirectory, { recursive: true, force: true });
+    });
+  },
+};
+
+// Node.js adds its own 2 arguments to the beginning of `process.argv` before
+// any user-supplied arguments. To make downstream logic a little more clear
+// the extra 2 arguments are first removed.
+const userSuppliedArguments = [...process.argv.slice(2)];
+
+if (userSuppliedArguments.length === 0) {
+  esbuildConfig.plugins.push(cleanOutputFolderPlugin);
+  esbuildConfig.write = true;
+
+  await esbuild.build(esbuildConfig);
+}
+else if (userSuppliedArguments.length === 1 && userSuppliedArguments[0] === "--serve") {
+  const esbuildContext = await esbuild.context(esbuildConfig);
+  const { hosts, port } = await esbuildContext.serve();
+
+  const urls = hosts.map((host) => `http://${host}:${port}/`);
+
+  console.log(`Serving at ${urls.join(" or ")}`);
+}
+else {
+  console.log("Unexpected command-line argument. `--serve` (which is optional) is the only argument allowed.");
+  process.exit(1);
+}
+

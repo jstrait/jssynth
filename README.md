@@ -40,9 +40,9 @@ The song below is an example of what you can create with the JS-130, along with 
 ## Running Locally
 
 * If running the app locally for the first time, run `yarn install`
-* Run `yarn serve`, which will build the app and start a local development server
-* Open the `localhost` URL listed in the command-line output in your browser
-* If a source file is changed while the server is running the app will automatically be rebuilt. However, you'll need to manually refresh the page in your browser to see the changes.
+* Run `yarn serve`, which will build the app in-memory, and serve it using a local development server
+* Open one of the URLs listed in the command-line output in your browser
+* While the server is running the app will automatically be rebuilt each time the site is reloaded in the browser
 
 ## Building For Production
 
