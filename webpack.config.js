@@ -48,7 +48,6 @@ export default {
         { from: "html/index.html" },
         { from: "sounds/*.wav" },
         { from: "images/*.png" },
-        { from: "lib/*.js" },
       ],
     }),
     new MiniCssExtractPlugin({
@@ -59,7 +58,6 @@ export default {
         compress: true,
         mangle: true,
       },
-      exclude: "lib/",
       extractComments: false,
     }),
   ],

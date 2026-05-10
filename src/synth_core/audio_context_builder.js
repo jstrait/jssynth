@@ -37,9 +37,6 @@ export var AudioContextBuilder = (function() {
     if (window.OfflineAudioContext) {
       offlineAudioContext = new OfflineAudioContext(channelCount, sampleCount, sampleRate);
     }
-    else if (window.webkitOfflineAudioContext) {
-      offlineAudioContext = new webkitOfflineAudioContext(channelCount, sampleCount, sampleRate);
-    }
 
     return offlineAudioContext;
   };
