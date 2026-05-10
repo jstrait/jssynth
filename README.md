@@ -50,6 +50,9 @@ The song below is an example of what you can create with the JS-130, along with 
 * Run `yarn build`
 * The `dist/` folder will contain the files that should be deployed to production
 
+## Running Tests
+
+* `yarn test`
 
 ## Screenshots
 
