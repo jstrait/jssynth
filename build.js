@@ -29,6 +29,7 @@ const esbuildConfig = {
     "chrome90",
     "edge90",
   ],
+  jsx: "transform",
   outbase: ".",
   outdir: outputDirectory,
   plugins: [],
