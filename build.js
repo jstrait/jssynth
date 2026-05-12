@@ -68,4 +68,3 @@ else {
   console.log("Unexpected command-line argument. `--serve` (which is optional) is the only argument allowed.");
   process.exit(1);
 }
-
